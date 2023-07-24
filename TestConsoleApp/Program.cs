@@ -1,17 +1,16 @@
-﻿using MEOS.NET.Types.Temporal;
+﻿using MEOS.NET.API.Internal;
+
 using Npgsql;
 
+var timezone = "UTC";
+MEOSFunctions.meos_initialize(timezone);
 
-var connectionString = "Host=localhost;Port=5432;Database=test;Username=postgres;Password=admin";
-var table = "testable";
-var column = "custom";
-//var connectionString = "Host=20.79.254.53;Port=5432;Database=opensky;Username=mobilitydb-guest;Password=mobilitydb@guest";
-//var table = "flight_traj";
-//var column = "squawk";
+var connectionString = "...";
+var table = "test";
+var column = "Name";
 
 var datasourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
 //datasourceBuilder.MapComposite<TemporalInt>("tint");
-datasourceBuilder.MapComposite<CustomType>("custom_type");
 
 using var dataSource = datasourceBuilder.Build();
 
@@ -30,7 +29,7 @@ try
             while (reader.Read())
             {
                 //var data = reader.GetFieldValue<TemporalInt>(0);
-                var data = reader.GetFieldValue<CustomType>(0);
+                var data = reader.GetString(0);
                 Console.WriteLine(data);
             }
         }
@@ -45,13 +44,4 @@ finally
     connection.Close();
 }
 
-public class CustomType
-{
-    public int Field1 { get; set; }
-    public string Field2 { get; set; }
-
-    public override string ToString()
-    {
-        return $"{Field1} : {Field2}";
-    }
-}
+MEOSFunctions.meos_finalize();
