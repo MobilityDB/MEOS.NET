@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="API\Internal\Output.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="API\libmeos.soZone.Identifier" />
   </ItemGroup>
 
@@ -16,5 +20,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <Target Name="PreBuildTask" BeforeTargets="Build">
+    <Exec Command="echo \nBuilding MEOS Functions..." />
+    <Exec Command="python3 $(ProjectDir)API/Builder/MEOSFunctionsBuilder.py" />
+    <Exec Command="echo MEOS Functions built successfully\n" />
+  </Target>
+
 
 </Project>

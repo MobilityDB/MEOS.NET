@@ -1,47 +1,15 @@
 ﻿using MEOS.NET.API.Internal;
+using MEOS.NET.Types.Temporal;
 
-using Npgsql;
 
 var timezone = "UTC";
 MEOSFunctions.meos_initialize(timezone);
 
-var connectionString = "...";
-var table = "test";
-var column = "Name";
+Console.WriteLine($"Result is : {MEOSFunctions.int_bucket(12, 32, 10)}");
 
-var datasourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
-//datasourceBuilder.MapComposite<TemporalInt>("tint");
+var tint = TemporalGeometryPoint.From("POINT(1 1)@2023-08-06 01:45:00+00:00");
+Console.WriteLine(tint.ToString());
 
-using var dataSource = datasourceBuilder.Build();
-
-var connection = dataSource.OpenConnection();
-
-try
-{
-    var query = $"SELECT {column} FROM {table} LIMIT 100";
-
-    using (var command = new NpgsqlCommand(query, connection))
-    {
-        var pm = new NpgsqlParameter();
-
-        using (var reader = command.ExecuteReader())
-        {
-            while (reader.Read())
-            {
-                //var data = reader.GetFieldValue<TemporalInt>(0);
-                var data = reader.GetString(0);
-                Console.WriteLine(data);
-            }
-        }
-    }
-}
-catch (Exception ex)
-{
-    Console.WriteLine("Error: " + ex.Message);
-}
-finally
-{
-    connection.Close();
-}
+//var x = MEOSFunctions.tint_in("(10@2018-01-01 08:00:00, 20@2018-01-01 08:05:00, 15@2018-01-01 08:10:00]");
 
 MEOSFunctions.meos_finalize();
