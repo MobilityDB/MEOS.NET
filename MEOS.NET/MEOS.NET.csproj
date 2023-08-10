@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -8,24 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="API\Internal\Output.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="API\libmeos.soZone.Identifier" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="API\Internal\libmeos.so">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
-  <Target Name="PreBuildTask" BeforeTargets="Build">
-    <Exec Command="echo \nBuilding MEOS Functions..." />
-    <Exec Command="python3 $(ProjectDir)API/Builder/MEOSFunctionsBuilder.py" />
-    <Exec Command="echo MEOS Functions built successfully\n" />
+  <Target Name="BeforeBuild">
+    <Exec Command="echo Building MEOS Functions..." />
+    <Exec Command="python3 $(ProjectDir)API/Builder/MEOSFunctionsBuilder.py &gt; &quot;$(ProjectDir)API/Internal/MEOSFunctions.cs&quot;" />
+    <Exec Command="echo MEOS Functions built successfully" />
   </Target>
-
-
 </Project>
