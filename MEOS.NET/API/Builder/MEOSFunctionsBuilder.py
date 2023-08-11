@@ -9,41 +9,6 @@ def map_type(input_type: str) -> str:
     mapped = input_type.replace("char*", "string")
 
     # To Pointers 
-    #mapped = mapped.replace("Temporal**", "IntPtr")
-    #mapped = mapped.replace("Temporal*", "IntPtr")
-    #mapped = mapped.replace("TInstant**", "IntPtr")
-    #mapped = mapped.replace("TInstant*", "IntPtr")
-    #mapped = mapped.replace("TSequence**", "IntPtr")
-    #mapped = mapped.replace("TSequence*", "IntPtr")
-    #mapped = mapped.replace("TSequenceSet*", "IntPtr")
-    #mapped = mapped.replace("TimestampTz*", "IntPtr")
-    #mapped = mapped.replace("Span**", "IntPtr")
-    #mapped = mapped.replace("Span*", "IntPtr")
-    #mapped = mapped.replace("SpanSet*", "IntPtr")
-    #mapped = mapped.replace("Set*", "IntPtr")
-    #
-    #mapped = mapped.replace("STBox*", "IntPtr")
-    #mapped = mapped.replace("TBox*", "IntPtr")
-    #mapped = mapped.replace("SkipList*", "IntPtr")
-    #mapped = mapped.replace("Match*", "IntPtr")
-    #mapped = mapped.replace("GSERIALIZED**", "IntPtr")
-    #mapped = mapped.replace("GSERIALIZED*", "IntPtr")
-    #
-    #mapped = mapped.replace("Datum*", "IntPtr")
-    #
-    #mapped = mapped.replace("text**", "IntPtr")
-    #mapped = mapped.replace("text*", "IntPtr")
-    #mapped = mapped.replace("Interval*", "IntPtr")
-    #
-    #mapped = mapped.replace("bytea*", "IntPtr")
-    #mapped = mapped.replace("uint8_t*", "IntPtr")
-    #mapped = mapped.replace("size_t*", "IntPtr")
-    #
-    #mapped = mapped.replace("bool*", "IntPtr")
-    #mapped = mapped.replace("int**", "IntPtr")
-    #mapped = mapped.replace("int*", "IntPtr")
-    #mapped = mapped.replace("int64*", "IntPtr")
-    #mapped = mapped.replace("double*", "IntPtr")
     if "*" in mapped:
         return "IntPtr"
 
