@@ -13,6 +13,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Types\Time\" />
+  </ItemGroup>
+
   <Target Name="BeforeBuild">
     <Exec Command="echo Building MEOS Functions..." />
     <Exec Command="python3 $(ProjectDir)API/Builder/MEOSFunctionsBuilder.py &gt; &quot;$(ProjectDir)API/Internal/MEOSFunctions.cs&quot;" />

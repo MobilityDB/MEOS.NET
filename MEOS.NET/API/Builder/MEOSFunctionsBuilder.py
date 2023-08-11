@@ -112,7 +112,7 @@ if __name__ == "__main__":
     print("using System.Runtime.InteropServices;\n")
     print("namespace MEOS.NET.API.Internal")
     print("{")
-    print("\tpublic static class MEOSFunctions")
+    print("\internal static class MEOSFunctions")
     print("\t{")
     print("\t\tprivate const string DllPath = @\"API\\\\Internal\\\\libmeos.so\";\n")
 

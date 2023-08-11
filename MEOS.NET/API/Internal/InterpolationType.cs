@@ -1,6 +1,6 @@
 ﻿namespace MEOS.NET.API.Internal
 {
-    public enum InterpolationType
+    internal enum InterpolationType
     {
         None = 0,
         Discrete = 1,

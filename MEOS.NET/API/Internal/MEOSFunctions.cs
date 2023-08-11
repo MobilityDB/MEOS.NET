@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 
 namespace MEOS.NET.API.Internal
 {
-	public static class MEOSFunctions
+	internal static class MEOSFunctions
 	{
 		private const string DllPath = @"API\\Internal\\libmeos.so";
 
