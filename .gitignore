@@ -1,5 +1,3 @@
-# This is a template gitignore file that was added to cover a maximum cases that could happen
-
 # globs
 Makefile.in
 *.userprefs
