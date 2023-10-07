@@ -1,0 +1,35 @@
+﻿Temporal** ->  IntPtr
+Temporal* ->  IntPtr
+TInstant** ->  IntPtr
+TInstant* ->  IntPtr
+TSequence** ->  IntPtr
+TSequence* ->  IntPtr
+TSequenceSet* ->  IntPtr
+TimestampTz* ->  IntPtr
+Span** ->  IntPtr
+Span* ->  IntPtr
+SpanSet* ->  IntPtr
+Set* ->  IntPtr
+
+STBox* ->  IntPtr
+TBox* ->  IntPtr
+SkipList* ->  IntPtr
+Match* ->  IntPtr
+GSERIALIZED** ->  IntPtr
+GSERIALIZED* ->  IntPtr
+
+Datum* ->  IntPtr
+
+text** ->  IntPtr
+text* ->  IntPtr
+Interval* ->  IntPtr
+
+bytea* ->  IntPtr
+uint8_t* ->  IntPtr
+size_t* ->  IntPtr
+
+bool* ->  IntPtr
+int** ->  IntPtr
+int* ->  IntPtr
+int64* ->  IntPtr
+double* ->  IntPtr

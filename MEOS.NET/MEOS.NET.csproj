@@ -1,9 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="API\Internal\libmeos.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Types\Time\" />
+  </ItemGroup>
+
+  <Target Name="BeforeBuild">
+    <Exec Command="echo Building MEOS Functions..." />
+    <Exec Command="python3 $(ProjectDir)API/Builder/MEOSFunctionsBuilder.py &gt; &quot;$(ProjectDir)API/Internal/MEOSFunctions.cs&quot;" />
+    <Exec Command="echo MEOS Functions built successfully" />
+  </Target>
 </Project>
