@@ -66,8 +66,12 @@ namespace MEOS.NET.Builder.Workflow
 				builder.AppendLine("\t\t[DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]");
 				builder.AppendLine($"\t\tpublic static extern " +
 					$"{declaration.ReturnType} {declaration.FunctionName}({declaration.Arguments});");
+
 				builder.AppendLine();
 			}
+
+			// Removing last empty lines
+			builder.Remove(builder.Length - 2, 2);
 
 			return builder.ToString();
 		}
