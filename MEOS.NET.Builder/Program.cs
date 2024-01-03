@@ -11,3 +11,6 @@ var cDeclarations = new ReadFileWorkflow()
 
 var csDeclarations = new MapDefinitionsWorkflow()
     .MapCDeclaractions(cDeclarations);
+
+new WriteDefinitionsFileWorkflow(csDeclarations)
+    .Write("output.cs");
