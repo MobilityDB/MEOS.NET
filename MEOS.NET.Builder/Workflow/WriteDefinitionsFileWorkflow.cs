@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using MEOS.NET.Builder.EqualityComparers;
 using MEOS.NET.Builder.Models;
 
 namespace MEOS.NET.Builder.Workflow
@@ -61,7 +62,7 @@ namespace MEOS.NET.Builder.Workflow
 		{
 			var builder = new StringBuilder();
 
-			foreach (var declaration in this.Declarations)
+			foreach (var declaration in this.Declarations.Distinct(new CSFunctionDeclarationComparer()))
 			{
 				builder.AppendLine("\t\t[DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]");
 				builder.AppendLine($"\t\tpublic static extern " +
