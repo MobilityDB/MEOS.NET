@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MEOS.NET.NpgSql", "MEOS.NET
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MEOS.NET.Tests", "MEOS.NET.Tests\MEOS.NET.Tests.csproj", "{F12E43B1-0797-4307-B74A-05E0D589AB0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEOS.NET.Builder", "MEOS.NET.Builder\MEOS.NET.Builder.csproj", "{F1920906-001D-4414-9EF2-354B9AB32D34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F12E43B1-0797-4307-B74A-05E0D589AB0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F12E43B1-0797-4307-B74A-05E0D589AB0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F12E43B1-0797-4307-B74A-05E0D589AB0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1920906-001D-4414-9EF2-354B9AB32D34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1920906-001D-4414-9EF2-354B9AB32D34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1920906-001D-4414-9EF2-354B9AB32D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1920906-001D-4414-9EF2-354B9AB32D34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
