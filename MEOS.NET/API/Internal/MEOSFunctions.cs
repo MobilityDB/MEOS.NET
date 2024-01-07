@@ -4,7 +4,7 @@ namespace MEOS.NET.API.Internal
 {
     internal static class MEOSFunctions
     {
-        private const string DllPath = "/Users/thomas/Documents/Programming/MEOS.NET/ExampleApp/bin/Debug/net6.0/API/Internal/libmeos.so";
+        private const string DllPath = "/home/totojr/Programming/MEOS.NET/ExampleApp/bin/Debug/net6.0/API/Internal/libmeos.so";
 
         [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern void meos_error(int errlevel, int errcode, string format);
