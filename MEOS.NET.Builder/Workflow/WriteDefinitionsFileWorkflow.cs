@@ -24,10 +24,9 @@ namespace MEOS.NET.Builder.Workflow
 		}
 
 		private string GenerateUsingStatements()
-			=> "using System.Runtime.InteropServices;\n\n";
+			=> "using System.Runtime.InteropServices;";
 
-
-		private string GenerateNamespace()
+        private string GenerateNamespace()
 		{
 			var builder = new StringBuilder();
 
@@ -49,6 +48,9 @@ namespace MEOS.NET.Builder.Workflow
 			builder.AppendLine("\t{");
 
 			builder.AppendLine($"\t\tprivate const string DllPath = @\"API\\\\Internal\\\\{this.DllName}\";");
+			builder.AppendLine();
+
+			builder.AppendLine("\t\t");
 			builder.AppendLine();
 
 			builder.AppendLine(this.GenerateDeclarations());

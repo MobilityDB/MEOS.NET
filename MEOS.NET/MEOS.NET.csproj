@@ -8,13 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="API\Internal\libmeos.so">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Compile Remove="API\**" />
+    <Compile Remove="Types\Time\**" />
+    <EmbeddedResource Remove="API\**" />
+    <EmbeddedResource Remove="Types\Time\**" />
+    <None Remove="API\**" />
+    <None Remove="Types\Time\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Types\Time\" />
+    <None Update="Internal\libmeos.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <Target Name="BeforeBuild">

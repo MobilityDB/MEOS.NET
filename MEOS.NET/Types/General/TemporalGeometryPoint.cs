@@ -1,4 +1,4 @@
-﻿using MEOS.NET.API.Internal;
+﻿using MEOS.NET.Internal;
 
 namespace MEOS.NET.Types.General
 {
@@ -12,8 +12,8 @@ namespace MEOS.NET.Types.General
         }
 
         public static TemporalGeometryPoint From(string input)
-        {     
-            var inst = MEOSFunctions.tgeompoint_in(input);
+        {
+            var inst = MEOSExposedFunctions.tgeompoint_in(input);
             return new TemporalGeometryPoint(inst);
         }
 

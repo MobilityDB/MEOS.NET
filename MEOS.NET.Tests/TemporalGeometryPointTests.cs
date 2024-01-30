@@ -1,4 +1,4 @@
-using MEOS.NET.General;
+using MEOS.NET.Lifecycle;
 using MEOS.NET.Types.General;
 
 namespace MEOS.NET.Tests
