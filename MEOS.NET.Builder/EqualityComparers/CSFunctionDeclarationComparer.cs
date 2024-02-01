@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using MEOS.NET.Builder.Models;
+﻿using MEOS.NET.Builder.Models;
 
 namespace MEOS.NET.Builder.EqualityComparers
 {
@@ -12,12 +11,15 @@ namespace MEOS.NET.Builder.EqualityComparers
                 throw new InvalidOperationException();
             }
 
-            return first.Arguments == other.Arguments
+            var argsIntersection = first.Arguments.Intersect(other.Arguments);
+            var argsAreIdentical = argsIntersection.Count() == first.Arguments.Count();
+
+            return argsAreIdentical
                 && first.FunctionName == other.FunctionName
                 && first.ReturnType == other.ReturnType;
         }
 
-        public int GetHashCode([DisallowNull] CSFunctionDeclaration obj)
+        public int GetHashCode(CSFunctionDeclaration obj)
             => $"{obj.ReturnType}{obj.FunctionName}{obj.Arguments}".GetHashCode();
     }
 }

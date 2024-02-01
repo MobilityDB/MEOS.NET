@@ -1,4 +1,6 @@
 ﻿using System.Text.RegularExpressions;
+
+using MEOS.NET.Builder.EqualityComparers;
 using MEOS.NET.Builder.Models;
 
 namespace MEOS.NET.Builder.Workflow
@@ -14,7 +16,7 @@ namespace MEOS.NET.Builder.Workflow
                     FunctionName = d.FunctionName,
                     ReturnType = this.MapCType(d.ReturnType!),
                 }
-            );
+            ).Distinct(new CSFunctionDeclarationComparer());
 		}
 
         private string MapCType(string cType)
@@ -39,6 +41,7 @@ namespace MEOS.NET.Builder.Workflow
             newType = newType.Replace("int32", "int");
             newType = newType.Replace("int64", "double");
 
+            newType = newType.Replace("error_handler_fn", "ErrorHandlingMethod");
             newType = newType.Replace("TimestampTz", "DateTimeOffset");
             newType = newType.Replace("Timestamp", "DateTime");
 
@@ -53,17 +56,17 @@ namespace MEOS.NET.Builder.Workflow
             return newType;
         }
 
-		private string MapCArguments(string args)
+		private IEnumerable<CSFunctionArgument> MapCArguments(string args)
         {
             if (args.Trim() == "void")
             {
-                return string.Empty;
+                return Enumerable.Empty<CSFunctionArgument>();
             }
 
             var splitted = args.Split(',');
             var regexPattern = "(?:\\s*const)?\\s*([\\w\\s]+)\\s+(\\*{0,2})\\s*(\\w+)\\s*";
 
-            var mappedArgs = new List<string>();
+            var mappedArgs = new List<CSFunctionArgument>();
 
             foreach (var arg in splitted)
             {
@@ -79,11 +82,13 @@ namespace MEOS.NET.Builder.Workflow
 
                 var argName = match.Groups[3]?.ToString().Trim();
 
-                mappedArgs.Add($"{newType} {argName}");
+                mappedArgs.Add(new CSFunctionArgument {
+                    Name = argName ?? string.Empty,
+                    Type = newType,
+                });
             }
 
-            return string.Join(",", mappedArgs);
-
+            return mappedArgs;
         }
     }
 }

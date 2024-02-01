@@ -4,7 +4,6 @@
 	{
         public string? ReturnType { get; init; } = string.Empty;
         public string? FunctionName { get; init; } = string.Empty;
-        public string? Arguments { get; init; } = string.Empty;
     }
 }
 

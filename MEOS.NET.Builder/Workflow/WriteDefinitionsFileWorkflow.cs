@@ -1,4 +1,5 @@
 ﻿using System.Text;
+
 using MEOS.NET.Builder.EqualityComparers;
 using MEOS.NET.Builder.Models;
 
@@ -24,13 +25,13 @@ namespace MEOS.NET.Builder.Workflow
 		}
 
 		private string GenerateUsingStatements()
-			=> "using System.Runtime.InteropServices;";
+			=> "using System.CodeDom.Compiler;\nusing System.Runtime.InteropServices;\n\n";
 
         private string GenerateNamespace()
 		{
 			var builder = new StringBuilder();
 
-			builder.AppendLine("namespace MEOS.NET.API.Internal");
+			builder.AppendLine("namespace MEOS.NET.Internal");
 			builder.AppendLine("{");
 
             builder.Append(this.GenerateClass());
@@ -44,16 +45,19 @@ namespace MEOS.NET.Builder.Workflow
 		{
 			var builder = new StringBuilder();
 
-			builder.AppendLine("\tinternal static class MEOSFunctions");
+			builder.AppendLine("\t[GeneratedCode(\"MEOS.NET.Builder\", \"0.0.1\")]");
+			builder.AppendLine("\tinternal partial class MEOSExposedFunctions");
 			builder.AppendLine("\t{");
 
-			builder.AppendLine($"\t\tprivate const string DllPath = @\"API\\\\Internal\\\\{this.DllName}\";");
-			builder.AppendLine();
+			builder.AppendLine("\t\tprivate class MEOSExternalFunctions");
+			builder.AppendLine("\t\t{");
 
-			builder.AppendLine("\t\t");
+			builder.AppendLine($"\t\t\tprivate const string DllPath = @\"API\\\\Internal\\\\{this.DllName}\";");
 			builder.AppendLine();
 
 			builder.AppendLine(this.GenerateDeclarations());
+
+			builder.AppendLine("\t\t}");
 
 			builder.AppendLine("\t}");
 
@@ -66,9 +70,9 @@ namespace MEOS.NET.Builder.Workflow
 
 			foreach (var declaration in this.Declarations.Distinct(new CSFunctionDeclarationComparer()))
 			{
-				builder.AppendLine("\t\t[DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]");
-				builder.AppendLine($"\t\tpublic static extern " +
-					$"{declaration.ReturnType} {declaration.FunctionName}({declaration.Arguments});");
+				builder.AppendLine("\t\t\t[DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]");
+				builder.AppendLine($"\t\t\tpublic static extern " +
+					$"{declaration.ReturnType} {declaration.FunctionName}({declaration.ToArgumentsWithTypeString()});");
 
 				builder.AppendLine();
 			}
