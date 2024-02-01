@@ -5,7 +5,7 @@ namespace MEOS.NET.Internal
 {
     internal partial class MEOSExposedFunctions
     {
-        [GeneratedCode("MEOS.NET.Builder", "0.0.1")]
+        [GeneratedCode("MEOS.NET.Builder", "0.0.2")]
         private class MEOSExternalFunctions
         {
             private const string DllPath = "/home/totojr/Externals/MobilityDB/build/libmeos.so";

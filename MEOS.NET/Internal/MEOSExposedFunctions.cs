@@ -2,7 +2,7 @@
 
 namespace MEOS.NET.Internal
 {
-    [GeneratedCode("MEOS.NET.Builder", "0.0.1")]
+    [GeneratedCode("MEOS.NET.Builder", "0.0.2")]
     internal partial class MEOSExposedFunctions
     {
         public static void meos_error(int errlevel, int errcode, string format)
