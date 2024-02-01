@@ -1,11 +1,10 @@
 using MEOS.NET.Exceptions;
-using MEOS.NET.Internal;
 
 namespace MEOS.NET.Errors
 {
     public static class MEOSErrorHandling
     {
-        private static Exception? currentException = null;
+        private static MEOSException? currentException = null;
 
         internal static void CheckError()
         {
@@ -118,7 +117,7 @@ namespace MEOS.NET.Errors
             }
         }
 
-        private static void RegisterException(Exception exception)
+        private static void RegisterException(MEOSException exception)
             => currentException = exception;
     }
 }

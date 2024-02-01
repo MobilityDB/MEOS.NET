@@ -1,15 +1,14 @@
-using MEOS.NET.Errors;
+using System.CodeDom.Compiler;
 using System.Runtime.InteropServices;
+using static MEOS.NET.Internal.MEOSExposedFunctions;
 
 namespace MEOS.NET.Internal
 {
     [Obsolete("Use MEOSExposedFunctions instead.")]
+    [GeneratedCode("MEOS.NET.Builder", "0.0.1")]
     internal static class MEOSFunctions
     {
         private const string DllPath = "/home/totojr/Externals/MobilityDB/build/libmeos.so";
-
-        internal delegate void ErrorHandlingMethod(int level, int code, string message);
-
 
         [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern void meos_error(int errlevel, int errcode, string format);

@@ -1,6 +1,4 @@
-﻿using MEOS.NET.Errors;
-
-namespace MEOS.NET.Internal
+﻿namespace MEOS.NET.Internal
 {
     internal partial class MEOSExposedFunctions
     {

@@ -1,4 +1,5 @@
-﻿using MEOS.NET.Lifecycle;
+﻿using MEOS.NET.Exceptions;
+using MEOS.NET.Lifecycle;
 using MEOS.NET.Types.General;
 
 var timezone = "UTC";
@@ -26,9 +27,9 @@ try
     // var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "json_output.json");
     // File.WriteAllText(path, tempSeqSet.ToJson());
 }
-catch (Exception e)
+catch (MEOSException e)
 {
-    Console.WriteLine($"Could catch the exception : {e.Message}");
+    Console.WriteLine($"Could catch the exception : {e.Code} - {e.Message}");
 }
 finally
 {
