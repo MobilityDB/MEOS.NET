@@ -1,6 +1,4 @@
-﻿using MEOS.NET.Errors;
-using MEOS.NET.Exceptions;
-using MEOS.NET.Lifecycle;
+﻿using MEOS.NET.Lifecycle;
 using MEOS.NET.Types.General;
 
 var timezone = "UTC";
@@ -30,7 +28,7 @@ try
 }
 catch (Exception e)
 {
-    Console.WriteLine($"Could catch the exception : ");// {e.Message}");
+    Console.WriteLine($"Could catch the exception : {e.Message}");
 }
 finally
 {

@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace MEOS.NET.Internal
 {
+    [Obsolete("Use MEOSExposedFunctions instead.")]
     internal static class MEOSFunctions
     {
         private const string DllPath = "/home/totojr/Externals/MobilityDB/build/libmeos.so";

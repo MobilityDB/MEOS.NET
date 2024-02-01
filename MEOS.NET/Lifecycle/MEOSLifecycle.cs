@@ -7,9 +7,7 @@ namespace MEOS.NET.Lifecycle
     {
         public static void Initialize(string timeZone)
         {
-            MEOSFunctions.meos_initialize(timeZone, MEOSErrorHandling.DefaultErrorHandler);
-
-            //MEOSFunctions.meos_initialize(timeZone, MEOSErrorHandling.DefaultErrorHandler);
+            MEOSFunctions.meos_initialize(timeZone, MEOSErrorHandling.InternalErrorHandler);
         }
 
         public static void Terminate()

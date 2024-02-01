@@ -1,24 +1,32 @@
 using MEOS.NET.Exceptions;
+using MEOS.NET.Internal;
 
 namespace MEOS.NET.Errors
 {
     public static class MEOSErrorHandling
     {
-        //public delegate void ErrorHandlingMethod(int a, int b, string c);
-        //public static event ErrorHandlingMethod OnError;
+        private static Exception? currentException = null;
 
         internal static void CheckError()
         {
-            throw new Exception("Hello this is exception");
+            if (currentException is null)
+            {
+                return;
+            }
+
+            var e = currentException;
+            currentException = null;
+
+            throw e;
         }
 
-        internal static void DefaultErrorHandler(int level, int errorCode, string message)
+        internal static void InternalErrorHandler(int level, int errorCode, string message)
         {
             // If MEOS error code is not defined in our C# code,
-            // We return an unspecified exception to guarantee code-safety
+            // We register an unspecified exception to guarantee code-safety
             if (!Enum.IsDefined(typeof(MEOSErrorCodes), errorCode))
             {
-                throw new MEOSUnspecifiedInternalException(level, MEOSErrorCodes.UnspecifiedInternalError, message);
+                RegisterException(new MEOSUnspecifiedInternalException(level, MEOSErrorCodes.UnspecifiedInternalError, message));
             }
 
             var code = (MEOSErrorCodes)errorCode;
@@ -29,65 +37,88 @@ namespace MEOS.NET.Errors
                     return;
 
                 case MEOSErrorCodes.UnspecifiedInternalError:
-                    throw new MEOSUnspecifiedInternalException(level, code, message);
+                    RegisterException(new MEOSUnspecifiedInternalException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.InternalTypeError:
-                    throw new MEOSInternalTypeErrorException(level, code, message);
+                    RegisterException(new MEOSInternalTypeErrorException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.ValueOutOfRange:
-                    throw new MEOSValueOutOfRangeException(level, code, message);
+                    RegisterException(new MEOSValueOutOfRangeException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.DivisionByZero:
-                    throw new MEOSDivisionByZeroException(level, code, message);
+                    RegisterException(new MEOSDivisionByZeroException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.MemoryAllocationError:
-                    throw new MEOSMemoryAllocationException(level, code, message);
+                    RegisterException(new MEOSMemoryAllocationException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.AggregationError:
-                    throw new MEOSAggregationException(level, code, message);
+                    RegisterException(new MEOSAggregationException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.DirectoryError:
-                    throw new MEOSDirectoryException(level, code, message);
+                    RegisterException(new MEOSDirectoryException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.FileError:
-                    throw new MEOSFileException(level, code, message);
+                    RegisterException(new MEOSFileException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.InvalidArgument:
-                    throw new MEOSInvalidArgumentException(level, code, message);
+                    RegisterException(new MEOSInvalidArgumentException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.InvalidArgumentType:
-                    throw new MEOSInvalidArgumentTypeException(level, code, message);
+                    RegisterException(new MEOSInvalidArgumentTypeException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.InvalidArgumentValue:
-                    throw new MEOSInvalidArgumentValueException(level, code, message);
+                    RegisterException(new MEOSInvalidArgumentValueException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.BadMFJSONInput:
-                    throw new MEOSBadMFJSONInputException(level, code, message);
+                    RegisterException(new MEOSBadMFJSONInputException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.BadMFJSONOutput:
-                    throw new MEOSBadMFJSONOutputException(level, code, message);
+                    RegisterException(new MEOSBadMFJSONOutputException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.BadTextInput:
-                    throw new MEOSBadTextInputException(level, code, message);
+                    RegisterException(new MEOSBadTextInputException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.BadTextOutput:
-                    throw new MEOSBadTextOutputException(level, code, message);
+                    RegisterException(new MEOSBadTextOutputException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.BadWellKnownBinaryInput:
-                    throw new MEOSBadWKBInputException(level, code, message);
+                    RegisterException(new MEOSBadWKBInputException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.BadWellKnownBinaryOutput:
-                    throw new MEOSBadWKBOutputException(level, code, message);
+                    RegisterException(new MEOSBadWKBOutputException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.BadGeoJSONInput:
-                    throw new MEOSBadGeoJSONInputException(level, code, message);
+                    RegisterException(new MEOSBadGeoJSONInputException(level, code, message));
+                    break;
 
                 case MEOSErrorCodes.BadGeoJSONOutput:
-                    throw new MEOSBadGeoJSONOutputException(level, code, message);
+                    RegisterException(new MEOSBadGeoJSONOutputException(level, code, message));
+                    break;
 
                 default:
-                    throw new MEOSUnspecifiedInternalException(level, code, message);
+                    RegisterException(new MEOSUnspecifiedInternalException(level, code, message));
+                    break;
             }
         }
+
+        private static void RegisterException(Exception exception)
+            => currentException = exception;
     }
 }
