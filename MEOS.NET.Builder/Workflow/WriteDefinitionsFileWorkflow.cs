@@ -46,11 +46,11 @@ namespace MEOS.NET.Builder.Workflow
 		{
 			var builder = new StringBuilder();
 
-			builder.AppendLine($"\t[GeneratedCode(\"MEOS.NET.Builder\", \"{BuilderVersion.CurrentVersion}\")]");
 			builder.AppendLine("\tinternal partial class MEOSExposedFunctions");
 			builder.AppendLine("\t{");
 
-			builder.AppendLine("\t\tprivate class MEOSExternalFunctions");
+            builder.AppendLine($"\t\t[GeneratedCode(\"MEOS.NET.Builder\", \"{BuilderVersion.CurrentVersion}\")]");
+            builder.AppendLine("\t\tprivate class MEOSExternalFunctions");
 			builder.AppendLine("\t\t{");
 
 			builder.AppendLine($"\t\t\tprivate const string DllPath = @\"API\\\\Internal\\\\{this.DllName}\";");
