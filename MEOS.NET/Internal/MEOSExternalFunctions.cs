@@ -3,9 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace MEOS.NET.Internal
 {
-    [GeneratedCode("MEOS.NET.Builder", "0.0.1")]
     internal partial class MEOSExposedFunctions
     {
+        [GeneratedCode("MEOS.NET.Builder", "0.0.1")]
         private class MEOSExternalFunctions
         {
             private const string DllPath = "/home/totojr/Externals/MobilityDB/build/libmeos.so";
