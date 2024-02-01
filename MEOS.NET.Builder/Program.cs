@@ -13,7 +13,7 @@ var csDeclarations = new MapDefinitionsWorkflow()
     .MapCDeclaractions(cDeclarations);
 
 new WriteDefinitionsFileWorkflow(csDeclarations)
-    .Write("MEOSExternalFunctions.cs.txt");
+    .Write("MEOSExternalFunctions");
 
 new WriteSafeExecutedMethodsFileWorkflow(csDeclarations)
-    .Write("MEOSExposedFunctions.cs.txt");
+    .Write("MEOSExposedFunctions");
