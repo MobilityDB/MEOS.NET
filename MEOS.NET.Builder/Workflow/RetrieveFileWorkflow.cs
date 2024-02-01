@@ -4,13 +4,13 @@
 
 	public class RetrieveFileWorkflow
 	{
-		public string RetrieveFileUntilValid()
+		public string RetrieveFileUntilValid(Action writeInputMessageFn)
 		{
 			while (true)
 			{
 				try
 				{
-					return this.RetrieveFile();
+					return this.RetrieveFile(writeInputMessageFn);
 				}
 				catch (FileNotFoundException e)
 				{
@@ -19,9 +19,9 @@
 			}
 		}
 
-		private string RetrieveFile()
+		private string RetrieveFile(Action writeInputMessageFn)
 		{
-			Display.RetrieveFileMessage();
+			writeInputMessageFn();
 			var filePath = Console.ReadLine();
 
 			if (!File.Exists(filePath) )

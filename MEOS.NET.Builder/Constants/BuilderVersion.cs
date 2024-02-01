@@ -2,6 +2,6 @@
 {
     internal static class BuilderVersion
     {
-        internal static readonly string CurrentVersion = "0.0.1";
+        internal static readonly string CurrentVersion = "0.0.2";
     }
 }

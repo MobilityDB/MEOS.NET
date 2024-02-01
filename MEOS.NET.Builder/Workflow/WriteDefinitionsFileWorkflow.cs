@@ -8,12 +8,15 @@ namespace MEOS.NET.Builder.Workflow
 {
 	public class WriteDefinitionsFileWorkflow
 	{
-		private readonly string DllName = "libmeos.so";
+		private readonly string DllPath;
 
 		public IEnumerable<CSFunctionDeclaration> Declarations { get; init; }
 
-		public WriteDefinitionsFileWorkflow(IEnumerable<CSFunctionDeclaration> declarations)
-			=> this.Declarations = declarations;
+		public WriteDefinitionsFileWorkflow(IEnumerable<CSFunctionDeclaration> declarations, string dllPath)
+		{
+			this.Declarations = declarations;
+			this.DllPath = dllPath;
+		}
 
 		public void Write(string filePath)
 		{
@@ -22,7 +25,7 @@ namespace MEOS.NET.Builder.Workflow
 			builder.Append(this.GenerateUsingStatements());
 			builder.Append(this.GenerateNamespace());
 
-			File.WriteAllText(filePath, builder.ToString());
+			File.WriteAllText($"{filePath}.cs.txt", builder.ToString());
 		}
 
 		private string GenerateUsingStatements()
@@ -53,7 +56,7 @@ namespace MEOS.NET.Builder.Workflow
             builder.AppendLine("\t\tprivate class MEOSExternalFunctions");
 			builder.AppendLine("\t\t{");
 
-			builder.AppendLine($"\t\t\tprivate const string DllPath = @\"API\\\\Internal\\\\{this.DllName}\";");
+			builder.AppendLine($"\t\t\tprivate const string DllPath = \"{this.DllPath}\";");
 			builder.AppendLine();
 
 			builder.AppendLine(this.GenerateDeclarations());

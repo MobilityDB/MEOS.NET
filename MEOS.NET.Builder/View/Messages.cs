@@ -8,6 +8,8 @@
 
 		public const string InputMEOSHeaderPath = "Please enter the path to the MEOS header file...";
 
+		public const string InputCompiledMEOSPath = "Please enter the path to the compiled MEOS library (DLL/.so)...";
+
 		public static string FileNotFound(string path)
 			=> $"File was not found ({path})";
 	}

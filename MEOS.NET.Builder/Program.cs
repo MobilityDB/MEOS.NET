@@ -3,16 +3,19 @@ using MEOS.NET.Builder.View;
 
 Display.IntroductionMessage();
 
-var filePath = new RetrieveFileWorkflow()
-    .RetrieveFileUntilValid();
+var cHeaderFilePath = new RetrieveFileWorkflow()
+    .RetrieveFileUntilValid(() => Display.RetrieveHeaderFileMessage());
+
+var compiledDllFilePath = new RetrieveFileWorkflow()
+    .RetrieveFileUntilValid(() => Display.RetrieveCompiledLibraryFileMessage());
 
 var cDeclarations = new ReadFileWorkflow()
-    .Run(filePath);
+    .Run(cHeaderFilePath);
 
 var csDeclarations = new MapDefinitionsWorkflow()
     .MapCDeclaractions(cDeclarations);
 
-new WriteDefinitionsFileWorkflow(csDeclarations)
+new WriteDefinitionsFileWorkflow(csDeclarations, compiledDllFilePath)
     .Write("MEOSExternalFunctions");
 
 new WriteSafeExecutedMethodsFileWorkflow(csDeclarations)
