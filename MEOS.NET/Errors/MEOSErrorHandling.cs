@@ -2,7 +2,7 @@ using MEOS.NET.Exceptions;
 
 namespace MEOS.NET.Errors
 {
-    public static class MEOSErrorHandling
+    internal static class MEOSErrorHandling
     {
         private static MEOSException? currentException = null;
 

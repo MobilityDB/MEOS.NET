@@ -5,11 +5,11 @@ using MEOS.NET.Builder.Models;
 
 namespace MEOS.NET.Builder.Workflow
 {
-	public class ReadFileWorkflow
+    internal class ReadFileWorkflow
 	{
         private readonly string regexPattern = "^\\s*extern\\s+(const\\s+)?([a-zA-Z_][a-zA-Z0-9_\\s]*\\**)\\s+(\\**)([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\((.*?)\\)\\s*;";
 
-        public IEnumerable<CFunctionDeclaration> Run(string filePath)
+        internal IEnumerable<CFunctionDeclaration> Run(string filePath)
 		{
 			var lines = File.ReadAllLines(filePath);
 

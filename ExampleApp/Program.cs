@@ -27,7 +27,7 @@ try
     // var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "json_output.json");
     // File.WriteAllText(path, tempSeqSet.ToJson());
 
-    var erroneousInput = TemporalGeometryPoint.From("e[POINT(1 5)@2021-05-02, POINT(12 2)@2021-06-02]");
+    var erroneousInput = TemporalGeometryPoint.From("e[POINT(1 5)@2021-05-02, POINT(12 2)@2021-06-02]"); // Intentional input error to trigger exception
 }
 catch (MEOSException e)
 {

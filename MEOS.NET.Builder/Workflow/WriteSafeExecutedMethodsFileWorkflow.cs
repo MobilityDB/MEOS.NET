@@ -6,14 +6,14 @@ using MEOS.NET.Builder.Models;
 
 namespace MEOS.NET.Builder.Workflow
 {
-    public class WriteSafeExecutedMethodsFileWorkflow
+    internal class WriteSafeExecutedMethodsFileWorkflow
     {
-        public IEnumerable<CSFunctionDeclaration> Declarations { get; init; }
+        internal IEnumerable<CSFunctionDeclaration> Declarations { get; init; }
 
-        public WriteSafeExecutedMethodsFileWorkflow(IEnumerable<CSFunctionDeclaration> declarations)
+        internal WriteSafeExecutedMethodsFileWorkflow(IEnumerable<CSFunctionDeclaration> declarations)
             => this.Declarations = declarations;
 
-        public void Write(string filePath)
+        internal void Write(string filePath)
         {
             var builder = new StringBuilder();
 

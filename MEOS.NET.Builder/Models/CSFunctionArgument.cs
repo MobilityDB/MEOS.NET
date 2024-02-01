@@ -1,10 +1,10 @@
 ﻿namespace MEOS.NET.Builder.Models
 {
-    public class CSFunctionArgument
+    internal class CSFunctionArgument
     {
-        public string Type { get; set; } = string.Empty;
+        internal string Type { get; set; } = string.Empty;
 
-        public string Name { get; set; } = string.Empty;
+        internal string Name { get; set; } = string.Empty;
 
         public override string ToString()
             => $"{this.Type} {this.Name}";

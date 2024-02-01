@@ -5,9 +5,9 @@ using MEOS.NET.Builder.Models;
 
 namespace MEOS.NET.Builder.Workflow
 {
-	public class MapDefinitionsWorkflow
+    internal class MapDefinitionsWorkflow
 	{
-		public IEnumerable<CSFunctionDeclaration> MapCDeclaractions(IEnumerable<CFunctionDeclaration> declarations)
+        internal IEnumerable<CSFunctionDeclaration> MapCDeclaractions(IEnumerable<CFunctionDeclaration> declarations)
 		{
             return declarations.Select(d =>
                 new CSFunctionDeclaration

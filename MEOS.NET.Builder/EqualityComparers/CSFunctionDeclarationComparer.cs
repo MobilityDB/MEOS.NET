@@ -2,7 +2,7 @@
 
 namespace MEOS.NET.Builder.EqualityComparers
 {
-    public class CSFunctionDeclarationComparer : IEqualityComparer<CSFunctionDeclaration>
+    internal class CSFunctionDeclarationComparer : IEqualityComparer<CSFunctionDeclaration>
     {
         public bool Equals(CSFunctionDeclaration? first, CSFunctionDeclaration? other)
         {

@@ -2,9 +2,9 @@
 {
 	using MEOS.NET.Builder.View;
 
-	public class RetrieveFileWorkflow
+    internal class RetrieveFileWorkflow
 	{
-		public string RetrieveFileUntilValid(Action writeInputMessageFn)
+        internal string RetrieveFileUntilValid(Action writeInputMessageFn)
 		{
 			while (true)
 			{

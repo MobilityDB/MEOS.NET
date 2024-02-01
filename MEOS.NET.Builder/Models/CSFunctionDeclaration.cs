@@ -1,16 +1,16 @@
 ﻿namespace MEOS.NET.Builder.Models
 {
-	public class CSFunctionDeclaration : FunctionDeclaration
-	{ 
-		public IEnumerable<CSFunctionArgument> Arguments { get; init; } = new List<CSFunctionArgument>();
+    internal class CSFunctionDeclaration : FunctionDeclaration
+	{
+        internal IEnumerable<CSFunctionArgument> Arguments { get; init; } = new List<CSFunctionArgument>();
 
-		public string ToArgumentsWithTypeString()
+        internal string ToArgumentsWithTypeString()
 		{
 			var stringArgs = this.Arguments.Select((arg) => arg.ToString());
 			return string.Join(", ", stringArgs);
 		}
 
-		public string ToArgumentsWithoutTypeString()
+        internal string ToArgumentsWithoutTypeString()
 		{
 			var stringArgs = this.Arguments.Select((arg) => arg.Name);
 			return string.Join(", ", stringArgs);

@@ -6,19 +6,19 @@ using MEOS.NET.Builder.Models;
 
 namespace MEOS.NET.Builder.Workflow
 {
-	public class WriteDefinitionsFileWorkflow
+    internal class WriteDefinitionsFileWorkflow
 	{
 		private readonly string DllPath;
 
-		public IEnumerable<CSFunctionDeclaration> Declarations { get; init; }
+        internal IEnumerable<CSFunctionDeclaration> Declarations { get; init; }
 
-		public WriteDefinitionsFileWorkflow(IEnumerable<CSFunctionDeclaration> declarations, string dllPath)
+        internal WriteDefinitionsFileWorkflow(IEnumerable<CSFunctionDeclaration> declarations, string dllPath)
 		{
 			this.Declarations = declarations;
 			this.DllPath = dllPath;
 		}
 
-		public void Write(string filePath)
+        internal void Write(string filePath)
 		{
 			var builder = new StringBuilder();
 

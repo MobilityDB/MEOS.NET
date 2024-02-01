@@ -1,9 +1,9 @@
 ﻿namespace MEOS.NET.Builder.Models
 {
-	public abstract class FunctionDeclaration
+	internal abstract class FunctionDeclaration
 	{
-        public string? ReturnType { get; init; } = string.Empty;
-        public string? FunctionName { get; init; } = string.Empty;
+        internal string? ReturnType { get; init; } = string.Empty;
+        internal string? FunctionName { get; init; } = string.Empty;
     }
 }
 
