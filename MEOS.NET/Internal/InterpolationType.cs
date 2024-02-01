@@ -1,4 +1,4 @@
-﻿namespace MEOS.NET.API.Internal
+﻿namespace MEOS.NET.Internal
 {
     internal enum InterpolationType
     {

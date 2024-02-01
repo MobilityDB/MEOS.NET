@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="MEOSExposedFunctions.cs.txt" />
+    <None Remove="MEOSExternalFunctions.cs.txt" />
+    <None Remove="View\" />
+    <None Remove="Workflow\" />
+    <None Remove="Exceptions\" />
+    <None Remove="Models\" />
+    <None Remove="EqualityComparers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="View\" />
+    <Folder Include="EqualityComparers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="output.cs" />
+  </ItemGroup>
+</Project>

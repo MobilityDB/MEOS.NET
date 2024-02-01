@@ -1,4 +1,4 @@
-﻿using MEOS.NET.API.Internal;
+﻿using MEOS.NET.Internal;
 
 namespace MEOS.NET.Types.General
 {
@@ -12,16 +12,16 @@ namespace MEOS.NET.Types.General
         }
 
         public static TemporalGeometryPoint From(string input)
-        {     
-            var inst = MEOSFunctions.tgeompoint_in(input);
+        {
+            var inst = MEOSExposedFunctions.tgeompoint_in(input);
             return new TemporalGeometryPoint(inst);
         }
 
         public static bool operator ==(TemporalGeometryPoint first, TemporalGeometryPoint second)
-            => MEOSFunctions.temporal_eq(first._ptr, second._ptr);
+            => MEOSExposedFunctions.temporal_eq(first._ptr, second._ptr);
 
         public static bool operator !=(TemporalGeometryPoint first, TemporalGeometryPoint second)
-            => MEOSFunctions.temporal_ne(first._ptr, second._ptr);
+            => MEOSExposedFunctions.temporal_ne(first._ptr, second._ptr);
 
         public override bool Equals(object? obj)
         {
@@ -30,16 +30,16 @@ namespace MEOS.NET.Types.General
                 return false;
             }
 
-            return MEOSFunctions.temporal_eq(this._ptr, ((TemporalGeometryPoint)obj)._ptr);
+            return MEOSExposedFunctions.temporal_eq(this._ptr, ((TemporalGeometryPoint)obj)._ptr);
         }
 
         public override int GetHashCode()
             => base.GetHashCode();
 
         public override string ToString()
-            => MEOSFunctions.tpoint_as_text(this._ptr, 1);
+            => MEOSExposedFunctions.tpoint_as_text(this._ptr, 1);
 
         public string ToJson()
-            => MEOSFunctions.temporal_as_mfjson(this._ptr, true, 3, 6, string.Empty);
+            => MEOSExposedFunctions.temporal_as_mfjson(this._ptr, true, 3, 6, string.Empty);
     }
 }
