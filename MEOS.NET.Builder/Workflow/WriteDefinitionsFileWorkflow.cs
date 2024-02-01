@@ -1,5 +1,6 @@
 ﻿using System.Text;
 
+using MEOS.NET.Builder.Constants;
 using MEOS.NET.Builder.EqualityComparers;
 using MEOS.NET.Builder.Models;
 
@@ -45,7 +46,7 @@ namespace MEOS.NET.Builder.Workflow
 		{
 			var builder = new StringBuilder();
 
-			builder.AppendLine("\t[GeneratedCode(\"MEOS.NET.Builder\", \"0.0.1\")]");
+			builder.AppendLine($"\t[GeneratedCode(\"MEOS.NET.Builder\", \"{BuilderVersion.CurrentVersion}\")]");
 			builder.AppendLine("\tinternal partial class MEOSExposedFunctions");
 			builder.AppendLine("\t{");
 
