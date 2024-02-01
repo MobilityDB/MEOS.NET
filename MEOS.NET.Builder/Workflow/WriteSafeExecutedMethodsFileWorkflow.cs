@@ -20,7 +20,7 @@ namespace MEOS.NET.Builder.Workflow
             builder.AppendLine(this.GenerateUsingStatements());
             builder.Append(this.GenerateNamespace());
 
-            File.WriteAllText(filePath, builder.ToString());
+            File.WriteAllText($"{filePath}.cs.txt", builder.ToString());
         }
 
         private string GenerateUsingStatements()
