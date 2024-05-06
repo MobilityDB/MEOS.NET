@@ -66,25 +66,25 @@ namespace MEOS.NET.Types.Collections.Float
         public bool Contains(double value)
             => MEOSExposedFunctions.contains_set_float(this._ptr, value);
 
-        public bool IsLeft(double value)
+        public bool IsLeftOf(double value)
             => MEOSExposedFunctions.left_set_float(this._ptr, value);
 
-        public bool IsOverOrLeft(double value)
+        public bool IsOverOrLeftOf(double value)
             => MEOSExposedFunctions.overleft_set_float(this._ptr, value);
 
-        public bool IsRight(double value)
+        public bool IsRightOf(double value)
             => MEOSExposedFunctions.right_set_float(this._ptr, value);
 
-        public bool IsOverOrRight(double value)
+        public bool IsOverOrRightOf(double value)
             => MEOSExposedFunctions.overright_set_float(this._ptr, value);
 
-        public FloatSet Intersection(double value)
+        public FloatSet IntersectionWith(double value)
         {
             var res = MEOSExposedFunctions.intersection_set_float(this._ptr, value);
             return new FloatSet(res); // TODO : If inter is empty, what happens with IntPtr to check if null ?? (IntPtr.Zero ??)
         }
 
-        public FloatSet Intersection(FloatSet set)
+        public FloatSet IntersectionWith(FloatSet set)
         {
             var res = MEOSExposedFunctions.intersection_set_set(this._ptr, set._ptr);
             return new FloatSet(res); // TODO : If inter is empty, what happens with IntPtr to check if null ?? (IntPtr.Zero ??)
@@ -109,13 +109,13 @@ namespace MEOS.NET.Types.Collections.Float
             return new FloatSet(res);
         }
 
-        public FloatSet Union(double value)
+        public FloatSet UnionWith(double value)
         {
             var res = MEOSExposedFunctions.union_set_float(this._ptr, value);
             return new FloatSet(res);
         }
 
-        public FloatSet Union(FloatSet set)
+        public FloatSet UnionWith(FloatSet set)
         {
             var res = MEOSExposedFunctions.union_set_set(this._ptr, set._ptr);
             return new FloatSet(res);
@@ -141,6 +141,8 @@ namespace MEOS.NET.Types.Collections.Float
 
         public override string ToString()
             => this.Format(maxDecimals: 15);
+
+        // TODO : Operators
     }
 }
 

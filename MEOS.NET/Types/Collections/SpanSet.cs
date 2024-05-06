@@ -35,7 +35,7 @@ namespace MEOS.NET.Types.Collections
             throw new NotImplementedException();
         }
 
-        public Span ToSpan()
+        public virtual Span ToSpan()
         {
             var res = MEOSExposedFunctions.spanset_span(this._ptr);
             return new Span(res);
@@ -44,19 +44,19 @@ namespace MEOS.NET.Types.Collections
         public int SpanCount()
             => MEOSExposedFunctions.spanset_num_spans(this._ptr);
 
-        public Span StartSpan()
+        public virtual Span StartSpan()
         {
             var res = MEOSExposedFunctions.spanset_start_span(this._ptr);
             return new Span(res);
         }
 
-        public Span EndSpan()
+        public virtual Span EndSpan()
         {
             var res = MEOSExposedFunctions.spanset_end_span(this._ptr);
             return new Span(res);
         }
 
-        public Span SpanAt(int position)
+        public virtual Span SpanAt(int position)
         {
             var count = this.SpanCount();
 
@@ -70,7 +70,7 @@ namespace MEOS.NET.Types.Collections
         }
 
 
-        public IEnumerable<Span> GetSpans()
+        public virtual IEnumerable<Span> GetSpans()
         {
             var res = MEOSExposedFunctions.spanset_spans(this._ptr);
             throw new NotImplementedException(); // TODO : Transform to IEnumerable
@@ -100,29 +100,38 @@ namespace MEOS.NET.Types.Collections
         public bool Overlaps(SpanSet spanSet)
             => MEOSExposedFunctions.overlaps_spanset_spanset(this._ptr, spanSet._ptr);
 
-        public bool IsLeft(Span span)
+        public bool IsLeftOf(Span span)
             => MEOSExposedFunctions.left_spanset_span(this._ptr, span._ptr);
 
-        public bool IsLeft(SpanSet spanSet)
+        public bool IsLeftOf(SpanSet spanSet)
             => MEOSExposedFunctions.left_spanset_spanset(this._ptr, spanSet._ptr);
 
-        public bool IsOverOrLeft(Span span)
+        public bool IsOverOrLeftOf(Span span)
             => MEOSExposedFunctions.overleft_spanset_span(this._ptr, span._ptr);
 
-        public bool IsOverOrLeft(SpanSet spanSet)
+        public bool IsOverOrLeftOf(SpanSet spanSet)
             => MEOSExposedFunctions.overleft_spanset_spanset(this._ptr, spanSet._ptr);
 
-        public bool IsRight(Span span)
+        public bool IsRightOf(Span span)
             => MEOSExposedFunctions.right_spanset_span(this._ptr, span._ptr);
 
-        public bool IsRight(SpanSet spanSet)
+        public bool IsRightOf(SpanSet spanSet)
             => MEOSExposedFunctions.right_spanset_spanset(this._ptr, spanSet._ptr);
 
-        public bool IsOverOrRight(Span span)
+        public bool IsOverOrRightOf(Span span)
             => MEOSExposedFunctions.overright_spanset_span(this._ptr, span._ptr);
 
-        public bool IsOverOrRight(SpanSet spanSet)
+        public bool IsOverOrRightOf(SpanSet spanSet)
             => MEOSExposedFunctions.overright_spanset_spanset(this._ptr, spanSet._ptr);
+
+        public double DistanceTo(Set set)
+            => this.DistanceTo(set.ToSpanSet());
+
+        public double DistanceTo(Span span)
+            => MEOSExposedFunctions.distance_spanset_span(this._ptr, span._ptr);
+
+        public double DistanceTo(SpanSet spanSet)
+            => MEOSExposedFunctions.distance_spanset_spanset(this._ptr, spanSet._ptr);
 
         public SpanSet IntersectionWith(Span span)
         {
@@ -136,13 +145,13 @@ namespace MEOS.NET.Types.Collections
             return new SpanSet(res);
         }
 
-        public SpanSet Subtract(Span span)
+        public SpanSet Minus(Span span)
         {
             var res = MEOSExposedFunctions.minus_spanset_span(this._ptr, span._ptr);
             return new SpanSet(res);
         }
 
-        public SpanSet Subtract(SpanSet spanSet)
+        public SpanSet Minus(SpanSet spanSet)
         {
             var res = MEOSExposedFunctions.minus_spanset_spanset(this._ptr, spanSet._ptr);
             return new SpanSet(res);
@@ -167,7 +176,7 @@ namespace MEOS.NET.Types.Collections
             => spanSet1.UnionWith(spanSet2);
 
         public static SpanSet operator -(SpanSet spanSet1, SpanSet spanSet2)
-            => spanSet1.Subtract(spanSet2);
+            => spanSet1.Minus(spanSet2);
 
         public static bool operator ==(SpanSet spanSet1, SpanSet spanSet2)
             => spanSet1.Equals(spanSet2);

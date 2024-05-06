@@ -35,7 +35,7 @@ namespace MEOS.NET.Types.Collections
             throw new NotImplementedException();
         }
 
-        public SpanSet ToSpanSet()
+        public virtual SpanSet ToSpanSet()
         {
             throw new NotImplementedException();
         }
@@ -46,10 +46,10 @@ namespace MEOS.NET.Types.Collections
         public bool IsUpperBoundInclusive()
             => MEOSExposedFunctions.span_upper_inc(this._ptr);
 
-        public bool IsAdjacentTo(Span span)
+        public bool IsAdjacent(Span span)
             => MEOSExposedFunctions.adjacent_span_span(this._ptr, span._ptr);
 
-        public bool IsAdjacentTo(SpanSet spanSet)
+        public bool IsAdjacent(SpanSet spanSet)
             => MEOSExposedFunctions.adjacent_spanset_span(spanSet._ptr, this._ptr);
 
         public bool IsContainedIn(Span span)
@@ -79,29 +79,32 @@ namespace MEOS.NET.Types.Collections
             return this.Equals(span);
         }
 
-        public bool IsLeft(Span span)
+        public bool IsLeftOf(Span span)
             => MEOSExposedFunctions.left_span_span(this._ptr, span._ptr);
 
-        public bool IsLeft(SpanSet spanSet)
+        public bool IsLeftOf(SpanSet spanSet)
             => MEOSExposedFunctions.left_span_spanset(this._ptr, spanSet._ptr);
 
-        public bool IsOverOrLeft(Span span)
+        public bool IsOverOrLeftOf(Span span)
             => MEOSExposedFunctions.overleft_span_span(this._ptr, span._ptr);
 
-        public bool IsOverOrLeft(SpanSet spanSet)
+        public bool IsOverOrLeftOf(SpanSet spanSet)
             => MEOSExposedFunctions.overleft_span_spanset(this._ptr, spanSet._ptr);
 
-        public bool IsRight(Span span)
+        public bool IsRightOf(Span span)
             => MEOSExposedFunctions.right_span_span(this._ptr, span._ptr);
 
-        public bool IsRight(SpanSet spanSet)
+        public bool IsRightOf(SpanSet spanSet)
             => MEOSExposedFunctions.right_span_spanset(this._ptr, spanSet._ptr);
 
-        public bool IsOverOrRight(Span span)
+        public bool IsOverOrRightOf(Span span)
             => MEOSExposedFunctions.overright_span_span(this._ptr, span._ptr);
 
-        public bool IsOverOrRight(SpanSet spanSet)
+        public bool IsOverOrRightOf(SpanSet spanSet)
             => MEOSExposedFunctions.overright_span_spanset(this._ptr, spanSet._ptr);
+
+        public double DistanceTo(Span span)
+            => MEOSExposedFunctions.distance_span_span(this._ptr, span._ptr);
 
         public Span IntersectionWith(Span span)
         {
