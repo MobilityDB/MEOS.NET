@@ -2,6 +2,7 @@
 
 namespace MEOS.NET.Types.General
 {
+    [Obsolete("To be replaced.")]
     public class TemporalGeometryPoint
     {
         private IntPtr _ptr;

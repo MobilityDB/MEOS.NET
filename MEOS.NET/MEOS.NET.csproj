@@ -6,4 +6,26 @@
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Types\Collections\" />
+    <None Remove="Types\Boxes\" />
+    <None Remove="Types\Collections\Geo\" />
+    <None Remove="Types\Collections\Float\" />
+    <None Remove="Types\Collections\Integer\" />
+    <None Remove="Types\Collections\Text\" />
+    <None Remove="Types\Collections\Time\" />
+    <None Remove="Types\Collections\Time\Date\" />
+    <None Remove="Types\Collections\Time\Timestamp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Types\Collections\" />
+    <Folder Include="Types\Boxes\" />
+    <Folder Include="Types\Collections\Geo\" />
+    <Folder Include="Types\Collections\Float\" />
+    <Folder Include="Types\Collections\Integer\" />
+    <Folder Include="Types\Collections\Text\" />
+    <Folder Include="Types\Collections\Time\" />
+    <Folder Include="Types\Collections\Time\Date\" />
+    <Folder Include="Types\Collections\Time\Timestamp\" />
+  </ItemGroup>
 </Project>
