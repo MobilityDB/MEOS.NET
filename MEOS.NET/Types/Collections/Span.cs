@@ -75,7 +75,7 @@ namespace MEOS.NET.Types.Collections
 
         public bool Equals(SpanSet spanSet)
         {
-            var span = spanSet.AsSpan();
+            var span = spanSet.ToSpan();
             return this.Equals(span);
         }
 
@@ -135,6 +135,18 @@ namespace MEOS.NET.Types.Collections
 
         public static bool operator !=(Span span1, Span span2)
             => !span1.Equals(span2);
+
+        public static bool operator ==(Span span, SpanSet spanSet)
+            => span.Equals(spanSet);
+
+        public static bool operator !=(Span span, SpanSet spanSet)
+            => !span.Equals(spanSet);
+
+        public static bool operator ==(SpanSet spanSet, Span span)
+            => span.Equals(spanSet);
+
+        public static bool operator !=(SpanSet spanSet, Span span)
+            => !span.Equals(spanSet);
 
         public static bool operator <(Span span1, Span span2)
             => MEOSExposedFunctions.span_lt(span1._ptr, span2._ptr);

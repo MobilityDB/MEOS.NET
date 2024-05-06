@@ -23,7 +23,7 @@ namespace MEOS.NET.Types.Collections.Float
 
             if (position < 0 || position >= count)
             {
-                throw new ArgumentOutOfRangeException(nameof(count), $"Count must be between 0 and {count - 1}");
+                throw new ArgumentOutOfRangeException(nameof(position), $"Requested element must be between 0 and {count - 1}");
             }
 
             throw new NotImplementedException();
