@@ -86,7 +86,7 @@ namespace MEOS.NET.Types.Collections
         }
 
         public override int GetHashCode()
-            => HashCode.Combine(_ptr);
+            => (int)MEOSExposedFunctions.set_hash(this._ptr);
     }
 }
 

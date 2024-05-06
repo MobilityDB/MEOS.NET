@@ -2,7 +2,7 @@
 {
 	public abstract class MEOSObject
 	{
-		protected IntPtr _ptr;
+		internal IntPtr _ptr { get; private set; }
 
 		internal MEOSObject(IntPtr ptr)
 			=> this._ptr = ptr;

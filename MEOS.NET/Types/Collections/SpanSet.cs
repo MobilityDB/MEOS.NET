@@ -6,6 +6,9 @@ namespace MEOS.NET.Types.Collections
     {
         internal SpanSet(IntPtr ptr) : base(ptr)
         { }
+
+        public Span AsSpan()
+            => throw new NotImplementedException();
     }
 }
 
