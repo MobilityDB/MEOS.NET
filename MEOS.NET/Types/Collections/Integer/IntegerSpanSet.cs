@@ -4,6 +4,8 @@
 	{
         internal IntegerSpanSet(IntPtr ptr) : base(ptr)
         { }
+
+        // TODO : Implement methods accordingly to PyMEOS and FloatSpanSet class
     }
 }
 

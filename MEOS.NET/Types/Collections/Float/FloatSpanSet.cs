@@ -4,6 +4,8 @@
 	{
         internal FloatSpanSet(IntPtr ptr) : base(ptr)
         { }
+
+        // TODO : Implement methods
     }
 }
 
