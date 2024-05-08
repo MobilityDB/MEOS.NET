@@ -16,6 +16,16 @@
     <None Remove="Types\Collections\Time\" />
     <None Remove="Types\Collections\Time\Date\" />
     <None Remove="Types\Collections\Time\Timestamp\" />
+    <None Remove="Types\Temporal\Boolean\" />
+    <None Remove="Types\Temporal\Number\" />
+    <None Remove="Types\Temporal\Number\Float\" />
+    <None Remove="Types\Temporal\Number\Integer\" />
+    <None Remove="Types\Temporal\Text\" />
+    <None Remove="Types\Temporal\Point\" />
+    <None Remove="Types\Temporal\Point\Geography\" />
+    <None Remove="Types\Temporal\Point\Geometry\" />
+    <None Remove="Enums\" />
+    <None Remove="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Types\Collections\" />
@@ -27,5 +37,15 @@
     <Folder Include="Types\Collections\Time\" />
     <Folder Include="Types\Collections\Time\Date\" />
     <Folder Include="Types\Collections\Time\Timestamp\" />
+    <Folder Include="Types\Temporal\Boolean\" />
+    <Folder Include="Types\Temporal\Number\" />
+    <Folder Include="Types\Temporal\Number\Float\" />
+    <Folder Include="Types\Temporal\Number\Integer\" />
+    <Folder Include="Types\Temporal\Text\" />
+    <Folder Include="Types\Temporal\Point\" />
+    <Folder Include="Types\Temporal\Point\Geography\" />
+    <Folder Include="Types\Temporal\Point\Geometry\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 </Project>

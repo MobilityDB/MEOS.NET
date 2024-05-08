@@ -14,6 +14,12 @@ namespace MEOS.NET.Types.Collections.Float
             return new FloatSpan(res);
         }
 
+        public static FloatSpan FromBounds(double xMin, double xMax, bool minInclusive = true, bool maxInclusive = false)
+        {
+            var res = MEOSExposedFunctions.floatspan_make(xMin, xMax, minInclusive, maxInclusive);
+            return new FloatSpan(res);
+        }
+
         public override string ToString()
             => this.Format(maxDecimals: 15);
 

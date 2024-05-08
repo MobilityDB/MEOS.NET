@@ -1,4 +1,5 @@
 ﻿using System.CodeDom.Compiler;
+using MEOS.NET.Enums;
 
 namespace MEOS.NET.Internal
 {

@@ -1,6 +1,8 @@
 ﻿using System.CodeDom.Compiler;
 using System.Runtime.InteropServices;
 
+using MEOS.NET.Enums;
+
 namespace MEOS.NET.Internal
 {
     internal partial class MEOSExposedFunctions

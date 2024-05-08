@@ -29,7 +29,7 @@ namespace MEOS.NET.Builder.Workflow
 		}
 
 		private string GenerateUsingStatements()
-			=> "using System.CodeDom.Compiler;\nusing System.Runtime.InteropServices;\n\n";
+			=> "using System.CodeDom.Compiler;\nusing System.Runtime.InteropServices;\n\nusing MEOS.NET.Enums;\n\n";
 
         private string GenerateNamespace()
 		{

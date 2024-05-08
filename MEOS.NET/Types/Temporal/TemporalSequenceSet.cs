@@ -1,6 +1,10 @@
 ﻿namespace MEOS.NET.Types.Temporal
 {
-    internal class TemporalSequenceSet
+    public class TemporalSequenceSet : Temporal
     {
+        internal TemporalSequenceSet(IntPtr ptr) : base(ptr)
+        { }
+
+        // TODO : Sequence set methods
     }
 }

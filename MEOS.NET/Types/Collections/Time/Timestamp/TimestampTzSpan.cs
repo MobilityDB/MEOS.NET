@@ -1,9 +1,17 @@
-﻿namespace MEOS.NET.Types.Collections.Time.Timestamp
+﻿using MEOS.NET.Internal;
+
+namespace MEOS.NET.Types.Collections.Time.Timestamp
 {
     public sealed class TimestampTzSpan : Span, ITimeCollection<TimestampTzSpan>
 	{
         internal TimestampTzSpan(IntPtr ptr) : base(ptr)
         { }
+
+        public static TimestampTzSpan FromBounds(DateTimeOffset tMin, DateTimeOffset tMax, bool tMinInclusive = true, bool tMaxInclusive = false)
+        {
+            var res = MEOSExposedFunctions.tstzspan_make(tMin, tMax, tMinInclusive, tMaxInclusive);
+            return new TimestampTzSpan(res);
+        }
 
         public bool Contains(TimestampTzSpan collection)
         {
