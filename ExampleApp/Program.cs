@@ -1,13 +1,22 @@
 ﻿using MEOS.NET.Exceptions;
 using MEOS.NET.Lifecycle;
 using MEOS.NET.Types.General;
+using MEOS.NET.Types.Temporal.Number.Float;
 
 var timezone = "UTC";
 MEOSLifecycle.Initialize(timezone);
 
 try
 {
-    var temporals = new List<TemporalGeometryPoint>()
+
+    var tfi = TemporalFloatInstant.FromString("25.0@2024-12-06");
+    
+    Console.WriteLine(tfi);
+    Console.WriteLine(tfi.Timestamp().ToLongDateString());
+
+    
+
+    /*var temporals = new List<TemporalGeometryPoint>()
     {
         TemporalGeometryPoint.From("[POINT(1 5)@2021-05-02, POINT(12 2)@2021-06-02]"),
         TemporalGeometryPoint.From("POINT(11 3)@2023-08-06 01:45:00+00:00"),
@@ -27,7 +36,7 @@ try
     // var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "json_output.json");
     // File.WriteAllText(path, tempSeqSet.ToJson());
 
-    var erroneousInput = TemporalGeometryPoint.From("e[POINT(1 5)@2021-05-02, POINT(12 2)@2021-06-02]"); // Intentional input error to trigger exception
+    var erroneousInput = TemporalGeometryPoint.From("e[POINT(1 5)@2021-05-02, POINT(12 2)@2021-06-02]"); // Intentional input error to trigger exception*/
 }
 catch (MEOSException e)
 {

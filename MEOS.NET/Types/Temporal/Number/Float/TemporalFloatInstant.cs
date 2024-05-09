@@ -9,6 +9,12 @@ namespace MEOS.NET.Types.Temporal.Number.Float
         internal TemporalFloatInstant(IntPtr ptr) : base(ptr)
             => this.Instant = new TemporalInstant<double>(ptr);
 
+        public static TemporalFloatInstant FromString(string input)
+        {
+            var res = MEOSExposedFunctions.tfloat_in(input);
+            return new TemporalFloatInstant(res);
+        }
+
         public static TemporalFloatInstant FromTimestamp(DateTimeOffset timestamp, double value)
         {
             var res = MEOSExposedFunctions.tfloatinst_make(value, timestamp);

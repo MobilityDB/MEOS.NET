@@ -126,7 +126,7 @@ namespace MEOS.NET.Internal
         public static long pg_timestamptz_date(DateTimeOffset t)
             => SafeExecution<long>(() => MEOSExternalFunctions.pg_timestamptz_date(t));
 
-        public static string pg_timestamptz_out(DateTimeOffset dt)
+        public static string pg_timestamptz_out(long dt)
             => SafeExecution<string>(() => MEOSExternalFunctions.pg_timestamptz_out(dt));
 
         public static IntPtr pg_timestamptz_to_char(DateTimeOffset dt, IntPtr fmt)

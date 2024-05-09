@@ -133,7 +133,7 @@ namespace MEOS.NET.Internal
             public static extern long pg_timestamptz_date(DateTimeOffset t);
 
             [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
-            public static extern string pg_timestamptz_out(DateTimeOffset dt);
+            public static extern string pg_timestamptz_out(long dt);
 
             [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr pg_timestamptz_to_char(DateTimeOffset dt, IntPtr fmt);
