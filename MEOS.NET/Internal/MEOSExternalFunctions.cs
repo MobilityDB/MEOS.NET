@@ -12,7 +12,7 @@ namespace MEOS.NET.Internal
         {
             private const string DllPath = "/home/totojr/Externals/MobilityDB/build/libmeos.so";
 
-            [DllImport(DllPath/*, CallingConvention = CallingConvention.Cdecl*/)]
+            [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
             public static extern void meos_error(int errlevel, int errcode, string format);
 
             [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]

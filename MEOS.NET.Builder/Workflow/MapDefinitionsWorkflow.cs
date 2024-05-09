@@ -39,16 +39,16 @@ namespace MEOS.NET.Builder.Workflow
             newType = newType.Replace("uint8_t", "byte");
             newType = newType.Replace("int8", "short");
             newType = newType.Replace("int32", "int");
-            newType = newType.Replace("int64", "double");
+            newType = newType.Replace("int64", "long");
 
             newType = newType.Replace("error_handler_fn", "ErrorHandlingMethod");
-            newType = newType.Replace("TimestampTz", "DateTimeOffset");
-            newType = newType.Replace("Timestamp", "DateTime");
+            newType = newType.Replace("TimestampTz", "long");
+            newType = newType.Replace("Timestamp", "long");
 
             newType = newType.Replace("Datum", "object");
 
-            newType = newType.Replace("TimeADT", "int");
-            newType = newType.Replace("DateADT", "long");
+            newType = newType.Replace("TimeADT", "long");
+            newType = newType.Replace("DateADT", "int");
 
             // Enums
             newType = newType.Replace("interpType", "InterpolationType");

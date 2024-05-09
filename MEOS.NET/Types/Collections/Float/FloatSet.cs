@@ -78,15 +78,27 @@ namespace MEOS.NET.Types.Collections.Float
         public bool IsOverOrRightOf(double value)
             => MEOSExposedFunctions.overright_set_float(this._ptr, value);
 
-        public FloatSet IntersectionWith(double value)
+        public FloatSet? IntersectionWith(double value)
         {
             var res = MEOSExposedFunctions.intersection_set_float(this._ptr, value);
+
+            if (res == IntPtr.Zero)
+            {
+                return default;
+            }
+
             return new FloatSet(res); // TODO : If inter is empty, what happens with IntPtr to check if null ?? (IntPtr.Zero ??)
         }
 
-        public FloatSet IntersectionWith(FloatSet set)
+        public FloatSet? IntersectionWith(FloatSet set)
         {
             var res = MEOSExposedFunctions.intersection_set_set(this._ptr, set._ptr);
+
+            if (res == IntPtr.Zero)
+            {
+                return default;
+            }
+
             return new FloatSet(res); // TODO : If inter is empty, what happens with IntPtr to check if null ?? (IntPtr.Zero ??)
                                       // TODO : Apply first TO-DO to all function having the case...
         }

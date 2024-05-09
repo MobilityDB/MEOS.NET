@@ -14,6 +14,9 @@ try
     Console.WriteLine(tfi);
     Console.WriteLine(tfi.Timestamp().ToLongDateString());
 
+    var tf = TemporalFloatInstant.FromString("[25.0@2024-12-06, 25.0@2024-12-07]");
+    tf.Duration();
+
     
 
     /*var temporals = new List<TemporalGeometryPoint>()

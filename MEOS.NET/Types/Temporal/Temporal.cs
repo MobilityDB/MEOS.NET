@@ -129,10 +129,10 @@ namespace MEOS.NET.Types.Temporal
             return new TimestampTzSpanSet(res);
         }
 
-        public DateTime Duration(bool ignoreGaps = false)
+        public string Duration(bool ignoreGaps = false)
         {
             var res = MEOSExposedFunctions.temporal_duration(this._ptr, ignoreGaps);
-            throw new NotImplementedException(); // TODO : Convert to DateTime
+            return MEOSExposedFunctions.pg_interval_out(res);
         }
 
         public TimestampTzSpan TimeSpan()
