@@ -19,6 +19,12 @@ namespace MEOS.NET.Types.Temporal.Number.Float
             return new TemporalFloat(res);
         }
 
+        public static TemporalFloat FromString(string input)
+        {
+            var res = MEOSExposedFunctions.tfloat_in(input);
+            return new TemporalFloatInstant(res);
+        }
+
         public string Format(int maxDecimals)
             => MEOSExposedFunctions.tfloat_out(this._ptr, maxdd: maxDecimals);
 
@@ -149,7 +155,7 @@ namespace MEOS.NET.Types.Temporal.Number.Float
         public TemporalFloat At(int value)
             => this.At((double)value);
 
-        public double ValueAtTimestamp(DateTimeOffset timestamp)
+        public double ValueAtTimestamp(DateTime timestamp)
         {
             throw new NotImplementedException(); // TODO : Extract value from last arg ptr
             //var res = MEOSExposedFunctions.tfloat_value_at_timestamptz(this._ptr, timestamp, strict: true, );

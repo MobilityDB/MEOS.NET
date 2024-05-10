@@ -1,5 +1,7 @@
 ﻿using System.CodeDom.Compiler;
+
 using MEOS.NET.Enums;
+
 
 namespace MEOS.NET.Internal
 {
@@ -57,23 +59,23 @@ namespace MEOS.NET.Internal
         public static IntPtr cstring2text(string cstring)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.cstring2text(cstring));
 
-        public static long pg_date_in(string str)
-            => SafeExecution<long>(() => MEOSExternalFunctions.pg_date_in(str));
+        public static int pg_date_in(string str)
+            => SafeExecution<int>(() => MEOSExternalFunctions.pg_date_in(str));
 
-        public static string pg_date_out(long d)
+        public static string pg_date_out(int d)
             => SafeExecution<string>(() => MEOSExternalFunctions.pg_date_out(d));
 
-        public static IntPtr pg_date_mi(long d1, long d2)
+        public static IntPtr pg_date_mi(int d1, int d2)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.pg_date_mi(d1, d2));
 
-        public static long pg_date_mi_int(long d, int days)
-            => SafeExecution<long>(() => MEOSExternalFunctions.pg_date_mi_int(d, days));
+        public static int pg_date_mi_int(int d, int days)
+            => SafeExecution<int>(() => MEOSExternalFunctions.pg_date_mi_int(d, days));
 
-        public static long pg_date_pl_int(long d, int days)
-            => SafeExecution<long>(() => MEOSExternalFunctions.pg_date_pl_int(d, days));
+        public static int pg_date_pl_int(int d, int days)
+            => SafeExecution<int>(() => MEOSExternalFunctions.pg_date_pl_int(d, days));
 
-        public static DateTimeOffset pg_date_timestamptz(long d)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.pg_date_timestamptz(d));
+        public static long pg_date_timestamptz(int d)
+            => SafeExecution<long>(() => MEOSExternalFunctions.pg_date_timestamptz(d));
 
         public static int pg_interval_cmp(IntPtr interval1, IntPtr interval2)
             => SafeExecution<int>(() => MEOSExternalFunctions.pg_interval_cmp(interval1, interval2));
@@ -96,47 +98,47 @@ namespace MEOS.NET.Internal
         public static IntPtr pg_interval_pl(IntPtr span1, IntPtr span2)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.pg_interval_pl(span1, span2));
 
-        public static int pg_time_in(string str, int typmod)
-            => SafeExecution<int>(() => MEOSExternalFunctions.pg_time_in(str, typmod));
+        public static long pg_time_in(string str, int typmod)
+            => SafeExecution<long>(() => MEOSExternalFunctions.pg_time_in(str, typmod));
 
-        public static string pg_time_out(int time)
+        public static string pg_time_out(long time)
             => SafeExecution<string>(() => MEOSExternalFunctions.pg_time_out(time));
 
-        public static DateTime pg_timestamp_in(string str, int typmod)
-            => SafeExecution<DateTime>(() => MEOSExternalFunctions.pg_timestamp_in(str, typmod));
+        public static long pg_timestamp_in(string str, int typmod)
+            => SafeExecution<long>(() => MEOSExternalFunctions.pg_timestamp_in(str, typmod));
 
-        public static IntPtr pg_timestamp_mi(DateTimeOffset dt1, DateTimeOffset dt2)
+        public static IntPtr pg_timestamp_mi(long dt1, long dt2)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.pg_timestamp_mi(dt1, dt2));
 
-        public static DateTimeOffset pg_timestamp_mi_interval(DateTimeOffset timestamp, IntPtr span)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.pg_timestamp_mi_interval(timestamp, span));
+        public static long pg_timestamp_mi_interval(long timestamp, IntPtr span)
+            => SafeExecution<long>(() => MEOSExternalFunctions.pg_timestamp_mi_interval(timestamp, span));
 
-        public static string pg_timestamp_out(DateTime dt)
+        public static string pg_timestamp_out(long dt)
             => SafeExecution<string>(() => MEOSExternalFunctions.pg_timestamp_out(dt));
 
-        public static DateTimeOffset pg_timestamp_pl_interval(DateTimeOffset timestamp, IntPtr span)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.pg_timestamp_pl_interval(timestamp, span));
+        public static long pg_timestamp_pl_interval(long timestamp, IntPtr span)
+            => SafeExecution<long>(() => MEOSExternalFunctions.pg_timestamp_pl_interval(timestamp, span));
 
-        public static IntPtr pg_timestamp_to_char(DateTime dt, IntPtr fmt)
+        public static IntPtr pg_timestamp_to_char(long dt, IntPtr fmt)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.pg_timestamp_to_char(dt, fmt));
 
-        public static DateTimeOffset pg_timestamptz_in(string str, int typmod)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.pg_timestamptz_in(str, typmod));
+        public static long pg_timestamptz_in(string str, int typmod)
+            => SafeExecution<long>(() => MEOSExternalFunctions.pg_timestamptz_in(str, typmod));
 
-        public static long pg_timestamptz_date(DateTimeOffset t)
-            => SafeExecution<long>(() => MEOSExternalFunctions.pg_timestamptz_date(t));
+        public static int pg_timestamptz_date(long t)
+            => SafeExecution<int>(() => MEOSExternalFunctions.pg_timestamptz_date(t));
 
         public static string pg_timestamptz_out(long dt)
             => SafeExecution<string>(() => MEOSExternalFunctions.pg_timestamptz_out(dt));
 
-        public static IntPtr pg_timestamptz_to_char(DateTimeOffset dt, IntPtr fmt)
+        public static IntPtr pg_timestamptz_to_char(long dt, IntPtr fmt)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.pg_timestamptz_to_char(dt, fmt));
 
-        public static long pg_to_date(IntPtr date_txt, IntPtr fmt)
-            => SafeExecution<long>(() => MEOSExternalFunctions.pg_to_date(date_txt, fmt));
+        public static int pg_to_date(IntPtr date_txt, IntPtr fmt)
+            => SafeExecution<int>(() => MEOSExternalFunctions.pg_to_date(date_txt, fmt));
 
-        public static DateTimeOffset pg_to_timestamptz(IntPtr date_txt, IntPtr fmt)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.pg_to_timestamptz(date_txt, fmt));
+        public static long pg_to_timestamptz(IntPtr date_txt, IntPtr fmt)
+            => SafeExecution<long>(() => MEOSExternalFunctions.pg_to_timestamptz(date_txt, fmt));
 
         public static string text2cstring(IntPtr textptr)
             => SafeExecution<string>(() => MEOSExternalFunctions.text2cstring(textptr));
@@ -339,13 +341,13 @@ namespace MEOS.NET.Internal
         public static IntPtr bigintset_make(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigintset_make(values, count));
 
-        public static IntPtr bigintspan_make(double lower, double upper, bool lower_inc, bool upper_inc)
+        public static IntPtr bigintspan_make(long lower, long upper, bool lower_inc, bool upper_inc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigintspan_make(lower, upper, lower_inc, upper_inc));
 
         public static IntPtr dateset_make(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.dateset_make(values, count));
 
-        public static IntPtr datespan_make(long lower, long upper, bool lower_inc, bool upper_inc)
+        public static IntPtr datespan_make(int lower, int upper, bool lower_inc, bool upper_inc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.datespan_make(lower, upper, lower_inc, upper_inc));
 
         public static IntPtr floatset_make(IntPtr values, int count)
@@ -381,10 +383,10 @@ namespace MEOS.NET.Internal
         public static IntPtr tstzset_make(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzset_make(values, count));
 
-        public static IntPtr tstzspan_make(DateTimeOffset lower, DateTimeOffset upper, bool lower_inc, bool upper_inc)
+        public static IntPtr tstzspan_make(long lower, long upper, bool lower_inc, bool upper_inc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspan_make(lower, upper, lower_inc, upper_inc));
 
-        public static IntPtr bigint_to_set(double i)
+        public static IntPtr bigint_to_set(long i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigint_to_set(i));
 
         public static IntPtr bigint_to_span(int i)
@@ -393,16 +395,16 @@ namespace MEOS.NET.Internal
         public static IntPtr bigint_to_spanset(int i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigint_to_spanset(i));
 
-        public static IntPtr date_to_set(long d)
+        public static IntPtr date_to_set(int d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.date_to_set(d));
 
-        public static IntPtr date_to_span(long d)
+        public static IntPtr date_to_span(int d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.date_to_span(d));
 
-        public static IntPtr date_to_spanset(long d)
+        public static IntPtr date_to_spanset(int d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.date_to_spanset(d));
 
-        public static IntPtr date_to_tstzspan(long d)
+        public static IntPtr date_to_tstzspan(int d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.date_to_tstzspan(d));
 
         public static IntPtr float_to_set(double d)
@@ -435,20 +437,20 @@ namespace MEOS.NET.Internal
         public static IntPtr text_to_set(IntPtr txt)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.text_to_set(txt));
 
-        public static IntPtr timestamptz_to_set(DateTimeOffset t)
+        public static IntPtr timestamptz_to_set(long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.timestamptz_to_set(t));
 
-        public static IntPtr timestamptz_to_span(DateTimeOffset t)
+        public static IntPtr timestamptz_to_span(long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.timestamptz_to_span(t));
 
-        public static IntPtr timestamptz_to_spanset(DateTimeOffset t)
+        public static IntPtr timestamptz_to_spanset(long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.timestamptz_to_spanset(t));
 
-        public static double bigintset_end_value(IntPtr s)
-            => SafeExecution<double>(() => MEOSExternalFunctions.bigintset_end_value(s));
+        public static long bigintset_end_value(IntPtr s)
+            => SafeExecution<long>(() => MEOSExternalFunctions.bigintset_end_value(s));
 
-        public static double bigintset_start_value(IntPtr s)
-            => SafeExecution<double>(() => MEOSExternalFunctions.bigintset_start_value(s));
+        public static long bigintset_start_value(IntPtr s)
+            => SafeExecution<long>(() => MEOSExternalFunctions.bigintset_start_value(s));
 
         public static bool bigintset_value_n(IntPtr s, int n, IntPtr result)
             => SafeExecution<bool>(() => MEOSExternalFunctions.bigintset_value_n(s, n, result));
@@ -456,23 +458,23 @@ namespace MEOS.NET.Internal
         public static IntPtr bigintset_values(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigintset_values(s));
 
-        public static double bigintspan_lower(IntPtr s)
-            => SafeExecution<double>(() => MEOSExternalFunctions.bigintspan_lower(s));
+        public static long bigintspan_lower(IntPtr s)
+            => SafeExecution<long>(() => MEOSExternalFunctions.bigintspan_lower(s));
 
-        public static double bigintspan_upper(IntPtr s)
-            => SafeExecution<double>(() => MEOSExternalFunctions.bigintspan_upper(s));
+        public static long bigintspan_upper(IntPtr s)
+            => SafeExecution<long>(() => MEOSExternalFunctions.bigintspan_upper(s));
 
-        public static double bigintspanset_lower(IntPtr ss)
-            => SafeExecution<double>(() => MEOSExternalFunctions.bigintspanset_lower(ss));
+        public static long bigintspanset_lower(IntPtr ss)
+            => SafeExecution<long>(() => MEOSExternalFunctions.bigintspanset_lower(ss));
 
-        public static double bigintspanset_upper(IntPtr ss)
-            => SafeExecution<double>(() => MEOSExternalFunctions.bigintspanset_upper(ss));
+        public static long bigintspanset_upper(IntPtr ss)
+            => SafeExecution<long>(() => MEOSExternalFunctions.bigintspanset_upper(ss));
 
-        public static long dateset_end_value(IntPtr s)
-            => SafeExecution<long>(() => MEOSExternalFunctions.dateset_end_value(s));
+        public static int dateset_end_value(IntPtr s)
+            => SafeExecution<int>(() => MEOSExternalFunctions.dateset_end_value(s));
 
-        public static long dateset_start_value(IntPtr s)
-            => SafeExecution<long>(() => MEOSExternalFunctions.dateset_start_value(s));
+        public static int dateset_start_value(IntPtr s)
+            => SafeExecution<int>(() => MEOSExternalFunctions.dateset_start_value(s));
 
         public static bool dateset_value_n(IntPtr s, int n, IntPtr result)
             => SafeExecution<bool>(() => MEOSExternalFunctions.dateset_value_n(s, n, result));
@@ -486,14 +488,14 @@ namespace MEOS.NET.Internal
         public static IntPtr datespanset_duration(IntPtr ss, bool boundspan)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.datespanset_duration(ss, boundspan));
 
-        public static long datespanset_end_date(IntPtr ss)
-            => SafeExecution<long>(() => MEOSExternalFunctions.datespanset_end_date(ss));
+        public static int datespanset_end_date(IntPtr ss)
+            => SafeExecution<int>(() => MEOSExternalFunctions.datespanset_end_date(ss));
 
         public static int datespanset_num_dates(IntPtr ss)
             => SafeExecution<int>(() => MEOSExternalFunctions.datespanset_num_dates(ss));
 
-        public static long datespanset_start_date(IntPtr ss)
-            => SafeExecution<long>(() => MEOSExternalFunctions.datespanset_start_date(ss));
+        public static int datespanset_start_date(IntPtr ss)
+            => SafeExecution<int>(() => MEOSExternalFunctions.datespanset_start_date(ss));
 
         public static bool datespanset_date_n(IntPtr ss, int n, IntPtr result)
             => SafeExecution<bool>(() => MEOSExternalFunctions.datespanset_date_n(ss, n, result));
@@ -642,11 +644,11 @@ namespace MEOS.NET.Internal
         public static IntPtr textset_values(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.textset_values(s));
 
-        public static DateTimeOffset tstzset_end_value(IntPtr s)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.tstzset_end_value(s));
+        public static long tstzset_end_value(IntPtr s)
+            => SafeExecution<long>(() => MEOSExternalFunctions.tstzset_end_value(s));
 
-        public static DateTimeOffset tstzset_start_value(IntPtr s)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.tstzset_start_value(s));
+        public static long tstzset_start_value(IntPtr s)
+            => SafeExecution<long>(() => MEOSExternalFunctions.tstzset_start_value(s));
 
         public static bool tstzset_value_n(IntPtr s, int n, IntPtr result)
             => SafeExecution<bool>(() => MEOSExternalFunctions.tstzset_value_n(s, n, result));
@@ -657,26 +659,26 @@ namespace MEOS.NET.Internal
         public static IntPtr tstzspan_duration(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspan_duration(s));
 
-        public static DateTimeOffset tstzspan_lower(IntPtr s)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.tstzspan_lower(s));
+        public static long tstzspan_lower(IntPtr s)
+            => SafeExecution<long>(() => MEOSExternalFunctions.tstzspan_lower(s));
 
-        public static DateTimeOffset tstzspan_upper(IntPtr s)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.tstzspan_upper(s));
+        public static long tstzspan_upper(IntPtr s)
+            => SafeExecution<long>(() => MEOSExternalFunctions.tstzspan_upper(s));
 
         public static IntPtr tstzspanset_duration(IntPtr ss, bool boundspan)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspanset_duration(ss, boundspan));
 
-        public static DateTimeOffset tstzspanset_end_timestamptz(IntPtr ss)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.tstzspanset_end_timestamptz(ss));
+        public static long tstzspanset_end_timestamptz(IntPtr ss)
+            => SafeExecution<long>(() => MEOSExternalFunctions.tstzspanset_end_timestamptz(ss));
 
-        public static DateTimeOffset tstzspanset_lower(IntPtr ss)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.tstzspanset_lower(ss));
+        public static long tstzspanset_lower(IntPtr ss)
+            => SafeExecution<long>(() => MEOSExternalFunctions.tstzspanset_lower(ss));
 
         public static int tstzspanset_num_timestamps(IntPtr ss)
             => SafeExecution<int>(() => MEOSExternalFunctions.tstzspanset_num_timestamps(ss));
 
-        public static DateTimeOffset tstzspanset_start_timestamptz(IntPtr ss)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.tstzspanset_start_timestamptz(ss));
+        public static long tstzspanset_start_timestamptz(IntPtr ss)
+            => SafeExecution<long>(() => MEOSExternalFunctions.tstzspanset_start_timestamptz(ss));
 
         public static bool tstzspanset_timestamptz_n(IntPtr ss, int n, IntPtr result)
             => SafeExecution<bool>(() => MEOSExternalFunctions.tstzspanset_timestamptz_n(ss, n, result));
@@ -684,16 +686,16 @@ namespace MEOS.NET.Internal
         public static IntPtr tstzspanset_timestamps(IntPtr ss, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspanset_timestamps(ss, count));
 
-        public static DateTimeOffset tstzspanset_upper(IntPtr ss)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.tstzspanset_upper(ss));
+        public static long tstzspanset_upper(IntPtr ss)
+            => SafeExecution<long>(() => MEOSExternalFunctions.tstzspanset_upper(ss));
 
-        public static IntPtr bigintset_shift_scale(IntPtr s, double shift, double width, bool hasshift, bool haswidth)
+        public static IntPtr bigintset_shift_scale(IntPtr s, long shift, long width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigintset_shift_scale(s, shift, width, hasshift, haswidth));
 
-        public static IntPtr bigintspan_shift_scale(IntPtr s, double shift, double width, bool hasshift, bool haswidth)
+        public static IntPtr bigintspan_shift_scale(IntPtr s, long shift, long width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigintspan_shift_scale(s, shift, width, hasshift, haswidth));
 
-        public static IntPtr bigintspanset_shift_scale(IntPtr ss, double shift, double width, bool hasshift, bool haswidth)
+        public static IntPtr bigintspanset_shift_scale(IntPtr ss, long shift, long width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigintspanset_shift_scale(ss, shift, width, hasshift, haswidth));
 
         public static IntPtr dateset_shift_scale(IntPtr s, int shift, int width, bool hasshift, bool haswidth)
@@ -768,8 +770,8 @@ namespace MEOS.NET.Internal
         public static IntPtr textset_upper(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.textset_upper(s));
 
-        public static DateTimeOffset timestamptz_tprecision(DateTimeOffset t, IntPtr duration, DateTimeOffset torigin)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.timestamptz_tprecision(t, duration, torigin));
+        public static long timestamptz_tprecision(long t, IntPtr duration, long torigin)
+            => SafeExecution<long>(() => MEOSExternalFunctions.timestamptz_tprecision(t, duration, torigin));
 
         public static IntPtr tstzset_shift_scale(IntPtr s, IntPtr shift, IntPtr duration)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzset_shift_scale(s, shift, duration));
@@ -777,7 +779,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tstzspan_shift_scale(IntPtr s, IntPtr shift, IntPtr duration)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspan_shift_scale(s, shift, duration));
 
-        public static IntPtr tstzspan_tprecision(IntPtr s, IntPtr duration, DateTimeOffset torigin)
+        public static IntPtr tstzspan_tprecision(IntPtr s, IntPtr duration, long torigin)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspan_tprecision(s, duration, torigin));
 
         public static IntPtr tstzset_to_dateset(IntPtr s)
@@ -792,13 +794,13 @@ namespace MEOS.NET.Internal
         public static IntPtr tstzspanset_shift_scale(IntPtr ss, IntPtr shift, IntPtr duration)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspanset_shift_scale(ss, shift, duration));
 
-        public static IntPtr tstzspanset_tprecision(IntPtr ss, IntPtr duration, DateTimeOffset torigin)
+        public static IntPtr tstzspanset_tprecision(IntPtr ss, IntPtr duration, long torigin)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspanset_tprecision(ss, duration, torigin));
 
-        public static IntPtr intersection_set_bigint(IntPtr s, double i)
+        public static IntPtr intersection_set_bigint(IntPtr s, long i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_set_bigint(s, i));
 
-        public static IntPtr intersection_set_date(IntPtr s, long d)
+        public static IntPtr intersection_set_date(IntPtr s, int d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_set_date(s, d));
 
         public static IntPtr intersection_set_float(IntPtr s, double d)
@@ -816,13 +818,13 @@ namespace MEOS.NET.Internal
         public static IntPtr intersection_set_text(IntPtr s, IntPtr txt)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_set_text(s, txt));
 
-        public static IntPtr intersection_set_timestamptz(IntPtr s, DateTimeOffset t)
+        public static IntPtr intersection_set_timestamptz(IntPtr s, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_set_timestamptz(s, t));
 
-        public static IntPtr intersection_span_bigint(IntPtr s, double i)
+        public static IntPtr intersection_span_bigint(IntPtr s, long i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_span_bigint(s, i));
 
-        public static IntPtr intersection_span_date(IntPtr s, long d)
+        public static IntPtr intersection_span_date(IntPtr s, int d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_span_date(s, d));
 
         public static IntPtr intersection_span_float(IntPtr s, double d)
@@ -831,16 +833,16 @@ namespace MEOS.NET.Internal
         public static IntPtr intersection_span_int(IntPtr s, int i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_span_int(s, i));
 
-        public static IntPtr intersection_span_timestamptz(IntPtr s, DateTimeOffset t)
+        public static IntPtr intersection_span_timestamptz(IntPtr s, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_span_timestamptz(s, t));
 
         public static IntPtr intersection_span_span(IntPtr s1, IntPtr s2)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_span_span(s1, s2));
 
-        public static IntPtr intersection_spanset_bigint(IntPtr ss, double i)
+        public static IntPtr intersection_spanset_bigint(IntPtr ss, long i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_spanset_bigint(ss, i));
 
-        public static IntPtr intersection_spanset_date(IntPtr ss, long d)
+        public static IntPtr intersection_spanset_date(IntPtr ss, int d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_spanset_date(ss, d));
 
         public static IntPtr intersection_spanset_float(IntPtr ss, double d)
@@ -855,25 +857,25 @@ namespace MEOS.NET.Internal
         public static IntPtr intersection_spanset_spanset(IntPtr ss1, IntPtr ss2)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_spanset_spanset(ss1, ss2));
 
-        public static IntPtr intersection_spanset_timestamptz(IntPtr ss, DateTimeOffset t)
+        public static IntPtr intersection_spanset_timestamptz(IntPtr ss, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_spanset_timestamptz(ss, t));
 
-        public static IntPtr minus_bigint_set(double i, IntPtr s)
+        public static IntPtr minus_bigint_set(long i, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_bigint_set(i, s));
 
-        public static IntPtr minus_bigint_span(double i, IntPtr s)
+        public static IntPtr minus_bigint_span(long i, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_bigint_span(i, s));
 
-        public static IntPtr minus_bigint_spanset(double i, IntPtr ss)
+        public static IntPtr minus_bigint_spanset(long i, IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_bigint_spanset(i, ss));
 
-        public static IntPtr minus_date_set(long d, IntPtr s)
+        public static IntPtr minus_date_set(int d, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_date_set(d, s));
 
-        public static IntPtr minus_date_span(long d, IntPtr s)
+        public static IntPtr minus_date_span(int d, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_date_span(d, s));
 
-        public static IntPtr minus_date_spanset(long d, IntPtr ss)
+        public static IntPtr minus_date_spanset(int d, IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_date_spanset(d, ss));
 
         public static IntPtr minus_float_set(double d, IntPtr s)
@@ -897,10 +899,10 @@ namespace MEOS.NET.Internal
         public static IntPtr minus_int_spanset(int i, IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_int_spanset(i, ss));
 
-        public static IntPtr minus_set_bigint(IntPtr s, double i)
+        public static IntPtr minus_set_bigint(IntPtr s, long i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_set_bigint(s, i));
 
-        public static IntPtr minus_set_date(IntPtr s, long d)
+        public static IntPtr minus_set_date(IntPtr s, int d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_set_date(s, d));
 
         public static IntPtr minus_set_float(IntPtr s, double d)
@@ -918,13 +920,13 @@ namespace MEOS.NET.Internal
         public static IntPtr minus_set_text(IntPtr s, IntPtr txt)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_set_text(s, txt));
 
-        public static IntPtr minus_set_timestamptz(IntPtr s, DateTimeOffset t)
+        public static IntPtr minus_set_timestamptz(IntPtr s, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_set_timestamptz(s, t));
 
-        public static IntPtr minus_span_bigint(IntPtr s, double i)
+        public static IntPtr minus_span_bigint(IntPtr s, long i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_span_bigint(s, i));
 
-        public static IntPtr minus_span_date(IntPtr s, long d)
+        public static IntPtr minus_span_date(IntPtr s, int d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_span_date(s, d));
 
         public static IntPtr minus_span_float(IntPtr s, double d)
@@ -939,13 +941,13 @@ namespace MEOS.NET.Internal
         public static IntPtr minus_span_spanset(IntPtr s, IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_span_spanset(s, ss));
 
-        public static IntPtr minus_span_timestamptz(IntPtr s, DateTimeOffset t)
+        public static IntPtr minus_span_timestamptz(IntPtr s, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_span_timestamptz(s, t));
 
-        public static IntPtr minus_spanset_bigint(IntPtr ss, double i)
+        public static IntPtr minus_spanset_bigint(IntPtr ss, long i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_spanset_bigint(ss, i));
 
-        public static IntPtr minus_spanset_date(IntPtr ss, long d)
+        public static IntPtr minus_spanset_date(IntPtr ss, int d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_spanset_date(ss, d));
 
         public static IntPtr minus_spanset_float(IntPtr ss, double d)
@@ -960,28 +962,28 @@ namespace MEOS.NET.Internal
         public static IntPtr minus_spanset_spanset(IntPtr ss1, IntPtr ss2)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_spanset_spanset(ss1, ss2));
 
-        public static IntPtr minus_spanset_timestamptz(IntPtr ss, DateTimeOffset t)
+        public static IntPtr minus_spanset_timestamptz(IntPtr ss, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_spanset_timestamptz(ss, t));
 
         public static IntPtr minus_text_set(IntPtr txt, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_text_set(txt, s));
 
-        public static IntPtr minus_timestamptz_span(DateTimeOffset t, IntPtr s)
+        public static IntPtr minus_timestamptz_span(long t, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_timestamptz_span(t, s));
 
-        public static IntPtr minus_timestamptz_spanset(DateTimeOffset t, IntPtr ss)
+        public static IntPtr minus_timestamptz_spanset(long t, IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_timestamptz_spanset(t, ss));
 
-        public static IntPtr minus_timestamptz_set(DateTimeOffset t, IntPtr s)
+        public static IntPtr minus_timestamptz_set(long t, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.minus_timestamptz_set(t, s));
 
         public static IntPtr super_union_span_span(IntPtr s1, IntPtr s2)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.super_union_span_span(s1, s2));
 
-        public static IntPtr union_set_bigint(IntPtr s, double i)
+        public static IntPtr union_set_bigint(IntPtr s, long i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_set_bigint(s, i));
 
-        public static IntPtr union_set_date(IntPtr s, long d)
+        public static IntPtr union_set_date(IntPtr s, int d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_set_date(s, d));
 
         public static IntPtr union_set_float(IntPtr s, double d)
@@ -999,13 +1001,13 @@ namespace MEOS.NET.Internal
         public static IntPtr union_set_text(IntPtr s, IntPtr txt)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_set_text(s, txt));
 
-        public static IntPtr union_set_timestamptz(IntPtr s, DateTimeOffset t)
+        public static IntPtr union_set_timestamptz(IntPtr s, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_set_timestamptz(s, t));
 
-        public static IntPtr union_span_bigint(IntPtr s, double i)
+        public static IntPtr union_span_bigint(IntPtr s, long i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_span_bigint(s, i));
 
-        public static IntPtr union_span_date(IntPtr s, long d)
+        public static IntPtr union_span_date(IntPtr s, int d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_span_date(s, d));
 
         public static IntPtr union_span_float(IntPtr s, double d)
@@ -1017,13 +1019,13 @@ namespace MEOS.NET.Internal
         public static IntPtr union_span_span(IntPtr s1, IntPtr s2)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_span_span(s1, s2));
 
-        public static IntPtr union_span_timestamptz(IntPtr s, DateTimeOffset t)
+        public static IntPtr union_span_timestamptz(IntPtr s, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_span_timestamptz(s, t));
 
-        public static IntPtr union_spanset_bigint(IntPtr ss, double i)
+        public static IntPtr union_spanset_bigint(IntPtr ss, long i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_spanset_bigint(ss, i));
 
-        public static IntPtr union_spanset_date(IntPtr ss, long d)
+        public static IntPtr union_spanset_date(IntPtr ss, int d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_spanset_date(ss, d));
 
         public static IntPtr union_spanset_float(IntPtr ss, double d)
@@ -1038,13 +1040,13 @@ namespace MEOS.NET.Internal
         public static IntPtr union_spanset_spanset(IntPtr ss1, IntPtr ss2)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_spanset_spanset(ss1, ss2));
 
-        public static IntPtr union_spanset_timestamptz(IntPtr ss, DateTimeOffset t)
+        public static IntPtr union_spanset_timestamptz(IntPtr ss, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_spanset_timestamptz(ss, t));
 
-        public static bool adjacent_span_bigint(IntPtr s, double i)
+        public static bool adjacent_span_bigint(IntPtr s, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_span_bigint(s, i));
 
-        public static bool adjacent_span_date(IntPtr s, long d)
+        public static bool adjacent_span_date(IntPtr s, int d)
             => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_span_date(s, d));
 
         public static bool adjacent_span_float(IntPtr s, double d)
@@ -1056,13 +1058,13 @@ namespace MEOS.NET.Internal
         public static bool adjacent_span_span(IntPtr s1, IntPtr s2)
             => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_span_span(s1, s2));
 
-        public static bool adjacent_span_timestamptz(IntPtr s, DateTimeOffset t)
+        public static bool adjacent_span_timestamptz(IntPtr s, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_span_timestamptz(s, t));
 
-        public static bool adjacent_spanset_bigint(IntPtr ss, double i)
+        public static bool adjacent_spanset_bigint(IntPtr ss, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_spanset_bigint(ss, i));
 
-        public static bool adjacent_spanset_date(IntPtr ss, long d)
+        public static bool adjacent_spanset_date(IntPtr ss, int d)
             => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_spanset_date(ss, d));
 
         public static bool adjacent_spanset_float(IntPtr ss, double d)
@@ -1071,7 +1073,7 @@ namespace MEOS.NET.Internal
         public static bool adjacent_spanset_int(IntPtr ss, int i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_spanset_int(ss, i));
 
-        public static bool adjacent_spanset_timestamptz(IntPtr ss, DateTimeOffset t)
+        public static bool adjacent_spanset_timestamptz(IntPtr ss, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_spanset_timestamptz(ss, t));
 
         public static bool adjacent_spanset_span(IntPtr ss, IntPtr s)
@@ -1080,22 +1082,22 @@ namespace MEOS.NET.Internal
         public static bool adjacent_spanset_spanset(IntPtr ss1, IntPtr ss2)
             => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_spanset_spanset(ss1, ss2));
 
-        public static bool contained_bigint_set(double i, IntPtr s)
+        public static bool contained_bigint_set(long i, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contained_bigint_set(i, s));
 
-        public static bool contained_bigint_span(double i, IntPtr s)
+        public static bool contained_bigint_span(long i, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contained_bigint_span(i, s));
 
-        public static bool contained_bigint_spanset(double i, IntPtr ss)
+        public static bool contained_bigint_spanset(long i, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contained_bigint_spanset(i, ss));
 
-        public static bool contained_date_set(long d, IntPtr s)
+        public static bool contained_date_set(int d, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contained_date_set(d, s));
 
-        public static bool contained_date_span(long d, IntPtr s)
+        public static bool contained_date_span(int d, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contained_date_span(d, s));
 
-        public static bool contained_date_spanset(long d, IntPtr ss)
+        public static bool contained_date_spanset(int d, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contained_date_spanset(d, ss));
 
         public static bool contained_float_set(double d, IntPtr s)
@@ -1137,19 +1139,19 @@ namespace MEOS.NET.Internal
         public static bool contained_text_set(IntPtr txt, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contained_text_set(txt, s));
 
-        public static bool contained_timestamptz_set(DateTimeOffset t, IntPtr s)
+        public static bool contained_timestamptz_set(long t, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contained_timestamptz_set(t, s));
 
-        public static bool contained_timestamptz_span(DateTimeOffset t, IntPtr s)
+        public static bool contained_timestamptz_span(long t, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contained_timestamptz_span(t, s));
 
-        public static bool contained_timestamptz_spanset(DateTimeOffset t, IntPtr ss)
+        public static bool contained_timestamptz_spanset(long t, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contained_timestamptz_spanset(t, ss));
 
-        public static bool contains_set_bigint(IntPtr s, double i)
+        public static bool contains_set_bigint(IntPtr s, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_bigint(s, i));
 
-        public static bool contains_set_date(IntPtr s, long d)
+        public static bool contains_set_date(IntPtr s, int d)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_date(s, d));
 
         public static bool contains_set_float(IntPtr s, double d)
@@ -1167,10 +1169,10 @@ namespace MEOS.NET.Internal
         public static bool contains_set_text(IntPtr s, IntPtr t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_text(s, t));
 
-        public static bool contains_set_timestamptz(IntPtr s, DateTimeOffset t)
+        public static bool contains_set_timestamptz(IntPtr s, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_timestamptz(s, t));
 
-        public static bool contains_span_bigint(IntPtr s, double i)
+        public static bool contains_span_bigint(IntPtr s, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contains_span_bigint(s, i));
 
         public static bool contains_span_float(IntPtr s, double d)
@@ -1185,10 +1187,10 @@ namespace MEOS.NET.Internal
         public static bool contains_span_spanset(IntPtr s, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contains_span_spanset(s, ss));
 
-        public static bool contains_span_timestamptz(IntPtr s, DateTimeOffset t)
+        public static bool contains_span_timestamptz(IntPtr s, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contains_span_timestamptz(s, t));
 
-        public static bool contains_spanset_bigint(IntPtr ss, double i)
+        public static bool contains_spanset_bigint(IntPtr ss, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contains_spanset_bigint(ss, i));
 
         public static bool contains_spanset_float(IntPtr ss, double d)
@@ -1203,7 +1205,7 @@ namespace MEOS.NET.Internal
         public static bool contains_spanset_spanset(IntPtr ss1, IntPtr ss2)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contains_spanset_spanset(ss1, ss2));
 
-        public static bool contains_spanset_timestamptz(IntPtr ss, DateTimeOffset t)
+        public static bool contains_spanset_timestamptz(IntPtr ss, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contains_spanset_timestamptz(ss, t));
 
         public static bool overlaps_set_set(IntPtr s1, IntPtr s2)
@@ -1218,85 +1220,85 @@ namespace MEOS.NET.Internal
         public static bool overlaps_spanset_spanset(IntPtr ss1, IntPtr ss2)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_spanset_spanset(ss1, ss2));
 
-        public static bool after_date_set(long d, IntPtr s)
+        public static bool after_date_set(int d, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.after_date_set(d, s));
 
-        public static bool after_date_span(long d, IntPtr s)
+        public static bool after_date_span(int d, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.after_date_span(d, s));
 
-        public static bool after_date_spanset(long d, IntPtr ss)
+        public static bool after_date_spanset(int d, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.after_date_spanset(d, ss));
 
-        public static bool after_set_date(IntPtr s, long d)
+        public static bool after_set_date(IntPtr s, int d)
             => SafeExecution<bool>(() => MEOSExternalFunctions.after_set_date(s, d));
 
-        public static bool after_set_timestamptz(IntPtr s, DateTimeOffset t)
+        public static bool after_set_timestamptz(IntPtr s, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.after_set_timestamptz(s, t));
 
-        public static bool after_span_date(IntPtr s, long d)
+        public static bool after_span_date(IntPtr s, int d)
             => SafeExecution<bool>(() => MEOSExternalFunctions.after_span_date(s, d));
 
-        public static bool after_span_timestamptz(IntPtr s, DateTimeOffset t)
+        public static bool after_span_timestamptz(IntPtr s, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.after_span_timestamptz(s, t));
 
-        public static bool after_spanset_date(IntPtr ss, long d)
+        public static bool after_spanset_date(IntPtr ss, int d)
             => SafeExecution<bool>(() => MEOSExternalFunctions.after_spanset_date(ss, d));
 
-        public static bool after_spanset_timestamptz(IntPtr ss, DateTimeOffset t)
+        public static bool after_spanset_timestamptz(IntPtr ss, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.after_spanset_timestamptz(ss, t));
 
-        public static bool after_timestamptz_set(DateTimeOffset t, IntPtr s)
+        public static bool after_timestamptz_set(long t, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.after_timestamptz_set(t, s));
 
-        public static bool after_timestamptz_span(DateTimeOffset t, IntPtr s)
+        public static bool after_timestamptz_span(long t, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.after_timestamptz_span(t, s));
 
-        public static bool after_timestamptz_spanset(DateTimeOffset t, IntPtr ss)
+        public static bool after_timestamptz_spanset(long t, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.after_timestamptz_spanset(t, ss));
 
-        public static bool before_date_set(long d, IntPtr s)
+        public static bool before_date_set(int d, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.before_date_set(d, s));
 
-        public static bool before_date_span(long d, IntPtr s)
+        public static bool before_date_span(int d, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.before_date_span(d, s));
 
-        public static bool before_date_spanset(long d, IntPtr ss)
+        public static bool before_date_spanset(int d, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.before_date_spanset(d, ss));
 
-        public static bool before_set_date(IntPtr s, long d)
+        public static bool before_set_date(IntPtr s, int d)
             => SafeExecution<bool>(() => MEOSExternalFunctions.before_set_date(s, d));
 
-        public static bool before_set_timestamptz(IntPtr s, DateTimeOffset t)
+        public static bool before_set_timestamptz(IntPtr s, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.before_set_timestamptz(s, t));
 
-        public static bool before_span_date(IntPtr s, long d)
+        public static bool before_span_date(IntPtr s, int d)
             => SafeExecution<bool>(() => MEOSExternalFunctions.before_span_date(s, d));
 
-        public static bool before_span_timestamptz(IntPtr s, DateTimeOffset t)
+        public static bool before_span_timestamptz(IntPtr s, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.before_span_timestamptz(s, t));
 
-        public static bool before_spanset_date(IntPtr ss, long d)
+        public static bool before_spanset_date(IntPtr ss, int d)
             => SafeExecution<bool>(() => MEOSExternalFunctions.before_spanset_date(ss, d));
 
-        public static bool before_spanset_timestamptz(IntPtr ss, DateTimeOffset t)
+        public static bool before_spanset_timestamptz(IntPtr ss, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.before_spanset_timestamptz(ss, t));
 
-        public static bool before_timestamptz_set(DateTimeOffset t, IntPtr s)
+        public static bool before_timestamptz_set(long t, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.before_timestamptz_set(t, s));
 
-        public static bool before_timestamptz_span(DateTimeOffset t, IntPtr s)
+        public static bool before_timestamptz_span(long t, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.before_timestamptz_span(t, s));
 
-        public static bool before_timestamptz_spanset(DateTimeOffset t, IntPtr ss)
+        public static bool before_timestamptz_spanset(long t, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.before_timestamptz_spanset(t, ss));
 
-        public static bool left_bigint_set(double i, IntPtr s)
+        public static bool left_bigint_set(long i, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.left_bigint_set(i, s));
 
-        public static bool left_bigint_span(double i, IntPtr s)
+        public static bool left_bigint_span(long i, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.left_bigint_span(i, s));
 
-        public static bool left_bigint_spanset(double i, IntPtr ss)
+        public static bool left_bigint_spanset(long i, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.left_bigint_spanset(i, ss));
 
         public static bool left_float_set(double d, IntPtr s)
@@ -1317,7 +1319,7 @@ namespace MEOS.NET.Internal
         public static bool left_int_spanset(int i, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.left_int_spanset(i, ss));
 
-        public static bool left_set_bigint(IntPtr s, double i)
+        public static bool left_set_bigint(IntPtr s, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.left_set_bigint(s, i));
 
         public static bool left_set_float(IntPtr s, double d)
@@ -1332,7 +1334,7 @@ namespace MEOS.NET.Internal
         public static bool left_set_text(IntPtr s, IntPtr txt)
             => SafeExecution<bool>(() => MEOSExternalFunctions.left_set_text(s, txt));
 
-        public static bool left_span_bigint(IntPtr s, double i)
+        public static bool left_span_bigint(IntPtr s, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.left_span_bigint(s, i));
 
         public static bool left_span_float(IntPtr s, double d)
@@ -1347,7 +1349,7 @@ namespace MEOS.NET.Internal
         public static bool left_span_spanset(IntPtr s, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.left_span_spanset(s, ss));
 
-        public static bool left_spanset_bigint(IntPtr ss, double i)
+        public static bool left_spanset_bigint(IntPtr ss, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.left_spanset_bigint(ss, i));
 
         public static bool left_spanset_float(IntPtr ss, double d)
@@ -1365,55 +1367,55 @@ namespace MEOS.NET.Internal
         public static bool left_text_set(IntPtr txt, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.left_text_set(txt, s));
 
-        public static bool overafter_set_date(IntPtr s, long d)
+        public static bool overafter_set_date(IntPtr s, int d)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_set_date(s, d));
 
-        public static bool overafter_set_timestamptz(IntPtr s, DateTimeOffset t)
+        public static bool overafter_set_timestamptz(IntPtr s, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_set_timestamptz(s, t));
 
-        public static bool overafter_span_timestamptz(IntPtr s, DateTimeOffset t)
+        public static bool overafter_span_timestamptz(IntPtr s, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_span_timestamptz(s, t));
 
-        public static bool overafter_spanset_timestamptz(IntPtr ss, DateTimeOffset t)
+        public static bool overafter_spanset_timestamptz(IntPtr ss, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_spanset_timestamptz(ss, t));
 
-        public static bool overafter_timestamptz_set(DateTimeOffset t, IntPtr s)
+        public static bool overafter_timestamptz_set(long t, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_timestamptz_set(t, s));
 
-        public static bool overafter_timestamptz_span(DateTimeOffset t, IntPtr s)
+        public static bool overafter_timestamptz_span(long t, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_timestamptz_span(t, s));
 
-        public static bool overafter_timestamptz_spanset(DateTimeOffset t, IntPtr ss)
+        public static bool overafter_timestamptz_spanset(long t, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_timestamptz_spanset(t, ss));
 
-        public static bool overbefore_set_date(IntPtr s, long d)
+        public static bool overbefore_set_date(IntPtr s, int d)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_set_date(s, d));
 
-        public static bool overbefore_set_timestamptz(IntPtr s, DateTimeOffset t)
+        public static bool overbefore_set_timestamptz(IntPtr s, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_set_timestamptz(s, t));
 
-        public static bool overbefore_span_timestamptz(IntPtr s, DateTimeOffset t)
+        public static bool overbefore_span_timestamptz(IntPtr s, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_span_timestamptz(s, t));
 
-        public static bool overbefore_spanset_timestamptz(IntPtr ss, DateTimeOffset t)
+        public static bool overbefore_spanset_timestamptz(IntPtr ss, long t)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_spanset_timestamptz(ss, t));
 
-        public static bool overbefore_timestamptz_set(DateTimeOffset t, IntPtr s)
+        public static bool overbefore_timestamptz_set(long t, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_timestamptz_set(t, s));
 
-        public static bool overbefore_timestamptz_span(DateTimeOffset t, IntPtr s)
+        public static bool overbefore_timestamptz_span(long t, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_timestamptz_span(t, s));
 
-        public static bool overbefore_timestamptz_spanset(DateTimeOffset t, IntPtr ss)
+        public static bool overbefore_timestamptz_spanset(long t, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_timestamptz_spanset(t, ss));
 
-        public static bool overleft_bigint_set(double i, IntPtr s)
+        public static bool overleft_bigint_set(long i, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_bigint_set(i, s));
 
-        public static bool overleft_bigint_span(double i, IntPtr s)
+        public static bool overleft_bigint_span(long i, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_bigint_span(i, s));
 
-        public static bool overleft_bigint_spanset(double i, IntPtr ss)
+        public static bool overleft_bigint_spanset(long i, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_bigint_spanset(i, ss));
 
         public static bool overleft_float_set(double d, IntPtr s)
@@ -1434,7 +1436,7 @@ namespace MEOS.NET.Internal
         public static bool overleft_int_spanset(int i, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_int_spanset(i, ss));
 
-        public static bool overleft_set_bigint(IntPtr s, double i)
+        public static bool overleft_set_bigint(IntPtr s, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_set_bigint(s, i));
 
         public static bool overleft_set_float(IntPtr s, double d)
@@ -1449,7 +1451,7 @@ namespace MEOS.NET.Internal
         public static bool overleft_set_text(IntPtr s, IntPtr txt)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_set_text(s, txt));
 
-        public static bool overleft_span_bigint(IntPtr s, double i)
+        public static bool overleft_span_bigint(IntPtr s, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_span_bigint(s, i));
 
         public static bool overleft_span_float(IntPtr s, double d)
@@ -1464,7 +1466,7 @@ namespace MEOS.NET.Internal
         public static bool overleft_span_spanset(IntPtr s, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_span_spanset(s, ss));
 
-        public static bool overleft_spanset_bigint(IntPtr ss, double i)
+        public static bool overleft_spanset_bigint(IntPtr ss, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_spanset_bigint(ss, i));
 
         public static bool overleft_spanset_float(IntPtr ss, double d)
@@ -1482,13 +1484,13 @@ namespace MEOS.NET.Internal
         public static bool overleft_text_set(IntPtr txt, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_text_set(txt, s));
 
-        public static bool overright_bigint_set(double i, IntPtr s)
+        public static bool overright_bigint_set(long i, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overright_bigint_set(i, s));
 
-        public static bool overright_bigint_span(double i, IntPtr s)
+        public static bool overright_bigint_span(long i, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overright_bigint_span(i, s));
 
-        public static bool overright_bigint_spanset(double i, IntPtr ss)
+        public static bool overright_bigint_spanset(long i, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overright_bigint_spanset(i, ss));
 
         public static bool overright_float_set(double d, IntPtr s)
@@ -1509,7 +1511,7 @@ namespace MEOS.NET.Internal
         public static bool overright_int_spanset(int i, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overright_int_spanset(i, ss));
 
-        public static bool overright_set_bigint(IntPtr s, double i)
+        public static bool overright_set_bigint(IntPtr s, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overright_set_bigint(s, i));
 
         public static bool overright_set_float(IntPtr s, double d)
@@ -1524,7 +1526,7 @@ namespace MEOS.NET.Internal
         public static bool overright_set_text(IntPtr s, IntPtr txt)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overright_set_text(s, txt));
 
-        public static bool overright_span_bigint(IntPtr s, double i)
+        public static bool overright_span_bigint(IntPtr s, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overright_span_bigint(s, i));
 
         public static bool overright_span_float(IntPtr s, double d)
@@ -1539,7 +1541,7 @@ namespace MEOS.NET.Internal
         public static bool overright_span_spanset(IntPtr s, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overright_span_spanset(s, ss));
 
-        public static bool overright_spanset_bigint(IntPtr ss, double i)
+        public static bool overright_spanset_bigint(IntPtr ss, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overright_spanset_bigint(ss, i));
 
         public static bool overright_spanset_float(IntPtr ss, double d)
@@ -1557,13 +1559,13 @@ namespace MEOS.NET.Internal
         public static bool overright_text_set(IntPtr txt, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.overright_text_set(txt, s));
 
-        public static bool right_bigint_set(double i, IntPtr s)
+        public static bool right_bigint_set(long i, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.right_bigint_set(i, s));
 
-        public static bool right_bigint_span(double i, IntPtr s)
+        public static bool right_bigint_span(long i, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.right_bigint_span(i, s));
 
-        public static bool right_bigint_spanset(double i, IntPtr ss)
+        public static bool right_bigint_spanset(long i, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.right_bigint_spanset(i, ss));
 
         public static bool right_float_set(double d, IntPtr s)
@@ -1584,7 +1586,7 @@ namespace MEOS.NET.Internal
         public static bool right_int_spanset(int i, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.right_int_spanset(i, ss));
 
-        public static bool right_set_bigint(IntPtr s, double i)
+        public static bool right_set_bigint(IntPtr s, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.right_set_bigint(s, i));
 
         public static bool right_set_float(IntPtr s, double d)
@@ -1599,7 +1601,7 @@ namespace MEOS.NET.Internal
         public static bool right_set_text(IntPtr s, IntPtr txt)
             => SafeExecution<bool>(() => MEOSExternalFunctions.right_set_text(s, txt));
 
-        public static bool right_span_bigint(IntPtr s, double i)
+        public static bool right_span_bigint(IntPtr s, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.right_span_bigint(s, i));
 
         public static bool right_span_float(IntPtr s, double d)
@@ -1614,7 +1616,7 @@ namespace MEOS.NET.Internal
         public static bool right_span_spanset(IntPtr s, IntPtr ss)
             => SafeExecution<bool>(() => MEOSExternalFunctions.right_span_spanset(s, ss));
 
-        public static bool right_spanset_bigint(IntPtr ss, double i)
+        public static bool right_spanset_bigint(IntPtr ss, long i)
             => SafeExecution<bool>(() => MEOSExternalFunctions.right_spanset_bigint(ss, i));
 
         public static bool right_spanset_float(IntPtr ss, double d)
@@ -1632,7 +1634,7 @@ namespace MEOS.NET.Internal
         public static bool right_text_set(IntPtr txt, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.right_text_set(txt, s));
 
-        public static double distance_set_bigint(IntPtr s, double i)
+        public static double distance_set_bigint(IntPtr s, long i)
             => SafeExecution<double>(() => MEOSExternalFunctions.distance_set_bigint(s, i));
 
         public static double distance_set_float(IntPtr s, double d)
@@ -1644,10 +1646,10 @@ namespace MEOS.NET.Internal
         public static double distance_set_set(IntPtr s1, IntPtr s2)
             => SafeExecution<double>(() => MEOSExternalFunctions.distance_set_set(s1, s2));
 
-        public static double distance_set_timestamptz(IntPtr s, DateTimeOffset t)
+        public static double distance_set_timestamptz(IntPtr s, long t)
             => SafeExecution<double>(() => MEOSExternalFunctions.distance_set_timestamptz(s, t));
 
-        public static double distance_span_bigint(IntPtr s, double i)
+        public static double distance_span_bigint(IntPtr s, long i)
             => SafeExecution<double>(() => MEOSExternalFunctions.distance_span_bigint(s, i));
 
         public static double distance_span_float(IntPtr s, double d)
@@ -1659,10 +1661,10 @@ namespace MEOS.NET.Internal
         public static double distance_span_span(IntPtr s1, IntPtr s2)
             => SafeExecution<double>(() => MEOSExternalFunctions.distance_span_span(s1, s2));
 
-        public static double distance_span_timestamptz(IntPtr s, DateTimeOffset t)
+        public static double distance_span_timestamptz(IntPtr s, long t)
             => SafeExecution<double>(() => MEOSExternalFunctions.distance_span_timestamptz(s, t));
 
-        public static double distance_spanset_bigint(IntPtr ss, double i)
+        public static double distance_spanset_bigint(IntPtr ss, long i)
             => SafeExecution<double>(() => MEOSExternalFunctions.distance_spanset_bigint(ss, i));
 
         public static double distance_spanset_float(IntPtr ss, double d)
@@ -1671,7 +1673,7 @@ namespace MEOS.NET.Internal
         public static double distance_spanset_int(IntPtr ss, int i)
             => SafeExecution<double>(() => MEOSExternalFunctions.distance_spanset_int(ss, i));
 
-        public static double distance_spanset_timestamptz(IntPtr ss, DateTimeOffset t)
+        public static double distance_spanset_timestamptz(IntPtr ss, long t)
             => SafeExecution<double>(() => MEOSExternalFunctions.distance_spanset_timestamptz(ss, t));
 
         public static double distance_spanset_span(IntPtr ss, IntPtr s)
@@ -1743,10 +1745,10 @@ namespace MEOS.NET.Internal
         public static bool spanset_ne(IntPtr ss1, IntPtr ss2)
             => SafeExecution<bool>(() => MEOSExternalFunctions.spanset_ne(ss1, ss2));
 
-        public static IntPtr bigint_extent_transfn(IntPtr s, double i)
+        public static IntPtr bigint_extent_transfn(IntPtr s, long i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigint_extent_transfn(s, i));
 
-        public static IntPtr bigint_union_transfn(IntPtr state, double i)
+        public static IntPtr bigint_union_transfn(IntPtr state, long i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigint_union_transfn(state, i));
 
         public static IntPtr float_extent_transfn(IntPtr s, double d)
@@ -1788,13 +1790,13 @@ namespace MEOS.NET.Internal
         public static IntPtr text_union_transfn(IntPtr state, IntPtr txt)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.text_union_transfn(state, txt));
 
-        public static IntPtr timestamptz_extent_transfn(IntPtr s, DateTimeOffset t)
+        public static IntPtr timestamptz_extent_transfn(IntPtr s, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.timestamptz_extent_transfn(s, t));
 
-        public static IntPtr timestamptz_tcount_transfn(IntPtr state, DateTimeOffset t)
+        public static IntPtr timestamptz_tcount_transfn(IntPtr state, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.timestamptz_tcount_transfn(state, t));
 
-        public static IntPtr timestamptz_union_transfn(IntPtr state, DateTimeOffset t)
+        public static IntPtr timestamptz_union_transfn(IntPtr state, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.timestamptz_union_transfn(state, t));
 
         public static IntPtr tstzset_tcount_transfn(IntPtr state, IntPtr s)
@@ -1845,25 +1847,25 @@ namespace MEOS.NET.Internal
         public static IntPtr float_tstzspan_to_tbox(double d, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.float_tstzspan_to_tbox(d, s));
 
-        public static IntPtr float_timestamptz_to_tbox(double d, DateTimeOffset t)
+        public static IntPtr float_timestamptz_to_tbox(double d, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.float_timestamptz_to_tbox(d, t));
 
         public static IntPtr geo_tstzspan_to_stbox(IntPtr gs, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geo_tstzspan_to_stbox(gs, s));
 
-        public static IntPtr geo_timestamptz_to_stbox(IntPtr gs, DateTimeOffset t)
+        public static IntPtr geo_timestamptz_to_stbox(IntPtr gs, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geo_timestamptz_to_stbox(gs, t));
 
         public static IntPtr int_tstzspan_to_tbox(int i, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.int_tstzspan_to_tbox(i, s));
 
-        public static IntPtr int_timestamptz_to_tbox(int i, DateTimeOffset t)
+        public static IntPtr int_timestamptz_to_tbox(int i, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.int_timestamptz_to_tbox(i, t));
 
         public static IntPtr numspan_tstzspan_to_tbox(IntPtr span, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.numspan_tstzspan_to_tbox(span, s));
 
-        public static IntPtr numspan_timestamptz_to_tbox(IntPtr span, DateTimeOffset t)
+        public static IntPtr numspan_timestamptz_to_tbox(IntPtr span, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.numspan_timestamptz_to_tbox(span, t));
 
         public static IntPtr stbox_copy(IntPtr box)
@@ -1935,10 +1937,10 @@ namespace MEOS.NET.Internal
         public static IntPtr tbox_to_tstzspan(IntPtr box)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tbox_to_tstzspan(box));
 
-        public static IntPtr timestamptz_to_stbox(DateTimeOffset t)
+        public static IntPtr timestamptz_to_stbox(long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.timestamptz_to_stbox(t));
 
-        public static IntPtr timestamptz_to_tbox(DateTimeOffset t)
+        public static IntPtr timestamptz_to_tbox(long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.timestamptz_to_tbox(t));
 
         public static IntPtr tstzset_to_stbox(IntPtr s)
@@ -2307,7 +2309,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tbool_from_base_temp(bool b, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tbool_from_base_temp(b, temp));
 
-        public static IntPtr tboolinst_make(bool b, DateTimeOffset t)
+        public static IntPtr tboolinst_make(bool b, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tboolinst_make(b, t));
 
         public static IntPtr tboolseq_from_base_tstzset(bool b, IntPtr s)
@@ -2325,7 +2327,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tfloat_from_base_temp(double d, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_from_base_temp(d, temp));
 
-        public static IntPtr tfloatinst_make(double d, DateTimeOffset t)
+        public static IntPtr tfloatinst_make(double d, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloatinst_make(d, t));
 
         public static IntPtr tfloatseq_from_base_tstzspan(double d, IntPtr s, InterpolationType interp)
@@ -2340,7 +2342,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tint_from_base_temp(int i, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tint_from_base_temp(i, temp));
 
-        public static IntPtr tintinst_make(int i, DateTimeOffset t)
+        public static IntPtr tintinst_make(int i, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tintinst_make(i, t));
 
         public static IntPtr tintseq_from_base_tstzspan(int i, IntPtr s)
@@ -2355,7 +2357,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tpoint_from_base_temp(IntPtr gs, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpoint_from_base_temp(gs, temp));
 
-        public static IntPtr tpointinst_make(IntPtr gs, DateTimeOffset t)
+        public static IntPtr tpointinst_make(IntPtr gs, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpointinst_make(gs, t));
 
         public static IntPtr tpointseq_from_base_tstzspan(IntPtr gs, IntPtr s, InterpolationType interp)
@@ -2379,7 +2381,7 @@ namespace MEOS.NET.Internal
         public static IntPtr ttext_from_base_temp(IntPtr txt, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.ttext_from_base_temp(txt, temp));
 
-        public static IntPtr ttextinst_make(IntPtr txt, DateTimeOffset t)
+        public static IntPtr ttextinst_make(IntPtr txt, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.ttextinst_make(txt, t));
 
         public static IntPtr ttextseq_from_base_tstzspan(IntPtr txt, IntPtr s)
@@ -2421,8 +2423,8 @@ namespace MEOS.NET.Internal
         public static IntPtr temporal_end_sequence(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_end_sequence(temp));
 
-        public static DateTimeOffset temporal_end_timestamptz(IntPtr temp)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.temporal_end_timestamptz(temp));
+        public static long temporal_end_timestamptz(IntPtr temp)
+            => SafeExecution<long>(() => MEOSExternalFunctions.temporal_end_timestamptz(temp));
 
         public static uint temporal_hash(IntPtr temp)
             => SafeExecution<uint>(() => MEOSExternalFunctions.temporal_hash(temp));
@@ -2466,8 +2468,8 @@ namespace MEOS.NET.Internal
         public static IntPtr temporal_start_sequence(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_start_sequence(temp));
 
-        public static DateTimeOffset temporal_start_timestamptz(IntPtr temp)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.temporal_start_timestamptz(temp));
+        public static long temporal_start_timestamptz(IntPtr temp)
+            => SafeExecution<long>(() => MEOSExternalFunctions.temporal_start_timestamptz(temp));
 
         public static IntPtr temporal_stops(IntPtr temp, double maxdist, IntPtr minduration)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_stops(temp, maxdist, minduration));
@@ -2592,7 +2594,7 @@ namespace MEOS.NET.Internal
         public static IntPtr temporal_delete_tstzspanset(IntPtr temp, IntPtr ss, bool connect)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_delete_tstzspanset(temp, ss, connect));
 
-        public static IntPtr temporal_delete_timestamptz(IntPtr temp, DateTimeOffset t, bool connect)
+        public static IntPtr temporal_delete_timestamptz(IntPtr temp, long t, bool connect)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_delete_timestamptz(temp, t, connect));
 
         public static IntPtr temporal_delete_tstzset(IntPtr temp, IntPtr s, bool connect)
@@ -2616,7 +2618,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tbool_minus_value(IntPtr temp, bool b)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tbool_minus_value(temp, b));
 
-        public static bool tbool_value_at_timestamptz(IntPtr temp, DateTimeOffset t, bool strict, IntPtr value)
+        public static bool tbool_value_at_timestamptz(IntPtr temp, long t, bool strict, IntPtr value)
             => SafeExecution<bool>(() => MEOSExternalFunctions.tbool_value_at_timestamptz(temp, t, strict, value));
 
         public static IntPtr temporal_at_max(IntPtr temp)
@@ -2631,7 +2633,7 @@ namespace MEOS.NET.Internal
         public static IntPtr temporal_at_tstzspanset(IntPtr temp, IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_at_tstzspanset(temp, ss));
 
-        public static IntPtr temporal_at_timestamptz(IntPtr temp, DateTimeOffset t)
+        public static IntPtr temporal_at_timestamptz(IntPtr temp, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_at_timestamptz(temp, t));
 
         public static IntPtr temporal_at_tstzset(IntPtr temp, IntPtr s)
@@ -2652,7 +2654,7 @@ namespace MEOS.NET.Internal
         public static IntPtr temporal_minus_tstzspanset(IntPtr temp, IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_minus_tstzspanset(temp, ss));
 
-        public static IntPtr temporal_minus_timestamptz(IntPtr temp, DateTimeOffset t)
+        public static IntPtr temporal_minus_timestamptz(IntPtr temp, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_minus_timestamptz(temp, t));
 
         public static IntPtr temporal_minus_tstzset(IntPtr temp, IntPtr s)
@@ -2667,7 +2669,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tfloat_minus_value(IntPtr temp, double d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_minus_value(temp, d));
 
-        public static bool tfloat_value_at_timestamptz(IntPtr temp, DateTimeOffset t, bool strict, IntPtr value)
+        public static bool tfloat_value_at_timestamptz(IntPtr temp, long t, bool strict, IntPtr value)
             => SafeExecution<bool>(() => MEOSExternalFunctions.tfloat_value_at_timestamptz(temp, t, strict, value));
 
         public static IntPtr tint_at_value(IntPtr temp, int i)
@@ -2676,7 +2678,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tint_minus_value(IntPtr temp, int i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tint_minus_value(temp, i));
 
-        public static bool tint_value_at_timestamptz(IntPtr temp, DateTimeOffset t, bool strict, IntPtr value)
+        public static bool tint_value_at_timestamptz(IntPtr temp, long t, bool strict, IntPtr value)
             => SafeExecution<bool>(() => MEOSExternalFunctions.tint_value_at_timestamptz(temp, t, strict, value));
 
         public static IntPtr tnumber_at_span(IntPtr temp, IntPtr span)
@@ -2715,7 +2717,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tpoint_minus_value(IntPtr temp, IntPtr gs)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpoint_minus_value(temp, gs));
 
-        public static bool tpoint_value_at_timestamptz(IntPtr temp, DateTimeOffset t, bool strict, IntPtr value)
+        public static bool tpoint_value_at_timestamptz(IntPtr temp, long t, bool strict, IntPtr value)
             => SafeExecution<bool>(() => MEOSExternalFunctions.tpoint_value_at_timestamptz(temp, t, strict, value));
 
         public static IntPtr ttext_at_value(IntPtr temp, IntPtr txt)
@@ -2724,7 +2726,7 @@ namespace MEOS.NET.Internal
         public static IntPtr ttext_minus_value(IntPtr temp, IntPtr txt)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.ttext_minus_value(temp, txt));
 
-        public static bool ttext_value_at_timestamptz(IntPtr temp, DateTimeOffset t, bool strict, IntPtr value)
+        public static bool ttext_value_at_timestamptz(IntPtr temp, long t, bool strict, IntPtr value)
             => SafeExecution<bool>(() => MEOSExternalFunctions.ttext_value_at_timestamptz(temp, t, strict, value));
 
         public static int temporal_cmp(IntPtr temp1, IntPtr temp2)
@@ -3777,10 +3779,10 @@ namespace MEOS.NET.Internal
         public static IntPtr ttext_tmin_transfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.ttext_tmin_transfn(state, temp));
 
-        public static IntPtr temporal_tprecision(IntPtr temp, IntPtr duration, DateTimeOffset origin)
+        public static IntPtr temporal_tprecision(IntPtr temp, IntPtr duration, long origin)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_tprecision(temp, duration, origin));
 
-        public static IntPtr temporal_tsample(IntPtr temp, IntPtr duration, DateTimeOffset origin)
+        public static IntPtr temporal_tsample(IntPtr temp, IntPtr duration, long origin)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_tsample(temp, duration, origin));
 
         public static double temporal_dyntimewarp_distance(IntPtr temp1, IntPtr temp2)
@@ -3810,43 +3812,43 @@ namespace MEOS.NET.Internal
         public static IntPtr intspan_bucket_list(IntPtr bounds, int size, int origin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intspan_bucket_list(bounds, size, origin, count));
 
-        public static IntPtr tstzspan_bucket_list(IntPtr bounds, IntPtr duration, DateTimeOffset origin, IntPtr count)
+        public static IntPtr tstzspan_bucket_list(IntPtr bounds, IntPtr duration, long origin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspan_bucket_list(bounds, duration, origin, count));
 
-        public static IntPtr stbox_tile(IntPtr point, DateTimeOffset t, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, DateTimeOffset torigin, bool hast)
+        public static IntPtr stbox_tile(IntPtr point, long t, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, bool hast)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_tile(point, t, xsize, ysize, zsize, duration, sorigin, torigin, hast));
 
-        public static IntPtr stbox_tile_list(IntPtr bounds, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, DateTimeOffset torigin, IntPtr count)
+        public static IntPtr stbox_tile_list(IntPtr bounds, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_tile_list(bounds, xsize, ysize, zsize, duration, sorigin, torigin, count));
 
-        public static IntPtr tintbox_tile_list(IntPtr box, int xsize, IntPtr duration, int xorigin, DateTimeOffset torigin, IntPtr count)
+        public static IntPtr tintbox_tile_list(IntPtr box, int xsize, IntPtr duration, int xorigin, long torigin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tintbox_tile_list(box, xsize, duration, xorigin, torigin, count));
 
-        public static IntPtr tfloatbox_tile_list(IntPtr box, double xsize, IntPtr duration, double xorigin, DateTimeOffset torigin, IntPtr count)
+        public static IntPtr tfloatbox_tile_list(IntPtr box, double xsize, IntPtr duration, double xorigin, long torigin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloatbox_tile_list(box, xsize, duration, xorigin, torigin, count));
 
-        public static IntPtr temporal_time_split(IntPtr temp, IntPtr duration, DateTimeOffset torigin, IntPtr time_buckets, IntPtr count)
+        public static IntPtr temporal_time_split(IntPtr temp, IntPtr duration, long torigin, IntPtr time_buckets, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_time_split(temp, duration, torigin, time_buckets, count));
 
         public static IntPtr tfloat_value_split(IntPtr temp, double size, double origin, IntPtr value_buckets, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_value_split(temp, size, origin, value_buckets, count));
 
-        public static IntPtr tfloat_value_time_split(IntPtr temp, double size, IntPtr duration, double vorigin, DateTimeOffset torigin, IntPtr value_buckets, IntPtr time_buckets, IntPtr count)
+        public static IntPtr tfloat_value_time_split(IntPtr temp, double size, IntPtr duration, double vorigin, long torigin, IntPtr value_buckets, IntPtr time_buckets, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_value_time_split(temp, size, duration, vorigin, torigin, value_buckets, time_buckets, count));
 
-        public static DateTimeOffset timestamptz_bucket(DateTimeOffset timestamp, IntPtr duration, DateTimeOffset origin)
-            => SafeExecution<DateTimeOffset>(() => MEOSExternalFunctions.timestamptz_bucket(timestamp, duration, origin));
+        public static long timestamptz_bucket(long timestamp, IntPtr duration, long origin)
+            => SafeExecution<long>(() => MEOSExternalFunctions.timestamptz_bucket(timestamp, duration, origin));
 
         public static IntPtr tint_value_split(IntPtr temp, int size, int origin, IntPtr value_buckets, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tint_value_split(temp, size, origin, value_buckets, count));
 
-        public static IntPtr tint_value_time_split(IntPtr temp, int size, IntPtr duration, int vorigin, DateTimeOffset torigin, IntPtr value_buckets, IntPtr time_buckets, IntPtr count)
+        public static IntPtr tint_value_time_split(IntPtr temp, int size, IntPtr duration, int vorigin, long torigin, IntPtr value_buckets, IntPtr time_buckets, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tint_value_time_split(temp, size, duration, vorigin, torigin, value_buckets, time_buckets, count));
 
         public static IntPtr tpoint_space_split(IntPtr temp, float xsize, float ysize, float zsize, IntPtr sorigin, bool bitmatrix, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpoint_space_split(temp, xsize, ysize, zsize, sorigin, bitmatrix, count));
 
-        public static IntPtr tpoint_space_time_split(IntPtr temp, float xsize, float ysize, float zsize, IntPtr duration, IntPtr sorigin, DateTimeOffset torigin, bool bitmatrix, IntPtr time_buckets, IntPtr count)
+        public static IntPtr tpoint_space_time_split(IntPtr temp, float xsize, float ysize, float zsize, IntPtr duration, IntPtr sorigin, long torigin, bool bitmatrix, IntPtr time_buckets, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpoint_space_time_split(temp, xsize, ysize, zsize, duration, sorigin, torigin, bitmatrix, time_buckets, count));
     }
 }

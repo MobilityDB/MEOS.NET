@@ -1,4 +1,5 @@
-﻿using MEOS.NET.Internal;
+﻿using MEOS.NET.Helpers;
+using MEOS.NET.Internal;
 
 namespace MEOS.NET.Types.Collections.Time.Timestamp
 {
@@ -7,9 +8,9 @@ namespace MEOS.NET.Types.Collections.Time.Timestamp
         internal TimestampTzSpan(IntPtr ptr) : base(ptr)
         { }
 
-        public static TimestampTzSpan FromBounds(DateTimeOffset tMin, DateTimeOffset tMax, bool tMinInclusive = true, bool tMaxInclusive = false)
+        public static TimestampTzSpan FromBounds(DateTime tMin, DateTime tMax, bool tMinInclusive = true, bool tMaxInclusive = false)
         {
-            var res = MEOSExposedFunctions.tstzspan_make(tMin, tMax, tMinInclusive, tMaxInclusive);
+            var res = MEOSExposedFunctions.tstzspan_make(tMin.ToPgTimestamp(), tMax.ToPgTimestamp(), tMinInclusive, tMaxInclusive);
             return new TimestampTzSpan(res);
         }
 

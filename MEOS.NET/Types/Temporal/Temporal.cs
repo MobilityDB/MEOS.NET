@@ -60,9 +60,9 @@ namespace MEOS.NET.Types.Temporal
             return new Temporal(res);
         }
 
-        public Temporal Minus(DateTimeOffset timestamp)
+        public Temporal Minus(DateTime timestamp)
         {
-            var res = MEOSExposedFunctions.temporal_minus_timestamptz(this._ptr, timestamp);
+            var res = MEOSExposedFunctions.temporal_minus_timestamptz(this._ptr, timestamp.ToPgTimestamp());
             return new Temporal(res);
         }
 
@@ -84,9 +84,9 @@ namespace MEOS.NET.Types.Temporal
             return new Temporal(res);
         }
 
-        public Temporal At(DateTimeOffset timestamp)
+        public Temporal At(DateTime timestamp)
         {
-            var res = MEOSExposedFunctions.temporal_at_timestamptz(this._ptr, timestamp);
+            var res = MEOSExposedFunctions.temporal_at_timestamptz(this._ptr, timestamp.ToPgTimestamp());
             return new Temporal(res);
         }
 

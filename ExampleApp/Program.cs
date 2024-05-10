@@ -17,7 +17,15 @@ try
     var tf = TemporalFloatInstant.FromString("[25.0@2024-12-06, 25.0@2024-12-07]");
     tf.Duration();
 
-    
+    var tfi2 = TemporalFloatInstant.FromTimestamp(DateTime.UtcNow, 26);
+    Console.WriteLine(tfi2);
+    var res = tfi2.Add(28);
+    Console.WriteLine(res);
+
+    Console.WriteLine(res.IsAlwaysLessThanOrEqualTo(55));
+
+
+
 
     /*var temporals = new List<TemporalGeometryPoint>()
     {

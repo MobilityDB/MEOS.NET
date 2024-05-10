@@ -1,4 +1,5 @@
-﻿using MEOS.NET.Internal;
+﻿using MEOS.NET.Helpers;
+using MEOS.NET.Internal;
 using MEOS.NET.Types.Collections;
 using MEOS.NET.Types.Collections.Float;
 using MEOS.NET.Types.Collections.Integer;
@@ -30,7 +31,7 @@ namespace MEOS.NET.Types.Boxes
             return new TemporalBox(res);
         }
 
-        public static TemporalBox FromBounds(int xMin, int xMax, DateTimeOffset tMin, DateTimeOffset tMax,
+        public static TemporalBox FromBounds(int xMin, int xMax, DateTime tMin, DateTime tMax,
             bool xMinInclusive = true, bool tMinInclusive = true, bool xMaxInclusive = false, bool tMaxInclusive = false)
         {
             var span = IntegerSpan.FromBounds(xMin, xMax, xMinInclusive, xMaxInclusive);
@@ -52,9 +53,9 @@ namespace MEOS.NET.Types.Boxes
             return new TemporalBox(res);
         }
 
-        public static TemporalBox FromTime(DateTimeOffset timestamp)
+        public static TemporalBox FromTime(DateTime timestamp)
         {
-            var res = MEOSExposedFunctions.timestamptz_to_tbox(timestamp);
+            var res = MEOSExposedFunctions.timestamptz_to_tbox(timestamp.ToPgTimestamp());
             return new TemporalBox(res);
         }
 
@@ -76,27 +77,27 @@ namespace MEOS.NET.Types.Boxes
             return new TemporalBox(res);
         }
 
-        public static TemporalBox FromValueTime(int value, DateTimeOffset time)
+        public static TemporalBox FromValueTime(int value, DateTime time)
         {
-            var res = MEOSExposedFunctions.int_timestamptz_to_tbox(value, time);
+            var res = MEOSExposedFunctions.int_timestamptz_to_tbox(value, time.ToPgTimestamp());
             return new TemporalBox(res);
         }
 
-        public static TemporalBox FromValueTime(double value, DateTimeOffset time)
+        public static TemporalBox FromValueTime(double value, DateTime time)
         {
-            var res = MEOSExposedFunctions.float_timestamptz_to_tbox(value, time);
+            var res = MEOSExposedFunctions.float_timestamptz_to_tbox(value, time.ToPgTimestamp());
             return new TemporalBox(res);
         }
 
-        public static TemporalBox FromValueTime(IntegerSpan value, DateTimeOffset time)
+        public static TemporalBox FromValueTime(IntegerSpan value, DateTime time)
         {
-            var res = MEOSExposedFunctions.numspan_timestamptz_to_tbox(value._ptr, time);
+            var res = MEOSExposedFunctions.numspan_timestamptz_to_tbox(value._ptr, time.ToPgTimestamp());
             return new TemporalBox(res);
         }
 
-        public static TemporalBox FromValueTime(FloatSpan value, DateTimeOffset time)
+        public static TemporalBox FromValueTime(FloatSpan value, DateTime time)
         {
-            var res = MEOSExposedFunctions.numspan_timestamptz_to_tbox(value._ptr, time);
+            var res = MEOSExposedFunctions.numspan_timestamptz_to_tbox(value._ptr, time.ToPgTimestamp());
             return new TemporalBox(res);
         }
 
@@ -200,12 +201,12 @@ namespace MEOS.NET.Types.Boxes
             throw new NotImplementedException(); // TODO : Marshalling
         }
 
-        public DateTimeOffset MinT()
+        public DateTime MinT()
         {
             throw new NotImplementedException(); // TODO : Marshalling
         }
 
-        public DateTimeOffset MaxT()
+        public DateTime MaxT()
         {
             throw new NotImplementedException(); // TODO : Marshalling
         }

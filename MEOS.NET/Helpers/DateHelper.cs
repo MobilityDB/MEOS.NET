@@ -10,5 +10,11 @@ namespace MEOS.NET.Helpers
             var str = MEOSExposedFunctions.pg_timestamptz_out(pgTimestamp.Time);
             return DateTime.Parse(str);
         }
+
+        internal static long ToPgTimestamp(this DateTime dateTime)
+        {
+            var res = MEOSExposedFunctions.pg_timestamptz_in(dateTime.ToString("s"), -1); // ToString("s") -> ISO 8601 formatted date string
+            return res;
+        }
     }
 }

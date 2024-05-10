@@ -53,7 +53,7 @@ namespace MEOS.NET.Builder.Workflow
 			builder.AppendLine("\t{");
 
             builder.AppendLine($"\t\t[GeneratedCode(\"MEOS.NET.Builder\", \"{BuilderVersion.CurrentVersion}\")]");
-            builder.AppendLine("\t\tprivate class MEOSExternalFunctions");
+            builder.AppendLine("\t\tprivate partial class MEOSExternalFunctions");
 			builder.AppendLine("\t\t{");
 
 			builder.AppendLine($"\t\t\tprivate const string DllPath = \"{this.DllPath}\";");
@@ -74,8 +74,14 @@ namespace MEOS.NET.Builder.Workflow
 
 			foreach (var declaration in this.Declarations.Distinct(new CSFunctionDeclarationComparer()))
 			{
-				builder.AppendLine("\t\t\t[DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]");
-				builder.AppendLine($"\t\t\tpublic static extern " +
+				builder.AppendLine("\t\t\t[LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]");
+
+				if (declaration.ReturnType == "bool")
+				{
+					builder.AppendLine("\t\t\t[return:MarshalAs(UnmanagedType.I1)]");
+				}
+
+				builder.AppendLine($"\t\t\tpublic static partial " +
 					$"{declaration.ReturnType} {declaration.FunctionName}({declaration.ToArgumentsWithTypeString()});");
 
 				builder.AppendLine();
