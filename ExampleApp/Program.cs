@@ -1,33 +1,57 @@
 ﻿using MEOS.NET.Exceptions;
 using MEOS.NET.Lifecycle;
-using MEOS.NET.Types.General;
+using MEOS.NET.Types.Collections;
+using MEOS.NET.Types.Collections.Float;
+using MEOS.NET.Types.Temporal.Number.Float;
 
 var timezone = "UTC";
 MEOSLifecycle.Initialize(timezone);
 
 try
 {
-    var temporals = new List<TemporalGeometryPoint>()
-    {
-        TemporalGeometryPoint.From("[POINT(1 5)@2021-05-02, POINT(12 2)@2021-06-02]"),
-        TemporalGeometryPoint.From("POINT(11 3)@2023-08-06 01:45:00+00:00"),
-        TemporalGeometryPoint.From("[POINT(35 12)@2023-01-01, POINT(36 14)@2023-01-02]"),
-    };
+    Console.WriteLine("Creating temporal float instant with string : \"25.0@2024-12-06\"");
+    var tfi = TemporalFloatInstant.FromString("25.0@2024-12-06");
+    Console.WriteLine($"Temporal Float Instant To String : {tfi}");
+    Console.WriteLine($"Temporal Float Instant Timestamp : {tfi.Timestamp().ToLongDateString()}");
+    Console.WriteLine($"Temporal Float Instant HexWKB : {tfi.BoundingBox().ToHexWKB()}");
+    Console.WriteLine($"Temporal Float Instant Max Time: {tfi.BoundingBox().MaxT()}");
+    Console.WriteLine($"Temporal Float Instant always 25.0 ? : {tfi.IsAlwaysEqualTo(25)}\n\n");
 
-    var reference = TemporalGeometryPoint.From("[POINT(1 5)@2021-05-02, POINT(12 2)@2021-06-02]");
 
-    for (int i = 0; i < temporals.Count; i++)
+    Console.WriteLine("Creating temporal float instant from current date (UTC), with value 26");
+    var tfi2 = TemporalFloatInstant.FromTimestamp(DateTime.UtcNow, 26);
+    Console.WriteLine($"Temporal Float Instant To String : {tfi2}");
+    Console.WriteLine($"Temporal Float Instant Timestamp : {tfi2.Timestamp().ToLongDateString()}");
+    Console.WriteLine($"Temporal Float Instant HexWKB : {tfi2.BoundingBox().ToHexWKB()}");
+    Console.WriteLine($"Temporal Float Instant Max Time: {tfi2.BoundingBox().MaxT()}");
+    Console.WriteLine($"Temporal Float Instant always less than 30.0 ? : {tfi2.IsAlwaysLessThanOrEqualTo(30)}");
+    Console.WriteLine("Adding 34 to value of instant...");
+    var tfi3 = tfi2.Add(34);
+    Console.WriteLine($"Temporal Float Instant (after addition) To String : {tfi3}");
+    Console.WriteLine($"Temporal Float Instant (after addition) always less than 30.0 ? : {tfi3.IsAlwaysLessThanOrEqualTo(30)}\n\n"); // Should be false since we used "Add"
+
+    Console.WriteLine("Creating float spanset with string \"{[8, 10], [11, 12]}\"");
+    var spanSet = FloatSpanSet.FromString("{[8, 10], [11, 12]}");
+    Console.WriteLine("Dividing into spans...");
+    var spans = spanSet.GetSpans();
+    Console.WriteLine($"There are {spans.Count()} spans.");
+    var bytes = spanSet.ToBytes();
+    Console.WriteLine($"Bytes of the spanset : ");
+    foreach (var b in bytes)
     {
-        var text = (temporals[i] == reference) ? "equal" : "not equal";
-        Console.WriteLine($"The {i + 1}th temporal element is {text} to the reference temporal");
+        Console.Write(b + ", ");
     }
+    Console.WriteLine("\n\n");
 
-    // Sequence set with stepwise interpolation
-    // var tempSeqSet = TemporalGeometryPoint.From("Interp=Step;{[POINT(1 1)@2000-01-01, POINT(2 2)@2000-01-02],[POINT(3 3)@2000-01-03, POINT(3 3)@2000-01-04]}");
-    // var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "json_output.json");
-    // File.WriteAllText(path, tempSeqSet.ToJson());
+    Console.WriteLine("Creating a new float spanset2 from the bytes of the preceding one");
+    var spanSetRecreated = SpanSet.FromBytes(bytes);
+    Console.WriteLine($"Are the two spansets equal ? : {spanSetRecreated == spanSet}");
+    Console.WriteLine("Dividing spanset2 into spans again...");
+    var spans2 = spanSetRecreated.GetSpans();
+    Console.WriteLine($"There are {spans2.Count()} spans in spanset2 !\n\n");
 
-    var erroneousInput = TemporalGeometryPoint.From("e[POINT(1 5)@2021-05-02, POINT(12 2)@2021-06-02]"); // Intentional input error to trigger exception
+    Console.WriteLine("Trying creation of temporal float instant with erroneous string : \"e25.0@2024-12-06\"");
+    TemporalFloatInstant.FromString("e25.0@2024-12-06");
 }
 catch (MEOSException e)
 {

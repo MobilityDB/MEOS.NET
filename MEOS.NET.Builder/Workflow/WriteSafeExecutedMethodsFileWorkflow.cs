@@ -24,7 +24,7 @@ namespace MEOS.NET.Builder.Workflow
         }
 
         private string GenerateUsingStatements()
-            => "using System.CodeDom.Compiler;\n";
+            => "using System.CodeDom.Compiler;\n\nusing MEOS.NET.Enums;\n\n";
 
         private string GenerateNamespace()
         {
