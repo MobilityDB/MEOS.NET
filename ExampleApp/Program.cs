@@ -18,7 +18,7 @@ try
     Console.WriteLine($"Temporal Float Instant always 25.0 ? : {tfi.IsAlwaysEqualTo(25)}\n\n");
 
 
-    Console.WriteLine("Creating temporal float instant from current date, with value 26");
+    Console.WriteLine("Creating temporal float instant from current date (UTC), with value 26");
     var tfi2 = TemporalFloatInstant.FromTimestamp(DateTime.UtcNow, 26);
     Console.WriteLine($"Temporal Float Instant To String : {tfi2}");
     Console.WriteLine($"Temporal Float Instant Timestamp : {tfi2.Timestamp().ToLongDateString()}");
