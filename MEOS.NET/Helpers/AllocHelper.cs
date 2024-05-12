@@ -24,7 +24,7 @@ namespace MEOS.NET.Helpers
 
         }
 
-        internal static T AllocatePointer<T>(int size, Func<IntPtr, T> callback)
+        internal static TReturnType AllocatePointer<TReturnType>(int size, Func<IntPtr, TReturnType> callback)
         {
             var pointer = Marshal.AllocHGlobal(size);
 
@@ -36,6 +36,26 @@ namespace MEOS.NET.Helpers
             finally
             {
                 Marshal.FreeHGlobal(pointer);
+            }
+        }
+
+        internal static TReturnType AllocateArrayPointer<TArray, TReturnType>(IEnumerable<TArray> enumerable, Func<IntPtr, TReturnType> callback)
+        {
+            GCHandle pinnedArray = default;
+
+            try
+            {
+                pinnedArray = GCHandle.Alloc(enumerable, GCHandleType.Pinned);
+                IntPtr pointer = pinnedArray.AddrOfPinnedObject();
+
+                return callback(pointer);
+            }
+            finally
+            {
+                if (pinnedArray.IsAllocated)
+                {
+                    pinnedArray.Free();
+                }
             }
         }
 

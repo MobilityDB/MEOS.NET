@@ -1,5 +1,6 @@
 ﻿using MEOS.NET.Helpers;
 using MEOS.NET.Internal;
+using MEOS.NET.Structures;
 using MEOS.NET.Types.Collections;
 using MEOS.NET.Types.Collections.Float;
 using MEOS.NET.Types.Collections.Integer;
@@ -22,7 +23,12 @@ namespace MEOS.NET.Types.Boxes
 
         public static TemporalBox FromBytes(byte[] bytes)
         {
-            throw new NotImplementedException(); // TODO : Marshalling
+            var tBoxPtr = AllocHelper.AllocateArrayPointer<byte, IntPtr>(bytes, (bytesPtr) =>
+            {
+                return MEOSExposedFunctions.tbox_from_wkb(bytesPtr, (ulong)bytes.Length);
+            });
+
+            return new TemporalBox(tBoxPtr);
         }
 
         public static TemporalBox FromHexWKB(string str)
@@ -145,12 +151,24 @@ namespace MEOS.NET.Types.Boxes
 
         public byte[] ToBytes()
         {
-            throw new NotImplementedException(); // TODO : Marshalling
+            int arrSize = 0;
+            var arr = AllocHelper.AllocatePointer<IntPtr>(sizeof(int), (countPtr) =>
+            {
+                var res = MEOSExposedFunctions.tbox_as_wkb(this._ptr, variant: 4, countPtr);
+                arrSize = countPtr.ToStructure<int>();
+
+                return res;
+            });
+
+            return arr.ToArrayOfType<byte>(arrSize);
         }
 
         public string ToHexWKB()
         {
-            throw new NotImplementedException(); // TODO : Check PyMEOS
+            return AllocHelper.AllocatePointer<string>(sizeof(int), (sizePtr) =>
+            {
+                return MEOSExposedFunctions.tbox_as_hexwkb(this._ptr, 0, sizePtr);
+            });
         }
 
         public FloatSpan ToFloatSpan()
@@ -173,42 +191,78 @@ namespace MEOS.NET.Types.Boxes
 
         public bool IsMinXInclusive()
         {
-            throw new NotImplementedException(); // TODO : Marshalling
+            return AllocHelper.AllocatePointer<bool>(sizeof(bool), (resultPtr) =>
+            {
+                var successful = MEOSExposedFunctions.tbox_xmin_inc(this._ptr, resultPtr);
+                return successful ? resultPtr.ToStructure<bool>() : false;
+            });
         }
 
         public bool IsMaxXInclusive()
         {
-            throw new NotImplementedException(); // TODO : Marshalling
+            return AllocHelper.AllocatePointer<bool>(sizeof(bool), (resultPtr) =>
+            {
+                var successful = MEOSExposedFunctions.tbox_xmax_inc(this._ptr, resultPtr);
+                return successful ? resultPtr.ToStructure<bool>() : false;
+            });
         }
 
         public bool IsMinTInclusive()
         {
-            throw new NotImplementedException(); // TODO : Marshalling
+            return AllocHelper.AllocatePointer<bool>(sizeof(bool), (resultPtr) =>
+            {
+                var successful = MEOSExposedFunctions.tbox_tmin_inc(this._ptr, resultPtr);
+                return successful ? resultPtr.ToStructure<bool>() : false;
+            });
         }
 
         public bool IsMaxTInclusive()
         {
-            throw new NotImplementedException(); // TODO : Marshalling
+            return AllocHelper.AllocatePointer<bool>(sizeof(bool), (resultPtr) =>
+            {
+                var successful = MEOSExposedFunctions.tbox_tmax_inc(this._ptr, resultPtr);
+                return successful ? resultPtr.ToStructure<bool>() : false;
+            });
         }
 
         public double MinX()
         {
-            throw new NotImplementedException(); // TODO : Marshalling
+            return AllocHelper.AllocatePointer<double>(sizeof(double), (resultPtr) =>
+            {
+                var successful = MEOSExposedFunctions.tbox_xmin(this._ptr, resultPtr);
+                return successful ? resultPtr.ToStructure<double>() : throw new InvalidOperationException("No X Min available");
+            });
         }
 
         public double MaxX()
         {
-            throw new NotImplementedException(); // TODO : Marshalling
+            return AllocHelper.AllocatePointer<double>(sizeof(double), (resultPtr) =>
+            {
+                var successful = MEOSExposedFunctions.tbox_xmax(this._ptr, resultPtr);
+                return successful ? resultPtr.ToStructure<double>() : throw new InvalidOperationException("No X Max available");
+            });
         }
 
         public DateTime MinT()
         {
-            throw new NotImplementedException(); // TODO : Marshalling
+            var timestamp = AllocHelper.AllocatePointer<TimestampTz>(sizeof(long), (resultPtr) =>
+            {
+                var successful = MEOSExposedFunctions.tbox_tmin(this._ptr, resultPtr);
+                return successful ? resultPtr.ToStructure<TimestampTz>() : throw new InvalidOperationException("No T Min available");
+            });
+
+            return timestamp.ToDateTime();
         }
 
         public DateTime MaxT()
         {
-            throw new NotImplementedException(); // TODO : Marshalling
+            var timestamp = AllocHelper.AllocatePointer<TimestampTz>(sizeof(long), (resultPtr) =>
+            {
+                var successful = MEOSExposedFunctions.tbox_tmax(this._ptr, resultPtr);
+                return successful ? resultPtr.ToStructure<TimestampTz>() : throw new InvalidOperationException("No T Max available");
+            });
+
+            return timestamp.ToDateTime();
         }
 
         public bool IsLeftOf(TemporalBox other)

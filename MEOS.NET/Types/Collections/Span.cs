@@ -1,4 +1,5 @@
-﻿using MEOS.NET.Internal;
+﻿using MEOS.NET.Helpers;
+using MEOS.NET.Internal;
 using MEOS.NET.Types.General;
 
 namespace MEOS.NET.Types.Collections
@@ -10,7 +11,12 @@ namespace MEOS.NET.Types.Collections
 
         public static Span FromBytes(byte[] bytes)
         {
-            throw new NotImplementedException(); // TODO : same as for FromBytes in Set
+            var setPtr = AllocHelper.AllocateArrayPointer<byte, IntPtr>(bytes, (bytesPtr) =>
+            {
+                return MEOSExposedFunctions.span_from_wkb(bytesPtr, (ulong)bytes.Length);
+            });
+
+            return new Span(setPtr);
         }
 
         public static Span FromHexWKB(string hexWKB)
@@ -27,17 +33,30 @@ namespace MEOS.NET.Types.Collections
 
         public byte[] ToBytes()
         {
-            throw new NotImplementedException(); // TODO : Check PyMEOS
+            int arrSize = 0;
+            var arr = AllocHelper.AllocatePointer<IntPtr>(sizeof(int), (countPtr) =>
+            {
+                var res = MEOSExposedFunctions.span_as_wkb(this._ptr, variant: 4, countPtr);
+                arrSize = countPtr.ToStructure<int>();
+
+                return res;
+            });
+
+            return arr.ToArrayOfType<byte>(arrSize);
         }
 
         public string ToHexWKB()
         {
-            throw new NotImplementedException();
+            return AllocHelper.AllocatePointer<string>(sizeof(int), (sizePtr) =>
+            {
+                return MEOSExposedFunctions.span_as_hexwkb(this._ptr, 0, sizePtr);
+            });
         }
 
         public virtual SpanSet ToSpanSet()
         {
-            throw new NotImplementedException();
+            var res = MEOSExposedFunctions.span_to_spanset(this._ptr);
+            return new SpanSet(res);
         }
 
         public bool IsLowerBoundInclusive()
@@ -78,6 +97,9 @@ namespace MEOS.NET.Types.Collections
             var span = spanSet.ToSpan();
             return this.Equals(span);
         }
+
+        public double Width()
+            => MEOSExposedFunctions.span_width(this._ptr);
 
         public bool IsLeftOf(Span span)
             => MEOSExposedFunctions.left_span_span(this._ptr, span._ptr);

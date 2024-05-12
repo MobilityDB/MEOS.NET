@@ -1,4 +1,5 @@
 ﻿using MEOS.NET.Enums;
+using MEOS.NET.Helpers;
 using MEOS.NET.Internal;
 using MEOS.NET.Types.Collections.Float;
 using MEOS.NET.Types.Temporal.Boolean;
@@ -69,9 +70,16 @@ namespace MEOS.NET.Types.Temporal.Number.Float
 
         public FloatSet ToFloatSet()
         {
-            // var res = MEOSExposedFunctions.tfloat_values(this._ptr, count);
+            int count = 0;
+            var arrayPtr = AllocHelper.AllocatePointer<IntPtr>(sizeof(int), (countPtr) =>
+            {
+                var arr = MEOSExposedFunctions.tfloat_values(this._ptr, countPtr);
+                count = countPtr.ToStructure<int>();
 
-            throw new NotImplementedException(); // TODO : Convert to array
+                return arr;
+            });
+
+            return FloatSet.FromValuesPointer(arrayPtr, count);
         }
 
         public bool IsAlwaysLessThan(double value)
@@ -157,8 +165,18 @@ namespace MEOS.NET.Types.Temporal.Number.Float
 
         public double ValueAtTimestamp(DateTime timestamp)
         {
-            throw new NotImplementedException(); // TODO : Extract value from last arg ptr
-            //var res = MEOSExposedFunctions.tfloat_value_at_timestamptz(this._ptr, timestamp, strict: true, );
+            var res = AllocHelper.AllocatePointer<double?>(sizeof(double), (resultPtr) =>
+            {
+                var successful = MEOSExposedFunctions.tfloat_value_at_timestamptz(this._ptr, timestamp.ToPgTimestamp(), strict: true, resultPtr);
+                return successful ? resultPtr.ToStructure<double>() : default;
+            });
+
+            if (!res.HasValue)
+            {
+                throw new InvalidOperationException("Cannot retrieve value at a timestamp that does not exist in the current context.");
+            }
+
+            return res.Value;
         }
 
         public TemporalFloat Derivative()
@@ -183,13 +201,6 @@ namespace MEOS.NET.Types.Temporal.Number.Float
         {
             var res = MEOSExposedFunctions.tfloat_round(this._ptr, maxdd: maxDecimals);
             return new TemporalFloat(res);
-        }
-
-        public IEnumerable<Temporal> Split(int size, int start = 0)
-        {
-            throw new NotImplementedException(); // TODO : Allocate IntPtr to retrieve result
-
-            // var res = MEOSExposedFunctions.tfloat_value_split(this._ptr, size, start, );
         }
 
         public TemporalFloat Shift(double delta)

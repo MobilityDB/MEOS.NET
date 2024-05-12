@@ -41,11 +41,6 @@ namespace MEOS.NET.Types.Collections.Float
         public double UpperBound()
             => MEOSExposedFunctions.floatspan_upper(this._ptr);
 
-        public double Width()
-        {
-            throw new NotImplementedException(); // TODO : Check for new MEOS version ? Method not available
-        }
-
         public FloatSpan Shift(double delta)
         {
             var res = MEOSExposedFunctions.floatspan_shift_scale(this._ptr, delta, 0.0, hasshift: true, haswidth: false);

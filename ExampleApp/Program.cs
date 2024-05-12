@@ -1,6 +1,7 @@
 ﻿using MEOS.NET.Exceptions;
 using MEOS.NET.Lifecycle;
-using MEOS.NET.Types.General;
+using MEOS.NET.Types.Collections;
+using MEOS.NET.Types.Collections.Float;
 using MEOS.NET.Types.Temporal.Number.Float;
 
 var timezone = "UTC";
@@ -14,17 +15,34 @@ try
     Console.WriteLine(tfi);
     Console.WriteLine(tfi.Timestamp().ToLongDateString());
 
-    var tf = TemporalFloatInstant.FromString("[25.0@2024-12-06, 25.0@2024-12-07]");
-    tf.Duration();
+    Console.WriteLine(tfi.BoundingBox().ToHexWKB());
+    Console.WriteLine(tfi.BoundingBox().MaxT());
+
+    var tf = TemporalFloatInstant.FromString("[25.0@2024-12-06, 29.0@2024-12-07]");
+    var asSet = tf.ToFloatSet();
+    Console.WriteLine(asSet.Count());
+
+    foreach(var s in asSet.Values())
+    {
+        Console.WriteLine(s);
+    }
 
     var tfi2 = TemporalFloatInstant.FromTimestamp(DateTime.UtcNow, 26);
     Console.WriteLine(tfi2);
     var res = tfi2.Add(28);
     Console.WriteLine(res);
-
     Console.WriteLine(res.IsAlwaysLessThanOrEqualTo(55));
 
+    Console.WriteLine("===========");
 
+    var spanSet = FloatSpanSet.FromString("{[8, 10], [11, 12]}");
+    var spans = spanSet.GetSpans();
+    Console.WriteLine(spans.Count());
+
+    var bytes = spanSet.ToBytes();
+    var ss2 = SpanSet.FromBytes(bytes);
+    var spans2 = ss2.GetSpans();
+    Console.WriteLine(spans2.Count());
 
 
     /*var temporals = new List<TemporalGeometryPoint>()

@@ -1,4 +1,5 @@
-﻿using MEOS.NET.Internal;
+﻿using MEOS.NET.Helpers;
+using MEOS.NET.Internal;
 using MEOS.NET.Types.General;
 
 namespace MEOS.NET.Types.Collections
@@ -10,7 +11,12 @@ namespace MEOS.NET.Types.Collections
 
         public static SpanSet FromBytes(byte[] bytes)
         {
-            throw new NotImplementedException(); // TODO : same as for FromBytes in Set/SpanSet
+            var setPtr = AllocHelper.AllocateArrayPointer<byte, IntPtr>(bytes, (bytesPtr) =>
+            {
+                return MEOSExposedFunctions.spanset_from_wkb(bytesPtr, (ulong)bytes.Length);
+            });
+
+            return new SpanSet(setPtr);
         }
 
         public static SpanSet FromHexWKB(string hexWKB)
@@ -27,12 +33,24 @@ namespace MEOS.NET.Types.Collections
 
         public byte[] ToBytes()
         {
-            throw new NotImplementedException(); // TODO : Check PyMEOS
+            int arrSize = 0;
+            var arr = AllocHelper.AllocatePointer<IntPtr>(sizeof(int), (countPtr) =>
+            {
+                var res = MEOSExposedFunctions.spanset_as_wkb(this._ptr, variant: 4, countPtr);
+                arrSize = countPtr.ToStructure<int>();
+
+                return res;
+            });
+
+            return arr.ToArrayOfType<byte>(arrSize);
         }
 
         public string ToHexWKB()
         {
-            throw new NotImplementedException();
+            return AllocHelper.AllocatePointer<string>(sizeof(int), (sizePtr) =>
+            {
+                return MEOSExposedFunctions.spanset_as_hexwkb(this._ptr, 0, sizePtr);
+            });
         }
 
         public virtual Span ToSpan()
@@ -69,12 +87,24 @@ namespace MEOS.NET.Types.Collections
             return new Span(res);
         }
 
-
         public virtual IEnumerable<Span> GetSpans()
         {
-            var res = MEOSExposedFunctions.spanset_spans(this._ptr);
-            throw new NotImplementedException(); // TODO : Transform to IEnumerable
+            var nbSpans = this.SpanCount();
+            var arr = MEOSExposedFunctions.spanset_spans(this._ptr);
+
+            var spans = arr.ToArrayOfType<IntPtr>(nbSpans);
+            List<Span> spanList = new List<Span>(nbSpans);
+
+            foreach(var span in spans)
+            {
+                spanList.Add(new Span(span));
+            }
+
+            return spanList;
         }
+
+        public double Width(bool ignoreGaps = false)
+            => MEOSExposedFunctions.spanset_width(this._ptr, ignoreGaps);
 
         public bool IsAdjacent(Span span)
             => MEOSExposedFunctions.adjacent_spanset_span(this._ptr, span._ptr);

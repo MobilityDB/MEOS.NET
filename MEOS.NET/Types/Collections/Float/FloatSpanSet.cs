@@ -29,11 +29,6 @@ namespace MEOS.NET.Types.Collections.Float
         public override string ToString()
             => this.Format(15);
 
-        public double Width()
-        {
-            throw new NotImplementedException(); // TODO : Check for new MEOS version ? Method not available
-        }
-
         public override FloatSpan StartSpan()
             => (FloatSpan)base.StartSpan();
 
@@ -42,12 +37,6 @@ namespace MEOS.NET.Types.Collections.Float
 
         public override FloatSpan SpanAt(int position)
             => (FloatSpan)base.SpanAt(position);
-
-        public override IEnumerable<FloatSpan> GetSpans()
-        {
-            var res = MEOSExposedFunctions.spanset_spans(this._ptr);
-            throw new NotImplementedException(); // TODO : Transform to IEnumerable
-        }
 
         public FloatSpanSet Shift(double delta)
         {

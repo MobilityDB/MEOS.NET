@@ -20,9 +20,7 @@ namespace MEOS.NET.Types.Temporal.Number.Float
         }
 
         public double Value()
-        {
-            throw new NotImplementedException();
-        }
+            => MEOSExposedFunctions.tfloat_start_value(this._ptr);
     }
 }
 

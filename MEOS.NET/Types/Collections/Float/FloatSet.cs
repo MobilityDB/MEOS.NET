@@ -1,4 +1,5 @@
-﻿using MEOS.NET.Internal;
+﻿using MEOS.NET.Helpers;
+using MEOS.NET.Internal;
 using MEOS.NET.Types.Collections.Integer;
 
 namespace MEOS.NET.Types.Collections.Float
@@ -8,8 +9,17 @@ namespace MEOS.NET.Types.Collections.Float
         internal FloatSet(IntPtr ptr) : base(ptr)
         { }
 
+        internal static FloatSet FromValuesPointer(IntPtr valuesArray, int arrayLength)
+        {
+            var res = MEOSExposedFunctions.floatset_make(valuesArray, arrayLength);
+            return new FloatSet(res);
+        }
+
         public IntegerSet ToIntegerSet()
-            => throw new NotImplementedException(); // TODO : Check PyMEOS
+        {
+            var res = MEOSExposedFunctions.floatset_to_intset(this._ptr);
+            return new IntegerSet(res);
+        }
 
         public double StartElement()
             => MEOSExposedFunctions.floatset_start_value(this._ptr);
@@ -26,12 +36,11 @@ namespace MEOS.NET.Types.Collections.Float
                 throw new ArgumentOutOfRangeException(nameof(position), $"Requested element must be between 0 and {count - 1}");
             }
 
-            throw new NotImplementedException();
-
-            /*double result;
-            MEOSExposedFunctions.floatset_value_n(this._ptr, position, res);*/
-
-            // TODO : Convert IntPtr (double*) to C# double
+            return AllocHelper.AllocatePointer<double>(sizeof(double), (resultPtr) =>
+            {
+                var successful = MEOSExposedFunctions.floatset_value_n(this._ptr, position, resultPtr);
+                return successful ? resultPtr.ToStructure<double>() : throw new InvalidOperationException($"Could not retrieve element at position {position}");
+            }); 
         }
 
         public double this[int position]
@@ -41,8 +50,10 @@ namespace MEOS.NET.Types.Collections.Float
 
         public IEnumerable<double> Values()
         {
-            // TODO : Convert IntPtr to IEnumerable
-            throw new NotImplementedException();
+            var count = this.Count();
+            var valuesArrPtr = MEOSExposedFunctions.floatset_values(this._ptr);
+
+            return valuesArrPtr.ToArrayOfType<double>(count);
         }
 
         public FloatSet Shift(double delta)
@@ -87,7 +98,7 @@ namespace MEOS.NET.Types.Collections.Float
                 return default;
             }
 
-            return new FloatSet(res); // TODO : If inter is empty, what happens with IntPtr to check if null ?? (IntPtr.Zero ??)
+            return new FloatSet(res);
         }
 
         public FloatSet? IntersectionWith(FloatSet set)
@@ -99,8 +110,7 @@ namespace MEOS.NET.Types.Collections.Float
                 return default;
             }
 
-            return new FloatSet(res); // TODO : If inter is empty, what happens with IntPtr to check if null ?? (IntPtr.Zero ??)
-                                      // TODO : Apply first TO-DO to all function having the case...
+            return new FloatSet(res);
         }
 
         public FloatSet Minus(double value)
@@ -143,10 +153,10 @@ namespace MEOS.NET.Types.Collections.Float
             => MEOSExposedFunctions.distance_set_set(this._ptr, set._ptr);
 
         public double DistanceTo(FloatSpan span)
-            => throw new NotImplementedException(); // TODO : Convert to SpanSet (yes, spanset) and use distance method of Span
+            => this.ToSpanSet().DistanceTo(span);
 
         public double DistanceTo(FloatSpanSet spanSet)
-            => throw new NotImplementedException(); // TODO : Same as FloatSpan distance
+            => this.ToSpanSet().DistanceTo(spanSet);
 
         public string Format(int maxDecimals = 15)
             => MEOSExposedFunctions.floatset_out(this._ptr, maxdd: maxDecimals);

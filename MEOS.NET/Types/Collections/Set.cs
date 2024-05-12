@@ -1,5 +1,5 @@
 ﻿using System.Runtime.InteropServices;
-
+using MEOS.NET.Helpers;
 using MEOS.NET.Internal;
 using MEOS.NET.Types.General;
 
@@ -12,17 +12,12 @@ namespace MEOS.NET.Types.Collections
 
         public static Set FromBytes(byte[] bytes)
         {
-            GCHandle pinnedArray = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-            IntPtr pointer = pinnedArray.AddrOfPinnedObject();
+            var setPtr = AllocHelper.AllocateArrayPointer<byte, IntPtr>(bytes, (bytesPtr) =>
+            {
+                return MEOSExposedFunctions.set_from_wkb(bytesPtr, (ulong)bytes.Length);
+            });
 
-            var res = MEOSExposedFunctions.set_from_wkb(pointer, (ulong)bytes.Length);
-
-            pinnedArray.Free();
-
-            return new Set(res);
-            // TODO : Check if correct behaviour
-            // TODO : Create Helper with alloc and callback (func that returns <T>, here "res") to avoid using GCHandle with Free everywhere
-                    // Careful with errors happening in that callback
+            return new Set(setPtr);
         }
 
         public static Set FromHexWKB(string hexWKB)
@@ -36,22 +31,36 @@ namespace MEOS.NET.Types.Collections
 
         public byte[] ToBytes()
         {
-            throw new NotImplementedException(); // TODO : Check PyMEOS
+            int arrSize = 0;
+            var arr = AllocHelper.AllocatePointer<IntPtr>(sizeof(int), (countPtr) =>
+            {
+                var res = MEOSExposedFunctions.set_as_wkb(this._ptr, variant: 4, countPtr);
+                arrSize = countPtr.ToStructure<int>();
+
+                return res;
+            });
+
+            return arr.ToArrayOfType<byte>(arrSize);
         }
 
         public string ToHexWKB()
         {
-            throw new NotImplementedException();
+            return AllocHelper.AllocatePointer<string>(sizeof(int), (sizePtr) =>
+            {
+                return MEOSExposedFunctions.set_as_hexwkb(this._ptr, 0, sizePtr);
+            });
         }
 
         public Span ToSpan()
         {
-            throw new NotImplementedException();
+            var res = MEOSExposedFunctions.set_to_span(this._ptr);
+            return new Span(res);
         }
 
         public SpanSet ToSpanSet()
         {
-            throw new NotImplementedException();
+            var res = MEOSExposedFunctions.set_to_spanset(this._ptr);
+            return new SpanSet(res);
         }
 
         public bool Contains(Set collection)
