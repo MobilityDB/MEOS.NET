@@ -1,4 +1,5 @@
 ﻿using MEOS.NET.Enums;
+using MEOS.NET.Helpers;
 using MEOS.NET.Internal;
 using MEOS.NET.Types.Collections.Time.Timestamp;
 

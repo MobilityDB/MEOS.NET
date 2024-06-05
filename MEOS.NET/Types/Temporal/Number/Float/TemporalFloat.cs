@@ -56,6 +56,12 @@ namespace MEOS.NET.Types.Temporal.Number.Float
             return new FloatSpanSet(res);
         }
 
+        public TemporalFloatSequence Append(TemporalFloatInstant instant, double maxDistance = 0.0)
+        {
+            var res = MEOSExposedFunctions.temporal_append_tinstant(this._ptr, instant._ptr, maxDistance, IntPtr.Zero, false);
+            return new TemporalFloatSequence(res);
+        }
+
         public double StartValue()
             => MEOSExposedFunctions.tfloat_start_value(this._ptr);
 

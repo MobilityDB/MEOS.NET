@@ -69,6 +69,9 @@ namespace MEOS.NET.Types.Collections.Time.Timestamp
             throw new NotImplementedException();
         }
 
+        public override string ToString()
+            => MEOSExposedFunctions.tstzspan_out(this._ptr);
+
         // TODO : Implement methods accordingly to PyMEOS and FloatSpan class
     }
 }

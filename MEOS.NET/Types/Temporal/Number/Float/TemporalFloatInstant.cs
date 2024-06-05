@@ -1,4 +1,5 @@
-﻿using MEOS.NET.Helpers;
+﻿using MEOS.NET.Enums;
+using MEOS.NET.Helpers;
 using MEOS.NET.Internal;
 
 namespace MEOS.NET.Types.Temporal.Number.Float
@@ -17,6 +18,12 @@ namespace MEOS.NET.Types.Temporal.Number.Float
         {
             var res = MEOSExposedFunctions.tfloatinst_make(value, timestamp.ToPgTimestamp());
             return new TemporalFloatInstant(res);
+        }
+
+        public TemporalFloatSequence ToFloatSequence(InterpolationType interpolationType = InterpolationType.None)
+        {
+            var res = MEOSExposedFunctions.temporal_to_tsequence(this._ptr, interpolationType);
+            return new TemporalFloatSequence(res);
         }
 
         public double Value()

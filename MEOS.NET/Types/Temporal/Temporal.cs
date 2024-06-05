@@ -4,6 +4,7 @@ using MEOS.NET.Internal;
 using MEOS.NET.Types.General;
 using MEOS.NET.Types.Collections.Time.Timestamp;
 using MEOS.NET.Types.Temporal.Boolean;
+using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types.Temporal
 {
@@ -143,6 +144,22 @@ namespace MEOS.NET.Types.Temporal
 
         public TimestampTzSpan ToTimestampTzSpan()
             => this.TimeSpan();
+
+        public IEnumerable<DateTime> ToDateTimeEnumerable()
+        {
+            int count = 0;
+            var timestamps = AllocHelper.AllocatePointer<IntPtr>(sizeof(int), (countPtr) =>
+            {
+                var res = MEOSExposedFunctions.temporal_timestamps(this._ptr, countPtr);
+                count = countPtr.ToStructure<int>();
+
+                return res;
+            });
+
+            var timestampTzArr = timestamps.ToArrayOfType<TimestampTz>(count);
+
+            return timestampTzArr.Select(t => t.ToDateTime());
+        }
 
         public int InstantsCount()
             => MEOSExposedFunctions.temporal_num_instants(this._ptr);
