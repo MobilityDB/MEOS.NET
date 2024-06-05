@@ -6,7 +6,7 @@ namespace ExampleApp.Samples
 {
     internal class StockMarketSample : ISample
     {
-        private readonly string apiKey = "64e5a6fe-459f-427e-8dab-732486939826";
+        private readonly string apiKey = "";
 
         private int repetitions;
 
