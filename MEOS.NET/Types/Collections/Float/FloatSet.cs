@@ -38,7 +38,7 @@ namespace MEOS.NET.Types.Collections.Float
 
             return AllocHelper.AllocatePointer<double>(sizeof(double), (resultPtr) =>
             {
-                var successful = MEOSExposedFunctions.floatset_value_n(this._ptr, position, resultPtr);
+                var successful = (MEOSExposedFunctions.floatset_value_n(this._ptr, position, resultPtr) != 0);
                 return successful ? resultPtr.ToStructure<double>() : throw new InvalidOperationException($"Could not retrieve element at position {position}");
             }); 
         }
@@ -58,36 +58,36 @@ namespace MEOS.NET.Types.Collections.Float
 
         public FloatSet Shift(double delta)
         {
-            var res = MEOSExposedFunctions.floatset_shift_scale(this._ptr, delta, 0.0, hasshift: true, haswidth: false);
+            var res = MEOSExposedFunctions.floatset_shift_scale(this._ptr, delta, 0.0, hasshift: (true ? 1 : 0), haswidth: (false ? 1 : 0));
             return new FloatSet(res);
         }
 
         public FloatSet Scale(double newWidth)
         {
-            var res = MEOSExposedFunctions.floatset_shift_scale(this._ptr, 0.0, newWidth, hasshift: false, haswidth: true);
+            var res = MEOSExposedFunctions.floatset_shift_scale(this._ptr, 0.0, newWidth, hasshift: (false ? 1 : 0), haswidth: (true ? 1 : 0));
             return new FloatSet(res);
         }
 
         public FloatSet ShiftScale(double delta, double newWidth)
         {
-            var res = MEOSExposedFunctions.floatset_shift_scale(this._ptr, delta, newWidth, hasshift: true, haswidth: true);
+            var res = MEOSExposedFunctions.floatset_shift_scale(this._ptr, delta, newWidth, hasshift: (true ? 1 : 0), haswidth: (true ? 1 : 0));
             return new FloatSet(res);
         }
 
         public bool Contains(double value)
-            => MEOSExposedFunctions.contains_set_float(this._ptr, value);
+            => (MEOSExposedFunctions.contains_set_float(this._ptr, value) != 0);
 
         public bool IsLeftOf(double value)
-            => MEOSExposedFunctions.left_set_float(this._ptr, value);
+            => (MEOSExposedFunctions.left_set_float(this._ptr, value) != 0);
 
         public bool IsOverOrLeftOf(double value)
-            => MEOSExposedFunctions.overleft_set_float(this._ptr, value);
+            => (MEOSExposedFunctions.overleft_set_float(this._ptr, value) != 0);
 
         public bool IsRightOf(double value)
-            => MEOSExposedFunctions.right_set_float(this._ptr, value);
+            => (MEOSExposedFunctions.right_set_float(this._ptr, value) != 0);
 
         public bool IsOverOrRightOf(double value)
-            => MEOSExposedFunctions.overright_set_float(this._ptr, value);
+            => (MEOSExposedFunctions.overright_set_float(this._ptr, value) != 0);
 
         public FloatSet? IntersectionWith(double value)
         {

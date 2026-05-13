@@ -26,6 +26,9 @@ namespace MEOS.NET.Types.Temporal.Number.Float
             return new TemporalFloatInstant(res);
         }
 
+        public static TemporalFloat FromMFJson(string mfJsonStr)
+            => new TemporalFloat(MEOSExposedFunctions.tfloat_from_mfjson(mfJsonStr));
+
         public string Format(int maxDecimals)
             => MEOSExposedFunctions.tfloat_out(this._ptr, maxdd: maxDecimals);
 
@@ -83,22 +86,22 @@ namespace MEOS.NET.Types.Temporal.Number.Float
         }
 
         public bool IsAlwaysLessThan(double value)
-            => MEOSExposedFunctions.tfloat_always_lt(this._ptr, value);
+            => (MEOSExposedFunctions.always_lt_tfloat_float(this._ptr, value) != 0);
 
         public bool IsAlwaysLessThanOrEqualTo(double value)
-            => MEOSExposedFunctions.tfloat_always_le(this._ptr, value);
+            => (MEOSExposedFunctions.always_le_tfloat_float(this._ptr, value) != 0);
 
         public bool IsAlwaysEqualTo(double value)
-            => MEOSExposedFunctions.tfloat_always_eq(this._ptr, value);
+            => (MEOSExposedFunctions.always_eq_tfloat_float(this._ptr, value) != 0);
 
         public bool IsEverLessThan(double value)
-            => MEOSExposedFunctions.tfloat_ever_lt(this._ptr, value);
+            => (MEOSExposedFunctions.ever_lt_tfloat_float(this._ptr, value) != 0);
 
         public bool IsEverLessThanOrEqualTo(double value)
-            => MEOSExposedFunctions.tfloat_ever_le(this._ptr, value);
+            => (MEOSExposedFunctions.ever_le_tfloat_float(this._ptr, value) != 0);
 
         public bool IsEverEqualTo(double value)
-            => MEOSExposedFunctions.tfloat_ever_eq(this._ptr, value);
+            => (MEOSExposedFunctions.ever_eq_tfloat_float(this._ptr, value) != 0);
 
         public TemporalBoolean TemporalEqual(int other)
             => this.TemporalEqual((double)other);
@@ -167,7 +170,7 @@ namespace MEOS.NET.Types.Temporal.Number.Float
         {
             var res = AllocHelper.AllocatePointer<double?>(sizeof(double), (resultPtr) =>
             {
-                var successful = MEOSExposedFunctions.tfloat_value_at_timestamptz(this._ptr, timestamp.ToPgTimestamp(), strict: true, resultPtr);
+                var successful = (MEOSExposedFunctions.tfloat_value_at_timestamptz(this._ptr, timestamp.ToPgTimestamp(), strict: (true ? 1 : 0), resultPtr) != 0);
                 return successful ? resultPtr.ToStructure<double>() : default;
             });
 
@@ -181,13 +184,13 @@ namespace MEOS.NET.Types.Temporal.Number.Float
 
         public TemporalFloat Derivative()
         {
-            var res = MEOSExposedFunctions.tfloat_derivative(this._ptr);
+            var res = MEOSExposedFunctions.temporal_derivative(this._ptr);
             return new TemporalFloat(res);
         }
 
         public TemporalFloat ToDegrees(bool normalize = true)
         {
-            var res = MEOSExposedFunctions.tfloat_degrees(this._ptr, normalize);
+            var res = MEOSExposedFunctions.tfloat_degrees(this._ptr, (normalize ? 1 : 0));
             return new TemporalFloat(res);
         }
 
@@ -199,7 +202,7 @@ namespace MEOS.NET.Types.Temporal.Number.Float
 
         public TemporalFloat Round(int maxDecimals = 0)
         {
-            var res = MEOSExposedFunctions.tfloat_round(this._ptr, maxdd: maxDecimals);
+            var res = MEOSExposedFunctions.temporal_round(this._ptr, maxdd: maxDecimals);
             return new TemporalFloat(res);
         }
 
@@ -259,7 +262,7 @@ namespace MEOS.NET.Types.Temporal.Number.Float
 
         public TemporalFloat DistanceTo(double other)
         {
-            var res = MEOSExposedFunctions.distance_tfloat_float(this._ptr, other);
+            var res = MEOSExposedFunctions.tdistance_tfloat_float(this._ptr, other);
             return new TemporalFloat(res);
         }
 

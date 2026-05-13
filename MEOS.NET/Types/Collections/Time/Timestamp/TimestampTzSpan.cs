@@ -10,7 +10,7 @@ namespace MEOS.NET.Types.Collections.Time.Timestamp
 
         public static TimestampTzSpan FromBounds(DateTime tMin, DateTime tMax, bool tMinInclusive = true, bool tMaxInclusive = false)
         {
-            var res = MEOSExposedFunctions.tstzspan_make(tMin.ToPgTimestamp(), tMax.ToPgTimestamp(), tMinInclusive, tMaxInclusive);
+            var res = MEOSExposedFunctions.tstzspan_make(tMin.ToPgTimestamp(), tMax.ToPgTimestamp(), (tMinInclusive ? 1 : 0), (tMaxInclusive ? 1 : 0));
             return new TimestampTzSpan(res);
         }
 

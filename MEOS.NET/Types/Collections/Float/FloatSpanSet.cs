@@ -40,54 +40,54 @@ namespace MEOS.NET.Types.Collections.Float
 
         public FloatSpanSet Shift(double delta)
         {
-            var res = MEOSExposedFunctions.floatspanset_shift_scale(this._ptr, delta, 0.0, hasshift: true, haswidth: false);
+            var res = MEOSExposedFunctions.floatspanset_shift_scale(this._ptr, delta, 0.0, hasshift: (true ? 1 : 0), haswidth: (false ? 1 : 0));
             return new FloatSpanSet(res);
         }
 
         public FloatSpanSet Scale(double newWidth)
         {
-            var res = MEOSExposedFunctions.floatspanset_shift_scale(this._ptr, 0.0, newWidth, hasshift: false, haswidth: true);
+            var res = MEOSExposedFunctions.floatspanset_shift_scale(this._ptr, 0.0, newWidth, hasshift: (false ? 1 : 0), haswidth: (true ? 1 : 0));
             return new FloatSpanSet(res);
         }
 
         public FloatSpanSet ShiftScale(double delta, double newWidth)
         {
-            var res = MEOSExposedFunctions.floatspanset_shift_scale(this._ptr, delta, newWidth, hasshift: true, haswidth: true);
+            var res = MEOSExposedFunctions.floatspanset_shift_scale(this._ptr, delta, newWidth, hasshift: (true ? 1 : 0), haswidth: (true ? 1 : 0));
             return new FloatSpanSet(res);
         }
 
         public bool IsAdjacent(double number)
-            => MEOSExposedFunctions.adjacent_spanset_float(this._ptr, number);
+            => (MEOSExposedFunctions.adjacent_spanset_float(this._ptr, number) != 0);
 
         public bool IsAdjacent(int number)
             => this.IsAdjacent((double)number);
 
         public bool Contains(double number)
-            => MEOSExposedFunctions.contains_spanset_float(this._ptr, number);
+            => (MEOSExposedFunctions.contains_spanset_float(this._ptr, number) != 0);
 
         public bool Contains(int number)
             => this.IsAdjacent((double)number);
 
         public bool IsLeftOf(double number)
-            => MEOSExposedFunctions.left_spanset_float(this._ptr, number);
+            => (MEOSExposedFunctions.left_spanset_float(this._ptr, number) != 0);
 
         public bool IsLeftOf(int number)
             => this.IsLeftOf((double)number);
 
         public bool IsOverOrLeftOf(double number)
-            => MEOSExposedFunctions.overleft_spanset_float(this._ptr, number);
+            => (MEOSExposedFunctions.overleft_spanset_float(this._ptr, number) != 0);
 
         public bool IsOverOrLeftOf(int number)
             => this.IsOverOrLeftOf((double)number);
 
         public bool IsRightOf(double number)
-            => MEOSExposedFunctions.right_spanset_float(this._ptr, number);
+            => (MEOSExposedFunctions.right_spanset_float(this._ptr, number) != 0);
 
         public bool IsRightOf(int number)
             => this.IsRightOf((double)number);
 
         public bool IsOverOrRightOf(double number)
-            => MEOSExposedFunctions.overright_spanset_float(this._ptr, number);
+            => (MEOSExposedFunctions.overright_spanset_float(this._ptr, number) != 0);
 
         public bool IsOverOrRightOf(int number)
             => this.IsOverOrLeftOf((double)number);

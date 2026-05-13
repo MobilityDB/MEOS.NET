@@ -12,11 +12,15 @@ namespace MEOS.NET.Types.Temporal
         internal Temporal(IntPtr ptr) : base(ptr)
         { }
 
-        public static Temporal FromMFJson(string mfJsonStr)
-        {
-            var res = MEOSExposedFunctions.temporal_from_mfjson(mfJsonStr);
-            return new Temporal(res);
-        }
+        // MEOS 1.3 split mfjson parsing per subtype: tbool_from_mfjson,
+        // tint_from_mfjson, tfloat_from_mfjson, ttext_from_mfjson,
+        // tgeogpoint_from_mfjson.  The previously-generic
+        // temporal_from_mfjson(mfjson) no longer exists in MEOS; the new
+        // temporal_from_mfjson(mfjson, meosType) requires the temptype enum
+        // at the call site.  Provide the typed factories on each subclass
+        // (TemporalBoolean.FromMFJson, TemporalFloat.FromMFJson, ...)
+        // rather than a generic Temporal.FromMFJson that can't pick a
+        // subtype from the JSON content alone.
 
         public TemporalBoolean TemporalEqual(Temporal other)
         {
@@ -109,7 +113,7 @@ namespace MEOS.NET.Types.Temporal
         }
 
         public string ToMfJSON(bool boundingBox = true, int flags = 3, int precision = 6, string srs = "")
-            => MEOSExposedFunctions.temporal_as_mfjson(this._ptr, boundingBox, flags, precision, srs);
+            => MEOSExposedFunctions.temporal_as_mfjson(this._ptr, (boundingBox ? 1 : 0), flags, precision, srs);
 
         public TimestampTzSpan BoundingBox()
         {
@@ -131,7 +135,7 @@ namespace MEOS.NET.Types.Temporal
 
         public string Duration(bool ignoreGaps = false)
         {
-            var res = MEOSExposedFunctions.temporal_duration(this._ptr, ignoreGaps);
+            var res = MEOSExposedFunctions.temporal_duration(this._ptr, (ignoreGaps ? 1 : 0));
             return MEOSExposedFunctions.pg_interval_out(res);
         }
 

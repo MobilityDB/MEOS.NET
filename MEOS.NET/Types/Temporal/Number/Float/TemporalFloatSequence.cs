@@ -19,7 +19,7 @@ namespace MEOS.NET.Types.Temporal.Number.Float
 
         public static TemporalFloatSequence FromTimestampSpan(TimestampTzSpan tsTzSpan, double value, InterpolationType interpolation = InterpolationType.None)
         {
-            var res = MEOSExposedFunctions.tfloatseq_from_base_tstzspan(value, tsTzSpan._ptr, interpolation);
+            var res = MEOSExposedFunctions.tfloatseq_from_base_tstzspan(value, tsTzSpan._ptr, (int)interpolation);
             return new TemporalFloatSequence(res);
         }
     }

@@ -170,7 +170,7 @@ namespace MEOS.NET.Types.Temporal.Number
 
         public TemporalNumber DistanceTo(TemporalNumber other)
         {
-            var res = MEOSExposedFunctions.distance_tnumber_tnumber(this._ptr, other._ptr);
+            var res = MEOSExposedFunctions.tdistance_tnumber_tnumber(this._ptr, other._ptr);
             return new TemporalNumber(res);
         }
 

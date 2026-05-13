@@ -147,9 +147,9 @@ def gen_exposed_functions(funcs: list[dict]) -> str:
     """Generate the safe-executed wrappers (wraps each external call with error-check).
 
     Pattern from the existing hand-written MEOSExposedFunctions.cs: each wrapper calls
-    the external function, then SafelyExecute reads meos_errno and throws if non-zero.
-    Keeps the same shape so the rest of MEOS.NET (which calls MEOSExposedFunctions) is
-    unchanged.
+    the external function, then SafeExecution reads meos_errno and throws if non-zero.
+    For functions in `bool_compat`, the wrapper preserves the legacy `bool` return
+    type by converting the `int` ABI result via `!= 0`.
     """
     lines: list[str] = []
     lines.append("using System.CodeDom.Compiler;")

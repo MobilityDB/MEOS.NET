@@ -9,7 +9,7 @@ namespace MEOS.NET.Types.Collections.Integer
 
         public static IntegerSpan FromBounds(int xMin, int xMax, bool minInclusive = true, bool maxInclusive = false)
         {
-            var res = MEOSExposedFunctions.intspan_make(xMin, xMax, minInclusive, maxInclusive);
+            var res = MEOSExposedFunctions.intspan_make(xMin, xMax, (minInclusive ? 1 : 0), (maxInclusive ? 1 : 0));
             return new IntegerSpan(res);
         }
 
