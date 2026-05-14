@@ -49,12 +49,7 @@ namespace MEOS.NET.Types.Collections.Float
         }
 
         public IEnumerable<double> Values()
-        {
-            var count = this.Count();
-            var valuesArrPtr = MEOSExposedFunctions.floatset_values(this._ptr);
-
-            return valuesArrPtr.ToArrayOfType<double>(count);
-        }
+            => MEOSExposedFunctions.floatset_values(this._ptr);
 
         public FloatSet Shift(double delta)
         {

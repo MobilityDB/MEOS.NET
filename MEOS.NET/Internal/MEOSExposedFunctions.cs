@@ -1,4 +1,5 @@
 using System.CodeDom.Compiler;
+using System.Runtime.InteropServices;
 
 using MEOS.NET.Enums;
 
@@ -100,11 +101,11 @@ namespace MEOS.NET.Internal
         public static void meos_finalize_ways()
             => SafeExecution(() => MEOSExternalFunctions.meos_finalize_ways());
 
-        public static int meos_set_datestyle(string newval, IntPtr extra)
-            => SafeExecution<int>(() => MEOSExternalFunctions.meos_set_datestyle(newval, extra));
+        public static bool meos_set_datestyle(string newval, IntPtr extra)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.meos_set_datestyle(newval, extra));
 
-        public static int meos_set_intervalstyle(string newval, int extra)
-            => SafeExecution<int>(() => MEOSExternalFunctions.meos_set_intervalstyle(newval, extra));
+        public static bool meos_set_intervalstyle(string newval, int extra)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.meos_set_intervalstyle(newval, extra));
 
         public static string meos_get_datestyle()
             => SafeExecution<string>(() => MEOSExternalFunctions.meos_get_datestyle());
@@ -130,10 +131,10 @@ namespace MEOS.NET.Internal
         public static long add_timestamptz_interval(long t, IntPtr interv)
             => SafeExecution<long>(() => MEOSExternalFunctions.add_timestamptz_interval(t, interv));
 
-        public static int bool_in(string str)
-            => SafeExecution<int>(() => MEOSExternalFunctions.bool_in(str));
+        public static bool bool_in(string str)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.bool_in(str));
 
-        public static string bool_out(int b)
+        public static string bool_out(bool b)
             => SafeExecution<string>(() => MEOSExternalFunctions.bool_out(b));
 
         public static IntPtr cstring2text(string str)
@@ -337,7 +338,7 @@ namespace MEOS.NET.Internal
         public static IntPtr set_from_hexwkb(string hexwkb)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.set_from_hexwkb(hexwkb));
 
-        public static IntPtr set_from_wkb(IntPtr wkb, int size)
+        public static IntPtr set_from_wkb(IntPtr wkb, ulong size)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.set_from_wkb(wkb, size));
 
         public static string span_as_hexwkb(IntPtr s, IntPtr variant, IntPtr size_out)
@@ -349,7 +350,7 @@ namespace MEOS.NET.Internal
         public static IntPtr span_from_hexwkb(string hexwkb)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.span_from_hexwkb(hexwkb));
 
-        public static IntPtr span_from_wkb(IntPtr wkb, int size)
+        public static IntPtr span_from_wkb(IntPtr wkb, ulong size)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.span_from_wkb(wkb, size));
 
         public static string spanset_as_hexwkb(IntPtr ss, IntPtr variant, IntPtr size_out)
@@ -361,7 +362,7 @@ namespace MEOS.NET.Internal
         public static IntPtr spanset_from_hexwkb(string hexwkb)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.spanset_from_hexwkb(hexwkb));
 
-        public static IntPtr spanset_from_wkb(IntPtr wkb, int size)
+        public static IntPtr spanset_from_wkb(IntPtr wkb, ulong size)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.spanset_from_wkb(wkb, size));
 
         public static IntPtr textset_in(string str)
@@ -391,25 +392,25 @@ namespace MEOS.NET.Internal
         public static IntPtr bigintset_make(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigintset_make(values, count));
 
-        public static IntPtr bigintspan_make(long lower, long upper, int lower_inc, int upper_inc)
+        public static IntPtr bigintspan_make(long lower, long upper, bool lower_inc, bool upper_inc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigintspan_make(lower, upper, lower_inc, upper_inc));
 
         public static IntPtr dateset_make(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.dateset_make(values, count));
 
-        public static IntPtr datespan_make(int lower, int upper, int lower_inc, int upper_inc)
+        public static IntPtr datespan_make(int lower, int upper, bool lower_inc, bool upper_inc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.datespan_make(lower, upper, lower_inc, upper_inc));
 
         public static IntPtr floatset_make(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatset_make(values, count));
 
-        public static IntPtr floatspan_make(double lower, double upper, int lower_inc, int upper_inc)
+        public static IntPtr floatspan_make(double lower, double upper, bool lower_inc, bool upper_inc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatspan_make(lower, upper, lower_inc, upper_inc));
 
         public static IntPtr intset_make(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intset_make(values, count));
 
-        public static IntPtr intspan_make(int lower, int upper, int lower_inc, int upper_inc)
+        public static IntPtr intspan_make(int lower, int upper, bool lower_inc, bool upper_inc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intspan_make(lower, upper, lower_inc, upper_inc));
 
         public static IntPtr set_copy(IntPtr s)
@@ -430,7 +431,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tstzset_make(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzset_make(values, count));
 
-        public static IntPtr tstzspan_make(long lower, long upper, int lower_inc, int upper_inc)
+        public static IntPtr tstzspan_make(long lower, long upper, bool lower_inc, bool upper_inc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspan_make(lower, upper, lower_inc, upper_inc));
 
         public static IntPtr bigint_to_set(long i)
@@ -532,11 +533,17 @@ namespace MEOS.NET.Internal
         public static long bigintset_start_value(IntPtr s)
             => SafeExecution<long>(() => MEOSExternalFunctions.bigintset_start_value(s));
 
-        public static int bigintset_value_n(IntPtr s, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.bigintset_value_n(s, n, result));
+        public static bool bigintset_value_n(IntPtr s, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.bigintset_value_n(s, n, result));
 
-        public static IntPtr bigintset_values(IntPtr s)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigintset_values(s));
+        public static long[] bigintset_values(IntPtr s)
+        {
+            int _n = (int)MEOSExposedFunctions.set_num_values(s);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigintset_values(s));
+            long[] _out = new long[_n];
+            Marshal.Copy(_p, _out, 0, _n);
+            return _out;
+        }
 
         public static long bigintspan_lower(IntPtr s)
             => SafeExecution<long>(() => MEOSExternalFunctions.bigintspan_lower(s));
@@ -553,7 +560,7 @@ namespace MEOS.NET.Internal
         public static long bigintspanset_upper(IntPtr ss)
             => SafeExecution<long>(() => MEOSExternalFunctions.bigintspanset_upper(ss));
 
-        public static long bigintspanset_width(IntPtr ss, int boundspan)
+        public static long bigintspanset_width(IntPtr ss, bool boundspan)
             => SafeExecution<long>(() => MEOSExternalFunctions.bigintspanset_width(ss, boundspan));
 
         public static int dateset_end_value(IntPtr s)
@@ -562,11 +569,17 @@ namespace MEOS.NET.Internal
         public static int dateset_start_value(IntPtr s)
             => SafeExecution<int>(() => MEOSExternalFunctions.dateset_start_value(s));
 
-        public static int dateset_value_n(IntPtr s, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.dateset_value_n(s, n, result));
+        public static bool dateset_value_n(IntPtr s, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.dateset_value_n(s, n, result));
 
-        public static IntPtr dateset_values(IntPtr s)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.dateset_values(s));
+        public static int[] dateset_values(IntPtr s)
+        {
+            int _n = (int)MEOSExposedFunctions.set_num_values(s);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.dateset_values(s));
+            int[] _out = new int[_n];
+            Marshal.Copy(_p, _out, 0, _n);
+            return _out;
+        }
 
         public static IntPtr datespan_duration(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.datespan_duration(s));
@@ -577,13 +590,13 @@ namespace MEOS.NET.Internal
         public static int datespan_upper(IntPtr s)
             => SafeExecution<int>(() => MEOSExternalFunctions.datespan_upper(s));
 
-        public static int datespanset_date_n(IntPtr ss, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.datespanset_date_n(ss, n, result));
+        public static bool datespanset_date_n(IntPtr ss, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.datespanset_date_n(ss, n, result));
 
         public static IntPtr datespanset_dates(IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.datespanset_dates(ss));
 
-        public static IntPtr datespanset_duration(IntPtr ss, int boundspan)
+        public static IntPtr datespanset_duration(IntPtr ss, bool boundspan)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.datespanset_duration(ss, boundspan));
 
         public static int datespanset_end_date(IntPtr ss)
@@ -601,11 +614,17 @@ namespace MEOS.NET.Internal
         public static double floatset_start_value(IntPtr s)
             => SafeExecution<double>(() => MEOSExternalFunctions.floatset_start_value(s));
 
-        public static int floatset_value_n(IntPtr s, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.floatset_value_n(s, n, result));
+        public static bool floatset_value_n(IntPtr s, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.floatset_value_n(s, n, result));
 
-        public static IntPtr floatset_values(IntPtr s)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatset_values(s));
+        public static double[] floatset_values(IntPtr s)
+        {
+            int _n = (int)MEOSExposedFunctions.set_num_values(s);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatset_values(s));
+            double[] _out = new double[_n];
+            Marshal.Copy(_p, _out, 0, _n);
+            return _out;
+        }
 
         public static double floatspan_lower(IntPtr s)
             => SafeExecution<double>(() => MEOSExternalFunctions.floatspan_lower(s));
@@ -622,7 +641,7 @@ namespace MEOS.NET.Internal
         public static double floatspanset_upper(IntPtr ss)
             => SafeExecution<double>(() => MEOSExternalFunctions.floatspanset_upper(ss));
 
-        public static double floatspanset_width(IntPtr ss, int boundspan)
+        public static double floatspanset_width(IntPtr ss, bool boundspan)
             => SafeExecution<double>(() => MEOSExternalFunctions.floatspanset_width(ss, boundspan));
 
         public static int intset_end_value(IntPtr s)
@@ -631,11 +650,17 @@ namespace MEOS.NET.Internal
         public static int intset_start_value(IntPtr s)
             => SafeExecution<int>(() => MEOSExternalFunctions.intset_start_value(s));
 
-        public static int intset_value_n(IntPtr s, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.intset_value_n(s, n, result));
+        public static bool intset_value_n(IntPtr s, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.intset_value_n(s, n, result));
 
-        public static IntPtr intset_values(IntPtr s)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intset_values(s));
+        public static int[] intset_values(IntPtr s)
+        {
+            int _n = (int)MEOSExposedFunctions.set_num_values(s);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.intset_values(s));
+            int[] _out = new int[_n];
+            Marshal.Copy(_p, _out, 0, _n);
+            return _out;
+        }
 
         public static int intspan_lower(IntPtr s)
             => SafeExecution<int>(() => MEOSExternalFunctions.intspan_lower(s));
@@ -652,7 +677,7 @@ namespace MEOS.NET.Internal
         public static int intspanset_upper(IntPtr ss)
             => SafeExecution<int>(() => MEOSExternalFunctions.intspanset_upper(ss));
 
-        public static int intspanset_width(IntPtr ss, int boundspan)
+        public static int intspanset_width(IntPtr ss, bool boundspan)
             => SafeExecution<int>(() => MEOSExternalFunctions.intspanset_width(ss, boundspan));
 
         public static uint set_hash(IntPtr s)
@@ -670,11 +695,11 @@ namespace MEOS.NET.Internal
         public static ulong span_hash_extended(IntPtr s, ulong seed)
             => SafeExecution<ulong>(() => MEOSExternalFunctions.span_hash_extended(s, seed));
 
-        public static int span_lower_inc(IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.span_lower_inc(s));
+        public static bool span_lower_inc(IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.span_lower_inc(s));
 
-        public static int span_upper_inc(IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.span_upper_inc(s));
+        public static bool span_upper_inc(IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.span_upper_inc(s));
 
         public static IntPtr spanset_end_span(IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.spanset_end_span(ss));
@@ -685,8 +710,8 @@ namespace MEOS.NET.Internal
         public static ulong spanset_hash_extended(IntPtr ss, ulong seed)
             => SafeExecution<ulong>(() => MEOSExternalFunctions.spanset_hash_extended(ss, seed));
 
-        public static int spanset_lower_inc(IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.spanset_lower_inc(ss));
+        public static bool spanset_lower_inc(IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.spanset_lower_inc(ss));
 
         public static int spanset_num_spans(IntPtr ss)
             => SafeExecution<int>(() => MEOSExternalFunctions.spanset_num_spans(ss));
@@ -697,14 +722,21 @@ namespace MEOS.NET.Internal
         public static IntPtr spanset_span_n(IntPtr ss, int i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.spanset_span_n(ss, i));
 
-        public static IntPtr spanset_spanarr(IntPtr ss)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.spanset_spanarr(ss));
+        public static IntPtr[] spanset_spanarr(IntPtr ss)
+        {
+            int _n = (int)MEOSExposedFunctions.spanset_num_spans(ss);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.spanset_spanarr(ss));
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+            return _out;
+        }
 
         public static IntPtr spanset_start_span(IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.spanset_start_span(ss));
 
-        public static int spanset_upper_inc(IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.spanset_upper_inc(ss));
+        public static bool spanset_upper_inc(IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.spanset_upper_inc(ss));
 
         public static IntPtr textset_end_value(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.textset_end_value(s));
@@ -712,11 +744,18 @@ namespace MEOS.NET.Internal
         public static IntPtr textset_start_value(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.textset_start_value(s));
 
-        public static int textset_value_n(IntPtr s, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.textset_value_n(s, n, result));
+        public static bool textset_value_n(IntPtr s, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.textset_value_n(s, n, result));
 
-        public static IntPtr textset_values(IntPtr s)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.textset_values(s));
+        public static IntPtr[] textset_values(IntPtr s)
+        {
+            int _n = (int)MEOSExposedFunctions.set_num_values(s);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.textset_values(s));
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+            return _out;
+        }
 
         public static long tstzset_end_value(IntPtr s)
             => SafeExecution<long>(() => MEOSExternalFunctions.tstzset_end_value(s));
@@ -724,11 +763,17 @@ namespace MEOS.NET.Internal
         public static long tstzset_start_value(IntPtr s)
             => SafeExecution<long>(() => MEOSExternalFunctions.tstzset_start_value(s));
 
-        public static int tstzset_value_n(IntPtr s, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tstzset_value_n(s, n, result));
+        public static bool tstzset_value_n(IntPtr s, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tstzset_value_n(s, n, result));
 
-        public static IntPtr tstzset_values(IntPtr s)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzset_values(s));
+        public static long[] tstzset_values(IntPtr s)
+        {
+            int _n = (int)MEOSExposedFunctions.set_num_values(s);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzset_values(s));
+            long[] _out = new long[_n];
+            Marshal.Copy(_p, _out, 0, _n);
+            return _out;
+        }
 
         public static IntPtr tstzspan_duration(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspan_duration(s));
@@ -739,7 +784,7 @@ namespace MEOS.NET.Internal
         public static long tstzspan_upper(IntPtr s)
             => SafeExecution<long>(() => MEOSExternalFunctions.tstzspan_upper(s));
 
-        public static IntPtr tstzspanset_duration(IntPtr ss, int boundspan)
+        public static IntPtr tstzspanset_duration(IntPtr ss, bool boundspan)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspanset_duration(ss, boundspan));
 
         public static long tstzspanset_end_timestamptz(IntPtr ss)
@@ -757,34 +802,34 @@ namespace MEOS.NET.Internal
         public static IntPtr tstzspanset_timestamps(IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspanset_timestamps(ss));
 
-        public static int tstzspanset_timestamptz_n(IntPtr ss, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tstzspanset_timestamptz_n(ss, n, result));
+        public static bool tstzspanset_timestamptz_n(IntPtr ss, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tstzspanset_timestamptz_n(ss, n, result));
 
         public static long tstzspanset_upper(IntPtr ss)
             => SafeExecution<long>(() => MEOSExternalFunctions.tstzspanset_upper(ss));
 
-        public static IntPtr bigintset_shift_scale(IntPtr s, long shift, long width, int hasshift, int haswidth)
+        public static IntPtr bigintset_shift_scale(IntPtr s, long shift, long width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigintset_shift_scale(s, shift, width, hasshift, haswidth));
 
-        public static IntPtr bigintspan_shift_scale(IntPtr s, long shift, long width, int hasshift, int haswidth)
+        public static IntPtr bigintspan_shift_scale(IntPtr s, long shift, long width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigintspan_shift_scale(s, shift, width, hasshift, haswidth));
 
-        public static IntPtr bigintspanset_shift_scale(IntPtr ss, long shift, long width, int hasshift, int haswidth)
+        public static IntPtr bigintspanset_shift_scale(IntPtr ss, long shift, long width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bigintspanset_shift_scale(ss, shift, width, hasshift, haswidth));
 
-        public static IntPtr dateset_shift_scale(IntPtr s, int shift, int width, int hasshift, int haswidth)
+        public static IntPtr dateset_shift_scale(IntPtr s, int shift, int width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.dateset_shift_scale(s, shift, width, hasshift, haswidth));
 
-        public static IntPtr datespan_shift_scale(IntPtr s, int shift, int width, int hasshift, int haswidth)
+        public static IntPtr datespan_shift_scale(IntPtr s, int shift, int width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.datespan_shift_scale(s, shift, width, hasshift, haswidth));
 
-        public static IntPtr datespanset_shift_scale(IntPtr ss, int shift, int width, int hasshift, int haswidth)
+        public static IntPtr datespanset_shift_scale(IntPtr ss, int shift, int width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.datespanset_shift_scale(ss, shift, width, hasshift, haswidth));
 
         public static IntPtr floatset_ceil(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatset_ceil(s));
 
-        public static IntPtr floatset_degrees(IntPtr s, int normalize)
+        public static IntPtr floatset_degrees(IntPtr s, bool normalize)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatset_degrees(s, normalize));
 
         public static IntPtr floatset_floor(IntPtr s)
@@ -793,13 +838,13 @@ namespace MEOS.NET.Internal
         public static IntPtr floatset_radians(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatset_radians(s));
 
-        public static IntPtr floatset_shift_scale(IntPtr s, double shift, double width, int hasshift, int haswidth)
+        public static IntPtr floatset_shift_scale(IntPtr s, double shift, double width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatset_shift_scale(s, shift, width, hasshift, haswidth));
 
         public static IntPtr floatspan_ceil(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatspan_ceil(s));
 
-        public static IntPtr floatspan_degrees(IntPtr s, int normalize)
+        public static IntPtr floatspan_degrees(IntPtr s, bool normalize)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatspan_degrees(s, normalize));
 
         public static IntPtr floatspan_floor(IntPtr s)
@@ -811,7 +856,7 @@ namespace MEOS.NET.Internal
         public static IntPtr floatspan_round(IntPtr s, int maxdd)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatspan_round(s, maxdd));
 
-        public static IntPtr floatspan_shift_scale(IntPtr s, double shift, double width, int hasshift, int haswidth)
+        public static IntPtr floatspan_shift_scale(IntPtr s, double shift, double width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatspan_shift_scale(s, shift, width, hasshift, haswidth));
 
         public static IntPtr floatspanset_ceil(IntPtr ss)
@@ -820,7 +865,7 @@ namespace MEOS.NET.Internal
         public static IntPtr floatspanset_floor(IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatspanset_floor(ss));
 
-        public static IntPtr floatspanset_degrees(IntPtr ss, int normalize)
+        public static IntPtr floatspanset_degrees(IntPtr ss, bool normalize)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatspanset_degrees(ss, normalize));
 
         public static IntPtr floatspanset_radians(IntPtr ss)
@@ -829,16 +874,16 @@ namespace MEOS.NET.Internal
         public static IntPtr floatspanset_round(IntPtr ss, int maxdd)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatspanset_round(ss, maxdd));
 
-        public static IntPtr floatspanset_shift_scale(IntPtr ss, double shift, double width, int hasshift, int haswidth)
+        public static IntPtr floatspanset_shift_scale(IntPtr ss, double shift, double width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.floatspanset_shift_scale(ss, shift, width, hasshift, haswidth));
 
-        public static IntPtr intset_shift_scale(IntPtr s, int shift, int width, int hasshift, int haswidth)
+        public static IntPtr intset_shift_scale(IntPtr s, int shift, int width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intset_shift_scale(s, shift, width, hasshift, haswidth));
 
-        public static IntPtr intspan_shift_scale(IntPtr s, int shift, int width, int hasshift, int haswidth)
+        public static IntPtr intspan_shift_scale(IntPtr s, int shift, int width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intspan_shift_scale(s, shift, width, hasshift, haswidth));
 
-        public static IntPtr intspanset_shift_scale(IntPtr ss, int shift, int width, int hasshift, int haswidth)
+        public static IntPtr intspanset_shift_scale(IntPtr ss, int shift, int width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intspanset_shift_scale(ss, shift, width, hasshift, haswidth));
 
         public static IntPtr tstzspan_expand(IntPtr s, IntPtr interv)
@@ -886,65 +931,65 @@ namespace MEOS.NET.Internal
         public static int set_cmp(IntPtr s1, IntPtr s2)
             => SafeExecution<int>(() => MEOSExternalFunctions.set_cmp(s1, s2));
 
-        public static int set_eq(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.set_eq(s1, s2));
+        public static bool set_eq(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.set_eq(s1, s2));
 
-        public static int set_ge(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.set_ge(s1, s2));
+        public static bool set_ge(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.set_ge(s1, s2));
 
-        public static int set_gt(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.set_gt(s1, s2));
+        public static bool set_gt(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.set_gt(s1, s2));
 
-        public static int set_le(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.set_le(s1, s2));
+        public static bool set_le(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.set_le(s1, s2));
 
-        public static int set_lt(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.set_lt(s1, s2));
+        public static bool set_lt(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.set_lt(s1, s2));
 
-        public static int set_ne(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.set_ne(s1, s2));
+        public static bool set_ne(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.set_ne(s1, s2));
 
         public static int span_cmp(IntPtr s1, IntPtr s2)
             => SafeExecution<int>(() => MEOSExternalFunctions.span_cmp(s1, s2));
 
-        public static int span_eq(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.span_eq(s1, s2));
+        public static bool span_eq(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.span_eq(s1, s2));
 
-        public static int span_ge(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.span_ge(s1, s2));
+        public static bool span_ge(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.span_ge(s1, s2));
 
-        public static int span_gt(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.span_gt(s1, s2));
+        public static bool span_gt(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.span_gt(s1, s2));
 
-        public static int span_le(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.span_le(s1, s2));
+        public static bool span_le(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.span_le(s1, s2));
 
-        public static int span_lt(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.span_lt(s1, s2));
+        public static bool span_lt(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.span_lt(s1, s2));
 
-        public static int span_ne(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.span_ne(s1, s2));
+        public static bool span_ne(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.span_ne(s1, s2));
 
         public static int spanset_cmp(IntPtr ss1, IntPtr ss2)
             => SafeExecution<int>(() => MEOSExternalFunctions.spanset_cmp(ss1, ss2));
 
-        public static int spanset_eq(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.spanset_eq(ss1, ss2));
+        public static bool spanset_eq(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.spanset_eq(ss1, ss2));
 
-        public static int spanset_ge(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.spanset_ge(ss1, ss2));
+        public static bool spanset_ge(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.spanset_ge(ss1, ss2));
 
-        public static int spanset_gt(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.spanset_gt(ss1, ss2));
+        public static bool spanset_gt(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.spanset_gt(ss1, ss2));
 
-        public static int spanset_le(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.spanset_le(ss1, ss2));
+        public static bool spanset_le(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.spanset_le(ss1, ss2));
 
-        public static int spanset_lt(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.spanset_lt(ss1, ss2));
+        public static bool spanset_lt(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.spanset_lt(ss1, ss2));
 
-        public static int spanset_ne(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.spanset_ne(ss1, ss2));
+        public static bool spanset_ne(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.spanset_ne(ss1, ss2));
 
         public static IntPtr set_spans(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.set_spans(s));
@@ -964,632 +1009,632 @@ namespace MEOS.NET.Internal
         public static IntPtr spanset_split_n_spans(IntPtr ss, int span_count, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.spanset_split_n_spans(ss, span_count, count));
 
-        public static int adjacent_span_bigint(IntPtr s, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_span_bigint(s, i));
+        public static bool adjacent_span_bigint(IntPtr s, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_span_bigint(s, i));
 
-        public static int adjacent_span_date(IntPtr s, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_span_date(s, d));
+        public static bool adjacent_span_date(IntPtr s, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_span_date(s, d));
 
-        public static int adjacent_span_float(IntPtr s, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_span_float(s, d));
+        public static bool adjacent_span_float(IntPtr s, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_span_float(s, d));
 
-        public static int adjacent_span_int(IntPtr s, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_span_int(s, i));
+        public static bool adjacent_span_int(IntPtr s, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_span_int(s, i));
 
-        public static int adjacent_span_span(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_span_span(s1, s2));
+        public static bool adjacent_span_span(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_span_span(s1, s2));
 
-        public static int adjacent_span_spanset(IntPtr s, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_span_spanset(s, ss));
+        public static bool adjacent_span_spanset(IntPtr s, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_span_spanset(s, ss));
 
-        public static int adjacent_span_timestamptz(IntPtr s, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_span_timestamptz(s, t));
+        public static bool adjacent_span_timestamptz(IntPtr s, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_span_timestamptz(s, t));
 
-        public static int adjacent_spanset_bigint(IntPtr ss, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_spanset_bigint(ss, i));
+        public static bool adjacent_spanset_bigint(IntPtr ss, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_spanset_bigint(ss, i));
 
-        public static int adjacent_spanset_date(IntPtr ss, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_spanset_date(ss, d));
+        public static bool adjacent_spanset_date(IntPtr ss, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_spanset_date(ss, d));
 
-        public static int adjacent_spanset_float(IntPtr ss, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_spanset_float(ss, d));
+        public static bool adjacent_spanset_float(IntPtr ss, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_spanset_float(ss, d));
 
-        public static int adjacent_spanset_int(IntPtr ss, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_spanset_int(ss, i));
+        public static bool adjacent_spanset_int(IntPtr ss, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_spanset_int(ss, i));
 
-        public static int adjacent_spanset_timestamptz(IntPtr ss, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_spanset_timestamptz(ss, t));
+        public static bool adjacent_spanset_timestamptz(IntPtr ss, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_spanset_timestamptz(ss, t));
 
-        public static int adjacent_spanset_span(IntPtr ss, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_spanset_span(ss, s));
+        public static bool adjacent_spanset_span(IntPtr ss, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_spanset_span(ss, s));
 
-        public static int adjacent_spanset_spanset(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_spanset_spanset(ss1, ss2));
+        public static bool adjacent_spanset_spanset(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_spanset_spanset(ss1, ss2));
 
-        public static int contained_bigint_set(long i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_bigint_set(i, s));
+        public static bool contained_bigint_set(long i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_bigint_set(i, s));
 
-        public static int contained_bigint_span(long i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_bigint_span(i, s));
+        public static bool contained_bigint_span(long i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_bigint_span(i, s));
 
-        public static int contained_bigint_spanset(long i, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_bigint_spanset(i, ss));
+        public static bool contained_bigint_spanset(long i, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_bigint_spanset(i, ss));
 
-        public static int contained_date_set(int d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_date_set(d, s));
+        public static bool contained_date_set(int d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_date_set(d, s));
 
-        public static int contained_date_span(int d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_date_span(d, s));
+        public static bool contained_date_span(int d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_date_span(d, s));
 
-        public static int contained_date_spanset(int d, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_date_spanset(d, ss));
+        public static bool contained_date_spanset(int d, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_date_spanset(d, ss));
 
-        public static int contained_float_set(double d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_float_set(d, s));
+        public static bool contained_float_set(double d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_float_set(d, s));
 
-        public static int contained_float_span(double d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_float_span(d, s));
+        public static bool contained_float_span(double d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_float_span(d, s));
 
-        public static int contained_float_spanset(double d, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_float_spanset(d, ss));
+        public static bool contained_float_spanset(double d, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_float_spanset(d, ss));
 
-        public static int contained_int_set(int i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_int_set(i, s));
+        public static bool contained_int_set(int i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_int_set(i, s));
 
-        public static int contained_int_span(int i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_int_span(i, s));
+        public static bool contained_int_span(int i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_int_span(i, s));
 
-        public static int contained_int_spanset(int i, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_int_spanset(i, ss));
+        public static bool contained_int_spanset(int i, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_int_spanset(i, ss));
 
-        public static int contained_set_set(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_set_set(s1, s2));
+        public static bool contained_set_set(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_set_set(s1, s2));
 
-        public static int contained_span_span(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_span_span(s1, s2));
+        public static bool contained_span_span(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_span_span(s1, s2));
 
-        public static int contained_span_spanset(IntPtr s, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_span_spanset(s, ss));
+        public static bool contained_span_spanset(IntPtr s, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_span_spanset(s, ss));
 
-        public static int contained_spanset_span(IntPtr ss, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_spanset_span(ss, s));
+        public static bool contained_spanset_span(IntPtr ss, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_spanset_span(ss, s));
 
-        public static int contained_spanset_spanset(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_spanset_spanset(ss1, ss2));
+        public static bool contained_spanset_spanset(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_spanset_spanset(ss1, ss2));
 
-        public static int contained_text_set(IntPtr txt, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_text_set(txt, s));
+        public static bool contained_text_set(IntPtr txt, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_text_set(txt, s));
 
-        public static int contained_timestamptz_set(long t, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_timestamptz_set(t, s));
+        public static bool contained_timestamptz_set(long t, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_timestamptz_set(t, s));
 
-        public static int contained_timestamptz_span(long t, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_timestamptz_span(t, s));
+        public static bool contained_timestamptz_span(long t, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_timestamptz_span(t, s));
 
-        public static int contained_timestamptz_spanset(long t, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_timestamptz_spanset(t, ss));
+        public static bool contained_timestamptz_spanset(long t, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_timestamptz_spanset(t, ss));
 
-        public static int contains_set_bigint(IntPtr s, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_set_bigint(s, i));
+        public static bool contains_set_bigint(IntPtr s, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_bigint(s, i));
 
-        public static int contains_set_date(IntPtr s, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_set_date(s, d));
+        public static bool contains_set_date(IntPtr s, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_date(s, d));
 
-        public static int contains_set_float(IntPtr s, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_set_float(s, d));
+        public static bool contains_set_float(IntPtr s, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_float(s, d));
 
-        public static int contains_set_int(IntPtr s, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_set_int(s, i));
+        public static bool contains_set_int(IntPtr s, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_int(s, i));
 
-        public static int contains_set_set(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_set_set(s1, s2));
+        public static bool contains_set_set(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_set(s1, s2));
 
-        public static int contains_set_text(IntPtr s, IntPtr t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_set_text(s, t));
+        public static bool contains_set_text(IntPtr s, IntPtr t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_text(s, t));
 
-        public static int contains_set_timestamptz(IntPtr s, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_set_timestamptz(s, t));
+        public static bool contains_set_timestamptz(IntPtr s, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_timestamptz(s, t));
 
-        public static int contains_span_bigint(IntPtr s, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_span_bigint(s, i));
+        public static bool contains_span_bigint(IntPtr s, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_span_bigint(s, i));
 
-        public static int contains_span_date(IntPtr s, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_span_date(s, d));
+        public static bool contains_span_date(IntPtr s, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_span_date(s, d));
 
-        public static int contains_span_float(IntPtr s, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_span_float(s, d));
+        public static bool contains_span_float(IntPtr s, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_span_float(s, d));
 
-        public static int contains_span_int(IntPtr s, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_span_int(s, i));
+        public static bool contains_span_int(IntPtr s, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_span_int(s, i));
 
-        public static int contains_span_span(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_span_span(s1, s2));
+        public static bool contains_span_span(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_span_span(s1, s2));
 
-        public static int contains_span_spanset(IntPtr s, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_span_spanset(s, ss));
+        public static bool contains_span_spanset(IntPtr s, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_span_spanset(s, ss));
 
-        public static int contains_span_timestamptz(IntPtr s, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_span_timestamptz(s, t));
+        public static bool contains_span_timestamptz(IntPtr s, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_span_timestamptz(s, t));
 
-        public static int contains_spanset_bigint(IntPtr ss, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_spanset_bigint(ss, i));
+        public static bool contains_spanset_bigint(IntPtr ss, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_spanset_bigint(ss, i));
 
-        public static int contains_spanset_date(IntPtr ss, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_spanset_date(ss, d));
+        public static bool contains_spanset_date(IntPtr ss, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_spanset_date(ss, d));
 
-        public static int contains_spanset_float(IntPtr ss, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_spanset_float(ss, d));
+        public static bool contains_spanset_float(IntPtr ss, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_spanset_float(ss, d));
 
-        public static int contains_spanset_int(IntPtr ss, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_spanset_int(ss, i));
+        public static bool contains_spanset_int(IntPtr ss, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_spanset_int(ss, i));
 
-        public static int contains_spanset_span(IntPtr ss, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_spanset_span(ss, s));
+        public static bool contains_spanset_span(IntPtr ss, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_spanset_span(ss, s));
 
-        public static int contains_spanset_spanset(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_spanset_spanset(ss1, ss2));
+        public static bool contains_spanset_spanset(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_spanset_spanset(ss1, ss2));
 
-        public static int contains_spanset_timestamptz(IntPtr ss, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_spanset_timestamptz(ss, t));
+        public static bool contains_spanset_timestamptz(IntPtr ss, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_spanset_timestamptz(ss, t));
 
-        public static int overlaps_set_set(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_set_set(s1, s2));
+        public static bool overlaps_set_set(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_set_set(s1, s2));
 
-        public static int overlaps_span_span(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_span_span(s1, s2));
+        public static bool overlaps_span_span(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_span_span(s1, s2));
 
-        public static int overlaps_span_spanset(IntPtr s, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_span_spanset(s, ss));
+        public static bool overlaps_span_spanset(IntPtr s, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_span_spanset(s, ss));
 
-        public static int overlaps_spanset_span(IntPtr ss, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_spanset_span(ss, s));
+        public static bool overlaps_spanset_span(IntPtr ss, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_spanset_span(ss, s));
 
-        public static int overlaps_spanset_spanset(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_spanset_spanset(ss1, ss2));
+        public static bool overlaps_spanset_spanset(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_spanset_spanset(ss1, ss2));
 
-        public static int after_date_set(int d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_date_set(d, s));
+        public static bool after_date_set(int d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_date_set(d, s));
 
-        public static int after_date_span(int d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_date_span(d, s));
+        public static bool after_date_span(int d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_date_span(d, s));
 
-        public static int after_date_spanset(int d, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_date_spanset(d, ss));
+        public static bool after_date_spanset(int d, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_date_spanset(d, ss));
 
-        public static int after_set_date(IntPtr s, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_set_date(s, d));
+        public static bool after_set_date(IntPtr s, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_set_date(s, d));
 
-        public static int after_set_timestamptz(IntPtr s, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_set_timestamptz(s, t));
+        public static bool after_set_timestamptz(IntPtr s, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_set_timestamptz(s, t));
 
-        public static int after_span_date(IntPtr s, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_span_date(s, d));
+        public static bool after_span_date(IntPtr s, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_span_date(s, d));
 
-        public static int after_span_timestamptz(IntPtr s, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_span_timestamptz(s, t));
+        public static bool after_span_timestamptz(IntPtr s, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_span_timestamptz(s, t));
 
-        public static int after_spanset_date(IntPtr ss, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_spanset_date(ss, d));
+        public static bool after_spanset_date(IntPtr ss, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_spanset_date(ss, d));
 
-        public static int after_spanset_timestamptz(IntPtr ss, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_spanset_timestamptz(ss, t));
+        public static bool after_spanset_timestamptz(IntPtr ss, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_spanset_timestamptz(ss, t));
 
-        public static int after_timestamptz_set(long t, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_timestamptz_set(t, s));
+        public static bool after_timestamptz_set(long t, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_timestamptz_set(t, s));
 
-        public static int after_timestamptz_span(long t, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_timestamptz_span(t, s));
+        public static bool after_timestamptz_span(long t, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_timestamptz_span(t, s));
 
-        public static int after_timestamptz_spanset(long t, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_timestamptz_spanset(t, ss));
+        public static bool after_timestamptz_spanset(long t, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_timestamptz_spanset(t, ss));
 
-        public static int before_date_set(int d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_date_set(d, s));
+        public static bool before_date_set(int d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_date_set(d, s));
 
-        public static int before_date_span(int d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_date_span(d, s));
+        public static bool before_date_span(int d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_date_span(d, s));
 
-        public static int before_date_spanset(int d, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_date_spanset(d, ss));
+        public static bool before_date_spanset(int d, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_date_spanset(d, ss));
 
-        public static int before_set_date(IntPtr s, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_set_date(s, d));
+        public static bool before_set_date(IntPtr s, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_set_date(s, d));
 
-        public static int before_set_timestamptz(IntPtr s, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_set_timestamptz(s, t));
+        public static bool before_set_timestamptz(IntPtr s, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_set_timestamptz(s, t));
 
-        public static int before_span_date(IntPtr s, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_span_date(s, d));
+        public static bool before_span_date(IntPtr s, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_span_date(s, d));
 
-        public static int before_span_timestamptz(IntPtr s, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_span_timestamptz(s, t));
+        public static bool before_span_timestamptz(IntPtr s, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_span_timestamptz(s, t));
 
-        public static int before_spanset_date(IntPtr ss, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_spanset_date(ss, d));
+        public static bool before_spanset_date(IntPtr ss, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_spanset_date(ss, d));
 
-        public static int before_spanset_timestamptz(IntPtr ss, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_spanset_timestamptz(ss, t));
+        public static bool before_spanset_timestamptz(IntPtr ss, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_spanset_timestamptz(ss, t));
 
-        public static int before_timestamptz_set(long t, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_timestamptz_set(t, s));
+        public static bool before_timestamptz_set(long t, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_timestamptz_set(t, s));
 
-        public static int before_timestamptz_span(long t, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_timestamptz_span(t, s));
+        public static bool before_timestamptz_span(long t, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_timestamptz_span(t, s));
 
-        public static int before_timestamptz_spanset(long t, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_timestamptz_spanset(t, ss));
+        public static bool before_timestamptz_spanset(long t, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_timestamptz_spanset(t, ss));
 
-        public static int left_bigint_set(long i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_bigint_set(i, s));
+        public static bool left_bigint_set(long i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_bigint_set(i, s));
 
-        public static int left_bigint_span(long i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_bigint_span(i, s));
+        public static bool left_bigint_span(long i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_bigint_span(i, s));
 
-        public static int left_bigint_spanset(long i, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_bigint_spanset(i, ss));
+        public static bool left_bigint_spanset(long i, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_bigint_spanset(i, ss));
 
-        public static int left_float_set(double d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_float_set(d, s));
+        public static bool left_float_set(double d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_float_set(d, s));
 
-        public static int left_float_span(double d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_float_span(d, s));
+        public static bool left_float_span(double d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_float_span(d, s));
 
-        public static int left_float_spanset(double d, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_float_spanset(d, ss));
+        public static bool left_float_spanset(double d, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_float_spanset(d, ss));
 
-        public static int left_int_set(int i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_int_set(i, s));
+        public static bool left_int_set(int i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_int_set(i, s));
 
-        public static int left_int_span(int i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_int_span(i, s));
+        public static bool left_int_span(int i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_int_span(i, s));
 
-        public static int left_int_spanset(int i, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_int_spanset(i, ss));
+        public static bool left_int_spanset(int i, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_int_spanset(i, ss));
 
-        public static int left_set_bigint(IntPtr s, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_set_bigint(s, i));
+        public static bool left_set_bigint(IntPtr s, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_set_bigint(s, i));
 
-        public static int left_set_float(IntPtr s, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_set_float(s, d));
+        public static bool left_set_float(IntPtr s, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_set_float(s, d));
 
-        public static int left_set_int(IntPtr s, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_set_int(s, i));
+        public static bool left_set_int(IntPtr s, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_set_int(s, i));
 
-        public static int left_set_set(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_set_set(s1, s2));
+        public static bool left_set_set(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_set_set(s1, s2));
 
-        public static int left_set_text(IntPtr s, IntPtr txt)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_set_text(s, txt));
+        public static bool left_set_text(IntPtr s, IntPtr txt)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_set_text(s, txt));
 
-        public static int left_span_bigint(IntPtr s, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_span_bigint(s, i));
+        public static bool left_span_bigint(IntPtr s, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_span_bigint(s, i));
 
-        public static int left_span_float(IntPtr s, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_span_float(s, d));
+        public static bool left_span_float(IntPtr s, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_span_float(s, d));
 
-        public static int left_span_int(IntPtr s, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_span_int(s, i));
+        public static bool left_span_int(IntPtr s, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_span_int(s, i));
 
-        public static int left_span_span(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_span_span(s1, s2));
+        public static bool left_span_span(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_span_span(s1, s2));
 
-        public static int left_span_spanset(IntPtr s, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_span_spanset(s, ss));
+        public static bool left_span_spanset(IntPtr s, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_span_spanset(s, ss));
 
-        public static int left_spanset_bigint(IntPtr ss, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_spanset_bigint(ss, i));
+        public static bool left_spanset_bigint(IntPtr ss, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_spanset_bigint(ss, i));
 
-        public static int left_spanset_float(IntPtr ss, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_spanset_float(ss, d));
+        public static bool left_spanset_float(IntPtr ss, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_spanset_float(ss, d));
 
-        public static int left_spanset_int(IntPtr ss, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_spanset_int(ss, i));
+        public static bool left_spanset_int(IntPtr ss, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_spanset_int(ss, i));
 
-        public static int left_spanset_span(IntPtr ss, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_spanset_span(ss, s));
+        public static bool left_spanset_span(IntPtr ss, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_spanset_span(ss, s));
 
-        public static int left_spanset_spanset(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_spanset_spanset(ss1, ss2));
+        public static bool left_spanset_spanset(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_spanset_spanset(ss1, ss2));
 
-        public static int left_text_set(IntPtr txt, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_text_set(txt, s));
+        public static bool left_text_set(IntPtr txt, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_text_set(txt, s));
 
-        public static int overafter_date_set(int d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_date_set(d, s));
+        public static bool overafter_date_set(int d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_date_set(d, s));
 
-        public static int overafter_date_span(int d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_date_span(d, s));
+        public static bool overafter_date_span(int d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_date_span(d, s));
 
-        public static int overafter_date_spanset(int d, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_date_spanset(d, ss));
+        public static bool overafter_date_spanset(int d, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_date_spanset(d, ss));
 
-        public static int overafter_set_date(IntPtr s, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_set_date(s, d));
+        public static bool overafter_set_date(IntPtr s, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_set_date(s, d));
 
-        public static int overafter_set_timestamptz(IntPtr s, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_set_timestamptz(s, t));
+        public static bool overafter_set_timestamptz(IntPtr s, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_set_timestamptz(s, t));
 
-        public static int overafter_span_date(IntPtr s, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_span_date(s, d));
+        public static bool overafter_span_date(IntPtr s, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_span_date(s, d));
 
-        public static int overafter_span_timestamptz(IntPtr s, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_span_timestamptz(s, t));
+        public static bool overafter_span_timestamptz(IntPtr s, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_span_timestamptz(s, t));
 
-        public static int overafter_spanset_date(IntPtr ss, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_spanset_date(ss, d));
+        public static bool overafter_spanset_date(IntPtr ss, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_spanset_date(ss, d));
 
-        public static int overafter_spanset_timestamptz(IntPtr ss, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_spanset_timestamptz(ss, t));
+        public static bool overafter_spanset_timestamptz(IntPtr ss, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_spanset_timestamptz(ss, t));
 
-        public static int overafter_timestamptz_set(long t, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_timestamptz_set(t, s));
+        public static bool overafter_timestamptz_set(long t, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_timestamptz_set(t, s));
 
-        public static int overafter_timestamptz_span(long t, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_timestamptz_span(t, s));
+        public static bool overafter_timestamptz_span(long t, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_timestamptz_span(t, s));
 
-        public static int overafter_timestamptz_spanset(long t, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_timestamptz_spanset(t, ss));
+        public static bool overafter_timestamptz_spanset(long t, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_timestamptz_spanset(t, ss));
 
-        public static int overbefore_date_set(int d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_date_set(d, s));
+        public static bool overbefore_date_set(int d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_date_set(d, s));
 
-        public static int overbefore_date_span(int d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_date_span(d, s));
+        public static bool overbefore_date_span(int d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_date_span(d, s));
 
-        public static int overbefore_date_spanset(int d, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_date_spanset(d, ss));
+        public static bool overbefore_date_spanset(int d, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_date_spanset(d, ss));
 
-        public static int overbefore_set_date(IntPtr s, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_set_date(s, d));
+        public static bool overbefore_set_date(IntPtr s, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_set_date(s, d));
 
-        public static int overbefore_set_timestamptz(IntPtr s, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_set_timestamptz(s, t));
+        public static bool overbefore_set_timestamptz(IntPtr s, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_set_timestamptz(s, t));
 
-        public static int overbefore_span_date(IntPtr s, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_span_date(s, d));
+        public static bool overbefore_span_date(IntPtr s, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_span_date(s, d));
 
-        public static int overbefore_span_timestamptz(IntPtr s, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_span_timestamptz(s, t));
+        public static bool overbefore_span_timestamptz(IntPtr s, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_span_timestamptz(s, t));
 
-        public static int overbefore_spanset_date(IntPtr ss, int d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_spanset_date(ss, d));
+        public static bool overbefore_spanset_date(IntPtr ss, int d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_spanset_date(ss, d));
 
-        public static int overbefore_spanset_timestamptz(IntPtr ss, long t)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_spanset_timestamptz(ss, t));
+        public static bool overbefore_spanset_timestamptz(IntPtr ss, long t)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_spanset_timestamptz(ss, t));
 
-        public static int overbefore_timestamptz_set(long t, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_timestamptz_set(t, s));
+        public static bool overbefore_timestamptz_set(long t, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_timestamptz_set(t, s));
 
-        public static int overbefore_timestamptz_span(long t, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_timestamptz_span(t, s));
+        public static bool overbefore_timestamptz_span(long t, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_timestamptz_span(t, s));
 
-        public static int overbefore_timestamptz_spanset(long t, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_timestamptz_spanset(t, ss));
+        public static bool overbefore_timestamptz_spanset(long t, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_timestamptz_spanset(t, ss));
 
-        public static int overleft_bigint_set(long i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_bigint_set(i, s));
+        public static bool overleft_bigint_set(long i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_bigint_set(i, s));
 
-        public static int overleft_bigint_span(long i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_bigint_span(i, s));
+        public static bool overleft_bigint_span(long i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_bigint_span(i, s));
 
-        public static int overleft_bigint_spanset(long i, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_bigint_spanset(i, ss));
+        public static bool overleft_bigint_spanset(long i, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_bigint_spanset(i, ss));
 
-        public static int overleft_float_set(double d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_float_set(d, s));
+        public static bool overleft_float_set(double d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_float_set(d, s));
 
-        public static int overleft_float_span(double d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_float_span(d, s));
+        public static bool overleft_float_span(double d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_float_span(d, s));
 
-        public static int overleft_float_spanset(double d, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_float_spanset(d, ss));
+        public static bool overleft_float_spanset(double d, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_float_spanset(d, ss));
 
-        public static int overleft_int_set(int i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_int_set(i, s));
+        public static bool overleft_int_set(int i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_int_set(i, s));
 
-        public static int overleft_int_span(int i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_int_span(i, s));
+        public static bool overleft_int_span(int i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_int_span(i, s));
 
-        public static int overleft_int_spanset(int i, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_int_spanset(i, ss));
+        public static bool overleft_int_spanset(int i, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_int_spanset(i, ss));
 
-        public static int overleft_set_bigint(IntPtr s, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_set_bigint(s, i));
+        public static bool overleft_set_bigint(IntPtr s, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_set_bigint(s, i));
 
-        public static int overleft_set_float(IntPtr s, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_set_float(s, d));
+        public static bool overleft_set_float(IntPtr s, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_set_float(s, d));
 
-        public static int overleft_set_int(IntPtr s, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_set_int(s, i));
+        public static bool overleft_set_int(IntPtr s, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_set_int(s, i));
 
-        public static int overleft_set_set(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_set_set(s1, s2));
+        public static bool overleft_set_set(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_set_set(s1, s2));
 
-        public static int overleft_set_text(IntPtr s, IntPtr txt)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_set_text(s, txt));
+        public static bool overleft_set_text(IntPtr s, IntPtr txt)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_set_text(s, txt));
 
-        public static int overleft_span_bigint(IntPtr s, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_span_bigint(s, i));
+        public static bool overleft_span_bigint(IntPtr s, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_span_bigint(s, i));
 
-        public static int overleft_span_float(IntPtr s, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_span_float(s, d));
+        public static bool overleft_span_float(IntPtr s, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_span_float(s, d));
 
-        public static int overleft_span_int(IntPtr s, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_span_int(s, i));
+        public static bool overleft_span_int(IntPtr s, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_span_int(s, i));
 
-        public static int overleft_span_span(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_span_span(s1, s2));
+        public static bool overleft_span_span(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_span_span(s1, s2));
 
-        public static int overleft_span_spanset(IntPtr s, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_span_spanset(s, ss));
+        public static bool overleft_span_spanset(IntPtr s, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_span_spanset(s, ss));
 
-        public static int overleft_spanset_bigint(IntPtr ss, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_spanset_bigint(ss, i));
+        public static bool overleft_spanset_bigint(IntPtr ss, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_spanset_bigint(ss, i));
 
-        public static int overleft_spanset_float(IntPtr ss, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_spanset_float(ss, d));
+        public static bool overleft_spanset_float(IntPtr ss, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_spanset_float(ss, d));
 
-        public static int overleft_spanset_int(IntPtr ss, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_spanset_int(ss, i));
+        public static bool overleft_spanset_int(IntPtr ss, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_spanset_int(ss, i));
 
-        public static int overleft_spanset_span(IntPtr ss, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_spanset_span(ss, s));
+        public static bool overleft_spanset_span(IntPtr ss, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_spanset_span(ss, s));
 
-        public static int overleft_spanset_spanset(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_spanset_spanset(ss1, ss2));
+        public static bool overleft_spanset_spanset(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_spanset_spanset(ss1, ss2));
 
-        public static int overleft_text_set(IntPtr txt, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_text_set(txt, s));
+        public static bool overleft_text_set(IntPtr txt, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_text_set(txt, s));
 
-        public static int overright_bigint_set(long i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_bigint_set(i, s));
+        public static bool overright_bigint_set(long i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_bigint_set(i, s));
 
-        public static int overright_bigint_span(long i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_bigint_span(i, s));
+        public static bool overright_bigint_span(long i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_bigint_span(i, s));
 
-        public static int overright_bigint_spanset(long i, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_bigint_spanset(i, ss));
+        public static bool overright_bigint_spanset(long i, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_bigint_spanset(i, ss));
 
-        public static int overright_float_set(double d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_float_set(d, s));
+        public static bool overright_float_set(double d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_float_set(d, s));
 
-        public static int overright_float_span(double d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_float_span(d, s));
+        public static bool overright_float_span(double d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_float_span(d, s));
 
-        public static int overright_float_spanset(double d, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_float_spanset(d, ss));
+        public static bool overright_float_spanset(double d, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_float_spanset(d, ss));
 
-        public static int overright_int_set(int i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_int_set(i, s));
+        public static bool overright_int_set(int i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_int_set(i, s));
 
-        public static int overright_int_span(int i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_int_span(i, s));
+        public static bool overright_int_span(int i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_int_span(i, s));
 
-        public static int overright_int_spanset(int i, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_int_spanset(i, ss));
+        public static bool overright_int_spanset(int i, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_int_spanset(i, ss));
 
-        public static int overright_set_bigint(IntPtr s, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_set_bigint(s, i));
+        public static bool overright_set_bigint(IntPtr s, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_set_bigint(s, i));
 
-        public static int overright_set_float(IntPtr s, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_set_float(s, d));
+        public static bool overright_set_float(IntPtr s, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_set_float(s, d));
 
-        public static int overright_set_int(IntPtr s, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_set_int(s, i));
+        public static bool overright_set_int(IntPtr s, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_set_int(s, i));
 
-        public static int overright_set_set(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_set_set(s1, s2));
+        public static bool overright_set_set(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_set_set(s1, s2));
 
-        public static int overright_set_text(IntPtr s, IntPtr txt)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_set_text(s, txt));
+        public static bool overright_set_text(IntPtr s, IntPtr txt)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_set_text(s, txt));
 
-        public static int overright_span_bigint(IntPtr s, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_span_bigint(s, i));
+        public static bool overright_span_bigint(IntPtr s, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_span_bigint(s, i));
 
-        public static int overright_span_float(IntPtr s, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_span_float(s, d));
+        public static bool overright_span_float(IntPtr s, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_span_float(s, d));
 
-        public static int overright_span_int(IntPtr s, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_span_int(s, i));
+        public static bool overright_span_int(IntPtr s, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_span_int(s, i));
 
-        public static int overright_span_span(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_span_span(s1, s2));
+        public static bool overright_span_span(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_span_span(s1, s2));
 
-        public static int overright_span_spanset(IntPtr s, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_span_spanset(s, ss));
+        public static bool overright_span_spanset(IntPtr s, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_span_spanset(s, ss));
 
-        public static int overright_spanset_bigint(IntPtr ss, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_spanset_bigint(ss, i));
+        public static bool overright_spanset_bigint(IntPtr ss, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_spanset_bigint(ss, i));
 
-        public static int overright_spanset_float(IntPtr ss, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_spanset_float(ss, d));
+        public static bool overright_spanset_float(IntPtr ss, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_spanset_float(ss, d));
 
-        public static int overright_spanset_int(IntPtr ss, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_spanset_int(ss, i));
+        public static bool overright_spanset_int(IntPtr ss, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_spanset_int(ss, i));
 
-        public static int overright_spanset_span(IntPtr ss, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_spanset_span(ss, s));
+        public static bool overright_spanset_span(IntPtr ss, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_spanset_span(ss, s));
 
-        public static int overright_spanset_spanset(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_spanset_spanset(ss1, ss2));
+        public static bool overright_spanset_spanset(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_spanset_spanset(ss1, ss2));
 
-        public static int overright_text_set(IntPtr txt, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_text_set(txt, s));
+        public static bool overright_text_set(IntPtr txt, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_text_set(txt, s));
 
-        public static int right_bigint_set(long i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_bigint_set(i, s));
+        public static bool right_bigint_set(long i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_bigint_set(i, s));
 
-        public static int right_bigint_span(long i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_bigint_span(i, s));
+        public static bool right_bigint_span(long i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_bigint_span(i, s));
 
-        public static int right_bigint_spanset(long i, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_bigint_spanset(i, ss));
+        public static bool right_bigint_spanset(long i, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_bigint_spanset(i, ss));
 
-        public static int right_float_set(double d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_float_set(d, s));
+        public static bool right_float_set(double d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_float_set(d, s));
 
-        public static int right_float_span(double d, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_float_span(d, s));
+        public static bool right_float_span(double d, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_float_span(d, s));
 
-        public static int right_float_spanset(double d, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_float_spanset(d, ss));
+        public static bool right_float_spanset(double d, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_float_spanset(d, ss));
 
-        public static int right_int_set(int i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_int_set(i, s));
+        public static bool right_int_set(int i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_int_set(i, s));
 
-        public static int right_int_span(int i, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_int_span(i, s));
+        public static bool right_int_span(int i, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_int_span(i, s));
 
-        public static int right_int_spanset(int i, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_int_spanset(i, ss));
+        public static bool right_int_spanset(int i, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_int_spanset(i, ss));
 
-        public static int right_set_bigint(IntPtr s, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_set_bigint(s, i));
+        public static bool right_set_bigint(IntPtr s, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_set_bigint(s, i));
 
-        public static int right_set_float(IntPtr s, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_set_float(s, d));
+        public static bool right_set_float(IntPtr s, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_set_float(s, d));
 
-        public static int right_set_int(IntPtr s, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_set_int(s, i));
+        public static bool right_set_int(IntPtr s, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_set_int(s, i));
 
-        public static int right_set_set(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_set_set(s1, s2));
+        public static bool right_set_set(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_set_set(s1, s2));
 
-        public static int right_set_text(IntPtr s, IntPtr txt)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_set_text(s, txt));
+        public static bool right_set_text(IntPtr s, IntPtr txt)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_set_text(s, txt));
 
-        public static int right_span_bigint(IntPtr s, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_span_bigint(s, i));
+        public static bool right_span_bigint(IntPtr s, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_span_bigint(s, i));
 
-        public static int right_span_float(IntPtr s, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_span_float(s, d));
+        public static bool right_span_float(IntPtr s, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_span_float(s, d));
 
-        public static int right_span_int(IntPtr s, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_span_int(s, i));
+        public static bool right_span_int(IntPtr s, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_span_int(s, i));
 
-        public static int right_span_span(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_span_span(s1, s2));
+        public static bool right_span_span(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_span_span(s1, s2));
 
-        public static int right_span_spanset(IntPtr s, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_span_spanset(s, ss));
+        public static bool right_span_spanset(IntPtr s, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_span_spanset(s, ss));
 
-        public static int right_spanset_bigint(IntPtr ss, long i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_spanset_bigint(ss, i));
+        public static bool right_spanset_bigint(IntPtr ss, long i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_spanset_bigint(ss, i));
 
-        public static int right_spanset_float(IntPtr ss, double d)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_spanset_float(ss, d));
+        public static bool right_spanset_float(IntPtr ss, double d)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_spanset_float(ss, d));
 
-        public static int right_spanset_int(IntPtr ss, int i)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_spanset_int(ss, i));
+        public static bool right_spanset_int(IntPtr ss, int i)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_spanset_int(ss, i));
 
-        public static int right_spanset_span(IntPtr ss, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_spanset_span(ss, s));
+        public static bool right_spanset_span(IntPtr ss, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_spanset_span(ss, s));
 
-        public static int right_spanset_spanset(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_spanset_spanset(ss1, ss2));
+        public static bool right_spanset_spanset(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_spanset_spanset(ss1, ss2));
 
-        public static int right_text_set(IntPtr txt, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_text_set(txt, s));
+        public static bool right_text_set(IntPtr txt, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_text_set(txt, s));
 
         public static IntPtr intersection_bigint_set(long i, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_bigint_set(i, s));
@@ -2110,7 +2155,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tbox_from_hexwkb(string hexwkb)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tbox_from_hexwkb(hexwkb));
 
-        public static IntPtr tbox_from_wkb(IntPtr wkb, int size)
+        public static IntPtr tbox_from_wkb(IntPtr wkb, ulong size)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tbox_from_wkb(wkb, size));
 
         public static IntPtr tbox_in(string str)
@@ -2176,47 +2221,47 @@ namespace MEOS.NET.Internal
         public static ulong tbox_hash_extended(IntPtr box, ulong seed)
             => SafeExecution<ulong>(() => MEOSExternalFunctions.tbox_hash_extended(box, seed));
 
-        public static int tbox_hast(IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_hast(box));
+        public static bool tbox_hast(IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_hast(box));
 
-        public static int tbox_hasx(IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_hasx(box));
+        public static bool tbox_hasx(IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_hasx(box));
 
-        public static int tbox_tmax(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_tmax(box, result));
+        public static bool tbox_tmax(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_tmax(box, result));
 
-        public static int tbox_tmax_inc(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_tmax_inc(box, result));
+        public static bool tbox_tmax_inc(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_tmax_inc(box, result));
 
-        public static int tbox_tmin(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_tmin(box, result));
+        public static bool tbox_tmin(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_tmin(box, result));
 
-        public static int tbox_tmin_inc(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_tmin_inc(box, result));
+        public static bool tbox_tmin_inc(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_tmin_inc(box, result));
 
-        public static int tbox_xmax(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_xmax(box, result));
+        public static bool tbox_xmax(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_xmax(box, result));
 
-        public static int tbox_xmax_inc(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_xmax_inc(box, result));
+        public static bool tbox_xmax_inc(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_xmax_inc(box, result));
 
-        public static int tbox_xmin(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_xmin(box, result));
+        public static bool tbox_xmin(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_xmin(box, result));
 
-        public static int tbox_xmin_inc(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_xmin_inc(box, result));
+        public static bool tbox_xmin_inc(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_xmin_inc(box, result));
 
-        public static int tboxfloat_xmax(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tboxfloat_xmax(box, result));
+        public static bool tboxfloat_xmax(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tboxfloat_xmax(box, result));
 
-        public static int tboxfloat_xmin(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tboxfloat_xmin(box, result));
+        public static bool tboxfloat_xmin(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tboxfloat_xmin(box, result));
 
-        public static int tboxint_xmax(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tboxint_xmax(box, result));
+        public static bool tboxint_xmax(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tboxint_xmax(box, result));
 
-        public static int tboxint_xmin(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tboxint_xmin(box, result));
+        public static bool tboxint_xmin(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tboxint_xmin(box, result));
 
         public static IntPtr tbox_expand_time(IntPtr box, IntPtr interv)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tbox_expand_time(box, interv));
@@ -2230,80 +2275,80 @@ namespace MEOS.NET.Internal
         public static IntPtr tfloatbox_expand(IntPtr box, double d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloatbox_expand(box, d));
 
-        public static IntPtr tfloatbox_shift_scale(IntPtr box, double shift, double width, int hasshift, int haswidth)
+        public static IntPtr tfloatbox_shift_scale(IntPtr box, double shift, double width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloatbox_shift_scale(box, shift, width, hasshift, haswidth));
 
         public static IntPtr tintbox_expand(IntPtr box, int i)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tintbox_expand(box, i));
 
-        public static IntPtr tintbox_shift_scale(IntPtr box, int shift, int width, int hasshift, int haswidth)
+        public static IntPtr tintbox_shift_scale(IntPtr box, int shift, int width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tintbox_shift_scale(box, shift, width, hasshift, haswidth));
 
-        public static IntPtr union_tbox_tbox(IntPtr box1, IntPtr box2, int strict)
+        public static IntPtr union_tbox_tbox(IntPtr box1, IntPtr box2, bool strict)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_tbox_tbox(box1, box2, strict));
 
         public static IntPtr intersection_tbox_tbox(IntPtr box1, IntPtr box2)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_tbox_tbox(box1, box2));
 
-        public static int adjacent_tbox_tbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_tbox_tbox(box1, box2));
+        public static bool adjacent_tbox_tbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_tbox_tbox(box1, box2));
 
-        public static int contained_tbox_tbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_tbox_tbox(box1, box2));
+        public static bool contained_tbox_tbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_tbox_tbox(box1, box2));
 
-        public static int contains_tbox_tbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_tbox_tbox(box1, box2));
+        public static bool contains_tbox_tbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_tbox_tbox(box1, box2));
 
-        public static int overlaps_tbox_tbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_tbox_tbox(box1, box2));
+        public static bool overlaps_tbox_tbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_tbox_tbox(box1, box2));
 
-        public static int same_tbox_tbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.same_tbox_tbox(box1, box2));
+        public static bool same_tbox_tbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.same_tbox_tbox(box1, box2));
 
-        public static int after_tbox_tbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_tbox_tbox(box1, box2));
+        public static bool after_tbox_tbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_tbox_tbox(box1, box2));
 
-        public static int before_tbox_tbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_tbox_tbox(box1, box2));
+        public static bool before_tbox_tbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_tbox_tbox(box1, box2));
 
-        public static int left_tbox_tbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_tbox_tbox(box1, box2));
+        public static bool left_tbox_tbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_tbox_tbox(box1, box2));
 
-        public static int overafter_tbox_tbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_tbox_tbox(box1, box2));
+        public static bool overafter_tbox_tbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_tbox_tbox(box1, box2));
 
-        public static int overbefore_tbox_tbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_tbox_tbox(box1, box2));
+        public static bool overbefore_tbox_tbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_tbox_tbox(box1, box2));
 
-        public static int overleft_tbox_tbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_tbox_tbox(box1, box2));
+        public static bool overleft_tbox_tbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_tbox_tbox(box1, box2));
 
-        public static int overright_tbox_tbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_tbox_tbox(box1, box2));
+        public static bool overright_tbox_tbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_tbox_tbox(box1, box2));
 
-        public static int right_tbox_tbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_tbox_tbox(box1, box2));
+        public static bool right_tbox_tbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_tbox_tbox(box1, box2));
 
         public static int tbox_cmp(IntPtr box1, IntPtr box2)
             => SafeExecution<int>(() => MEOSExternalFunctions.tbox_cmp(box1, box2));
 
-        public static int tbox_eq(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_eq(box1, box2));
+        public static bool tbox_eq(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_eq(box1, box2));
 
-        public static int tbox_ge(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_ge(box1, box2));
+        public static bool tbox_ge(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_ge(box1, box2));
 
-        public static int tbox_gt(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_gt(box1, box2));
+        public static bool tbox_gt(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_gt(box1, box2));
 
-        public static int tbox_le(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_le(box1, box2));
+        public static bool tbox_le(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_le(box1, box2));
 
-        public static int tbox_lt(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_lt(box1, box2));
+        public static bool tbox_lt(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_lt(box1, box2));
 
-        public static int tbox_ne(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbox_ne(box1, box2));
+        public static bool tbox_ne(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbox_ne(box1, box2));
 
         public static IntPtr tbool_from_mfjson(string str)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tbool_from_mfjson(str));
@@ -2317,7 +2362,7 @@ namespace MEOS.NET.Internal
         public static string temporal_as_hexwkb(IntPtr temp, IntPtr variant, IntPtr size_out)
             => SafeExecution<string>(() => MEOSExternalFunctions.temporal_as_hexwkb(temp, variant, size_out));
 
-        public static string temporal_as_mfjson(IntPtr temp, int with_bbox, int flags, int precision, string srs)
+        public static string temporal_as_mfjson(IntPtr temp, bool with_bbox, int flags, int precision, string srs)
             => SafeExecution<string>(() => MEOSExternalFunctions.temporal_as_mfjson(temp, with_bbox, flags, precision, srs));
 
         public static IntPtr temporal_as_wkb(IntPtr temp, IntPtr variant, IntPtr size_out)
@@ -2326,7 +2371,7 @@ namespace MEOS.NET.Internal
         public static IntPtr temporal_from_hexwkb(string hexwkb)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_from_hexwkb(hexwkb));
 
-        public static IntPtr temporal_from_wkb(IntPtr wkb, int size)
+        public static IntPtr temporal_from_wkb(IntPtr wkb, ulong size)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_from_wkb(wkb, size));
 
         public static IntPtr tfloat_from_mfjson(string str)
@@ -2356,19 +2401,19 @@ namespace MEOS.NET.Internal
         public static string ttext_out(IntPtr temp)
             => SafeExecution<string>(() => MEOSExternalFunctions.ttext_out(temp));
 
-        public static IntPtr tbool_from_base_temp(int b, IntPtr temp)
+        public static IntPtr tbool_from_base_temp(bool b, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tbool_from_base_temp(b, temp));
 
-        public static IntPtr tboolinst_make(int b, long t)
+        public static IntPtr tboolinst_make(bool b, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tboolinst_make(b, t));
 
-        public static IntPtr tboolseq_from_base_tstzset(int b, IntPtr s)
+        public static IntPtr tboolseq_from_base_tstzset(bool b, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tboolseq_from_base_tstzset(b, s));
 
-        public static IntPtr tboolseq_from_base_tstzspan(int b, IntPtr s)
+        public static IntPtr tboolseq_from_base_tstzspan(bool b, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tboolseq_from_base_tstzspan(b, s));
 
-        public static IntPtr tboolseqset_from_base_tstzspanset(int b, IntPtr ss)
+        public static IntPtr tboolseqset_from_base_tstzspanset(bool b, IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tboolseqset_from_base_tstzspanset(b, ss));
 
         public static IntPtr temporal_copy(IntPtr temp)
@@ -2404,10 +2449,10 @@ namespace MEOS.NET.Internal
         public static IntPtr tintseqset_from_base_tstzspanset(int i, IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tintseqset_from_base_tstzspanset(i, ss));
 
-        public static IntPtr tsequence_make(IntPtr instants, int count, int lower_inc, int upper_inc, int interp, int normalize)
+        public static IntPtr tsequence_make(IntPtr instants, int count, bool lower_inc, bool upper_inc, int interp, bool normalize)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_make(instants, count, lower_inc, upper_inc, interp, normalize));
 
-        public static IntPtr tsequenceset_make(IntPtr sequences, int count, int normalize)
+        public static IntPtr tsequenceset_make(IntPtr sequences, int count, bool normalize)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_make(sequences, count, normalize));
 
         public static IntPtr tsequenceset_make_gaps(IntPtr instants, int count, int interp, IntPtr maxt, double maxdist)
@@ -2446,22 +2491,22 @@ namespace MEOS.NET.Internal
         public static IntPtr tnumber_to_tbox(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnumber_to_tbox(temp));
 
-        public static int tbool_end_value(IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbool_end_value(temp));
+        public static bool tbool_end_value(IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbool_end_value(temp));
 
-        public static int tbool_start_value(IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbool_start_value(temp));
+        public static bool tbool_start_value(IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbool_start_value(temp));
 
-        public static int tbool_value_at_timestamptz(IntPtr temp, long t, int strict, IntPtr value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbool_value_at_timestamptz(temp, t, strict, value));
+        public static bool tbool_value_at_timestamptz(IntPtr temp, long t, bool strict, IntPtr value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbool_value_at_timestamptz(temp, t, strict, value));
 
-        public static int tbool_value_n(IntPtr temp, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tbool_value_n(temp, n, result));
+        public static bool tbool_value_n(IntPtr temp, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tbool_value_n(temp, n, result));
 
         public static IntPtr tbool_values(IntPtr temp, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tbool_values(temp, count));
 
-        public static IntPtr temporal_duration(IntPtr temp, int boundspan)
+        public static IntPtr temporal_duration(IntPtr temp, bool boundspan)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_duration(temp, boundspan));
 
         public static IntPtr temporal_end_instant(IntPtr temp)
@@ -2485,8 +2530,8 @@ namespace MEOS.NET.Internal
         public static string temporal_interp(IntPtr temp)
             => SafeExecution<string>(() => MEOSExternalFunctions.temporal_interp(temp));
 
-        public static int temporal_lower_inc(IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_lower_inc(temp));
+        public static bool temporal_lower_inc(IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_lower_inc(temp));
 
         public static IntPtr temporal_max_instant(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_max_instant(temp));
@@ -2503,7 +2548,7 @@ namespace MEOS.NET.Internal
         public static int temporal_num_timestamps(IntPtr temp)
             => SafeExecution<int>(() => MEOSExternalFunctions.temporal_num_timestamps(temp));
 
-        public static IntPtr temporal_segm_duration(IntPtr temp, IntPtr duration, int atleast, int strict)
+        public static IntPtr temporal_segm_duration(IntPtr temp, IntPtr duration, bool atleast, bool strict)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_segm_duration(temp, duration, atleast, strict));
 
         public static IntPtr temporal_segments(IntPtr temp, IntPtr count)
@@ -2536,11 +2581,11 @@ namespace MEOS.NET.Internal
         public static IntPtr temporal_timestamps(IntPtr temp, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_timestamps(temp, count));
 
-        public static int temporal_timestamptz_n(IntPtr temp, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_timestamptz_n(temp, n, result));
+        public static bool temporal_timestamptz_n(IntPtr temp, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_timestamptz_n(temp, n, result));
 
-        public static int temporal_upper_inc(IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_upper_inc(temp));
+        public static bool temporal_upper_inc(IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_upper_inc(temp));
 
         public static double tfloat_avg_value(IntPtr temp)
             => SafeExecution<double>(() => MEOSExternalFunctions.tfloat_avg_value(temp));
@@ -2557,11 +2602,11 @@ namespace MEOS.NET.Internal
         public static double tfloat_start_value(IntPtr temp)
             => SafeExecution<double>(() => MEOSExternalFunctions.tfloat_start_value(temp));
 
-        public static int tfloat_value_at_timestamptz(IntPtr temp, long t, int strict, IntPtr value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tfloat_value_at_timestamptz(temp, t, strict, value));
+        public static bool tfloat_value_at_timestamptz(IntPtr temp, long t, bool strict, IntPtr value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tfloat_value_at_timestamptz(temp, t, strict, value));
 
-        public static int tfloat_value_n(IntPtr temp, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tfloat_value_n(temp, n, result));
+        public static bool tfloat_value_n(IntPtr temp, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tfloat_value_n(temp, n, result));
 
         public static IntPtr tfloat_values(IntPtr temp, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_values(temp, count));
@@ -2578,11 +2623,11 @@ namespace MEOS.NET.Internal
         public static int tint_start_value(IntPtr temp)
             => SafeExecution<int>(() => MEOSExternalFunctions.tint_start_value(temp));
 
-        public static int tint_value_at_timestamptz(IntPtr temp, long t, int strict, IntPtr value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tint_value_at_timestamptz(temp, t, strict, value));
+        public static bool tint_value_at_timestamptz(IntPtr temp, long t, bool strict, IntPtr value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tint_value_at_timestamptz(temp, t, strict, value));
 
-        public static int tint_value_n(IntPtr temp, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tint_value_n(temp, n, result));
+        public static bool tint_value_n(IntPtr temp, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tint_value_n(temp, n, result));
 
         public static IntPtr tint_values(IntPtr temp, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tint_values(temp, count));
@@ -2611,16 +2656,16 @@ namespace MEOS.NET.Internal
         public static IntPtr ttext_start_value(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.ttext_start_value(temp));
 
-        public static int ttext_value_at_timestamptz(IntPtr temp, long t, int strict, IntPtr value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ttext_value_at_timestamptz(temp, t, strict, value));
+        public static bool ttext_value_at_timestamptz(IntPtr temp, long t, bool strict, IntPtr value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ttext_value_at_timestamptz(temp, t, strict, value));
 
-        public static int ttext_value_n(IntPtr temp, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ttext_value_n(temp, n, result));
+        public static bool ttext_value_n(IntPtr temp, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ttext_value_n(temp, n, result));
 
         public static IntPtr ttext_values(IntPtr temp, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.ttext_values(temp, count));
 
-        public static double float_degrees(double value, int normalize)
+        public static double float_degrees(double value, bool normalize)
             => SafeExecution<double>(() => MEOSExternalFunctions.float_degrees(value, normalize));
 
         public static IntPtr temparr_round(IntPtr temp, int count, int maxdd)
@@ -2653,7 +2698,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tfloat_ceil(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_ceil(temp));
 
-        public static IntPtr tfloat_degrees(IntPtr temp, int normalize)
+        public static IntPtr tfloat_degrees(IntPtr temp, bool normalize)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_degrees(temp, normalize));
 
         public static IntPtr tfloat_floor(IntPtr temp)
@@ -2680,25 +2725,25 @@ namespace MEOS.NET.Internal
         public static IntPtr tint_shift_value(IntPtr temp, int shift)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tint_shift_value(temp, shift));
 
-        public static IntPtr temporal_append_tinstant(IntPtr temp, IntPtr inst, int interp, double maxdist, IntPtr maxt, int expand)
+        public static IntPtr temporal_append_tinstant(IntPtr temp, IntPtr inst, int interp, double maxdist, IntPtr maxt, bool expand)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_append_tinstant(temp, inst, interp, maxdist, maxt, expand));
 
-        public static IntPtr temporal_append_tsequence(IntPtr temp, IntPtr seq, int expand)
+        public static IntPtr temporal_append_tsequence(IntPtr temp, IntPtr seq, bool expand)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_append_tsequence(temp, seq, expand));
 
-        public static IntPtr temporal_delete_timestamptz(IntPtr temp, long t, int connect)
+        public static IntPtr temporal_delete_timestamptz(IntPtr temp, long t, bool connect)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_delete_timestamptz(temp, t, connect));
 
-        public static IntPtr temporal_delete_tstzset(IntPtr temp, IntPtr s, int connect)
+        public static IntPtr temporal_delete_tstzset(IntPtr temp, IntPtr s, bool connect)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_delete_tstzset(temp, s, connect));
 
-        public static IntPtr temporal_delete_tstzspan(IntPtr temp, IntPtr s, int connect)
+        public static IntPtr temporal_delete_tstzspan(IntPtr temp, IntPtr s, bool connect)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_delete_tstzspan(temp, s, connect));
 
-        public static IntPtr temporal_delete_tstzspanset(IntPtr temp, IntPtr ss, int connect)
+        public static IntPtr temporal_delete_tstzspanset(IntPtr temp, IntPtr ss, bool connect)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_delete_tstzspanset(temp, ss, connect));
 
-        public static IntPtr temporal_insert(IntPtr temp1, IntPtr temp2, int connect)
+        public static IntPtr temporal_insert(IntPtr temp1, IntPtr temp2, bool connect)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_insert(temp1, temp2, connect));
 
         public static IntPtr temporal_merge(IntPtr temp1, IntPtr temp2)
@@ -2707,16 +2752,16 @@ namespace MEOS.NET.Internal
         public static IntPtr temporal_merge_array(IntPtr temparr, int count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_merge_array(temparr, count));
 
-        public static IntPtr temporal_update(IntPtr temp1, IntPtr temp2, int connect)
+        public static IntPtr temporal_update(IntPtr temp1, IntPtr temp2, bool connect)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_update(temp1, temp2, connect));
 
-        public static IntPtr tbool_at_value(IntPtr temp, int b)
+        public static IntPtr tbool_at_value(IntPtr temp, bool b)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tbool_at_value(temp, b));
 
-        public static IntPtr tbool_minus_value(IntPtr temp, int b)
+        public static IntPtr tbool_minus_value(IntPtr temp, bool b)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tbool_minus_value(temp, b));
 
-        public static IntPtr temporal_after_timestamptz(IntPtr temp, long t, int strict)
+        public static IntPtr temporal_after_timestamptz(IntPtr temp, long t, bool strict)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_after_timestamptz(temp, t, strict));
 
         public static IntPtr temporal_at_max(IntPtr temp)
@@ -2740,7 +2785,7 @@ namespace MEOS.NET.Internal
         public static IntPtr temporal_at_values(IntPtr temp, IntPtr set)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_at_values(temp, set));
 
-        public static IntPtr temporal_before_timestamptz(IntPtr temp, long t, int strict)
+        public static IntPtr temporal_before_timestamptz(IntPtr temp, long t, bool strict)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_before_timestamptz(temp, t, strict));
 
         public static IntPtr temporal_minus_max(IntPtr temp)
@@ -2803,25 +2848,25 @@ namespace MEOS.NET.Internal
         public static int temporal_cmp(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => MEOSExternalFunctions.temporal_cmp(temp1, temp2));
 
-        public static int temporal_eq(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_eq(temp1, temp2));
+        public static bool temporal_eq(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_eq(temp1, temp2));
 
-        public static int temporal_ge(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_ge(temp1, temp2));
+        public static bool temporal_ge(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_ge(temp1, temp2));
 
-        public static int temporal_gt(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_gt(temp1, temp2));
+        public static bool temporal_gt(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_gt(temp1, temp2));
 
-        public static int temporal_le(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_le(temp1, temp2));
+        public static bool temporal_le(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_le(temp1, temp2));
 
-        public static int temporal_lt(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_lt(temp1, temp2));
+        public static bool temporal_lt(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_lt(temp1, temp2));
 
-        public static int temporal_ne(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_ne(temp1, temp2));
+        public static bool temporal_ne(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_ne(temp1, temp2));
 
-        public static int always_eq_bool_tbool(int b, IntPtr temp)
+        public static int always_eq_bool_tbool(bool b, IntPtr temp)
             => SafeExecution<int>(() => MEOSExternalFunctions.always_eq_bool_tbool(b, temp));
 
         public static int always_eq_float_tfloat(double d, IntPtr temp)
@@ -2830,7 +2875,7 @@ namespace MEOS.NET.Internal
         public static int always_eq_int_tint(int i, IntPtr temp)
             => SafeExecution<int>(() => MEOSExternalFunctions.always_eq_int_tint(i, temp));
 
-        public static int always_eq_tbool_bool(IntPtr temp, int b)
+        public static int always_eq_tbool_bool(IntPtr temp, bool b)
             => SafeExecution<int>(() => MEOSExternalFunctions.always_eq_tbool_bool(temp, b));
 
         public static int always_eq_temporal_temporal(IntPtr temp1, IntPtr temp2)
@@ -2932,7 +2977,7 @@ namespace MEOS.NET.Internal
         public static int always_lt_ttext_text(IntPtr temp, IntPtr txt)
             => SafeExecution<int>(() => MEOSExternalFunctions.always_lt_ttext_text(temp, txt));
 
-        public static int always_ne_bool_tbool(int b, IntPtr temp)
+        public static int always_ne_bool_tbool(bool b, IntPtr temp)
             => SafeExecution<int>(() => MEOSExternalFunctions.always_ne_bool_tbool(b, temp));
 
         public static int always_ne_float_tfloat(double d, IntPtr temp)
@@ -2941,7 +2986,7 @@ namespace MEOS.NET.Internal
         public static int always_ne_int_tint(int i, IntPtr temp)
             => SafeExecution<int>(() => MEOSExternalFunctions.always_ne_int_tint(i, temp));
 
-        public static int always_ne_tbool_bool(IntPtr temp, int b)
+        public static int always_ne_tbool_bool(IntPtr temp, bool b)
             => SafeExecution<int>(() => MEOSExternalFunctions.always_ne_tbool_bool(temp, b));
 
         public static int always_ne_temporal_temporal(IntPtr temp1, IntPtr temp2)
@@ -2959,7 +3004,7 @@ namespace MEOS.NET.Internal
         public static int always_ne_ttext_text(IntPtr temp, IntPtr txt)
             => SafeExecution<int>(() => MEOSExternalFunctions.always_ne_ttext_text(temp, txt));
 
-        public static int ever_eq_bool_tbool(int b, IntPtr temp)
+        public static int ever_eq_bool_tbool(bool b, IntPtr temp)
             => SafeExecution<int>(() => MEOSExternalFunctions.ever_eq_bool_tbool(b, temp));
 
         public static int ever_eq_float_tfloat(double d, IntPtr temp)
@@ -2968,7 +3013,7 @@ namespace MEOS.NET.Internal
         public static int ever_eq_int_tint(int i, IntPtr temp)
             => SafeExecution<int>(() => MEOSExternalFunctions.ever_eq_int_tint(i, temp));
 
-        public static int ever_eq_tbool_bool(IntPtr temp, int b)
+        public static int ever_eq_tbool_bool(IntPtr temp, bool b)
             => SafeExecution<int>(() => MEOSExternalFunctions.ever_eq_tbool_bool(temp, b));
 
         public static int ever_eq_temporal_temporal(IntPtr temp1, IntPtr temp2)
@@ -3070,7 +3115,7 @@ namespace MEOS.NET.Internal
         public static int ever_lt_ttext_text(IntPtr temp, IntPtr txt)
             => SafeExecution<int>(() => MEOSExternalFunctions.ever_lt_ttext_text(temp, txt));
 
-        public static int ever_ne_bool_tbool(int b, IntPtr temp)
+        public static int ever_ne_bool_tbool(bool b, IntPtr temp)
             => SafeExecution<int>(() => MEOSExternalFunctions.ever_ne_bool_tbool(b, temp));
 
         public static int ever_ne_float_tfloat(double d, IntPtr temp)
@@ -3079,7 +3124,7 @@ namespace MEOS.NET.Internal
         public static int ever_ne_int_tint(int i, IntPtr temp)
             => SafeExecution<int>(() => MEOSExternalFunctions.ever_ne_int_tint(i, temp));
 
-        public static int ever_ne_tbool_bool(IntPtr temp, int b)
+        public static int ever_ne_tbool_bool(IntPtr temp, bool b)
             => SafeExecution<int>(() => MEOSExternalFunctions.ever_ne_tbool_bool(temp, b));
 
         public static int ever_ne_temporal_temporal(IntPtr temp1, IntPtr temp2)
@@ -3097,7 +3142,7 @@ namespace MEOS.NET.Internal
         public static int ever_ne_ttext_text(IntPtr temp, IntPtr txt)
             => SafeExecution<int>(() => MEOSExternalFunctions.ever_ne_ttext_text(temp, txt));
 
-        public static IntPtr teq_bool_tbool(int b, IntPtr temp)
+        public static IntPtr teq_bool_tbool(bool b, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.teq_bool_tbool(b, temp));
 
         public static IntPtr teq_float_tfloat(double d, IntPtr temp)
@@ -3106,7 +3151,7 @@ namespace MEOS.NET.Internal
         public static IntPtr teq_int_tint(int i, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.teq_int_tint(i, temp));
 
-        public static IntPtr teq_tbool_bool(IntPtr temp, int b)
+        public static IntPtr teq_tbool_bool(IntPtr temp, bool b)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.teq_tbool_bool(temp, b));
 
         public static IntPtr teq_temporal_temporal(IntPtr temp1, IntPtr temp2)
@@ -3208,7 +3253,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tlt_ttext_text(IntPtr temp, IntPtr txt)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tlt_ttext_text(temp, txt));
 
-        public static IntPtr tne_bool_tbool(int b, IntPtr temp)
+        public static IntPtr tne_bool_tbool(bool b, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tne_bool_tbool(b, temp));
 
         public static IntPtr tne_float_tfloat(double d, IntPtr temp)
@@ -3217,7 +3262,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tne_int_tint(int i, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tne_int_tint(i, temp));
 
-        public static IntPtr tne_tbool_bool(IntPtr temp, int b)
+        public static IntPtr tne_tbool_bool(IntPtr temp, bool b)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tne_tbool_bool(temp, b));
 
         public static IntPtr tne_temporal_temporal(IntPtr temp1, IntPtr temp2)
@@ -3253,262 +3298,262 @@ namespace MEOS.NET.Internal
         public static IntPtr tnumber_tboxes(IntPtr temp, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnumber_tboxes(temp, count));
 
-        public static int adjacent_numspan_tnumber(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_numspan_tnumber(s, temp));
+        public static bool adjacent_numspan_tnumber(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_numspan_tnumber(s, temp));
 
-        public static int adjacent_tbox_tnumber(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_tbox_tnumber(box, temp));
+        public static bool adjacent_tbox_tnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_tbox_tnumber(box, temp));
 
-        public static int adjacent_temporal_temporal(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_temporal_temporal(temp1, temp2));
+        public static bool adjacent_temporal_temporal(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_temporal_temporal(temp1, temp2));
 
-        public static int adjacent_temporal_tstzspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_temporal_tstzspan(temp, s));
+        public static bool adjacent_temporal_tstzspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_temporal_tstzspan(temp, s));
 
-        public static int adjacent_tnumber_numspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_tnumber_numspan(temp, s));
+        public static bool adjacent_tnumber_numspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_tnumber_numspan(temp, s));
 
-        public static int adjacent_tnumber_tbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_tnumber_tbox(temp, box));
+        public static bool adjacent_tnumber_tbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_tnumber_tbox(temp, box));
 
-        public static int adjacent_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_tnumber_tnumber(temp1, temp2));
+        public static bool adjacent_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_tnumber_tnumber(temp1, temp2));
 
-        public static int adjacent_tstzspan_temporal(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_tstzspan_temporal(s, temp));
+        public static bool adjacent_tstzspan_temporal(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_tstzspan_temporal(s, temp));
 
-        public static int contained_numspan_tnumber(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_numspan_tnumber(s, temp));
+        public static bool contained_numspan_tnumber(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_numspan_tnumber(s, temp));
 
-        public static int contained_tbox_tnumber(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_tbox_tnumber(box, temp));
+        public static bool contained_tbox_tnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_tbox_tnumber(box, temp));
 
-        public static int contained_temporal_temporal(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_temporal_temporal(temp1, temp2));
+        public static bool contained_temporal_temporal(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_temporal_temporal(temp1, temp2));
 
-        public static int contained_temporal_tstzspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_temporal_tstzspan(temp, s));
+        public static bool contained_temporal_tstzspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_temporal_tstzspan(temp, s));
 
-        public static int contained_tnumber_numspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_tnumber_numspan(temp, s));
+        public static bool contained_tnumber_numspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_tnumber_numspan(temp, s));
 
-        public static int contained_tnumber_tbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_tnumber_tbox(temp, box));
+        public static bool contained_tnumber_tbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_tnumber_tbox(temp, box));
 
-        public static int contained_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_tnumber_tnumber(temp1, temp2));
+        public static bool contained_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_tnumber_tnumber(temp1, temp2));
 
-        public static int contained_tstzspan_temporal(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_tstzspan_temporal(s, temp));
+        public static bool contained_tstzspan_temporal(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_tstzspan_temporal(s, temp));
 
-        public static int contains_numspan_tnumber(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_numspan_tnumber(s, temp));
+        public static bool contains_numspan_tnumber(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_numspan_tnumber(s, temp));
 
-        public static int contains_tbox_tnumber(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_tbox_tnumber(box, temp));
+        public static bool contains_tbox_tnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_tbox_tnumber(box, temp));
 
-        public static int contains_temporal_tstzspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_temporal_tstzspan(temp, s));
+        public static bool contains_temporal_tstzspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_temporal_tstzspan(temp, s));
 
-        public static int contains_temporal_temporal(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_temporal_temporal(temp1, temp2));
+        public static bool contains_temporal_temporal(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_temporal_temporal(temp1, temp2));
 
-        public static int contains_tnumber_numspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_tnumber_numspan(temp, s));
+        public static bool contains_tnumber_numspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_tnumber_numspan(temp, s));
 
-        public static int contains_tnumber_tbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_tnumber_tbox(temp, box));
+        public static bool contains_tnumber_tbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_tnumber_tbox(temp, box));
 
-        public static int contains_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_tnumber_tnumber(temp1, temp2));
+        public static bool contains_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_tnumber_tnumber(temp1, temp2));
 
-        public static int contains_tstzspan_temporal(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_tstzspan_temporal(s, temp));
+        public static bool contains_tstzspan_temporal(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_tstzspan_temporal(s, temp));
 
-        public static int overlaps_numspan_tnumber(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_numspan_tnumber(s, temp));
+        public static bool overlaps_numspan_tnumber(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_numspan_tnumber(s, temp));
 
-        public static int overlaps_tbox_tnumber(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_tbox_tnumber(box, temp));
+        public static bool overlaps_tbox_tnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_tbox_tnumber(box, temp));
 
-        public static int overlaps_temporal_temporal(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_temporal_temporal(temp1, temp2));
+        public static bool overlaps_temporal_temporal(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_temporal_temporal(temp1, temp2));
 
-        public static int overlaps_temporal_tstzspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_temporal_tstzspan(temp, s));
+        public static bool overlaps_temporal_tstzspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_temporal_tstzspan(temp, s));
 
-        public static int overlaps_tnumber_numspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_tnumber_numspan(temp, s));
+        public static bool overlaps_tnumber_numspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_tnumber_numspan(temp, s));
 
-        public static int overlaps_tnumber_tbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_tnumber_tbox(temp, box));
+        public static bool overlaps_tnumber_tbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_tnumber_tbox(temp, box));
 
-        public static int overlaps_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_tnumber_tnumber(temp1, temp2));
+        public static bool overlaps_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_tnumber_tnumber(temp1, temp2));
 
-        public static int overlaps_tstzspan_temporal(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_tstzspan_temporal(s, temp));
+        public static bool overlaps_tstzspan_temporal(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_tstzspan_temporal(s, temp));
 
-        public static int same_numspan_tnumber(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.same_numspan_tnumber(s, temp));
+        public static bool same_numspan_tnumber(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.same_numspan_tnumber(s, temp));
 
-        public static int same_tbox_tnumber(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.same_tbox_tnumber(box, temp));
+        public static bool same_tbox_tnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.same_tbox_tnumber(box, temp));
 
-        public static int same_temporal_temporal(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.same_temporal_temporal(temp1, temp2));
+        public static bool same_temporal_temporal(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.same_temporal_temporal(temp1, temp2));
 
-        public static int same_temporal_tstzspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.same_temporal_tstzspan(temp, s));
+        public static bool same_temporal_tstzspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.same_temporal_tstzspan(temp, s));
 
-        public static int same_tnumber_numspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.same_tnumber_numspan(temp, s));
+        public static bool same_tnumber_numspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.same_tnumber_numspan(temp, s));
 
-        public static int same_tnumber_tbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.same_tnumber_tbox(temp, box));
+        public static bool same_tnumber_tbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.same_tnumber_tbox(temp, box));
 
-        public static int same_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.same_tnumber_tnumber(temp1, temp2));
+        public static bool same_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.same_tnumber_tnumber(temp1, temp2));
 
-        public static int same_tstzspan_temporal(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.same_tstzspan_temporal(s, temp));
+        public static bool same_tstzspan_temporal(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.same_tstzspan_temporal(s, temp));
 
-        public static int after_tbox_tnumber(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_tbox_tnumber(box, temp));
+        public static bool after_tbox_tnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_tbox_tnumber(box, temp));
 
-        public static int after_temporal_tstzspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_temporal_tstzspan(temp, s));
+        public static bool after_temporal_tstzspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_temporal_tstzspan(temp, s));
 
-        public static int after_temporal_temporal(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_temporal_temporal(temp1, temp2));
+        public static bool after_temporal_temporal(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_temporal_temporal(temp1, temp2));
 
-        public static int after_tnumber_tbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_tnumber_tbox(temp, box));
+        public static bool after_tnumber_tbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_tnumber_tbox(temp, box));
 
-        public static int after_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_tnumber_tnumber(temp1, temp2));
+        public static bool after_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_tnumber_tnumber(temp1, temp2));
 
-        public static int after_tstzspan_temporal(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_tstzspan_temporal(s, temp));
+        public static bool after_tstzspan_temporal(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_tstzspan_temporal(s, temp));
 
-        public static int before_tbox_tnumber(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_tbox_tnumber(box, temp));
+        public static bool before_tbox_tnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_tbox_tnumber(box, temp));
 
-        public static int before_temporal_tstzspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_temporal_tstzspan(temp, s));
+        public static bool before_temporal_tstzspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_temporal_tstzspan(temp, s));
 
-        public static int before_temporal_temporal(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_temporal_temporal(temp1, temp2));
+        public static bool before_temporal_temporal(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_temporal_temporal(temp1, temp2));
 
-        public static int before_tnumber_tbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_tnumber_tbox(temp, box));
+        public static bool before_tnumber_tbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_tnumber_tbox(temp, box));
 
-        public static int before_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_tnumber_tnumber(temp1, temp2));
+        public static bool before_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_tnumber_tnumber(temp1, temp2));
 
-        public static int before_tstzspan_temporal(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_tstzspan_temporal(s, temp));
+        public static bool before_tstzspan_temporal(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_tstzspan_temporal(s, temp));
 
-        public static int left_tbox_tnumber(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_tbox_tnumber(box, temp));
+        public static bool left_tbox_tnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_tbox_tnumber(box, temp));
 
-        public static int left_numspan_tnumber(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_numspan_tnumber(s, temp));
+        public static bool left_numspan_tnumber(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_numspan_tnumber(s, temp));
 
-        public static int left_tnumber_numspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_tnumber_numspan(temp, s));
+        public static bool left_tnumber_numspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_tnumber_numspan(temp, s));
 
-        public static int left_tnumber_tbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_tnumber_tbox(temp, box));
+        public static bool left_tnumber_tbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_tnumber_tbox(temp, box));
 
-        public static int left_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_tnumber_tnumber(temp1, temp2));
+        public static bool left_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_tnumber_tnumber(temp1, temp2));
 
-        public static int overafter_tbox_tnumber(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_tbox_tnumber(box, temp));
+        public static bool overafter_tbox_tnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_tbox_tnumber(box, temp));
 
-        public static int overafter_temporal_tstzspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_temporal_tstzspan(temp, s));
+        public static bool overafter_temporal_tstzspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_temporal_tstzspan(temp, s));
 
-        public static int overafter_temporal_temporal(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_temporal_temporal(temp1, temp2));
+        public static bool overafter_temporal_temporal(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_temporal_temporal(temp1, temp2));
 
-        public static int overafter_tnumber_tbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_tnumber_tbox(temp, box));
+        public static bool overafter_tnumber_tbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_tnumber_tbox(temp, box));
 
-        public static int overafter_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_tnumber_tnumber(temp1, temp2));
+        public static bool overafter_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_tnumber_tnumber(temp1, temp2));
 
-        public static int overafter_tstzspan_temporal(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_tstzspan_temporal(s, temp));
+        public static bool overafter_tstzspan_temporal(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_tstzspan_temporal(s, temp));
 
-        public static int overbefore_tbox_tnumber(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_tbox_tnumber(box, temp));
+        public static bool overbefore_tbox_tnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_tbox_tnumber(box, temp));
 
-        public static int overbefore_temporal_tstzspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_temporal_tstzspan(temp, s));
+        public static bool overbefore_temporal_tstzspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_temporal_tstzspan(temp, s));
 
-        public static int overbefore_temporal_temporal(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_temporal_temporal(temp1, temp2));
+        public static bool overbefore_temporal_temporal(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_temporal_temporal(temp1, temp2));
 
-        public static int overbefore_tnumber_tbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_tnumber_tbox(temp, box));
+        public static bool overbefore_tnumber_tbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_tnumber_tbox(temp, box));
 
-        public static int overbefore_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_tnumber_tnumber(temp1, temp2));
+        public static bool overbefore_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_tnumber_tnumber(temp1, temp2));
 
-        public static int overbefore_tstzspan_temporal(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_tstzspan_temporal(s, temp));
+        public static bool overbefore_tstzspan_temporal(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_tstzspan_temporal(s, temp));
 
-        public static int overleft_numspan_tnumber(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_numspan_tnumber(s, temp));
+        public static bool overleft_numspan_tnumber(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_numspan_tnumber(s, temp));
 
-        public static int overleft_tbox_tnumber(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_tbox_tnumber(box, temp));
+        public static bool overleft_tbox_tnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_tbox_tnumber(box, temp));
 
-        public static int overleft_tnumber_numspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_tnumber_numspan(temp, s));
+        public static bool overleft_tnumber_numspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_tnumber_numspan(temp, s));
 
-        public static int overleft_tnumber_tbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_tnumber_tbox(temp, box));
+        public static bool overleft_tnumber_tbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_tnumber_tbox(temp, box));
 
-        public static int overleft_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_tnumber_tnumber(temp1, temp2));
+        public static bool overleft_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_tnumber_tnumber(temp1, temp2));
 
-        public static int overright_numspan_tnumber(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_numspan_tnumber(s, temp));
+        public static bool overright_numspan_tnumber(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_numspan_tnumber(s, temp));
 
-        public static int overright_tbox_tnumber(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_tbox_tnumber(box, temp));
+        public static bool overright_tbox_tnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_tbox_tnumber(box, temp));
 
-        public static int overright_tnumber_numspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_tnumber_numspan(temp, s));
+        public static bool overright_tnumber_numspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_tnumber_numspan(temp, s));
 
-        public static int overright_tnumber_tbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_tnumber_tbox(temp, box));
+        public static bool overright_tnumber_tbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_tnumber_tbox(temp, box));
 
-        public static int overright_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_tnumber_tnumber(temp1, temp2));
+        public static bool overright_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_tnumber_tnumber(temp1, temp2));
 
-        public static int right_numspan_tnumber(IntPtr s, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_numspan_tnumber(s, temp));
+        public static bool right_numspan_tnumber(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_numspan_tnumber(s, temp));
 
-        public static int right_tbox_tnumber(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_tbox_tnumber(box, temp));
+        public static bool right_tbox_tnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_tbox_tnumber(box, temp));
 
-        public static int right_tnumber_numspan(IntPtr temp, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_tnumber_numspan(temp, s));
+        public static bool right_tnumber_numspan(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_tnumber_numspan(temp, s));
 
-        public static int right_tnumber_tbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_tnumber_tbox(temp, box));
+        public static bool right_tnumber_tbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_tnumber_tbox(temp, box));
 
-        public static int right_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_tnumber_tnumber(temp1, temp2));
+        public static bool right_tnumber_tnumber(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_tnumber_tnumber(temp1, temp2));
 
-        public static IntPtr tand_bool_tbool(int b, IntPtr temp)
+        public static IntPtr tand_bool_tbool(bool b, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tand_bool_tbool(b, temp));
 
-        public static IntPtr tand_tbool_bool(IntPtr temp, int b)
+        public static IntPtr tand_tbool_bool(IntPtr temp, bool b)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tand_tbool_bool(temp, b));
 
         public static IntPtr tand_tbool_tbool(IntPtr temp1, IntPtr temp2)
@@ -3520,10 +3565,10 @@ namespace MEOS.NET.Internal
         public static IntPtr tnot_tbool(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnot_tbool(temp));
 
-        public static IntPtr tor_bool_tbool(int b, IntPtr temp)
+        public static IntPtr tor_bool_tbool(bool b, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tor_bool_tbool(b, temp));
 
-        public static IntPtr tor_tbool_bool(IntPtr temp, int b)
+        public static IntPtr tor_tbool_bool(IntPtr temp, bool b)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tor_tbool_bool(temp, b));
 
         public static IntPtr tor_tbool_tbool(IntPtr temp1, IntPtr temp2)
@@ -3748,10 +3793,10 @@ namespace MEOS.NET.Internal
         public static IntPtr ttext_tmin_transfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.ttext_tmin_transfn(state, temp));
 
-        public static IntPtr temporal_simplify_dp(IntPtr temp, double eps_dist, int synchronized)
+        public static IntPtr temporal_simplify_dp(IntPtr temp, double eps_dist, bool synchronized)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_simplify_dp(temp, eps_dist, synchronized));
 
-        public static IntPtr temporal_simplify_max_dist(IntPtr temp, double eps_dist, int synchronized)
+        public static IntPtr temporal_simplify_max_dist(IntPtr temp, double eps_dist, bool synchronized)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_simplify_max_dist(temp, eps_dist, synchronized));
 
         public static IntPtr temporal_simplify_min_dist(IntPtr temp, double dist)
@@ -3784,8 +3829,28 @@ namespace MEOS.NET.Internal
         public static IntPtr temporal_time_bins(IntPtr temp, IntPtr duration, long origin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_time_bins(temp, duration, origin, count));
 
-        public static IntPtr temporal_time_split(IntPtr temp, IntPtr duration, long torigin, IntPtr time_bins, IntPtr count)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_time_split(temp, duration, torigin, time_bins, count));
+        public static (IntPtr[], long[]) temporal_time_split(IntPtr temp, IntPtr duration, long torigin)
+        {
+            IntPtr _out_time_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_time_split(temp, duration, torigin, _out_time_bins, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_time_bins_arr = Marshal.ReadIntPtr(_out_time_bins);
+                long[] __out_time_bins_out = new long[_n];
+                Marshal.Copy(__out_time_bins_arr, __out_time_bins_out, 0, _n);
+                return (_resultArr, __out_time_bins_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_time_bins);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
 
         public static IntPtr tfloat_time_boxes(IntPtr temp, IntPtr duration, long torigin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_time_boxes(temp, duration, torigin, count));
@@ -3796,14 +3861,59 @@ namespace MEOS.NET.Internal
         public static IntPtr tfloat_value_boxes(IntPtr temp, double vsize, double vorigin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_value_boxes(temp, vsize, vorigin, count));
 
-        public static IntPtr tfloat_value_split(IntPtr temp, double size, double origin, IntPtr bins, IntPtr count)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_value_split(temp, size, origin, bins, count));
+        public static (IntPtr[], double[]) tfloat_value_split(IntPtr temp, double size, double origin)
+        {
+            IntPtr _out_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_value_split(temp, size, origin, _out_bins, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_bins_arr = Marshal.ReadIntPtr(_out_bins);
+                double[] __out_bins_out = new double[_n];
+                Marshal.Copy(__out_bins_arr, __out_bins_out, 0, _n);
+                return (_resultArr, __out_bins_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_bins);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
 
         public static IntPtr tfloat_value_time_boxes(IntPtr temp, double vsize, IntPtr duration, double vorigin, long torigin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_value_time_boxes(temp, vsize, duration, vorigin, torigin, count));
 
-        public static IntPtr tfloat_value_time_split(IntPtr temp, double vsize, IntPtr duration, double vorigin, long torigin, IntPtr value_bins, IntPtr time_bins, IntPtr count)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_value_time_split(temp, vsize, duration, vorigin, torigin, value_bins, time_bins, count));
+        public static (IntPtr[], double[], long[]) tfloat_value_time_split(IntPtr temp, double vsize, IntPtr duration, double vorigin, long torigin)
+        {
+            IntPtr _out_value_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _out_time_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloat_value_time_split(temp, vsize, duration, vorigin, torigin, _out_value_bins, _out_time_bins, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_value_bins_arr = Marshal.ReadIntPtr(_out_value_bins);
+                double[] __out_value_bins_out = new double[_n];
+                Marshal.Copy(__out_value_bins_arr, __out_value_bins_out, 0, _n);
+                IntPtr __out_time_bins_arr = Marshal.ReadIntPtr(_out_time_bins);
+                long[] __out_time_bins_out = new long[_n];
+                Marshal.Copy(__out_time_bins_arr, __out_time_bins_out, 0, _n);
+                return (_resultArr, __out_value_bins_out, __out_time_bins_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_value_bins);
+            Marshal.FreeHGlobal(_out_time_bins);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
 
         public static IntPtr tfloatbox_time_tiles(IntPtr box, IntPtr duration, long torigin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloatbox_time_tiles(box, duration, torigin, count));
@@ -3823,14 +3933,59 @@ namespace MEOS.NET.Internal
         public static IntPtr tint_value_boxes(IntPtr temp, int vsize, int vorigin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tint_value_boxes(temp, vsize, vorigin, count));
 
-        public static IntPtr tint_value_split(IntPtr temp, int vsize, int vorigin, IntPtr bins, IntPtr count)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tint_value_split(temp, vsize, vorigin, bins, count));
+        public static (IntPtr[], int[]) tint_value_split(IntPtr temp, int vsize, int vorigin)
+        {
+            IntPtr _out_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => MEOSExternalFunctions.tint_value_split(temp, vsize, vorigin, _out_bins, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_bins_arr = Marshal.ReadIntPtr(_out_bins);
+                int[] __out_bins_out = new int[_n];
+                Marshal.Copy(__out_bins_arr, __out_bins_out, 0, _n);
+                return (_resultArr, __out_bins_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_bins);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
 
         public static IntPtr tint_value_time_boxes(IntPtr temp, int vsize, IntPtr duration, int vorigin, long torigin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tint_value_time_boxes(temp, vsize, duration, vorigin, torigin, count));
 
-        public static IntPtr tint_value_time_split(IntPtr temp, int size, IntPtr duration, int vorigin, long torigin, IntPtr value_bins, IntPtr time_bins, IntPtr count)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tint_value_time_split(temp, size, duration, vorigin, torigin, value_bins, time_bins, count));
+        public static (IntPtr[], int[], long[]) tint_value_time_split(IntPtr temp, int size, IntPtr duration, int vorigin, long torigin)
+        {
+            IntPtr _out_value_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _out_time_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => MEOSExternalFunctions.tint_value_time_split(temp, size, duration, vorigin, torigin, _out_value_bins, _out_time_bins, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_value_bins_arr = Marshal.ReadIntPtr(_out_value_bins);
+                int[] __out_value_bins_out = new int[_n];
+                Marshal.Copy(__out_value_bins_arr, __out_value_bins_out, 0, _n);
+                IntPtr __out_time_bins_arr = Marshal.ReadIntPtr(_out_time_bins);
+                long[] __out_time_bins_out = new long[_n];
+                Marshal.Copy(__out_time_bins_arr, __out_time_bins_out, 0, _n);
+                return (_resultArr, __out_value_bins_out, __out_time_bins_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_value_bins);
+            Marshal.FreeHGlobal(_out_time_bins);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
 
         public static IntPtr tintbox_time_tiles(IntPtr box, IntPtr duration, long torigin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tintbox_time_tiles(box, duration, torigin, count));
@@ -3841,17 +3996,17 @@ namespace MEOS.NET.Internal
         public static IntPtr tintbox_value_time_tiles(IntPtr box, int xsize, IntPtr duration, int xorigin, long torigin, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tintbox_value_time_tiles(box, xsize, duration, xorigin, torigin, count));
 
-        public static int temptype_subtype(int subtype)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temptype_subtype(subtype));
+        public static bool temptype_subtype(int subtype)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temptype_subtype(subtype));
 
-        public static int temptype_subtype_all(int subtype)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temptype_subtype_all(subtype));
+        public static bool temptype_subtype_all(int subtype)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temptype_subtype_all(subtype));
 
         public static string tempsubtype_name(int subtype)
             => SafeExecution<string>(() => MEOSExternalFunctions.tempsubtype_name(subtype));
 
-        public static int tempsubtype_from_string(string str, IntPtr subtype)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tempsubtype_from_string(str, subtype));
+        public static bool tempsubtype_from_string(string str, IntPtr subtype)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tempsubtype_from_string(str, subtype));
 
         public static string meosoper_name(IntPtr oper)
             => SafeExecution<string>(() => MEOSExternalFunctions.meosoper_name(oper));
@@ -3889,179 +4044,179 @@ namespace MEOS.NET.Internal
         public static int basetype_settype(int type)
             => SafeExecution<int>(() => MEOSExternalFunctions.basetype_settype(type));
 
-        public static int tnumber_basetype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tnumber_basetype(type));
+        public static bool tnumber_basetype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tnumber_basetype(type));
 
-        public static int geo_basetype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geo_basetype(type));
+        public static bool geo_basetype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geo_basetype(type));
 
-        public static int meos_basetype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.meos_basetype(type));
+        public static bool meos_basetype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.meos_basetype(type));
 
-        public static int alphanum_basetype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.alphanum_basetype(type));
+        public static bool alphanum_basetype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.alphanum_basetype(type));
 
-        public static int alphanum_temptype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.alphanum_temptype(type));
+        public static bool alphanum_temptype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.alphanum_temptype(type));
 
-        public static int time_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.time_type(type));
+        public static bool time_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.time_type(type));
 
-        public static int set_basetype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.set_basetype(type));
+        public static bool set_basetype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.set_basetype(type));
 
-        public static int set_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.set_type(type));
+        public static bool set_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.set_type(type));
 
-        public static int numset_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.numset_type(type));
+        public static bool numset_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.numset_type(type));
 
-        public static int ensure_numset_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_numset_type(type));
+        public static bool ensure_numset_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_numset_type(type));
 
-        public static int timeset_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.timeset_type(type));
+        public static bool timeset_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.timeset_type(type));
 
-        public static int set_spantype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.set_spantype(type));
+        public static bool set_spantype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.set_spantype(type));
 
-        public static int ensure_set_spantype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_set_spantype(type));
+        public static bool ensure_set_spantype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_set_spantype(type));
 
-        public static int alphanumset_type(int settype)
-            => SafeExecution<int>(() => MEOSExternalFunctions.alphanumset_type(settype));
+        public static bool alphanumset_type(int settype)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.alphanumset_type(settype));
 
-        public static int geoset_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geoset_type(type));
+        public static bool geoset_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geoset_type(type));
 
-        public static int ensure_geoset_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_geoset_type(type));
+        public static bool ensure_geoset_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_geoset_type(type));
 
-        public static int spatialset_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.spatialset_type(type));
+        public static bool spatialset_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.spatialset_type(type));
 
-        public static int ensure_spatialset_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_spatialset_type(type));
+        public static bool ensure_spatialset_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_spatialset_type(type));
 
-        public static int span_basetype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.span_basetype(type));
+        public static bool span_basetype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.span_basetype(type));
 
-        public static int span_canon_basetype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.span_canon_basetype(type));
+        public static bool span_canon_basetype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.span_canon_basetype(type));
 
-        public static int span_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.span_type(type));
+        public static bool span_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.span_type(type));
 
-        public static int type_span_bbox(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.type_span_bbox(type));
+        public static bool type_span_bbox(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.type_span_bbox(type));
 
-        public static int span_tbox_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.span_tbox_type(type));
+        public static bool span_tbox_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.span_tbox_type(type));
 
-        public static int ensure_span_tbox_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_span_tbox_type(type));
+        public static bool ensure_span_tbox_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_span_tbox_type(type));
 
-        public static int numspan_basetype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.numspan_basetype(type));
+        public static bool numspan_basetype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.numspan_basetype(type));
 
-        public static int numspan_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.numspan_type(type));
+        public static bool numspan_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.numspan_type(type));
 
-        public static int ensure_numspan_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_numspan_type(type));
+        public static bool ensure_numspan_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_numspan_type(type));
 
-        public static int timespan_basetype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.timespan_basetype(type));
+        public static bool timespan_basetype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.timespan_basetype(type));
 
-        public static int timespan_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.timespan_type(type));
+        public static bool timespan_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.timespan_type(type));
 
-        public static int spanset_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.spanset_type(type));
+        public static bool spanset_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.spanset_type(type));
 
-        public static int timespanset_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.timespanset_type(type));
+        public static bool timespanset_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.timespanset_type(type));
 
-        public static int ensure_timespanset_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_timespanset_type(type));
+        public static bool ensure_timespanset_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_timespanset_type(type));
 
-        public static int temporal_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_type(type));
+        public static bool temporal_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_type(type));
 
-        public static int temporal_basetype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_basetype(type));
+        public static bool temporal_basetype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_basetype(type));
 
-        public static int temptype_continuous(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temptype_continuous(type));
+        public static bool temptype_continuous(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temptype_continuous(type));
 
-        public static int basetype_byvalue(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.basetype_byvalue(type));
+        public static bool basetype_byvalue(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.basetype_byvalue(type));
 
-        public static int basetype_varlength(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.basetype_varlength(type));
+        public static bool basetype_varlength(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.basetype_varlength(type));
 
         public static short basetype_length(int type)
             => SafeExecution<short>(() => MEOSExternalFunctions.basetype_length(type));
 
-        public static int talphanum_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.talphanum_type(type));
+        public static bool talphanum_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.talphanum_type(type));
 
-        public static int talpha_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.talpha_type(type));
+        public static bool talpha_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.talpha_type(type));
 
-        public static int tnumber_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tnumber_type(type));
+        public static bool tnumber_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tnumber_type(type));
 
-        public static int ensure_tnumber_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_tnumber_type(type));
+        public static bool ensure_tnumber_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_tnumber_type(type));
 
-        public static int ensure_tnumber_basetype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_tnumber_basetype(type));
+        public static bool ensure_tnumber_basetype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_tnumber_basetype(type));
 
-        public static int tnumber_spantype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tnumber_spantype(type));
+        public static bool tnumber_spantype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tnumber_spantype(type));
 
-        public static int spatial_basetype(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.spatial_basetype(type));
+        public static bool spatial_basetype(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.spatial_basetype(type));
 
-        public static int tspatial_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tspatial_type(type));
+        public static bool tspatial_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tspatial_type(type));
 
-        public static int ensure_tspatial_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_tspatial_type(type));
+        public static bool ensure_tspatial_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_tspatial_type(type));
 
-        public static int tpoint_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tpoint_type(type));
+        public static bool tpoint_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tpoint_type(type));
 
-        public static int ensure_tpoint_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_tpoint_type(type));
+        public static bool ensure_tpoint_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_tpoint_type(type));
 
-        public static int tgeo_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tgeo_type(type));
+        public static bool tgeo_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tgeo_type(type));
 
-        public static int ensure_tgeo_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_tgeo_type(type));
+        public static bool ensure_tgeo_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_tgeo_type(type));
 
-        public static int tgeo_type_all(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tgeo_type_all(type));
+        public static bool tgeo_type_all(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tgeo_type_all(type));
 
-        public static int ensure_tgeo_type_all(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_tgeo_type_all(type));
+        public static bool ensure_tgeo_type_all(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_tgeo_type_all(type));
 
-        public static int tgeometry_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tgeometry_type(type));
+        public static bool tgeometry_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tgeometry_type(type));
 
-        public static int ensure_tgeometry_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_tgeometry_type(type));
+        public static bool ensure_tgeometry_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_tgeometry_type(type));
 
-        public static int tgeodetic_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tgeodetic_type(type));
+        public static bool tgeodetic_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tgeodetic_type(type));
 
-        public static int ensure_tgeodetic_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_tgeodetic_type(type));
+        public static bool ensure_tgeodetic_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_tgeodetic_type(type));
 
-        public static int ensure_tnumber_tpoint_type(int type)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ensure_tnumber_tpoint_type(type));
+        public static bool ensure_tnumber_tpoint_type(int type)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ensure_tnumber_tpoint_type(type));
 
         public static int geo_get_srid(IntPtr g)
             => SafeExecution<int>(() => MEOSExternalFunctions.geo_get_srid(g));
@@ -4081,7 +4236,7 @@ namespace MEOS.NET.Internal
         public static string geo_as_text(IntPtr gs, int precision)
             => SafeExecution<string>(() => MEOSExternalFunctions.geo_as_text(gs, precision));
 
-        public static IntPtr geo_from_ewkb(IntPtr wkb, int wkb_size, int srid)
+        public static IntPtr geo_from_ewkb(IntPtr wkb, ulong wkb_size, int srid)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geo_from_ewkb(wkb, wkb_size, srid));
 
         public static IntPtr geo_from_geojson(string geojson)
@@ -4114,7 +4269,7 @@ namespace MEOS.NET.Internal
         public static string box3d_out(IntPtr box, int maxdd)
             => SafeExecution<string>(() => MEOSExternalFunctions.box3d_out(box, maxdd));
 
-        public static IntPtr gbox_make(int hasz, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax)
+        public static IntPtr gbox_make(bool hasz, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.gbox_make(hasz, xmin, xmax, ymin, ymax, zmin, zmax));
 
         public static string gbox_out(IntPtr box, int maxdd)
@@ -4141,29 +4296,29 @@ namespace MEOS.NET.Internal
         public static IntPtr geog_to_geom(IntPtr geog)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geog_to_geom(geog));
 
-        public static int geo_is_empty(IntPtr g)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geo_is_empty(g));
+        public static bool geo_is_empty(IntPtr g)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geo_is_empty(g));
 
-        public static int geo_is_unitary(IntPtr gs)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geo_is_unitary(gs));
+        public static bool geo_is_unitary(IntPtr gs)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geo_is_unitary(gs));
 
         public static string geo_typename(int type)
             => SafeExecution<string>(() => MEOSExternalFunctions.geo_typename(type));
 
-        public static double geog_area(IntPtr g, int use_spheroid)
+        public static double geog_area(IntPtr g, bool use_spheroid)
             => SafeExecution<double>(() => MEOSExternalFunctions.geog_area(g, use_spheroid));
 
-        public static IntPtr geog_centroid(IntPtr g, int use_spheroid)
+        public static IntPtr geog_centroid(IntPtr g, bool use_spheroid)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geog_centroid(g, use_spheroid));
 
-        public static double geog_length(IntPtr g, int use_spheroid)
+        public static double geog_length(IntPtr g, bool use_spheroid)
             => SafeExecution<double>(() => MEOSExternalFunctions.geog_length(g, use_spheroid));
 
-        public static double geog_perimeter(IntPtr g, int use_spheroid)
+        public static double geog_perimeter(IntPtr g, bool use_spheroid)
             => SafeExecution<double>(() => MEOSExternalFunctions.geog_perimeter(g, use_spheroid));
 
-        public static int geom_azimuth(IntPtr gs1, IntPtr gs2, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geom_azimuth(gs1, gs2, result));
+        public static bool geom_azimuth(IntPtr gs1, IntPtr gs2, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geom_azimuth(gs1, gs2, result));
 
         public static double geom_length(IntPtr gs)
             => SafeExecution<double>(() => MEOSExternalFunctions.geom_length(gs));
@@ -4192,7 +4347,7 @@ namespace MEOS.NET.Internal
         public static IntPtr geo_transform(IntPtr geom, int srid_to)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geo_transform(geom, srid_to));
 
-        public static IntPtr geo_transform_pipeline(IntPtr gs, string pipeline, int srid_to, int is_forward)
+        public static IntPtr geo_transform_pipeline(IntPtr gs, string pipeline, int srid_to, bool is_forward)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geo_transform_pipeline(gs, pipeline, srid_to, is_forward));
 
         public static IntPtr geo_collect_garray(IntPtr gsarr, int count)
@@ -4252,7 +4407,7 @@ namespace MEOS.NET.Internal
         public static IntPtr geom_unary_union(IntPtr gs, double prec)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geom_unary_union(gs, prec));
 
-        public static IntPtr line_interpolate_point(IntPtr gs, double distance_fraction, int repeat)
+        public static IntPtr line_interpolate_point(IntPtr gs, double distance_fraction, bool repeat)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.line_interpolate_point(gs, distance_fraction, repeat));
 
         public static double line_locate_point(IntPtr gs1, IntPtr gs2)
@@ -4261,38 +4416,38 @@ namespace MEOS.NET.Internal
         public static IntPtr line_substring(IntPtr gs, double from, double to)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.line_substring(gs, from, to));
 
-        public static int geog_dwithin(IntPtr g1, IntPtr g2, double tolerance, int use_spheroid)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geog_dwithin(g1, g2, tolerance, use_spheroid));
+        public static bool geog_dwithin(IntPtr g1, IntPtr g2, double tolerance, bool use_spheroid)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geog_dwithin(g1, g2, tolerance, use_spheroid));
 
-        public static int geog_intersects(IntPtr gs1, IntPtr gs2, int use_spheroid)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geog_intersects(gs1, gs2, use_spheroid));
+        public static bool geog_intersects(IntPtr gs1, IntPtr gs2, bool use_spheroid)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geog_intersects(gs1, gs2, use_spheroid));
 
-        public static int geom_contains(IntPtr gs1, IntPtr gs2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geom_contains(gs1, gs2));
+        public static bool geom_contains(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geom_contains(gs1, gs2));
 
-        public static int geom_covers(IntPtr gs1, IntPtr gs2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geom_covers(gs1, gs2));
+        public static bool geom_covers(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geom_covers(gs1, gs2));
 
-        public static int geom_disjoint2d(IntPtr gs1, IntPtr gs2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geom_disjoint2d(gs1, gs2));
+        public static bool geom_disjoint2d(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geom_disjoint2d(gs1, gs2));
 
-        public static int geom_dwithin2d(IntPtr gs1, IntPtr gs2, double tolerance)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geom_dwithin2d(gs1, gs2, tolerance));
+        public static bool geom_dwithin2d(IntPtr gs1, IntPtr gs2, double tolerance)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geom_dwithin2d(gs1, gs2, tolerance));
 
-        public static int geom_dwithin3d(IntPtr gs1, IntPtr gs2, double tolerance)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geom_dwithin3d(gs1, gs2, tolerance));
+        public static bool geom_dwithin3d(IntPtr gs1, IntPtr gs2, double tolerance)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geom_dwithin3d(gs1, gs2, tolerance));
 
-        public static int geom_intersects2d(IntPtr gs1, IntPtr gs2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geom_intersects2d(gs1, gs2));
+        public static bool geom_intersects2d(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geom_intersects2d(gs1, gs2));
 
-        public static int geom_intersects3d(IntPtr gs1, IntPtr gs2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geom_intersects3d(gs1, gs2));
+        public static bool geom_intersects3d(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geom_intersects3d(gs1, gs2));
 
-        public static int geom_relate_pattern(IntPtr gs1, IntPtr gs2, string patt)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geom_relate_pattern(gs1, gs2, patt));
+        public static bool geom_relate_pattern(IntPtr gs1, IntPtr gs2, string patt)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geom_relate_pattern(gs1, gs2, patt));
 
-        public static int geom_touches(IntPtr gs1, IntPtr gs2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geom_touches(gs1, gs2));
+        public static bool geom_touches(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geom_touches(gs1, gs2));
 
         public static IntPtr geo_stboxes(IntPtr gs, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geo_stboxes(gs, count));
@@ -4315,8 +4470,8 @@ namespace MEOS.NET.Internal
         public static int geo_equals(IntPtr gs1, IntPtr gs2)
             => SafeExecution<int>(() => MEOSExternalFunctions.geo_equals(gs1, gs2));
 
-        public static int geo_same(IntPtr gs1, IntPtr gs2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geo_same(gs1, gs2));
+        public static bool geo_same(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geo_same(gs1, gs2));
 
         public static IntPtr geogset_in(string str)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geogset_in(str));
@@ -4342,17 +4497,24 @@ namespace MEOS.NET.Internal
         public static IntPtr geoset_start_value(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geoset_start_value(s));
 
-        public static int geoset_value_n(IntPtr s, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geoset_value_n(s, n, result));
+        public static bool geoset_value_n(IntPtr s, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geoset_value_n(s, n, result));
 
-        public static IntPtr geoset_values(IntPtr s)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geoset_values(s));
+        public static IntPtr[] geoset_values(IntPtr s)
+        {
+            int _n = (int)MEOSExposedFunctions.set_num_values(s);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.geoset_values(s));
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+            return _out;
+        }
 
-        public static int contained_geo_set(IntPtr gs, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_geo_set(gs, s));
+        public static bool contained_geo_set(IntPtr gs, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_geo_set(gs, s));
 
-        public static int contains_set_geo(IntPtr s, IntPtr gs)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_set_geo(s, gs));
+        public static bool contains_set_geo(IntPtr s, IntPtr gs)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_geo(s, gs));
 
         public static IntPtr geo_union_transfn(IntPtr state, IntPtr gs)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geo_union_transfn(state, gs));
@@ -4384,7 +4546,7 @@ namespace MEOS.NET.Internal
         public static IntPtr spatialset_transform(IntPtr s, int srid)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.spatialset_transform(s, srid));
 
-        public static IntPtr spatialset_transform_pipeline(IntPtr s, string pipelinestr, int srid, int is_forward)
+        public static IntPtr spatialset_transform_pipeline(IntPtr s, string pipelinestr, int srid, bool is_forward)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.spatialset_transform_pipeline(s, pipelinestr, srid, is_forward));
 
         public static string stbox_as_hexwkb(IntPtr box, IntPtr variant, IntPtr size)
@@ -4396,7 +4558,7 @@ namespace MEOS.NET.Internal
         public static IntPtr stbox_from_hexwkb(string hexwkb)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_from_hexwkb(hexwkb));
 
-        public static IntPtr stbox_from_wkb(IntPtr wkb, int size)
+        public static IntPtr stbox_from_wkb(IntPtr wkb, ulong size)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_from_wkb(wkb, size));
 
         public static IntPtr stbox_in(string str)
@@ -4414,7 +4576,7 @@ namespace MEOS.NET.Internal
         public static IntPtr stbox_copy(IntPtr box)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_copy(box));
 
-        public static IntPtr stbox_make(int hasx, int hasz, int geodetic, int srid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, IntPtr s)
+        public static IntPtr stbox_make(bool hasx, bool hasz, bool geodetic, int srid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_make(hasx, hasz, geodetic, srid, xmin, xmax, ymin, ymax, zmin, zmax, s));
 
         public static IntPtr geo_to_stbox(IntPtr gs)
@@ -4447,7 +4609,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tstzspanset_to_stbox(IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tstzspanset_to_stbox(ss));
 
-        public static double stbox_area(IntPtr box, int spheroid)
+        public static double stbox_area(IntPtr box, bool spheroid)
             => SafeExecution<double>(() => MEOSExternalFunctions.stbox_area(box, spheroid));
 
         public static uint stbox_hash(IntPtr box)
@@ -4456,53 +4618,53 @@ namespace MEOS.NET.Internal
         public static ulong stbox_hash_extended(IntPtr box, ulong seed)
             => SafeExecution<ulong>(() => MEOSExternalFunctions.stbox_hash_extended(box, seed));
 
-        public static int stbox_hast(IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_hast(box));
+        public static bool stbox_hast(IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_hast(box));
 
-        public static int stbox_hasx(IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_hasx(box));
+        public static bool stbox_hasx(IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_hasx(box));
 
-        public static int stbox_hasz(IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_hasz(box));
+        public static bool stbox_hasz(IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_hasz(box));
 
-        public static int stbox_isgeodetic(IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_isgeodetic(box));
+        public static bool stbox_isgeodetic(IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_isgeodetic(box));
 
-        public static double stbox_perimeter(IntPtr box, int spheroid)
+        public static double stbox_perimeter(IntPtr box, bool spheroid)
             => SafeExecution<double>(() => MEOSExternalFunctions.stbox_perimeter(box, spheroid));
 
-        public static int stbox_tmax(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_tmax(box, result));
+        public static bool stbox_tmax(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_tmax(box, result));
 
-        public static int stbox_tmax_inc(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_tmax_inc(box, result));
+        public static bool stbox_tmax_inc(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_tmax_inc(box, result));
 
-        public static int stbox_tmin(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_tmin(box, result));
+        public static bool stbox_tmin(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_tmin(box, result));
 
-        public static int stbox_tmin_inc(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_tmin_inc(box, result));
+        public static bool stbox_tmin_inc(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_tmin_inc(box, result));
 
         public static double stbox_volume(IntPtr box)
             => SafeExecution<double>(() => MEOSExternalFunctions.stbox_volume(box));
 
-        public static int stbox_xmax(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_xmax(box, result));
+        public static bool stbox_xmax(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_xmax(box, result));
 
-        public static int stbox_xmin(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_xmin(box, result));
+        public static bool stbox_xmin(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_xmin(box, result));
 
-        public static int stbox_ymax(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_ymax(box, result));
+        public static bool stbox_ymax(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_ymax(box, result));
 
-        public static int stbox_ymin(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_ymin(box, result));
+        public static bool stbox_ymin(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_ymin(box, result));
 
-        public static int stbox_zmax(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_zmax(box, result));
+        public static bool stbox_zmax(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_zmax(box, result));
 
-        public static int stbox_zmin(IntPtr box, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_zmin(box, result));
+        public static bool stbox_zmin(IntPtr box, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_zmin(box, result));
 
         public static IntPtr stbox_expand_space(IntPtr box, double d)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_expand_space(box, d));
@@ -4534,73 +4696,73 @@ namespace MEOS.NET.Internal
         public static IntPtr stbox_transform(IntPtr box, int srid)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_transform(box, srid));
 
-        public static IntPtr stbox_transform_pipeline(IntPtr box, string pipelinestr, int srid, int is_forward)
+        public static IntPtr stbox_transform_pipeline(IntPtr box, string pipelinestr, int srid, bool is_forward)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_transform_pipeline(box, pipelinestr, srid, is_forward));
 
-        public static int adjacent_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_stbox_stbox(box1, box2));
+        public static bool adjacent_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_stbox_stbox(box1, box2));
 
-        public static int contained_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_stbox_stbox(box1, box2));
+        public static bool contained_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_stbox_stbox(box1, box2));
 
-        public static int contains_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_stbox_stbox(box1, box2));
+        public static bool contains_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_stbox_stbox(box1, box2));
 
-        public static int overlaps_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_stbox_stbox(box1, box2));
+        public static bool overlaps_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_stbox_stbox(box1, box2));
 
-        public static int same_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.same_stbox_stbox(box1, box2));
+        public static bool same_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.same_stbox_stbox(box1, box2));
 
-        public static int above_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.above_stbox_stbox(box1, box2));
+        public static bool above_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.above_stbox_stbox(box1, box2));
 
-        public static int after_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_stbox_stbox(box1, box2));
+        public static bool after_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_stbox_stbox(box1, box2));
 
-        public static int back_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.back_stbox_stbox(box1, box2));
+        public static bool back_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.back_stbox_stbox(box1, box2));
 
-        public static int before_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_stbox_stbox(box1, box2));
+        public static bool before_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_stbox_stbox(box1, box2));
 
-        public static int below_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.below_stbox_stbox(box1, box2));
+        public static bool below_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.below_stbox_stbox(box1, box2));
 
-        public static int front_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.front_stbox_stbox(box1, box2));
+        public static bool front_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.front_stbox_stbox(box1, box2));
 
-        public static int left_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_stbox_stbox(box1, box2));
+        public static bool left_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_stbox_stbox(box1, box2));
 
-        public static int overabove_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overabove_stbox_stbox(box1, box2));
+        public static bool overabove_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overabove_stbox_stbox(box1, box2));
 
-        public static int overafter_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_stbox_stbox(box1, box2));
+        public static bool overafter_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_stbox_stbox(box1, box2));
 
-        public static int overback_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overback_stbox_stbox(box1, box2));
+        public static bool overback_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overback_stbox_stbox(box1, box2));
 
-        public static int overbefore_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_stbox_stbox(box1, box2));
+        public static bool overbefore_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_stbox_stbox(box1, box2));
 
-        public static int overbelow_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbelow_stbox_stbox(box1, box2));
+        public static bool overbelow_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbelow_stbox_stbox(box1, box2));
 
-        public static int overfront_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overfront_stbox_stbox(box1, box2));
+        public static bool overfront_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overfront_stbox_stbox(box1, box2));
 
-        public static int overleft_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_stbox_stbox(box1, box2));
+        public static bool overleft_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_stbox_stbox(box1, box2));
 
-        public static int overright_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_stbox_stbox(box1, box2));
+        public static bool overright_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_stbox_stbox(box1, box2));
 
-        public static int right_stbox_stbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_stbox_stbox(box1, box2));
+        public static bool right_stbox_stbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_stbox_stbox(box1, box2));
 
-        public static IntPtr union_stbox_stbox(IntPtr box1, IntPtr box2, int strict)
+        public static IntPtr union_stbox_stbox(IntPtr box1, IntPtr box2, bool strict)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.union_stbox_stbox(box1, box2, strict));
 
         public static IntPtr intersection_stbox_stbox(IntPtr box1, IntPtr box2)
@@ -4609,23 +4771,23 @@ namespace MEOS.NET.Internal
         public static int stbox_cmp(IntPtr box1, IntPtr box2)
             => SafeExecution<int>(() => MEOSExternalFunctions.stbox_cmp(box1, box2));
 
-        public static int stbox_eq(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_eq(box1, box2));
+        public static bool stbox_eq(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_eq(box1, box2));
 
-        public static int stbox_ge(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_ge(box1, box2));
+        public static bool stbox_ge(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_ge(box1, box2));
 
-        public static int stbox_gt(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_gt(box1, box2));
+        public static bool stbox_gt(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_gt(box1, box2));
 
-        public static int stbox_le(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_le(box1, box2));
+        public static bool stbox_le(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_le(box1, box2));
 
-        public static int stbox_lt(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_lt(box1, box2));
+        public static bool stbox_lt(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_lt(box1, box2));
 
-        public static int stbox_ne(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.stbox_ne(box1, box2));
+        public static bool stbox_ne(IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.stbox_ne(box1, box2));
 
         public static IntPtr tgeogpoint_from_mfjson(string str)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeogpoint_from_mfjson(str));
@@ -4687,7 +4849,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tpointseq_from_base_tstzspan(IntPtr gs, IntPtr s, int interp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpointseq_from_base_tstzspan(gs, s, interp));
 
-        public static IntPtr tpointseq_make_coords(IntPtr xcoords, IntPtr ycoords, IntPtr zcoords, IntPtr times, int count, int srid, int geodetic, int lower_inc, int upper_inc, int interp, int normalize)
+        public static IntPtr tpointseq_make_coords(IntPtr xcoords, IntPtr ycoords, IntPtr zcoords, IntPtr times, int count, int srid, bool geodetic, bool lower_inc, bool upper_inc, int interp, bool normalize)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpointseq_make_coords(xcoords, ycoords, zcoords, times, count, srid, geodetic, lower_inc, upper_inc, interp, normalize));
 
         public static IntPtr tpointseqset_from_base_tstzspanset(IntPtr gs, IntPtr ss, int interp)
@@ -4720,19 +4882,42 @@ namespace MEOS.NET.Internal
         public static IntPtr tgeompoint_to_tgeometry(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeompoint_to_tgeometry(temp));
 
-        public static int tpoint_as_mvtgeom(IntPtr temp, IntPtr bounds, int extent, int buffer, int clip_geom, IntPtr gsarr, IntPtr timesarr, IntPtr count)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tpoint_as_mvtgeom(temp, bounds, extent, buffer, clip_geom, gsarr, timesarr, count));
+        public static (IntPtr[], long[]) tpoint_as_mvtgeom(IntPtr temp, IntPtr bounds, int extent, int buffer, bool clip_geom)
+        {
+            IntPtr _out_gsarr = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _out_timesarr = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                SafeExecution<bool>(() => MEOSExternalFunctions.tpoint_as_mvtgeom(temp, bounds, extent, buffer, clip_geom, _out_gsarr, _out_timesarr, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr __out_gsarr_arr = Marshal.ReadIntPtr(_out_gsarr);
+                IntPtr[] __out_gsarr_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_gsarr_out[_i] = Marshal.ReadIntPtr(__out_gsarr_arr, _i * IntPtr.Size); }
+                IntPtr __out_timesarr_arr = Marshal.ReadIntPtr(_out_timesarr);
+                long[] __out_timesarr_out = new long[_n];
+                Marshal.Copy(__out_timesarr_arr, __out_timesarr_out, 0, _n);
+                return (__out_gsarr_out, __out_timesarr_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_gsarr);
+            Marshal.FreeHGlobal(_out_timesarr);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
 
-        public static int tpoint_tfloat_to_geomeas(IntPtr tpoint, IntPtr measure, int segmentize, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tpoint_tfloat_to_geomeas(tpoint, measure, segmentize, result));
+        public static bool tpoint_tfloat_to_geomeas(IntPtr tpoint, IntPtr measure, bool segmentize, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tpoint_tfloat_to_geomeas(tpoint, measure, segmentize, result));
 
         public static IntPtr tspatial_to_stbox(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tspatial_to_stbox(temp));
 
-        public static int bearing_point_point(IntPtr gs1, IntPtr gs2, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.bearing_point_point(gs1, gs2, result));
+        public static bool bearing_point_point(IntPtr gs1, IntPtr gs2, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.bearing_point_point(gs1, gs2, result));
 
-        public static IntPtr bearing_tpoint_point(IntPtr temp, IntPtr gs, int invert)
+        public static IntPtr bearing_tpoint_point(IntPtr temp, IntPtr gs, bool invert)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.bearing_tpoint_point(temp, gs, invert));
 
         public static IntPtr bearing_tpoint_tpoint(IntPtr temp1, IntPtr temp2)
@@ -4750,14 +4935,14 @@ namespace MEOS.NET.Internal
         public static IntPtr tgeo_start_value(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_start_value(temp));
 
-        public static IntPtr tgeo_traversed_area(IntPtr temp, int unary_union)
+        public static IntPtr tgeo_traversed_area(IntPtr temp, bool unary_union)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_traversed_area(temp, unary_union));
 
-        public static int tgeo_value_at_timestamptz(IntPtr temp, long t, int strict, IntPtr value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tgeo_value_at_timestamptz(temp, t, strict, value));
+        public static bool tgeo_value_at_timestamptz(IntPtr temp, long t, bool strict, IntPtr value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tgeo_value_at_timestamptz(temp, t, strict, value));
 
-        public static int tgeo_value_n(IntPtr temp, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tgeo_value_n(temp, n, result));
+        public static bool tgeo_value_n(IntPtr temp, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tgeo_value_n(temp, n, result));
 
         public static IntPtr tgeo_values(IntPtr temp, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_values(temp, count));
@@ -4771,8 +4956,8 @@ namespace MEOS.NET.Internal
         public static IntPtr tpoint_cumulative_length(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpoint_cumulative_length(temp));
 
-        public static int tpoint_direction(IntPtr temp, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tpoint_direction(temp, result));
+        public static bool tpoint_direction(IntPtr temp, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tpoint_direction(temp, result));
 
         public static IntPtr tpoint_get_x(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpoint_get_x(temp));
@@ -4783,8 +4968,8 @@ namespace MEOS.NET.Internal
         public static IntPtr tpoint_get_z(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpoint_get_z(temp));
 
-        public static int tpoint_is_simple(IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tpoint_is_simple(temp));
+        public static bool tpoint_is_simple(IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tpoint_is_simple(temp));
 
         public static double tpoint_length(IntPtr temp)
             => SafeExecution<double>(() => MEOSExternalFunctions.tpoint_length(temp));
@@ -4792,7 +4977,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tpoint_speed(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpoint_speed(temp));
 
-        public static IntPtr tpoint_trajectory(IntPtr temp, int unary_union)
+        public static IntPtr tpoint_trajectory(IntPtr temp, bool unary_union)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpoint_trajectory(temp, unary_union));
 
         public static IntPtr tpoint_twcentroid(IntPtr temp)
@@ -4816,13 +5001,13 @@ namespace MEOS.NET.Internal
         public static IntPtr tspatial_transform(IntPtr temp, int srid)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tspatial_transform(temp, srid));
 
-        public static IntPtr tspatial_transform_pipeline(IntPtr temp, string pipelinestr, int srid, int is_forward)
+        public static IntPtr tspatial_transform_pipeline(IntPtr temp, string pipelinestr, int srid, bool is_forward)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tspatial_transform_pipeline(temp, pipelinestr, srid, is_forward));
 
         public static IntPtr tgeo_at_geom(IntPtr temp, IntPtr gs)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_at_geom(temp, gs));
 
-        public static IntPtr tgeo_at_stbox(IntPtr temp, IntPtr box, int border_inc)
+        public static IntPtr tgeo_at_stbox(IntPtr temp, IntPtr box, bool border_inc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_at_stbox(temp, box, border_inc));
 
         public static IntPtr tgeo_at_value(IntPtr temp, IntPtr gs)
@@ -4831,7 +5016,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tgeo_minus_geom(IntPtr temp, IntPtr gs)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_minus_geom(temp, gs));
 
-        public static IntPtr tgeo_minus_stbox(IntPtr temp, IntPtr box, int border_inc)
+        public static IntPtr tgeo_minus_stbox(IntPtr temp, IntPtr box, bool border_inc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_minus_stbox(temp, box, border_inc));
 
         public static IntPtr tgeo_minus_value(IntPtr temp, IntPtr gs)
@@ -4900,10 +5085,10 @@ namespace MEOS.NET.Internal
         public static IntPtr tgeo_stboxes(IntPtr temp, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_stboxes(temp, count));
 
-        public static IntPtr tgeo_space_boxes(IntPtr temp, double xsize, double ysize, double zsize, IntPtr sorigin, int bitmatrix, int border_inc, IntPtr count)
+        public static IntPtr tgeo_space_boxes(IntPtr temp, double xsize, double ysize, double zsize, IntPtr sorigin, bool bitmatrix, bool border_inc, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_space_boxes(temp, xsize, ysize, zsize, sorigin, bitmatrix, border_inc, count));
 
-        public static IntPtr tgeo_space_time_boxes(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, int bitmatrix, int border_inc, IntPtr count)
+        public static IntPtr tgeo_space_time_boxes(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, bool bitmatrix, bool border_inc, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_space_time_boxes(temp, xsize, ysize, zsize, duration, sorigin, torigin, bitmatrix, border_inc, count));
 
         public static IntPtr tgeo_split_each_n_stboxes(IntPtr temp, int elem_count, IntPtr count)
@@ -4912,194 +5097,194 @@ namespace MEOS.NET.Internal
         public static IntPtr tgeo_split_n_stboxes(IntPtr temp, int box_count, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_split_n_stboxes(temp, box_count, count));
 
-        public static int adjacent_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_stbox_tspatial(box, temp));
+        public static bool adjacent_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_stbox_tspatial(box, temp));
 
-        public static int adjacent_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_tspatial_stbox(temp, box));
+        public static bool adjacent_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_tspatial_stbox(temp, box));
 
-        public static int adjacent_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_tspatial_tspatial(temp1, temp2));
+        public static bool adjacent_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_tspatial_tspatial(temp1, temp2));
 
-        public static int contained_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_stbox_tspatial(box, temp));
+        public static bool contained_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_stbox_tspatial(box, temp));
 
-        public static int contained_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_tspatial_stbox(temp, box));
+        public static bool contained_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_tspatial_stbox(temp, box));
 
-        public static int contained_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_tspatial_tspatial(temp1, temp2));
+        public static bool contained_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_tspatial_tspatial(temp1, temp2));
 
-        public static int contains_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_stbox_tspatial(box, temp));
+        public static bool contains_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_stbox_tspatial(box, temp));
 
-        public static int contains_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_tspatial_stbox(temp, box));
+        public static bool contains_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_tspatial_stbox(temp, box));
 
-        public static int contains_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_tspatial_tspatial(temp1, temp2));
+        public static bool contains_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_tspatial_tspatial(temp1, temp2));
 
-        public static int overlaps_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_stbox_tspatial(box, temp));
+        public static bool overlaps_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_stbox_tspatial(box, temp));
 
-        public static int overlaps_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_tspatial_stbox(temp, box));
+        public static bool overlaps_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_tspatial_stbox(temp, box));
 
-        public static int overlaps_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overlaps_tspatial_tspatial(temp1, temp2));
+        public static bool overlaps_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overlaps_tspatial_tspatial(temp1, temp2));
 
-        public static int same_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.same_stbox_tspatial(box, temp));
+        public static bool same_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.same_stbox_tspatial(box, temp));
 
-        public static int same_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.same_tspatial_stbox(temp, box));
+        public static bool same_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.same_tspatial_stbox(temp, box));
 
-        public static int same_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.same_tspatial_tspatial(temp1, temp2));
+        public static bool same_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.same_tspatial_tspatial(temp1, temp2));
 
-        public static int above_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.above_stbox_tspatial(box, temp));
+        public static bool above_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.above_stbox_tspatial(box, temp));
 
-        public static int above_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.above_tspatial_stbox(temp, box));
+        public static bool above_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.above_tspatial_stbox(temp, box));
 
-        public static int above_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.above_tspatial_tspatial(temp1, temp2));
+        public static bool above_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.above_tspatial_tspatial(temp1, temp2));
 
-        public static int after_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_stbox_tspatial(box, temp));
+        public static bool after_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_stbox_tspatial(box, temp));
 
-        public static int after_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_tspatial_stbox(temp, box));
+        public static bool after_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_tspatial_stbox(temp, box));
 
-        public static int after_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.after_tspatial_tspatial(temp1, temp2));
+        public static bool after_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.after_tspatial_tspatial(temp1, temp2));
 
-        public static int back_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.back_stbox_tspatial(box, temp));
+        public static bool back_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.back_stbox_tspatial(box, temp));
 
-        public static int back_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.back_tspatial_stbox(temp, box));
+        public static bool back_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.back_tspatial_stbox(temp, box));
 
-        public static int back_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.back_tspatial_tspatial(temp1, temp2));
+        public static bool back_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.back_tspatial_tspatial(temp1, temp2));
 
-        public static int before_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_stbox_tspatial(box, temp));
+        public static bool before_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_stbox_tspatial(box, temp));
 
-        public static int before_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_tspatial_stbox(temp, box));
+        public static bool before_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_tspatial_stbox(temp, box));
 
-        public static int before_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.before_tspatial_tspatial(temp1, temp2));
+        public static bool before_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.before_tspatial_tspatial(temp1, temp2));
 
-        public static int below_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.below_stbox_tspatial(box, temp));
+        public static bool below_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.below_stbox_tspatial(box, temp));
 
-        public static int below_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.below_tspatial_stbox(temp, box));
+        public static bool below_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.below_tspatial_stbox(temp, box));
 
-        public static int below_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.below_tspatial_tspatial(temp1, temp2));
+        public static bool below_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.below_tspatial_tspatial(temp1, temp2));
 
-        public static int front_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.front_stbox_tspatial(box, temp));
+        public static bool front_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.front_stbox_tspatial(box, temp));
 
-        public static int front_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.front_tspatial_stbox(temp, box));
+        public static bool front_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.front_tspatial_stbox(temp, box));
 
-        public static int front_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.front_tspatial_tspatial(temp1, temp2));
+        public static bool front_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.front_tspatial_tspatial(temp1, temp2));
 
-        public static int left_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_stbox_tspatial(box, temp));
+        public static bool left_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_stbox_tspatial(box, temp));
 
-        public static int left_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_tspatial_stbox(temp, box));
+        public static bool left_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_tspatial_stbox(temp, box));
 
-        public static int left_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_tspatial_tspatial(temp1, temp2));
+        public static bool left_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_tspatial_tspatial(temp1, temp2));
 
-        public static int overabove_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overabove_stbox_tspatial(box, temp));
+        public static bool overabove_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overabove_stbox_tspatial(box, temp));
 
-        public static int overabove_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overabove_tspatial_stbox(temp, box));
+        public static bool overabove_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overabove_tspatial_stbox(temp, box));
 
-        public static int overabove_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overabove_tspatial_tspatial(temp1, temp2));
+        public static bool overabove_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overabove_tspatial_tspatial(temp1, temp2));
 
-        public static int overafter_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_stbox_tspatial(box, temp));
+        public static bool overafter_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_stbox_tspatial(box, temp));
 
-        public static int overafter_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_tspatial_stbox(temp, box));
+        public static bool overafter_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_tspatial_stbox(temp, box));
 
-        public static int overafter_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overafter_tspatial_tspatial(temp1, temp2));
+        public static bool overafter_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overafter_tspatial_tspatial(temp1, temp2));
 
-        public static int overback_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overback_stbox_tspatial(box, temp));
+        public static bool overback_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overback_stbox_tspatial(box, temp));
 
-        public static int overback_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overback_tspatial_stbox(temp, box));
+        public static bool overback_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overback_tspatial_stbox(temp, box));
 
-        public static int overback_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overback_tspatial_tspatial(temp1, temp2));
+        public static bool overback_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overback_tspatial_tspatial(temp1, temp2));
 
-        public static int overbefore_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_stbox_tspatial(box, temp));
+        public static bool overbefore_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_stbox_tspatial(box, temp));
 
-        public static int overbefore_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_tspatial_stbox(temp, box));
+        public static bool overbefore_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_tspatial_stbox(temp, box));
 
-        public static int overbefore_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbefore_tspatial_tspatial(temp1, temp2));
+        public static bool overbefore_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbefore_tspatial_tspatial(temp1, temp2));
 
-        public static int overbelow_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbelow_stbox_tspatial(box, temp));
+        public static bool overbelow_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbelow_stbox_tspatial(box, temp));
 
-        public static int overbelow_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbelow_tspatial_stbox(temp, box));
+        public static bool overbelow_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbelow_tspatial_stbox(temp, box));
 
-        public static int overbelow_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overbelow_tspatial_tspatial(temp1, temp2));
+        public static bool overbelow_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overbelow_tspatial_tspatial(temp1, temp2));
 
-        public static int overfront_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overfront_stbox_tspatial(box, temp));
+        public static bool overfront_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overfront_stbox_tspatial(box, temp));
 
-        public static int overfront_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overfront_tspatial_stbox(temp, box));
+        public static bool overfront_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overfront_tspatial_stbox(temp, box));
 
-        public static int overfront_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overfront_tspatial_tspatial(temp1, temp2));
+        public static bool overfront_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overfront_tspatial_tspatial(temp1, temp2));
 
-        public static int overleft_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_stbox_tspatial(box, temp));
+        public static bool overleft_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_stbox_tspatial(box, temp));
 
-        public static int overleft_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_tspatial_stbox(temp, box));
+        public static bool overleft_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_tspatial_stbox(temp, box));
 
-        public static int overleft_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_tspatial_tspatial(temp1, temp2));
+        public static bool overleft_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_tspatial_tspatial(temp1, temp2));
 
-        public static int overright_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_stbox_tspatial(box, temp));
+        public static bool overright_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_stbox_tspatial(box, temp));
 
-        public static int overright_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_tspatial_stbox(temp, box));
+        public static bool overright_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_tspatial_stbox(temp, box));
 
-        public static int overright_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_tspatial_tspatial(temp1, temp2));
+        public static bool overright_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_tspatial_tspatial(temp1, temp2));
 
-        public static int right_stbox_tspatial(IntPtr box, IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_stbox_tspatial(box, temp));
+        public static bool right_stbox_tspatial(IntPtr box, IntPtr temp)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_stbox_tspatial(box, temp));
 
-        public static int right_tspatial_stbox(IntPtr temp, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_tspatial_stbox(temp, box));
+        public static bool right_tspatial_stbox(IntPtr temp, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_tspatial_stbox(temp, box));
 
-        public static int right_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_tspatial_tspatial(temp1, temp2));
+        public static bool right_tspatial_tspatial(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_tspatial_tspatial(temp1, temp2));
 
         public static int acontains_geo_tgeo(IntPtr gs, IntPtr temp)
             => SafeExecution<int>(() => MEOSExternalFunctions.acontains_geo_tgeo(gs, temp));
@@ -5182,58 +5367,58 @@ namespace MEOS.NET.Internal
         public static int etouches_tpoint_geo(IntPtr temp, IntPtr gs)
             => SafeExecution<int>(() => MEOSExternalFunctions.etouches_tpoint_geo(temp, gs));
 
-        public static IntPtr tcontains_geo_tgeo(IntPtr gs, IntPtr temp, int restr, int atvalue)
+        public static IntPtr tcontains_geo_tgeo(IntPtr gs, IntPtr temp, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tcontains_geo_tgeo(gs, temp, restr, atvalue));
 
-        public static IntPtr tcontains_tgeo_geo(IntPtr temp, IntPtr gs, int restr, int atvalue)
+        public static IntPtr tcontains_tgeo_geo(IntPtr temp, IntPtr gs, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tcontains_tgeo_geo(temp, gs, restr, atvalue));
 
-        public static IntPtr tcontains_tgeo_tgeo(IntPtr temp1, IntPtr temp2, int restr, int atvalue)
+        public static IntPtr tcontains_tgeo_tgeo(IntPtr temp1, IntPtr temp2, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tcontains_tgeo_tgeo(temp1, temp2, restr, atvalue));
 
-        public static IntPtr tcovers_geo_tgeo(IntPtr gs, IntPtr temp, int restr, int atvalue)
+        public static IntPtr tcovers_geo_tgeo(IntPtr gs, IntPtr temp, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tcovers_geo_tgeo(gs, temp, restr, atvalue));
 
-        public static IntPtr tcovers_tgeo_geo(IntPtr temp, IntPtr gs, int restr, int atvalue)
+        public static IntPtr tcovers_tgeo_geo(IntPtr temp, IntPtr gs, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tcovers_tgeo_geo(temp, gs, restr, atvalue));
 
-        public static IntPtr tcovers_tgeo_tgeo(IntPtr temp1, IntPtr temp2, int restr, int atvalue)
+        public static IntPtr tcovers_tgeo_tgeo(IntPtr temp1, IntPtr temp2, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tcovers_tgeo_tgeo(temp1, temp2, restr, atvalue));
 
-        public static IntPtr tdisjoint_geo_tgeo(IntPtr gs, IntPtr temp, int restr, int atvalue)
+        public static IntPtr tdisjoint_geo_tgeo(IntPtr gs, IntPtr temp, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tdisjoint_geo_tgeo(gs, temp, restr, atvalue));
 
-        public static IntPtr tdisjoint_tgeo_geo(IntPtr temp, IntPtr gs, int restr, int atvalue)
+        public static IntPtr tdisjoint_tgeo_geo(IntPtr temp, IntPtr gs, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tdisjoint_tgeo_geo(temp, gs, restr, atvalue));
 
-        public static IntPtr tdisjoint_tgeo_tgeo(IntPtr temp1, IntPtr temp2, int restr, int atvalue)
+        public static IntPtr tdisjoint_tgeo_tgeo(IntPtr temp1, IntPtr temp2, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tdisjoint_tgeo_tgeo(temp1, temp2, restr, atvalue));
 
-        public static IntPtr tdwithin_geo_tgeo(IntPtr gs, IntPtr temp, double dist, int restr, int atvalue)
+        public static IntPtr tdwithin_geo_tgeo(IntPtr gs, IntPtr temp, double dist, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tdwithin_geo_tgeo(gs, temp, dist, restr, atvalue));
 
-        public static IntPtr tdwithin_tgeo_geo(IntPtr temp, IntPtr gs, double dist, int restr, int atvalue)
+        public static IntPtr tdwithin_tgeo_geo(IntPtr temp, IntPtr gs, double dist, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tdwithin_tgeo_geo(temp, gs, dist, restr, atvalue));
 
-        public static IntPtr tdwithin_tgeo_tgeo(IntPtr temp1, IntPtr temp2, double dist, int restr, int atvalue)
+        public static IntPtr tdwithin_tgeo_tgeo(IntPtr temp1, IntPtr temp2, double dist, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tdwithin_tgeo_tgeo(temp1, temp2, dist, restr, atvalue));
 
-        public static IntPtr tintersects_geo_tgeo(IntPtr gs, IntPtr temp, int restr, int atvalue)
+        public static IntPtr tintersects_geo_tgeo(IntPtr gs, IntPtr temp, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tintersects_geo_tgeo(gs, temp, restr, atvalue));
 
-        public static IntPtr tintersects_tgeo_geo(IntPtr temp, IntPtr gs, int restr, int atvalue)
+        public static IntPtr tintersects_tgeo_geo(IntPtr temp, IntPtr gs, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tintersects_tgeo_geo(temp, gs, restr, atvalue));
 
-        public static IntPtr tintersects_tgeo_tgeo(IntPtr temp1, IntPtr temp2, int restr, int atvalue)
+        public static IntPtr tintersects_tgeo_tgeo(IntPtr temp1, IntPtr temp2, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tintersects_tgeo_tgeo(temp1, temp2, restr, atvalue));
 
-        public static IntPtr ttouches_geo_tgeo(IntPtr gs, IntPtr temp, int restr, int atvalue)
+        public static IntPtr ttouches_geo_tgeo(IntPtr gs, IntPtr temp, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.ttouches_geo_tgeo(gs, temp, restr, atvalue));
 
-        public static IntPtr ttouches_tgeo_geo(IntPtr temp, IntPtr gs, int restr, int atvalue)
+        public static IntPtr ttouches_tgeo_geo(IntPtr temp, IntPtr gs, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.ttouches_tgeo_geo(temp, gs, restr, atvalue));
 
-        public static IntPtr ttouches_tgeo_tgeo(IntPtr temp1, IntPtr temp2, int restr, int atvalue)
+        public static IntPtr ttouches_tgeo_tgeo(IntPtr temp1, IntPtr temp2, bool restr, bool atvalue)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.ttouches_tgeo_tgeo(temp1, temp2, restr, atvalue));
 
         public static IntPtr tdistance_tgeo_geo(IntPtr temp, IntPtr gs)
@@ -5287,20 +5472,67 @@ namespace MEOS.NET.Internal
         public static IntPtr stbox_get_time_tile(long t, IntPtr duration, long torigin)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_get_time_tile(t, duration, torigin));
 
-        public static IntPtr stbox_space_tiles(IntPtr bounds, double xsize, double ysize, double zsize, IntPtr sorigin, int border_inc, IntPtr count)
+        public static IntPtr stbox_space_tiles(IntPtr bounds, double xsize, double ysize, double zsize, IntPtr sorigin, bool border_inc, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_space_tiles(bounds, xsize, ysize, zsize, sorigin, border_inc, count));
 
-        public static IntPtr stbox_space_time_tiles(IntPtr bounds, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, int border_inc, IntPtr count)
+        public static IntPtr stbox_space_time_tiles(IntPtr bounds, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, bool border_inc, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_space_time_tiles(bounds, xsize, ysize, zsize, duration, sorigin, torigin, border_inc, count));
 
-        public static IntPtr stbox_time_tiles(IntPtr bounds, IntPtr duration, long torigin, int border_inc, IntPtr count)
+        public static IntPtr stbox_time_tiles(IntPtr bounds, IntPtr duration, long torigin, bool border_inc, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_time_tiles(bounds, duration, torigin, border_inc, count));
 
-        public static IntPtr tgeo_space_split(IntPtr temp, double xsize, double ysize, double zsize, IntPtr sorigin, int bitmatrix, int border_inc, IntPtr space_bins, IntPtr count)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_space_split(temp, xsize, ysize, zsize, sorigin, bitmatrix, border_inc, space_bins, count));
+        public static (IntPtr[], IntPtr[]) tgeo_space_split(IntPtr temp, double xsize, double ysize, double zsize, IntPtr sorigin, bool bitmatrix, bool border_inc)
+        {
+            IntPtr _out_space_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_space_split(temp, xsize, ysize, zsize, sorigin, bitmatrix, border_inc, _out_space_bins, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_space_bins_arr = Marshal.ReadIntPtr(_out_space_bins);
+                IntPtr[] __out_space_bins_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_space_bins_out[_i] = Marshal.ReadIntPtr(__out_space_bins_arr, _i * IntPtr.Size); }
+                return (_resultArr, __out_space_bins_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_space_bins);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
 
-        public static IntPtr tgeo_space_time_split(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, int bitmatrix, int border_inc, IntPtr space_bins, IntPtr time_bins, IntPtr count)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_space_time_split(temp, xsize, ysize, zsize, duration, sorigin, torigin, bitmatrix, border_inc, space_bins, time_bins, count));
+        public static (IntPtr[], IntPtr[], long[]) tgeo_space_time_split(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, bool bitmatrix, bool border_inc)
+        {
+            IntPtr _out_space_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _out_time_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_space_time_split(temp, xsize, ysize, zsize, duration, sorigin, torigin, bitmatrix, border_inc, _out_space_bins, _out_time_bins, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_space_bins_arr = Marshal.ReadIntPtr(_out_space_bins);
+                IntPtr[] __out_space_bins_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_space_bins_out[_i] = Marshal.ReadIntPtr(__out_space_bins_arr, _i * IntPtr.Size); }
+                IntPtr __out_time_bins_arr = Marshal.ReadIntPtr(_out_time_bins);
+                long[] __out_time_bins_out = new long[_n];
+                Marshal.Copy(__out_time_bins_arr, __out_time_bins_out, 0, _n);
+                return (_resultArr, __out_space_bins_out, __out_time_bins_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_space_bins);
+            Marshal.FreeHGlobal(_out_time_bins);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
 
         public static IntPtr geo_cluster_kmeans(IntPtr geoms, uint ngeoms, uint k)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.geo_cluster_kmeans(geoms, ngeoms, k));
@@ -5362,25 +5594,25 @@ namespace MEOS.NET.Internal
         public static string spanset_out(IntPtr ss, int maxdd)
             => SafeExecution<string>(() => MEOSExternalFunctions.spanset_out(ss, maxdd));
 
-        public static IntPtr set_make(IntPtr values, int count, int basetype, int order)
+        public static IntPtr set_make(IntPtr values, int count, int basetype, bool order)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.set_make(values, count, basetype, order));
 
-        public static IntPtr set_make_exp(IntPtr values, int count, int maxcount, int basetype, int order)
+        public static IntPtr set_make_exp(IntPtr values, int count, int maxcount, int basetype, bool order)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.set_make_exp(values, count, maxcount, basetype, order));
 
-        public static IntPtr set_make_free(IntPtr values, int count, int basetype, int order)
+        public static IntPtr set_make_free(IntPtr values, int count, int basetype, bool order)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.set_make_free(values, count, basetype, order));
 
-        public static IntPtr span_make(ulong lower, ulong upper, int lower_inc, int upper_inc, int basetype)
+        public static IntPtr span_make(ulong lower, ulong upper, bool lower_inc, bool upper_inc, int basetype)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.span_make(lower, upper, lower_inc, upper_inc, basetype));
 
-        public static void span_set(ulong lower, ulong upper, int lower_inc, int upper_inc, int basetype, int spantype, IntPtr s)
+        public static void span_set(ulong lower, ulong upper, bool lower_inc, bool upper_inc, int basetype, int spantype, IntPtr s)
             => SafeExecution(() => MEOSExternalFunctions.span_set(lower, upper, lower_inc, upper_inc, basetype, spantype, s));
 
-        public static IntPtr spanset_make_exp(IntPtr spans, int count, int maxcount, int normalize, int order)
+        public static IntPtr spanset_make_exp(IntPtr spans, int count, int maxcount, bool normalize, bool order)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.spanset_make_exp(spans, count, maxcount, normalize, order));
 
-        public static IntPtr spanset_make_free(IntPtr spans, int count, int normalize, int order)
+        public static IntPtr spanset_make_free(IntPtr spans, int count, bool normalize, bool order)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.spanset_make_free(spans, count, normalize, order));
 
         public static IntPtr set_span(IntPtr s)
@@ -5404,7 +5636,7 @@ namespace MEOS.NET.Internal
         public static ulong numspan_width(IntPtr s)
             => SafeExecution<ulong>(() => MEOSExternalFunctions.numspan_width(s));
 
-        public static ulong numspanset_width(IntPtr ss, int boundspan)
+        public static ulong numspanset_width(IntPtr ss, bool boundspan)
             => SafeExecution<ulong>(() => MEOSExternalFunctions.numspanset_width(ss, boundspan));
 
         public static ulong set_end_value(IntPtr s)
@@ -5422,8 +5654,8 @@ namespace MEOS.NET.Internal
         public static ulong set_start_value(IntPtr s)
             => SafeExecution<ulong>(() => MEOSExternalFunctions.set_start_value(s));
 
-        public static int set_value_n(IntPtr s, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.set_value_n(s, n, result));
+        public static bool set_value_n(IntPtr s, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.set_value_n(s, n, result));
 
         public static IntPtr set_vals(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.set_vals(s));
@@ -5437,8 +5669,15 @@ namespace MEOS.NET.Internal
         public static int spanset_mem_size(IntPtr ss)
             => SafeExecution<int>(() => MEOSExternalFunctions.spanset_mem_size(ss));
 
-        public static IntPtr spanset_sps(IntPtr ss)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.spanset_sps(ss));
+        public static IntPtr[] spanset_sps(IntPtr ss)
+        {
+            int _n = (int)MEOSExposedFunctions.spanset_num_spans(ss);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.spanset_sps(ss));
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+            return _out;
+        }
 
         public static ulong spanset_upper(IntPtr ss)
             => SafeExecution<ulong>(() => MEOSExternalFunctions.spanset_upper(ss));
@@ -5452,16 +5691,16 @@ namespace MEOS.NET.Internal
         public static void intspan_set_floatspan(IntPtr s1, IntPtr s2)
             => SafeExecution(() => MEOSExternalFunctions.intspan_set_floatspan(s1, s2));
 
-        public static IntPtr numset_shift_scale(IntPtr s, ulong shift, ulong width, int hasshift, int haswidth)
+        public static IntPtr numset_shift_scale(IntPtr s, ulong shift, ulong width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.numset_shift_scale(s, shift, width, hasshift, haswidth));
 
         public static IntPtr numspan_expand(IntPtr s, ulong value)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.numspan_expand(s, value));
 
-        public static IntPtr numspan_shift_scale(IntPtr s, ulong shift, ulong width, int hasshift, int haswidth)
+        public static IntPtr numspan_shift_scale(IntPtr s, ulong shift, ulong width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.numspan_shift_scale(s, shift, width, hasshift, haswidth));
 
-        public static IntPtr numspanset_shift_scale(IntPtr ss, ulong shift, ulong width, int hasshift, int haswidth)
+        public static IntPtr numspanset_shift_scale(IntPtr ss, ulong shift, ulong width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.numspanset_shift_scale(ss, shift, width, hasshift, haswidth));
 
         public static IntPtr set_compact(IntPtr s)
@@ -5476,128 +5715,128 @@ namespace MEOS.NET.Internal
         public static IntPtr tbox_expand_value(IntPtr box, ulong value, int basetyp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tbox_expand_value(box, value, basetyp));
 
-        public static IntPtr textcat_textset_text_common(IntPtr s, IntPtr txt, int invert)
+        public static IntPtr textcat_textset_text_common(IntPtr s, IntPtr txt, bool invert)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.textcat_textset_text_common(s, txt, invert));
 
         public static void tstzspan_set_datespan(IntPtr s1, IntPtr s2)
             => SafeExecution(() => MEOSExternalFunctions.tstzspan_set_datespan(s1, s2));
 
-        public static int adjacent_span_value(IntPtr s, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_span_value(s, value));
+        public static bool adjacent_span_value(IntPtr s, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_span_value(s, value));
 
-        public static int adjacent_spanset_value(IntPtr ss, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_spanset_value(ss, value));
+        public static bool adjacent_spanset_value(IntPtr ss, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_spanset_value(ss, value));
 
-        public static int adjacent_value_spanset(ulong value, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.adjacent_value_spanset(value, ss));
+        public static bool adjacent_value_spanset(ulong value, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.adjacent_value_spanset(value, ss));
 
-        public static int contained_value_set(ulong value, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_value_set(value, s));
+        public static bool contained_value_set(ulong value, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_value_set(value, s));
 
-        public static int contained_value_span(ulong value, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_value_span(value, s));
+        public static bool contained_value_span(ulong value, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_value_span(value, s));
 
-        public static int contained_value_spanset(ulong value, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_value_spanset(value, ss));
+        public static bool contained_value_spanset(ulong value, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_value_spanset(value, ss));
 
-        public static int contains_set_value(IntPtr s, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_set_value(s, value));
+        public static bool contains_set_value(IntPtr s, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_value(s, value));
 
-        public static int contains_span_value(IntPtr s, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_span_value(s, value));
+        public static bool contains_span_value(IntPtr s, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_span_value(s, value));
 
-        public static int contains_spanset_value(IntPtr ss, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_spanset_value(ss, value));
+        public static bool contains_spanset_value(IntPtr ss, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_spanset_value(ss, value));
 
-        public static int ovadj_span_span(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.ovadj_span_span(s1, s2));
+        public static bool ovadj_span_span(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.ovadj_span_span(s1, s2));
 
-        public static int left_set_value(IntPtr s, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_set_value(s, value));
+        public static bool left_set_value(IntPtr s, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_set_value(s, value));
 
-        public static int left_span_value(IntPtr s, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_span_value(s, value));
+        public static bool left_span_value(IntPtr s, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_span_value(s, value));
 
-        public static int left_spanset_value(IntPtr ss, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_spanset_value(ss, value));
+        public static bool left_spanset_value(IntPtr ss, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_spanset_value(ss, value));
 
-        public static int left_value_set(ulong value, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_value_set(value, s));
+        public static bool left_value_set(ulong value, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_value_set(value, s));
 
-        public static int left_value_span(ulong value, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_value_span(value, s));
+        public static bool left_value_span(ulong value, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_value_span(value, s));
 
-        public static int left_value_spanset(ulong value, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.left_value_spanset(value, ss));
+        public static bool left_value_spanset(ulong value, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.left_value_spanset(value, ss));
 
-        public static int lfnadj_span_span(IntPtr s1, IntPtr s2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.lfnadj_span_span(s1, s2));
+        public static bool lfnadj_span_span(IntPtr s1, IntPtr s2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.lfnadj_span_span(s1, s2));
 
-        public static int overleft_set_value(IntPtr s, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_set_value(s, value));
+        public static bool overleft_set_value(IntPtr s, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_set_value(s, value));
 
-        public static int overleft_span_value(IntPtr s, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_span_value(s, value));
+        public static bool overleft_span_value(IntPtr s, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_span_value(s, value));
 
-        public static int overleft_spanset_value(IntPtr ss, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_spanset_value(ss, value));
+        public static bool overleft_spanset_value(IntPtr ss, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_spanset_value(ss, value));
 
-        public static int overleft_value_set(ulong value, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_value_set(value, s));
+        public static bool overleft_value_set(ulong value, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_value_set(value, s));
 
-        public static int overleft_value_span(ulong value, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_value_span(value, s));
+        public static bool overleft_value_span(ulong value, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_value_span(value, s));
 
-        public static int overleft_value_spanset(ulong value, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overleft_value_spanset(value, ss));
+        public static bool overleft_value_spanset(ulong value, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overleft_value_spanset(value, ss));
 
-        public static int overright_set_value(IntPtr s, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_set_value(s, value));
+        public static bool overright_set_value(IntPtr s, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_set_value(s, value));
 
-        public static int overright_span_value(IntPtr s, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_span_value(s, value));
+        public static bool overright_span_value(IntPtr s, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_span_value(s, value));
 
-        public static int overright_spanset_value(IntPtr ss, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_spanset_value(ss, value));
+        public static bool overright_spanset_value(IntPtr ss, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_spanset_value(ss, value));
 
-        public static int overright_value_set(ulong value, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_value_set(value, s));
+        public static bool overright_value_set(ulong value, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_value_set(value, s));
 
-        public static int overright_value_span(ulong value, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_value_span(value, s));
+        public static bool overright_value_span(ulong value, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_value_span(value, s));
 
-        public static int overright_value_spanset(ulong value, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.overright_value_spanset(value, ss));
+        public static bool overright_value_spanset(ulong value, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.overright_value_spanset(value, ss));
 
-        public static int right_value_set(ulong value, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_value_set(value, s));
+        public static bool right_value_set(ulong value, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_value_set(value, s));
 
-        public static int right_set_value(IntPtr s, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_set_value(s, value));
+        public static bool right_set_value(IntPtr s, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_set_value(s, value));
 
-        public static int right_value_span(ulong value, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_value_span(value, s));
+        public static bool right_value_span(ulong value, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_value_span(value, s));
 
-        public static int right_value_spanset(ulong value, IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_value_spanset(value, ss));
+        public static bool right_value_spanset(ulong value, IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_value_spanset(value, ss));
 
-        public static int right_span_value(IntPtr s, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_span_value(s, value));
+        public static bool right_span_value(IntPtr s, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_span_value(s, value));
 
-        public static int right_spanset_value(IntPtr ss, ulong value)
-            => SafeExecution<int>(() => MEOSExternalFunctions.right_spanset_value(ss, value));
+        public static bool right_spanset_value(IntPtr ss, ulong value)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.right_spanset_value(ss, value));
 
-        public static int bbox_type(int bboxtype)
-            => SafeExecution<int>(() => MEOSExternalFunctions.bbox_type(bboxtype));
+        public static bool bbox_type(int bboxtype)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.bbox_type(bboxtype));
 
-        public static int bbox_get_size(int bboxtype)
-            => SafeExecution<int>(() => MEOSExternalFunctions.bbox_get_size(bboxtype));
+        public static ulong bbox_get_size(int bboxtype)
+            => SafeExecution<ulong>(() => MEOSExternalFunctions.bbox_get_size(bboxtype));
 
         public static int bbox_max_dims(int bboxtype)
             => SafeExecution<int>(() => MEOSExternalFunctions.bbox_max_dims(bboxtype));
 
-        public static int temporal_bbox_eq(IntPtr box1, IntPtr box2, int temptype)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_bbox_eq(box1, box2, temptype));
+        public static bool temporal_bbox_eq(IntPtr box1, IntPtr box2, int temptype)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_bbox_eq(box1, box2, temptype));
 
         public static int temporal_bbox_cmp(IntPtr box1, IntPtr box2, int temptype)
             => SafeExecution<int>(() => MEOSExternalFunctions.temporal_bbox_cmp(box1, box2, temptype));
@@ -5605,8 +5844,8 @@ namespace MEOS.NET.Internal
         public static void bbox_union_span_span(IntPtr s1, IntPtr s2, IntPtr result)
             => SafeExecution(() => MEOSExternalFunctions.bbox_union_span_span(s1, s2, result));
 
-        public static int inter_span_span(IntPtr s1, IntPtr s2, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.inter_span_span(s1, s2, result));
+        public static bool inter_span_span(IntPtr s1, IntPtr s2, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.inter_span_span(s1, s2, result));
 
         public static IntPtr intersection_set_value(IntPtr s, ulong value)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_set_value(s, value));
@@ -5734,14 +5973,14 @@ namespace MEOS.NET.Internal
         public static void tstzspan_set_tbox(IntPtr s, IntPtr box)
             => SafeExecution(() => MEOSExternalFunctions.tstzspan_set_tbox(s, box));
 
-        public static IntPtr tbox_shift_scale_value(IntPtr box, ulong shift, ulong width, int hasshift, int haswidth)
+        public static IntPtr tbox_shift_scale_value(IntPtr box, ulong shift, ulong width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tbox_shift_scale_value(box, shift, width, hasshift, haswidth));
 
         public static void tbox_expand(IntPtr box1, IntPtr box2)
             => SafeExecution(() => MEOSExternalFunctions.tbox_expand(box1, box2));
 
-        public static int inter_tbox_tbox(IntPtr box1, IntPtr box2, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.inter_tbox_tbox(box1, box2, result));
+        public static bool inter_tbox_tbox(IntPtr box1, IntPtr box2, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.inter_tbox_tbox(box1, box2, result));
 
         public static IntPtr tboolinst_from_mfjson(IntPtr mfjson)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tboolinst_from_mfjson(mfjson));
@@ -5788,7 +6027,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tfloatseqset_in(string str)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tfloatseqset_in(str));
 
-        public static IntPtr tinstant_from_mfjson(IntPtr mfjson, int spatial, int srid, int temptype)
+        public static IntPtr tinstant_from_mfjson(IntPtr mfjson, bool spatial, int srid, int temptype)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tinstant_from_mfjson(mfjson, spatial, srid, temptype));
 
         public static IntPtr tinstant_in(string str, int temptype)
@@ -5815,7 +6054,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tintseqset_in(string str)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tintseqset_in(str));
 
-        public static IntPtr tsequence_from_mfjson(IntPtr mfjson, int spatial, int srid, int temptype, int interp)
+        public static IntPtr tsequence_from_mfjson(IntPtr mfjson, bool spatial, int srid, int temptype, int interp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_from_mfjson(mfjson, spatial, srid, temptype, interp));
 
         public static IntPtr tsequence_in(string str, int temptype, int interp)
@@ -5824,7 +6063,7 @@ namespace MEOS.NET.Internal
         public static string tsequence_out(IntPtr seq, int maxdd)
             => SafeExecution<string>(() => MEOSExternalFunctions.tsequence_out(seq, maxdd));
 
-        public static IntPtr tsequenceset_from_mfjson(IntPtr mfjson, int spatial, int srid, int temptype, int interp)
+        public static IntPtr tsequenceset_from_mfjson(IntPtr mfjson, bool spatial, int srid, int temptype, int interp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_from_mfjson(mfjson, spatial, srid, temptype, interp));
 
         public static IntPtr tsequenceset_in(string str, int temptype, int interp)
@@ -5878,10 +6117,10 @@ namespace MEOS.NET.Internal
         public static IntPtr tsequence_from_base_tstzspan(ulong value, int temptype, IntPtr s, int interp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_from_base_tstzspan(value, temptype, s, interp));
 
-        public static IntPtr tsequence_make_exp(IntPtr instants, int count, int maxcount, int lower_inc, int upper_inc, int interp, int normalize)
+        public static IntPtr tsequence_make_exp(IntPtr instants, int count, int maxcount, bool lower_inc, bool upper_inc, int interp, bool normalize)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_make_exp(instants, count, maxcount, lower_inc, upper_inc, interp, normalize));
 
-        public static IntPtr tsequence_make_free(IntPtr instants, int count, int lower_inc, int upper_inc, int interp, int normalize)
+        public static IntPtr tsequence_make_free(IntPtr instants, int count, bool lower_inc, bool upper_inc, int interp, bool normalize)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_make_free(instants, count, lower_inc, upper_inc, interp, normalize));
 
         public static IntPtr tsequenceset_copy(IntPtr ss)
@@ -5896,10 +6135,10 @@ namespace MEOS.NET.Internal
         public static IntPtr tsequenceset_from_base_tstzspanset(ulong value, int temptype, IntPtr ss, int interp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_from_base_tstzspanset(value, temptype, ss, interp));
 
-        public static IntPtr tsequenceset_make_exp(IntPtr sequences, int count, int maxcount, int normalize)
+        public static IntPtr tsequenceset_make_exp(IntPtr sequences, int count, int maxcount, bool normalize)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_make_exp(sequences, count, maxcount, normalize));
 
-        public static IntPtr tsequenceset_make_free(IntPtr sequences, int count, int normalize)
+        public static IntPtr tsequenceset_make_free(IntPtr sequences, int count, bool normalize)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_make_free(sequences, count, normalize));
 
         public static void temporal_set_tstzspan(IntPtr temp, IntPtr s)
@@ -5944,8 +6183,8 @@ namespace MEOS.NET.Internal
         public static ulong temporal_max_value(IntPtr temp)
             => SafeExecution<ulong>(() => MEOSExternalFunctions.temporal_max_value(temp));
 
-        public static int temporal_mem_size(IntPtr temp)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_mem_size(temp));
+        public static ulong temporal_mem_size(IntPtr temp)
+            => SafeExecution<ulong>(() => MEOSExternalFunctions.temporal_mem_size(temp));
 
         public static IntPtr temporal_min_inst_p(IntPtr temp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_min_inst_p(temp));
@@ -5968,8 +6207,8 @@ namespace MEOS.NET.Internal
         public static IntPtr temporal_values_p(IntPtr temp, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_values_p(temp, count));
 
-        public static int temporal_value_n(IntPtr temp, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_value_n(temp, n, result));
+        public static bool temporal_value_n(IntPtr temp, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_value_n(temp, n, result));
 
         public static IntPtr temporal_values(IntPtr temp, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_values(temp, count));
@@ -5995,8 +6234,8 @@ namespace MEOS.NET.Internal
         public static ulong tinstant_value(IntPtr inst)
             => SafeExecution<ulong>(() => MEOSExternalFunctions.tinstant_value(inst));
 
-        public static int tinstant_value_at_timestamptz(IntPtr inst, long t, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tinstant_value_at_timestamptz(inst, t, result));
+        public static bool tinstant_value_at_timestamptz(IntPtr inst, long t, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tinstant_value_at_timestamptz(inst, t, result));
 
         public static IntPtr tinstant_values_p(IntPtr inst, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tinstant_values_p(inst, count));
@@ -6028,8 +6267,15 @@ namespace MEOS.NET.Internal
         public static uint tsequence_hash(IntPtr seq)
             => SafeExecution<uint>(() => MEOSExternalFunctions.tsequence_hash(seq));
 
-        public static IntPtr tsequence_insts_p(IntPtr seq)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_insts_p(seq));
+        public static IntPtr[] tsequence_insts_p(IntPtr seq)
+        {
+            int _n = (int)MEOSExposedFunctions.temporal_num_instants(seq);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_insts_p(seq));
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+            return _out;
+        }
 
         public static IntPtr tsequence_max_inst_p(IntPtr seq)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_max_inst_p(seq));
@@ -6058,13 +6304,13 @@ namespace MEOS.NET.Internal
         public static IntPtr tsequence_timestamps(IntPtr seq, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_timestamps(seq, count));
 
-        public static int tsequence_value_at_timestamptz(IntPtr seq, long t, int strict, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tsequence_value_at_timestamptz(seq, t, strict, result));
+        public static bool tsequence_value_at_timestamptz(IntPtr seq, long t, bool strict, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tsequence_value_at_timestamptz(seq, t, strict, result));
 
         public static IntPtr tsequence_values_p(IntPtr seq, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_values_p(seq, count));
 
-        public static IntPtr tsequenceset_duration(IntPtr ss, int boundspan)
+        public static IntPtr tsequenceset_duration(IntPtr ss, bool boundspan)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_duration(ss, boundspan));
 
         public static long tsequenceset_end_timestamptz(IntPtr ss)
@@ -6076,8 +6322,15 @@ namespace MEOS.NET.Internal
         public static IntPtr tsequenceset_inst_n(IntPtr ss, int n)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_inst_n(ss, n));
 
-        public static IntPtr tsequenceset_insts_p(IntPtr ss)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_insts_p(ss));
+        public static IntPtr[] tsequenceset_insts_p(IntPtr ss)
+        {
+            int _n = (int)MEOSExposedFunctions.tsequenceset_num_instants(ss);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_insts_p(ss));
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+            return _out;
+        }
 
         public static IntPtr tsequenceset_max_inst_p(IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_max_inst_p(ss));
@@ -6100,8 +6353,15 @@ namespace MEOS.NET.Internal
         public static IntPtr tsequenceset_segments(IntPtr ss, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_segments(ss, count));
 
-        public static IntPtr tsequenceset_sequences_p(IntPtr ss)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_sequences_p(ss));
+        public static IntPtr[] tsequenceset_sequences_p(IntPtr ss)
+        {
+            int _n = (int)MEOSExposedFunctions.temporal_num_sequences(ss);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_sequences_p(ss));
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+            return _out;
+        }
 
         public static long tsequenceset_start_timestamptz(IntPtr ss)
             => SafeExecution<long>(() => MEOSExternalFunctions.tsequenceset_start_timestamptz(ss));
@@ -6109,17 +6369,17 @@ namespace MEOS.NET.Internal
         public static IntPtr tsequenceset_time(IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_time(ss));
 
-        public static int tsequenceset_timestamptz_n(IntPtr ss, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tsequenceset_timestamptz_n(ss, n, result));
+        public static bool tsequenceset_timestamptz_n(IntPtr ss, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tsequenceset_timestamptz_n(ss, n, result));
 
         public static IntPtr tsequenceset_timestamps(IntPtr ss, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_timestamps(ss, count));
 
-        public static int tsequenceset_value_at_timestamptz(IntPtr ss, long t, int strict, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tsequenceset_value_at_timestamptz(ss, t, strict, result));
+        public static bool tsequenceset_value_at_timestamptz(IntPtr ss, long t, bool strict, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tsequenceset_value_at_timestamptz(ss, t, strict, result));
 
-        public static int tsequenceset_value_n(IntPtr ss, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tsequenceset_value_n(ss, n, result));
+        public static bool tsequenceset_value_n(IntPtr ss, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tsequenceset_value_n(ss, n, result));
 
         public static IntPtr tsequenceset_values_p(IntPtr ss, IntPtr count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_values_p(ss, count));
@@ -6145,16 +6405,16 @@ namespace MEOS.NET.Internal
         public static IntPtr tinstant_to_tsequenceset(IntPtr inst, int interp)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tinstant_to_tsequenceset(inst, interp));
 
-        public static IntPtr tnumber_shift_scale_value(IntPtr temp, ulong shift, ulong width, int hasshift, int haswidth)
+        public static IntPtr tnumber_shift_scale_value(IntPtr temp, ulong shift, ulong width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnumber_shift_scale_value(temp, shift, width, hasshift, haswidth));
 
         public static IntPtr tnumberinst_shift_value(IntPtr inst, ulong shift)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnumberinst_shift_value(inst, shift));
 
-        public static IntPtr tnumberseq_shift_scale_value(IntPtr seq, ulong shift, ulong width, int hasshift, int haswidth)
+        public static IntPtr tnumberseq_shift_scale_value(IntPtr seq, ulong shift, ulong width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnumberseq_shift_scale_value(seq, shift, width, hasshift, haswidth));
 
-        public static IntPtr tnumberseqset_shift_scale_value(IntPtr ss, ulong start, ulong width, int hasshift, int haswidth)
+        public static IntPtr tnumberseqset_shift_scale_value(IntPtr ss, ulong start, ulong width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnumberseqset_shift_scale_value(ss, start, width, hasshift, haswidth));
 
         public static void tsequence_restart(IntPtr seq, int count)
@@ -6166,7 +6426,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tsequence_shift_scale_time(IntPtr seq, IntPtr shift, IntPtr duration)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_shift_scale_time(seq, shift, duration));
 
-        public static IntPtr tsequence_subseq(IntPtr seq, int from, int to, int lower_inc, int upper_inc)
+        public static IntPtr tsequence_subseq(IntPtr seq, int from, int to, bool lower_inc, bool upper_inc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_subseq(seq, from, to, lower_inc, upper_inc));
 
         public static IntPtr tsequence_to_tinstant(IntPtr seq)
@@ -6211,25 +6471,25 @@ namespace MEOS.NET.Internal
         public static IntPtr tinstant_merge_array(IntPtr instants, int count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tinstant_merge_array(instants, count));
 
-        public static IntPtr tsequence_append_tinstant(IntPtr seq, IntPtr inst, double maxdist, IntPtr maxt, int expand)
+        public static IntPtr tsequence_append_tinstant(IntPtr seq, IntPtr inst, double maxdist, IntPtr maxt, bool expand)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_append_tinstant(seq, inst, maxdist, maxt, expand));
 
-        public static IntPtr tsequence_append_tsequence(IntPtr seq1, IntPtr seq2, int expand)
+        public static IntPtr tsequence_append_tsequence(IntPtr seq1, IntPtr seq2, bool expand)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_append_tsequence(seq1, seq2, expand));
 
-        public static IntPtr tsequence_delete_timestamptz(IntPtr seq, long t, int connect)
+        public static IntPtr tsequence_delete_timestamptz(IntPtr seq, long t, bool connect)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_delete_timestamptz(seq, t, connect));
 
-        public static IntPtr tsequence_delete_tstzset(IntPtr seq, IntPtr s, int connect)
+        public static IntPtr tsequence_delete_tstzset(IntPtr seq, IntPtr s, bool connect)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_delete_tstzset(seq, s, connect));
 
-        public static IntPtr tsequence_delete_tstzspan(IntPtr seq, IntPtr s, int connect)
+        public static IntPtr tsequence_delete_tstzspan(IntPtr seq, IntPtr s, bool connect)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_delete_tstzspan(seq, s, connect));
 
-        public static IntPtr tsequence_delete_tstzspanset(IntPtr seq, IntPtr ss, int connect)
+        public static IntPtr tsequence_delete_tstzspanset(IntPtr seq, IntPtr ss, bool connect)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_delete_tstzspanset(seq, ss, connect));
 
-        public static IntPtr tsequence_insert(IntPtr seq1, IntPtr seq2, int connect)
+        public static IntPtr tsequence_insert(IntPtr seq1, IntPtr seq2, bool connect)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_insert(seq1, seq2, connect));
 
         public static IntPtr tsequence_merge(IntPtr seq1, IntPtr seq2)
@@ -6238,10 +6498,10 @@ namespace MEOS.NET.Internal
         public static IntPtr tsequence_merge_array(IntPtr sequences, int count)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_merge_array(sequences, count));
 
-        public static IntPtr tsequenceset_append_tinstant(IntPtr ss, IntPtr inst, double maxdist, IntPtr maxt, int expand)
+        public static IntPtr tsequenceset_append_tinstant(IntPtr ss, IntPtr inst, double maxdist, IntPtr maxt, bool expand)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_append_tinstant(ss, inst, maxdist, maxt, expand));
 
-        public static IntPtr tsequenceset_append_tsequence(IntPtr ss, IntPtr seq, int expand)
+        public static IntPtr tsequenceset_append_tsequence(IntPtr ss, IntPtr seq, bool expand)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_append_tsequence(ss, seq, expand));
 
         public static IntPtr tsequenceset_delete_timestamptz(IntPtr ss, long t)
@@ -6277,146 +6537,146 @@ namespace MEOS.NET.Internal
         public static void tsequenceset_set_bbox(IntPtr ss, IntPtr box)
             => SafeExecution(() => MEOSExternalFunctions.tsequenceset_set_bbox(ss, box));
 
-        public static IntPtr tcontseq_after_timestamptz(IntPtr seq, long t, int strict)
+        public static IntPtr tcontseq_after_timestamptz(IntPtr seq, long t, bool strict)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tcontseq_after_timestamptz(seq, t, strict));
 
-        public static IntPtr tcontseq_before_timestamptz(IntPtr seq, long t, int strict)
+        public static IntPtr tcontseq_before_timestamptz(IntPtr seq, long t, bool strict)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tcontseq_before_timestamptz(seq, t, strict));
 
-        public static IntPtr tcontseq_restrict_minmax(IntPtr seq, int min, int atfunc)
+        public static IntPtr tcontseq_restrict_minmax(IntPtr seq, bool min, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tcontseq_restrict_minmax(seq, min, atfunc));
 
-        public static IntPtr tdiscseq_after_timestamptz(IntPtr seq, long t, int strict)
+        public static IntPtr tdiscseq_after_timestamptz(IntPtr seq, long t, bool strict)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tdiscseq_after_timestamptz(seq, t, strict));
 
-        public static IntPtr tdiscseq_before_timestamptz(IntPtr seq, long t, int strict)
+        public static IntPtr tdiscseq_before_timestamptz(IntPtr seq, long t, bool strict)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tdiscseq_before_timestamptz(seq, t, strict));
 
-        public static IntPtr tdiscseq_restrict_minmax(IntPtr seq, int min, int atfunc)
+        public static IntPtr tdiscseq_restrict_minmax(IntPtr seq, bool min, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tdiscseq_restrict_minmax(seq, min, atfunc));
 
-        public static int temporal_bbox_restrict_set(IntPtr temp, IntPtr set)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_bbox_restrict_set(temp, set));
+        public static bool temporal_bbox_restrict_set(IntPtr temp, IntPtr set)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_bbox_restrict_set(temp, set));
 
-        public static IntPtr temporal_restrict_minmax(IntPtr temp, int min, int atfunc)
+        public static IntPtr temporal_restrict_minmax(IntPtr temp, bool min, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_restrict_minmax(temp, min, atfunc));
 
-        public static IntPtr temporal_restrict_timestamptz(IntPtr temp, long t, int atfunc)
+        public static IntPtr temporal_restrict_timestamptz(IntPtr temp, long t, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_restrict_timestamptz(temp, t, atfunc));
 
-        public static IntPtr temporal_restrict_tstzset(IntPtr temp, IntPtr s, int atfunc)
+        public static IntPtr temporal_restrict_tstzset(IntPtr temp, IntPtr s, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_restrict_tstzset(temp, s, atfunc));
 
-        public static IntPtr temporal_restrict_tstzspan(IntPtr temp, IntPtr s, int atfunc)
+        public static IntPtr temporal_restrict_tstzspan(IntPtr temp, IntPtr s, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_restrict_tstzspan(temp, s, atfunc));
 
-        public static IntPtr temporal_restrict_tstzspanset(IntPtr temp, IntPtr ss, int atfunc)
+        public static IntPtr temporal_restrict_tstzspanset(IntPtr temp, IntPtr ss, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_restrict_tstzspanset(temp, ss, atfunc));
 
-        public static IntPtr temporal_restrict_value(IntPtr temp, ulong value, int atfunc)
+        public static IntPtr temporal_restrict_value(IntPtr temp, ulong value, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_restrict_value(temp, value, atfunc));
 
-        public static IntPtr temporal_restrict_values(IntPtr temp, IntPtr set, int atfunc)
+        public static IntPtr temporal_restrict_values(IntPtr temp, IntPtr set, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_restrict_values(temp, set, atfunc));
 
-        public static int temporal_value_at_timestamptz(IntPtr temp, long t, int strict, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.temporal_value_at_timestamptz(temp, t, strict, result));
+        public static bool temporal_value_at_timestamptz(IntPtr temp, long t, bool strict, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.temporal_value_at_timestamptz(temp, t, strict, result));
 
-        public static IntPtr tinstant_after_timestamptz(IntPtr inst, long t, int strict)
+        public static IntPtr tinstant_after_timestamptz(IntPtr inst, long t, bool strict)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tinstant_after_timestamptz(inst, t, strict));
 
-        public static IntPtr tinstant_before_timestamptz(IntPtr inst, long t, int strict)
+        public static IntPtr tinstant_before_timestamptz(IntPtr inst, long t, bool strict)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tinstant_before_timestamptz(inst, t, strict));
 
-        public static IntPtr tinstant_restrict_tstzspan(IntPtr inst, IntPtr period, int atfunc)
+        public static IntPtr tinstant_restrict_tstzspan(IntPtr inst, IntPtr period, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tinstant_restrict_tstzspan(inst, period, atfunc));
 
-        public static IntPtr tinstant_restrict_tstzspanset(IntPtr inst, IntPtr ss, int atfunc)
+        public static IntPtr tinstant_restrict_tstzspanset(IntPtr inst, IntPtr ss, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tinstant_restrict_tstzspanset(inst, ss, atfunc));
 
-        public static IntPtr tinstant_restrict_timestamptz(IntPtr inst, long t, int atfunc)
+        public static IntPtr tinstant_restrict_timestamptz(IntPtr inst, long t, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tinstant_restrict_timestamptz(inst, t, atfunc));
 
-        public static IntPtr tinstant_restrict_tstzset(IntPtr inst, IntPtr s, int atfunc)
+        public static IntPtr tinstant_restrict_tstzset(IntPtr inst, IntPtr s, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tinstant_restrict_tstzset(inst, s, atfunc));
 
-        public static IntPtr tinstant_restrict_value(IntPtr inst, ulong value, int atfunc)
+        public static IntPtr tinstant_restrict_value(IntPtr inst, ulong value, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tinstant_restrict_value(inst, value, atfunc));
 
-        public static IntPtr tinstant_restrict_values(IntPtr inst, IntPtr set, int atfunc)
+        public static IntPtr tinstant_restrict_values(IntPtr inst, IntPtr set, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tinstant_restrict_values(inst, set, atfunc));
 
-        public static IntPtr tnumber_restrict_span(IntPtr temp, IntPtr span, int atfunc)
+        public static IntPtr tnumber_restrict_span(IntPtr temp, IntPtr span, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnumber_restrict_span(temp, span, atfunc));
 
-        public static IntPtr tnumber_restrict_spanset(IntPtr temp, IntPtr ss, int atfunc)
+        public static IntPtr tnumber_restrict_spanset(IntPtr temp, IntPtr ss, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnumber_restrict_spanset(temp, ss, atfunc));
 
-        public static IntPtr tnumberinst_restrict_span(IntPtr inst, IntPtr span, int atfunc)
+        public static IntPtr tnumberinst_restrict_span(IntPtr inst, IntPtr span, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnumberinst_restrict_span(inst, span, atfunc));
 
-        public static IntPtr tnumberinst_restrict_spanset(IntPtr inst, IntPtr ss, int atfunc)
+        public static IntPtr tnumberinst_restrict_spanset(IntPtr inst, IntPtr ss, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnumberinst_restrict_spanset(inst, ss, atfunc));
 
-        public static IntPtr tnumberseqset_restrict_span(IntPtr ss, IntPtr span, int atfunc)
+        public static IntPtr tnumberseqset_restrict_span(IntPtr ss, IntPtr span, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnumberseqset_restrict_span(ss, span, atfunc));
 
-        public static IntPtr tnumberseqset_restrict_spanset(IntPtr ss, IntPtr spanset, int atfunc)
+        public static IntPtr tnumberseqset_restrict_spanset(IntPtr ss, IntPtr spanset, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnumberseqset_restrict_spanset(ss, spanset, atfunc));
 
         public static IntPtr tsequence_at_timestamptz(IntPtr seq, long t)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_at_timestamptz(seq, t));
 
-        public static IntPtr tsequence_restrict_tstzspan(IntPtr seq, IntPtr s, int atfunc)
+        public static IntPtr tsequence_restrict_tstzspan(IntPtr seq, IntPtr s, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_restrict_tstzspan(seq, s, atfunc));
 
-        public static IntPtr tsequence_restrict_tstzspanset(IntPtr seq, IntPtr ss, int atfunc)
+        public static IntPtr tsequence_restrict_tstzspanset(IntPtr seq, IntPtr ss, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequence_restrict_tstzspanset(seq, ss, atfunc));
 
-        public static IntPtr tsequenceset_after_timestamptz(IntPtr ss, long t, int strict)
+        public static IntPtr tsequenceset_after_timestamptz(IntPtr ss, long t, bool strict)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_after_timestamptz(ss, t, strict));
 
-        public static IntPtr tsequenceset_before_timestamptz(IntPtr ss, long t, int strict)
+        public static IntPtr tsequenceset_before_timestamptz(IntPtr ss, long t, bool strict)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_before_timestamptz(ss, t, strict));
 
-        public static IntPtr tsequenceset_restrict_minmax(IntPtr ss, int min, int atfunc)
+        public static IntPtr tsequenceset_restrict_minmax(IntPtr ss, bool min, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_restrict_minmax(ss, min, atfunc));
 
-        public static IntPtr tsequenceset_restrict_tstzspan(IntPtr ss, IntPtr s, int atfunc)
+        public static IntPtr tsequenceset_restrict_tstzspan(IntPtr ss, IntPtr s, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_restrict_tstzspan(ss, s, atfunc));
 
-        public static IntPtr tsequenceset_restrict_tstzspanset(IntPtr ss, IntPtr ps, int atfunc)
+        public static IntPtr tsequenceset_restrict_tstzspanset(IntPtr ss, IntPtr ps, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_restrict_tstzspanset(ss, ps, atfunc));
 
-        public static IntPtr tsequenceset_restrict_timestamptz(IntPtr ss, long t, int atfunc)
+        public static IntPtr tsequenceset_restrict_timestamptz(IntPtr ss, long t, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_restrict_timestamptz(ss, t, atfunc));
 
-        public static IntPtr tsequenceset_restrict_tstzset(IntPtr ss, IntPtr s, int atfunc)
+        public static IntPtr tsequenceset_restrict_tstzset(IntPtr ss, IntPtr s, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_restrict_tstzset(ss, s, atfunc));
 
-        public static IntPtr tsequenceset_restrict_value(IntPtr ss, ulong value, int atfunc)
+        public static IntPtr tsequenceset_restrict_value(IntPtr ss, ulong value, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_restrict_value(ss, value, atfunc));
 
-        public static IntPtr tsequenceset_restrict_values(IntPtr ss, IntPtr s, int atfunc)
+        public static IntPtr tsequenceset_restrict_values(IntPtr ss, IntPtr s, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tsequenceset_restrict_values(ss, s, atfunc));
 
         public static int tinstant_cmp(IntPtr inst1, IntPtr inst2)
             => SafeExecution<int>(() => MEOSExternalFunctions.tinstant_cmp(inst1, inst2));
 
-        public static int tinstant_eq(IntPtr inst1, IntPtr inst2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tinstant_eq(inst1, inst2));
+        public static bool tinstant_eq(IntPtr inst1, IntPtr inst2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tinstant_eq(inst1, inst2));
 
         public static int tsequence_cmp(IntPtr seq1, IntPtr seq2)
             => SafeExecution<int>(() => MEOSExternalFunctions.tsequence_cmp(seq1, seq2));
 
-        public static int tsequence_eq(IntPtr seq1, IntPtr seq2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tsequence_eq(seq1, seq2));
+        public static bool tsequence_eq(IntPtr seq1, IntPtr seq2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tsequence_eq(seq1, seq2));
 
         public static int tsequenceset_cmp(IntPtr ss1, IntPtr ss2)
             => SafeExecution<int>(() => MEOSExternalFunctions.tsequenceset_cmp(ss1, ss2));
 
-        public static int tsequenceset_eq(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tsequenceset_eq(ss1, ss2));
+        public static bool tsequenceset_eq(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tsequenceset_eq(ss1, ss2));
 
         public static int always_eq_base_temporal(ulong value, IntPtr temp)
             => SafeExecution<int>(() => MEOSExternalFunctions.always_eq_base_temporal(value, temp));
@@ -6550,7 +6810,7 @@ namespace MEOS.NET.Internal
         public static IntPtr temporal_skiplist_make()
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.temporal_skiplist_make());
 
-        public static IntPtr skiplist_make(IntPtr key_size, IntPtr value_size, IntPtr comp_fn, IntPtr merge_fn)
+        public static IntPtr skiplist_make(ulong key_size, ulong value_size, IntPtr comp_fn, IntPtr merge_fn)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.skiplist_make(key_size, value_size, comp_fn, merge_fn));
 
         public static int skiplist_search(IntPtr list, IntPtr key, IntPtr value)
@@ -6559,10 +6819,10 @@ namespace MEOS.NET.Internal
         public static void skiplist_free(IntPtr list)
             => SafeExecution(() => MEOSExternalFunctions.skiplist_free(list));
 
-        public static void skiplist_splice(IntPtr list, IntPtr keys, IntPtr values, int count, IntPtr func, int crossings, IntPtr sktype)
+        public static void skiplist_splice(IntPtr list, IntPtr keys, IntPtr values, int count, IntPtr func, bool crossings, IntPtr sktype)
             => SafeExecution(() => MEOSExternalFunctions.skiplist_splice(list, keys, values, count, func, crossings, sktype));
 
-        public static void temporal_skiplist_splice(IntPtr list, IntPtr values, int count, IntPtr func, int crossings)
+        public static void temporal_skiplist_splice(IntPtr list, IntPtr values, int count, IntPtr func, bool crossings)
             => SafeExecution(() => MEOSExternalFunctions.temporal_skiplist_splice(list, values, count, func, crossings));
 
         public static IntPtr skiplist_values(IntPtr list)
@@ -6607,20 +6867,20 @@ namespace MEOS.NET.Internal
         public static IntPtr point_round(IntPtr gs, int maxdd)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.point_round(gs, maxdd));
 
-        public static void stbox_set(int hasx, int hasz, int geodetic, int srid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, IntPtr s, IntPtr box)
+        public static void stbox_set(bool hasx, bool hasz, bool geodetic, int srid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, IntPtr s, IntPtr box)
             => SafeExecution(() => MEOSExternalFunctions.stbox_set(hasx, hasz, geodetic, srid, xmin, xmax, ymin, ymax, zmin, zmax, s, box));
 
         public static void gbox_set_stbox(IntPtr box, int srid, IntPtr result)
             => SafeExecution(() => MEOSExternalFunctions.gbox_set_stbox(box, srid, result));
 
-        public static int geo_set_stbox(IntPtr gs, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.geo_set_stbox(gs, box));
+        public static bool geo_set_stbox(IntPtr gs, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.geo_set_stbox(gs, box));
 
         public static void geoarr_set_stbox(IntPtr values, int count, IntPtr box)
             => SafeExecution(() => MEOSExternalFunctions.geoarr_set_stbox(values, count, box));
 
-        public static int spatial_set_stbox(ulong d, int basetype, IntPtr box)
-            => SafeExecution<int>(() => MEOSExternalFunctions.spatial_set_stbox(d, basetype, box));
+        public static bool spatial_set_stbox(ulong d, int basetype, IntPtr box)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.spatial_set_stbox(d, basetype, box));
 
         public static void spatialset_set_stbox(IntPtr set, IntPtr box)
             => SafeExecution(() => MEOSExternalFunctions.spatialset_set_stbox(set, box));
@@ -6643,8 +6903,8 @@ namespace MEOS.NET.Internal
         public static void stbox_expand(IntPtr box1, IntPtr box2)
             => SafeExecution(() => MEOSExternalFunctions.stbox_expand(box1, box2));
 
-        public static int inter_stbox_stbox(IntPtr box1, IntPtr box2, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.inter_stbox_stbox(box1, box2, result));
+        public static bool inter_stbox_stbox(IntPtr box1, IntPtr box2, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.inter_stbox_stbox(box1, box2, result));
 
         public static IntPtr stbox_geo(IntPtr box)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.stbox_geo(box));
@@ -6733,35 +6993,35 @@ namespace MEOS.NET.Internal
         public static void tspatialseqset_set_stbox(IntPtr ss, IntPtr box)
             => SafeExecution(() => MEOSExternalFunctions.tspatialseqset_set_stbox(ss, box));
 
-        public static IntPtr tgeo_restrict_geom(IntPtr temp, IntPtr gs, IntPtr zspan, int atfunc)
+        public static IntPtr tgeo_restrict_geom(IntPtr temp, IntPtr gs, IntPtr zspan, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_restrict_geom(temp, gs, zspan, atfunc));
 
-        public static IntPtr tgeo_restrict_stbox(IntPtr temp, IntPtr box, int border_inc, int atfunc)
+        public static IntPtr tgeo_restrict_stbox(IntPtr temp, IntPtr box, bool border_inc, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_restrict_stbox(temp, box, border_inc, atfunc));
 
-        public static IntPtr tgeoinst_restrict_geom(IntPtr inst, IntPtr gs, IntPtr zspan, int atfunc)
+        public static IntPtr tgeoinst_restrict_geom(IntPtr inst, IntPtr gs, IntPtr zspan, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeoinst_restrict_geom(inst, gs, zspan, atfunc));
 
-        public static IntPtr tgeoinst_restrict_stbox(IntPtr inst, IntPtr box, int border_inc, int atfunc)
+        public static IntPtr tgeoinst_restrict_stbox(IntPtr inst, IntPtr box, bool border_inc, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeoinst_restrict_stbox(inst, box, border_inc, atfunc));
 
-        public static IntPtr tgeoseq_restrict_geom(IntPtr seq, IntPtr gs, IntPtr zspan, int atfunc)
+        public static IntPtr tgeoseq_restrict_geom(IntPtr seq, IntPtr gs, IntPtr zspan, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeoseq_restrict_geom(seq, gs, zspan, atfunc));
 
-        public static IntPtr tgeoseq_restrict_stbox(IntPtr seq, IntPtr box, int border_inc, int atfunc)
+        public static IntPtr tgeoseq_restrict_stbox(IntPtr seq, IntPtr box, bool border_inc, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeoseq_restrict_stbox(seq, box, border_inc, atfunc));
 
-        public static IntPtr tgeoseqset_restrict_geom(IntPtr ss, IntPtr gs, IntPtr zspan, int atfunc)
+        public static IntPtr tgeoseqset_restrict_geom(IntPtr ss, IntPtr gs, IntPtr zspan, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeoseqset_restrict_geom(ss, gs, zspan, atfunc));
 
-        public static IntPtr tgeoseqset_restrict_stbox(IntPtr ss, IntPtr box, int border_inc, int atfunc)
+        public static IntPtr tgeoseqset_restrict_stbox(IntPtr ss, IntPtr box, bool border_inc, bool atfunc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeoseqset_restrict_stbox(ss, box, border_inc, atfunc));
 
         public static int spatial_srid(ulong d, int basetype)
             => SafeExecution<int>(() => MEOSExternalFunctions.spatial_srid(d, basetype));
 
-        public static int spatial_set_srid(ulong d, int basetype, int srid)
-            => SafeExecution<int>(() => MEOSExternalFunctions.spatial_set_srid(d, basetype, srid));
+        public static bool spatial_set_srid(ulong d, int basetype, int srid)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.spatial_set_srid(d, basetype, srid));
 
         public static int tspatialinst_srid(IntPtr inst)
             => SafeExecution<int>(() => MEOSExternalFunctions.tspatialinst_srid(inst));
@@ -6772,13 +7032,13 @@ namespace MEOS.NET.Internal
         public static IntPtr tpointseq_cumulative_length(IntPtr seq, double prevlength)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpointseq_cumulative_length(seq, prevlength));
 
-        public static int tpointseq_is_simple(IntPtr seq)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tpointseq_is_simple(seq));
+        public static bool tpointseq_is_simple(IntPtr seq)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tpointseq_is_simple(seq));
 
         public static double tpointseq_length(IntPtr seq)
             => SafeExecution<double>(() => MEOSExternalFunctions.tpointseq_length(seq));
 
-        public static IntPtr tpointseq_linear_trajectory(IntPtr seq, int unary_union)
+        public static IntPtr tpointseq_linear_trajectory(IntPtr seq, bool unary_union)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpointseq_linear_trajectory(seq, unary_union));
 
         public static IntPtr tgeoseq_stboxes(IntPtr seq, IntPtr count)
@@ -6793,8 +7053,8 @@ namespace MEOS.NET.Internal
         public static IntPtr tpointseqset_cumulative_length(IntPtr ss)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpointseqset_cumulative_length(ss));
 
-        public static int tpointseqset_is_simple(IntPtr ss)
-            => SafeExecution<int>(() => MEOSExternalFunctions.tpointseqset_is_simple(ss));
+        public static bool tpointseqset_is_simple(IntPtr ss)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.tpointseqset_is_simple(ss));
 
         public static double tpointseqset_length(IntPtr ss)
             => SafeExecution<double>(() => MEOSExternalFunctions.tpointseqset_length(ss));
@@ -6808,19 +7068,19 @@ namespace MEOS.NET.Internal
         public static IntPtr tpoint_get_coord(IntPtr temp, int coord)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tpoint_get_coord(temp, coord));
 
-        public static IntPtr tgeominst_tgeoginst(IntPtr inst, int oper)
+        public static IntPtr tgeominst_tgeoginst(IntPtr inst, bool oper)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeominst_tgeoginst(inst, oper));
 
-        public static IntPtr tgeomseq_tgeogseq(IntPtr seq, int oper)
+        public static IntPtr tgeomseq_tgeogseq(IntPtr seq, bool oper)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeomseq_tgeogseq(seq, oper));
 
-        public static IntPtr tgeomseqset_tgeogseqset(IntPtr ss, int oper)
+        public static IntPtr tgeomseqset_tgeogseqset(IntPtr ss, bool oper)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeomseqset_tgeogseqset(ss, oper));
 
-        public static IntPtr tgeom_tgeog(IntPtr temp, int oper)
+        public static IntPtr tgeom_tgeog(IntPtr temp, bool oper)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeom_tgeog(temp, oper));
 
-        public static IntPtr tgeo_tpoint(IntPtr temp, int oper)
+        public static IntPtr tgeo_tpoint(IntPtr temp, bool oper)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tgeo_tpoint(temp, oper));
 
         public static void tspatialinst_set_srid(IntPtr inst, int srid)
@@ -6859,7 +7119,7 @@ namespace MEOS.NET.Internal
         public static IntPtr npoint_from_hexwkb(string hexwkb)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.npoint_from_hexwkb(hexwkb));
 
-        public static IntPtr npoint_from_wkb(IntPtr wkb, IntPtr size)
+        public static IntPtr npoint_from_wkb(IntPtr wkb, ulong size)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.npoint_from_wkb(wkb, size));
 
         public static IntPtr npoint_in(string str)
@@ -6922,8 +7182,8 @@ namespace MEOS.NET.Internal
         public static double nsegment_start_position(IntPtr ns)
             => SafeExecution<double>(() => MEOSExternalFunctions.nsegment_start_position(ns));
 
-        public static int route_exists(long rid)
-            => SafeExecution<int>(() => MEOSExternalFunctions.route_exists(rid));
+        public static bool route_exists(long rid)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.route_exists(rid));
 
         public static IntPtr route_geom(long rid)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.route_geom(rid));
@@ -6955,47 +7215,47 @@ namespace MEOS.NET.Internal
         public static int npoint_cmp(IntPtr np1, IntPtr np2)
             => SafeExecution<int>(() => MEOSExternalFunctions.npoint_cmp(np1, np2));
 
-        public static int npoint_eq(IntPtr np1, IntPtr np2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.npoint_eq(np1, np2));
+        public static bool npoint_eq(IntPtr np1, IntPtr np2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.npoint_eq(np1, np2));
 
-        public static int npoint_ge(IntPtr np1, IntPtr np2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.npoint_ge(np1, np2));
+        public static bool npoint_ge(IntPtr np1, IntPtr np2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.npoint_ge(np1, np2));
 
-        public static int npoint_gt(IntPtr np1, IntPtr np2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.npoint_gt(np1, np2));
+        public static bool npoint_gt(IntPtr np1, IntPtr np2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.npoint_gt(np1, np2));
 
-        public static int npoint_le(IntPtr np1, IntPtr np2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.npoint_le(np1, np2));
+        public static bool npoint_le(IntPtr np1, IntPtr np2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.npoint_le(np1, np2));
 
-        public static int npoint_lt(IntPtr np1, IntPtr np2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.npoint_lt(np1, np2));
+        public static bool npoint_lt(IntPtr np1, IntPtr np2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.npoint_lt(np1, np2));
 
-        public static int npoint_ne(IntPtr np1, IntPtr np2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.npoint_ne(np1, np2));
+        public static bool npoint_ne(IntPtr np1, IntPtr np2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.npoint_ne(np1, np2));
 
-        public static int npoint_same(IntPtr np1, IntPtr np2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.npoint_same(np1, np2));
+        public static bool npoint_same(IntPtr np1, IntPtr np2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.npoint_same(np1, np2));
 
         public static int nsegment_cmp(IntPtr ns1, IntPtr ns2)
             => SafeExecution<int>(() => MEOSExternalFunctions.nsegment_cmp(ns1, ns2));
 
-        public static int nsegment_eq(IntPtr ns1, IntPtr ns2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.nsegment_eq(ns1, ns2));
+        public static bool nsegment_eq(IntPtr ns1, IntPtr ns2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.nsegment_eq(ns1, ns2));
 
-        public static int nsegment_ge(IntPtr ns1, IntPtr ns2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.nsegment_ge(ns1, ns2));
+        public static bool nsegment_ge(IntPtr ns1, IntPtr ns2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.nsegment_ge(ns1, ns2));
 
-        public static int nsegment_gt(IntPtr ns1, IntPtr ns2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.nsegment_gt(ns1, ns2));
+        public static bool nsegment_gt(IntPtr ns1, IntPtr ns2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.nsegment_gt(ns1, ns2));
 
-        public static int nsegment_le(IntPtr ns1, IntPtr ns2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.nsegment_le(ns1, ns2));
+        public static bool nsegment_le(IntPtr ns1, IntPtr ns2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.nsegment_le(ns1, ns2));
 
-        public static int nsegment_lt(IntPtr ns1, IntPtr ns2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.nsegment_lt(ns1, ns2));
+        public static bool nsegment_lt(IntPtr ns1, IntPtr ns2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.nsegment_lt(ns1, ns2));
 
-        public static int nsegment_ne(IntPtr ns1, IntPtr ns2)
-            => SafeExecution<int>(() => MEOSExternalFunctions.nsegment_ne(ns1, ns2));
+        public static bool nsegment_ne(IntPtr ns1, IntPtr ns2)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.nsegment_ne(ns1, ns2));
 
         public static IntPtr npointset_in(string str)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.npointset_in(str));
@@ -7018,17 +7278,24 @@ namespace MEOS.NET.Internal
         public static IntPtr npointset_start_value(IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.npointset_start_value(s));
 
-        public static int npointset_value_n(IntPtr s, int n, IntPtr result)
-            => SafeExecution<int>(() => MEOSExternalFunctions.npointset_value_n(s, n, result));
+        public static bool npointset_value_n(IntPtr s, int n, IntPtr result)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.npointset_value_n(s, n, result));
 
-        public static IntPtr npointset_values(IntPtr s)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.npointset_values(s));
+        public static IntPtr[] npointset_values(IntPtr s)
+        {
+            int _n = (int)MEOSExposedFunctions.set_num_values(s);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.npointset_values(s));
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+            return _out;
+        }
 
-        public static int contained_npoint_set(IntPtr np, IntPtr s)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contained_npoint_set(np, s));
+        public static bool contained_npoint_set(IntPtr np, IntPtr s)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contained_npoint_set(np, s));
 
-        public static int contains_set_npoint(IntPtr s, IntPtr np)
-            => SafeExecution<int>(() => MEOSExternalFunctions.contains_set_npoint(s, np));
+        public static bool contains_set_npoint(IntPtr s, IntPtr np)
+            => SafeExecution<bool>(() => MEOSExternalFunctions.contains_set_npoint(s, np));
 
         public static IntPtr intersection_npoint_set(IntPtr np, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.intersection_npoint_set(np, s));
@@ -7099,7 +7366,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tnpoint_at_npointset(IntPtr temp, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnpoint_at_npointset(temp, s));
 
-        public static IntPtr tnpoint_at_stbox(IntPtr temp, IntPtr box, int border_inc)
+        public static IntPtr tnpoint_at_stbox(IntPtr temp, IntPtr box, bool border_inc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnpoint_at_stbox(temp, box, border_inc));
 
         public static IntPtr tnpoint_minus_geom(IntPtr temp, IntPtr gs)
@@ -7111,7 +7378,7 @@ namespace MEOS.NET.Internal
         public static IntPtr tnpoint_minus_npointset(IntPtr temp, IntPtr s)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnpoint_minus_npointset(temp, s));
 
-        public static IntPtr tnpoint_minus_stbox(IntPtr temp, IntPtr box, int border_inc)
+        public static IntPtr tnpoint_minus_stbox(IntPtr temp, IntPtr box, bool border_inc)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.tnpoint_minus_stbox(temp, box, border_inc));
 
         public static IntPtr tdistance_tnpoint_npoint(IntPtr temp, IntPtr np)
