@@ -13,37 +13,28 @@ namespace MEOS.NET.Internal
             private const string DllPath = "meos";
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int date_in(string str);
+            public static partial IntPtr meos_array_create(int elem_size);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial string date_out(int d);
+            public static partial void meos_array_add(IntPtr array, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int interval_cmp(IntPtr interv1, IntPtr interv2);
+            public static partial IntPtr meos_array_get(IntPtr array, int n);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr interval_in(string str, int typmod);
+            public static partial int meos_array_count(IntPtr array);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial string interval_out(IntPtr interv);
+            public static partial void meos_array_reset(IntPtr array);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long time_in(string str, int typmod);
+            public static partial void meos_array_reset_free(IntPtr array);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial string time_out(long t);
+            public static partial void meos_array_destroy(IntPtr array);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long timestamp_in(string str, int typmod);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial string timestamp_out(long t);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long timestamptz_in(string str, int typmod);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial string timestamptz_out(long t);
+            public static partial void meos_array_destroy_free(IntPtr array);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr rtree_create_intspan();
@@ -70,10 +61,16 @@ namespace MEOS.NET.Internal
             public static partial void rtree_free(IntPtr rtree);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial void rtree_insert(IntPtr rtree, IntPtr box, long id);
+            public static partial void rtree_insert(IntPtr rtree, IntPtr box, int id);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr rtree_search(IntPtr rtree, IntPtr query, IntPtr count);
+            public static partial void rtree_insert_temporal(IntPtr rtree, IntPtr temp, int id);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int rtree_search(IntPtr rtree, IntPtr op, IntPtr query, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int rtree_search_temporal(IntPtr rtree, IntPtr op, IntPtr temp, IntPtr result);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial void meos_error(int errlevel, int errcode, string format);
@@ -135,7 +132,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr add_interval_interval(IntPtr interv1, IntPtr interv2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long add_timestamptz_interval(long t, IntPtr interv);
+            public static partial int add_timestamptz_interval(int t, IntPtr interv);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -148,10 +145,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr cstring2text(string str);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long date_to_timestamp(int dateVal);
+            public static partial int date_to_timestamp(int dateVal);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long date_to_timestamptz(int d);
+            public static partial int date_to_timestamptz(int d);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial double float_exp(double d);
@@ -172,7 +169,7 @@ namespace MEOS.NET.Internal
             public static partial int int32_cmp(int l, int r);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int int64_cmp(long l, long r);
+            public static partial int int64_cmp(int l, int r);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr interval_make(int years, int months, int weeks, int days, int hours, int mins, double secs);
@@ -184,10 +181,10 @@ namespace MEOS.NET.Internal
             public static partial int minus_date_int(int d, int days);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long minus_timestamptz_interval(long t, IntPtr interv);
+            public static partial int minus_timestamptz_interval(int t, IntPtr interv);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_timestamptz_timestamptz(long t1, long t2);
+            public static partial IntPtr minus_timestamptz_timestamptz(int t1, int t2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr mul_interval_double(IntPtr interv, double factor);
@@ -208,16 +205,16 @@ namespace MEOS.NET.Internal
             public static partial string pg_interval_out(IntPtr interv);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long pg_timestamp_in(string str, int typmod);
+            public static partial int pg_timestamp_in(string str, int typmod);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial string pg_timestamp_out(long t);
+            public static partial string pg_timestamp_out(int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long pg_timestamptz_in(string str, int typmod);
+            public static partial int pg_timestamptz_in(string str, int typmod);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial string pg_timestamptz_out(long t);
+            public static partial string pg_timestamptz_out(int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial string text2cstring(IntPtr txt);
@@ -247,13 +244,13 @@ namespace MEOS.NET.Internal
             public static partial IntPtr textcat_text_text(IntPtr txt1, IntPtr txt2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long timestamptz_shift(long t, IntPtr interv);
+            public static partial int timestamptz_shift(int t, IntPtr interv);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int timestamp_to_date(long t);
+            public static partial int timestamp_to_date(int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int timestamptz_to_date(long t);
+            public static partial int timestamptz_to_date(int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr bigintset_in(string str);
@@ -262,7 +259,7 @@ namespace MEOS.NET.Internal
             public static partial string bigintset_out(IntPtr set);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr bigintspan_expand(IntPtr s, long value);
+            public static partial IntPtr bigintspan_expand(IntPtr s, int value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr bigintspan_in(string str);
@@ -400,7 +397,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr bigintset_make(IntPtr values, int count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr bigintspan_make(long lower, long upper, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc);
+            public static partial IntPtr bigintspan_make(int lower, int upper, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr dateset_make(IntPtr values, int count);
@@ -439,10 +436,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tstzset_make(IntPtr values, int count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tstzspan_make(long lower, long upper, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc);
+            public static partial IntPtr tstzspan_make(int lower, int upper, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr bigint_to_set(long i);
+            public static partial IntPtr bigint_to_set(int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr bigint_to_span(int i);
@@ -517,13 +514,13 @@ namespace MEOS.NET.Internal
             public static partial IntPtr text_to_set(IntPtr txt);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr timestamptz_to_set(long t);
+            public static partial IntPtr timestamptz_to_set(int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr timestamptz_to_span(long t);
+            public static partial IntPtr timestamptz_to_span(int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr timestamptz_to_spanset(long t);
+            public static partial IntPtr timestamptz_to_spanset(int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tstzset_to_dateset(IntPtr s);
@@ -535,10 +532,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tstzspanset_to_datespanset(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long bigintset_end_value(IntPtr s);
+            public static partial int bigintset_end_value(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long bigintset_start_value(IntPtr s);
+            public static partial int bigintset_start_value(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -548,22 +545,22 @@ namespace MEOS.NET.Internal
             public static partial IntPtr bigintset_values(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long bigintspan_lower(IntPtr s);
+            public static partial int bigintspan_lower(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long bigintspan_upper(IntPtr s);
+            public static partial int bigintspan_upper(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long bigintspan_width(IntPtr s);
+            public static partial int bigintspan_width(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long bigintspanset_lower(IntPtr ss);
+            public static partial int bigintspanset_lower(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long bigintspanset_upper(IntPtr ss);
+            public static partial int bigintspanset_upper(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long bigintspanset_width(IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool boundspan);
+            public static partial int bigintspanset_width(IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool boundspan);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int dateset_end_value(IntPtr s);
@@ -669,19 +666,19 @@ namespace MEOS.NET.Internal
             public static partial int intspanset_width(IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool boundspan);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial uint set_hash(IntPtr s);
+            public static partial int set_hash(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong set_hash_extended(IntPtr s, ulong seed);
+            public static partial int set_hash_extended(IntPtr s, int seed);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int set_num_values(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial uint span_hash(IntPtr s);
+            public static partial int span_hash(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong span_hash_extended(IntPtr s, ulong seed);
+            public static partial int span_hash_extended(IntPtr s, int seed);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -695,10 +692,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr spanset_end_span(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial uint spanset_hash(IntPtr ss);
+            public static partial int spanset_hash(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong spanset_hash_extended(IntPtr ss, ulong seed);
+            public static partial int spanset_hash_extended(IntPtr ss, int seed);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -737,10 +734,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr textset_values(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long tstzset_end_value(IntPtr s);
+            public static partial int tstzset_end_value(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long tstzset_start_value(IntPtr s);
+            public static partial int tstzset_start_value(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -753,25 +750,25 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tstzspan_duration(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long tstzspan_lower(IntPtr s);
+            public static partial int tstzspan_lower(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long tstzspan_upper(IntPtr s);
+            public static partial int tstzspan_upper(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tstzspanset_duration(IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool boundspan);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long tstzspanset_end_timestamptz(IntPtr ss);
+            public static partial int tstzspanset_end_timestamptz(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long tstzspanset_lower(IntPtr ss);
+            public static partial int tstzspanset_lower(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int tstzspanset_num_timestamps(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long tstzspanset_start_timestamptz(IntPtr ss);
+            public static partial int tstzspanset_start_timestamptz(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tstzspanset_timestamps(IntPtr ss);
@@ -781,16 +778,16 @@ namespace MEOS.NET.Internal
             public static partial bool tstzspanset_timestamptz_n(IntPtr ss, int n, IntPtr result);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long tstzspanset_upper(IntPtr ss);
+            public static partial int tstzspanset_upper(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr bigintset_shift_scale(IntPtr s, long shift, long width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
+            public static partial IntPtr bigintset_shift_scale(IntPtr s, int shift, int width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr bigintspan_shift_scale(IntPtr s, long shift, long width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
+            public static partial IntPtr bigintspan_shift_scale(IntPtr s, int shift, int width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr bigintspanset_shift_scale(IntPtr ss, long shift, long width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
+            public static partial IntPtr bigintspanset_shift_scale(IntPtr ss, int shift, int width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr dateset_shift_scale(IntPtr s, int shift, int width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
@@ -883,25 +880,25 @@ namespace MEOS.NET.Internal
             public static partial IntPtr textset_upper(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long timestamptz_tprecision(long t, IntPtr duration, long torigin);
+            public static partial int timestamptz_tprecision(int t, IntPtr duration, int torigin);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tstzset_shift_scale(IntPtr s, IntPtr shift, IntPtr duration);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tstzset_tprecision(IntPtr s, IntPtr duration, long torigin);
+            public static partial IntPtr tstzset_tprecision(IntPtr s, IntPtr duration, int torigin);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tstzspan_shift_scale(IntPtr s, IntPtr shift, IntPtr duration);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tstzspan_tprecision(IntPtr s, IntPtr duration, long torigin);
+            public static partial IntPtr tstzspan_tprecision(IntPtr s, IntPtr duration, int torigin);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tstzspanset_shift_scale(IntPtr ss, IntPtr shift, IntPtr duration);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tstzspanset_tprecision(IntPtr ss, IntPtr duration, long torigin);
+            public static partial IntPtr tstzspanset_tprecision(IntPtr ss, IntPtr duration, int torigin);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int set_cmp(IntPtr s1, IntPtr s2);
@@ -1004,7 +1001,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool adjacent_span_bigint(IntPtr s, long i);
+            public static partial bool adjacent_span_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1028,11 +1025,11 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool adjacent_span_timestamptz(IntPtr s, long t);
+            public static partial bool adjacent_span_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool adjacent_spanset_bigint(IntPtr ss, long i);
+            public static partial bool adjacent_spanset_bigint(IntPtr ss, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1048,7 +1045,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool adjacent_spanset_timestamptz(IntPtr ss, long t);
+            public static partial bool adjacent_spanset_timestamptz(IntPtr ss, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1060,15 +1057,15 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contained_bigint_set(long i, IntPtr s);
+            public static partial bool contained_bigint_set(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contained_bigint_span(long i, IntPtr s);
+            public static partial bool contained_bigint_span(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contained_bigint_spanset(long i, IntPtr ss);
+            public static partial bool contained_bigint_spanset(int i, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1132,19 +1129,19 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contained_timestamptz_set(long t, IntPtr s);
+            public static partial bool contained_timestamptz_set(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contained_timestamptz_span(long t, IntPtr s);
+            public static partial bool contained_timestamptz_span(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contained_timestamptz_spanset(long t, IntPtr ss);
+            public static partial bool contained_timestamptz_spanset(int t, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contains_set_bigint(IntPtr s, long i);
+            public static partial bool contains_set_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1168,11 +1165,11 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contains_set_timestamptz(IntPtr s, long t);
+            public static partial bool contains_set_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contains_span_bigint(IntPtr s, long i);
+            public static partial bool contains_span_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1196,11 +1193,11 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contains_span_timestamptz(IntPtr s, long t);
+            public static partial bool contains_span_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contains_spanset_bigint(IntPtr ss, long i);
+            public static partial bool contains_spanset_bigint(IntPtr ss, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1224,7 +1221,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contains_spanset_timestamptz(IntPtr ss, long t);
+            public static partial bool contains_spanset_timestamptz(IntPtr ss, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1264,7 +1261,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool after_set_timestamptz(IntPtr s, long t);
+            public static partial bool after_set_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1272,7 +1269,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool after_span_timestamptz(IntPtr s, long t);
+            public static partial bool after_span_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1280,19 +1277,19 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool after_spanset_timestamptz(IntPtr ss, long t);
+            public static partial bool after_spanset_timestamptz(IntPtr ss, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool after_timestamptz_set(long t, IntPtr s);
+            public static partial bool after_timestamptz_set(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool after_timestamptz_span(long t, IntPtr s);
+            public static partial bool after_timestamptz_span(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool after_timestamptz_spanset(long t, IntPtr ss);
+            public static partial bool after_timestamptz_spanset(int t, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1312,7 +1309,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool before_set_timestamptz(IntPtr s, long t);
+            public static partial bool before_set_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1320,7 +1317,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool before_span_timestamptz(IntPtr s, long t);
+            public static partial bool before_span_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1328,31 +1325,31 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool before_spanset_timestamptz(IntPtr ss, long t);
+            public static partial bool before_spanset_timestamptz(IntPtr ss, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool before_timestamptz_set(long t, IntPtr s);
+            public static partial bool before_timestamptz_set(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool before_timestamptz_span(long t, IntPtr s);
+            public static partial bool before_timestamptz_span(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool before_timestamptz_spanset(long t, IntPtr ss);
+            public static partial bool before_timestamptz_spanset(int t, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool left_bigint_set(long i, IntPtr s);
+            public static partial bool left_bigint_set(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool left_bigint_span(long i, IntPtr s);
+            public static partial bool left_bigint_span(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool left_bigint_spanset(long i, IntPtr ss);
+            public static partial bool left_bigint_spanset(int i, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1380,7 +1377,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool left_set_bigint(IntPtr s, long i);
+            public static partial bool left_set_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1400,7 +1397,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool left_span_bigint(IntPtr s, long i);
+            public static partial bool left_span_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1420,7 +1417,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool left_spanset_bigint(IntPtr ss, long i);
+            public static partial bool left_spanset_bigint(IntPtr ss, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1460,7 +1457,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overafter_set_timestamptz(IntPtr s, long t);
+            public static partial bool overafter_set_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1468,7 +1465,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overafter_span_timestamptz(IntPtr s, long t);
+            public static partial bool overafter_span_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1476,19 +1473,19 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overafter_spanset_timestamptz(IntPtr ss, long t);
+            public static partial bool overafter_spanset_timestamptz(IntPtr ss, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overafter_timestamptz_set(long t, IntPtr s);
+            public static partial bool overafter_timestamptz_set(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overafter_timestamptz_span(long t, IntPtr s);
+            public static partial bool overafter_timestamptz_span(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overafter_timestamptz_spanset(long t, IntPtr ss);
+            public static partial bool overafter_timestamptz_spanset(int t, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1508,7 +1505,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overbefore_set_timestamptz(IntPtr s, long t);
+            public static partial bool overbefore_set_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1516,7 +1513,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overbefore_span_timestamptz(IntPtr s, long t);
+            public static partial bool overbefore_span_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1524,31 +1521,31 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overbefore_spanset_timestamptz(IntPtr ss, long t);
+            public static partial bool overbefore_spanset_timestamptz(IntPtr ss, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overbefore_timestamptz_set(long t, IntPtr s);
+            public static partial bool overbefore_timestamptz_set(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overbefore_timestamptz_span(long t, IntPtr s);
+            public static partial bool overbefore_timestamptz_span(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overbefore_timestamptz_spanset(long t, IntPtr ss);
+            public static partial bool overbefore_timestamptz_spanset(int t, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overleft_bigint_set(long i, IntPtr s);
+            public static partial bool overleft_bigint_set(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overleft_bigint_span(long i, IntPtr s);
+            public static partial bool overleft_bigint_span(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overleft_bigint_spanset(long i, IntPtr ss);
+            public static partial bool overleft_bigint_spanset(int i, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1576,7 +1573,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overleft_set_bigint(IntPtr s, long i);
+            public static partial bool overleft_set_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1596,7 +1593,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overleft_span_bigint(IntPtr s, long i);
+            public static partial bool overleft_span_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1616,7 +1613,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overleft_spanset_bigint(IntPtr ss, long i);
+            public static partial bool overleft_spanset_bigint(IntPtr ss, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1640,15 +1637,15 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overright_bigint_set(long i, IntPtr s);
+            public static partial bool overright_bigint_set(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overright_bigint_span(long i, IntPtr s);
+            public static partial bool overright_bigint_span(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overright_bigint_spanset(long i, IntPtr ss);
+            public static partial bool overright_bigint_spanset(int i, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1676,7 +1673,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overright_set_bigint(IntPtr s, long i);
+            public static partial bool overright_set_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1696,7 +1693,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overright_span_bigint(IntPtr s, long i);
+            public static partial bool overright_span_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1716,7 +1713,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overright_spanset_bigint(IntPtr ss, long i);
+            public static partial bool overright_spanset_bigint(IntPtr ss, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1740,15 +1737,15 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool right_bigint_set(long i, IntPtr s);
+            public static partial bool right_bigint_set(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool right_bigint_span(long i, IntPtr s);
+            public static partial bool right_bigint_span(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool right_bigint_spanset(long i, IntPtr ss);
+            public static partial bool right_bigint_spanset(int i, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1776,7 +1773,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool right_set_bigint(IntPtr s, long i);
+            public static partial bool right_set_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1796,7 +1793,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool right_span_bigint(IntPtr s, long i);
+            public static partial bool right_span_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1816,7 +1813,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool right_spanset_bigint(IntPtr ss, long i);
+            public static partial bool right_spanset_bigint(IntPtr ss, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -1839,7 +1836,7 @@ namespace MEOS.NET.Internal
             public static partial bool right_text_set(IntPtr txt, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_bigint_set(long i, IntPtr s);
+            public static partial IntPtr intersection_bigint_set(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr intersection_date_set(int d, IntPtr s);
@@ -1851,7 +1848,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr intersection_int_set(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_set_bigint(IntPtr s, long i);
+            public static partial IntPtr intersection_set_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr intersection_set_date(IntPtr s, int d);
@@ -1869,10 +1866,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr intersection_set_text(IntPtr s, IntPtr txt);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_set_timestamptz(IntPtr s, long t);
+            public static partial IntPtr intersection_set_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_span_bigint(IntPtr s, long i);
+            public static partial IntPtr intersection_span_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr intersection_span_date(IntPtr s, int d);
@@ -1890,10 +1887,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr intersection_span_spanset(IntPtr s, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_span_timestamptz(IntPtr s, long t);
+            public static partial IntPtr intersection_span_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_spanset_bigint(IntPtr ss, long i);
+            public static partial IntPtr intersection_spanset_bigint(IntPtr ss, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr intersection_spanset_date(IntPtr ss, int d);
@@ -1911,22 +1908,22 @@ namespace MEOS.NET.Internal
             public static partial IntPtr intersection_spanset_spanset(IntPtr ss1, IntPtr ss2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_spanset_timestamptz(IntPtr ss, long t);
+            public static partial IntPtr intersection_spanset_timestamptz(IntPtr ss, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr intersection_text_set(IntPtr txt, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_timestamptz_set(long t, IntPtr s);
+            public static partial IntPtr intersection_timestamptz_set(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_bigint_set(long i, IntPtr s);
+            public static partial IntPtr minus_bigint_set(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_bigint_span(long i, IntPtr s);
+            public static partial IntPtr minus_bigint_span(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_bigint_spanset(long i, IntPtr ss);
+            public static partial IntPtr minus_bigint_spanset(int i, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr minus_date_set(int d, IntPtr s);
@@ -1956,7 +1953,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr minus_int_spanset(int i, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_set_bigint(IntPtr s, long i);
+            public static partial IntPtr minus_set_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr minus_set_date(IntPtr s, int d);
@@ -1974,10 +1971,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr minus_set_text(IntPtr s, IntPtr txt);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_set_timestamptz(IntPtr s, long t);
+            public static partial IntPtr minus_set_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_span_bigint(IntPtr s, long i);
+            public static partial IntPtr minus_span_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr minus_span_date(IntPtr s, int d);
@@ -1995,10 +1992,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr minus_span_spanset(IntPtr s, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_span_timestamptz(IntPtr s, long t);
+            public static partial IntPtr minus_span_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_spanset_bigint(IntPtr ss, long i);
+            public static partial IntPtr minus_spanset_bigint(IntPtr ss, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr minus_spanset_date(IntPtr ss, int d);
@@ -2016,28 +2013,28 @@ namespace MEOS.NET.Internal
             public static partial IntPtr minus_spanset_spanset(IntPtr ss1, IntPtr ss2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_spanset_timestamptz(IntPtr ss, long t);
+            public static partial IntPtr minus_spanset_timestamptz(IntPtr ss, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr minus_text_set(IntPtr txt, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_timestamptz_set(long t, IntPtr s);
+            public static partial IntPtr minus_timestamptz_set(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_timestamptz_span(long t, IntPtr s);
+            public static partial IntPtr minus_timestamptz_span(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_timestamptz_spanset(long t, IntPtr ss);
+            public static partial IntPtr minus_timestamptz_spanset(int t, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_bigint_set(long i, IntPtr s);
+            public static partial IntPtr union_bigint_set(int i, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_bigint_span(IntPtr s, long i);
+            public static partial IntPtr union_bigint_span(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_bigint_spanset(long i, IntPtr ss);
+            public static partial IntPtr union_bigint_spanset(int i, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr union_date_set(int d, IntPtr s);
@@ -2067,7 +2064,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr union_int_spanset(int i, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_set_bigint(IntPtr s, long i);
+            public static partial IntPtr union_set_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr union_set_date(IntPtr s, int d);
@@ -2085,10 +2082,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr union_set_text(IntPtr s, IntPtr txt);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_set_timestamptz(IntPtr s, long t);
+            public static partial IntPtr union_set_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_span_bigint(IntPtr s, long i);
+            public static partial IntPtr union_span_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr union_span_date(IntPtr s, int d);
@@ -2106,10 +2103,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr union_span_spanset(IntPtr s, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_span_timestamptz(IntPtr s, long t);
+            public static partial IntPtr union_span_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_spanset_bigint(IntPtr ss, long i);
+            public static partial IntPtr union_spanset_bigint(IntPtr ss, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr union_spanset_date(IntPtr ss, int d);
@@ -2127,31 +2124,31 @@ namespace MEOS.NET.Internal
             public static partial IntPtr union_spanset_spanset(IntPtr ss1, IntPtr ss2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_spanset_timestamptz(IntPtr ss, long t);
+            public static partial IntPtr union_spanset_timestamptz(IntPtr ss, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr union_text_set(IntPtr txt, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_timestamptz_set(long t, IntPtr s);
+            public static partial IntPtr union_timestamptz_set(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_timestamptz_span(long t, IntPtr s);
+            public static partial IntPtr union_timestamptz_span(int t, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_timestamptz_spanset(long t, IntPtr ss);
+            public static partial IntPtr union_timestamptz_spanset(int t, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long distance_bigintset_bigintset(IntPtr s1, IntPtr s2);
+            public static partial int distance_bigintset_bigintset(IntPtr s1, IntPtr s2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long distance_bigintspan_bigintspan(IntPtr s1, IntPtr s2);
+            public static partial int distance_bigintspan_bigintspan(IntPtr s1, IntPtr s2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long distance_bigintspanset_bigintspan(IntPtr ss, IntPtr s);
+            public static partial int distance_bigintspanset_bigintspan(IntPtr ss, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long distance_bigintspanset_bigintspanset(IntPtr ss1, IntPtr ss2);
+            public static partial int distance_bigintspanset_bigintspanset(IntPtr ss1, IntPtr ss2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int distance_dateset_dateset(IntPtr s1, IntPtr s2);
@@ -2190,7 +2187,7 @@ namespace MEOS.NET.Internal
             public static partial int distance_intspanset_intspanset(IntPtr ss1, IntPtr ss2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long distance_set_bigint(IntPtr s, long i);
+            public static partial int distance_set_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int distance_set_date(IntPtr s, int d);
@@ -2202,10 +2199,10 @@ namespace MEOS.NET.Internal
             public static partial int distance_set_int(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial double distance_set_timestamptz(IntPtr s, long t);
+            public static partial double distance_set_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long distance_span_bigint(IntPtr s, long i);
+            public static partial int distance_span_bigint(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int distance_span_date(IntPtr s, int d);
@@ -2217,10 +2214,10 @@ namespace MEOS.NET.Internal
             public static partial int distance_span_int(IntPtr s, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial double distance_span_timestamptz(IntPtr s, long t);
+            public static partial double distance_span_timestamptz(IntPtr s, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long distance_spanset_bigint(IntPtr ss, long i);
+            public static partial int distance_spanset_bigint(IntPtr ss, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int distance_spanset_date(IntPtr ss, int d);
@@ -2232,7 +2229,7 @@ namespace MEOS.NET.Internal
             public static partial int distance_spanset_int(IntPtr ss, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial double distance_spanset_timestamptz(IntPtr ss, long t);
+            public static partial double distance_spanset_timestamptz(IntPtr ss, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial double distance_tstzset_tstzset(IntPtr s1, IntPtr s2);
@@ -2247,10 +2244,10 @@ namespace MEOS.NET.Internal
             public static partial double distance_tstzspanset_tstzspanset(IntPtr ss1, IntPtr ss2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr bigint_extent_transfn(IntPtr state, long i);
+            public static partial IntPtr bigint_extent_transfn(IntPtr state, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr bigint_union_transfn(IntPtr state, long i);
+            public static partial IntPtr bigint_union_transfn(IntPtr state, int i);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr date_extent_transfn(IntPtr state, int d);
@@ -2298,19 +2295,19 @@ namespace MEOS.NET.Internal
             public static partial IntPtr text_union_transfn(IntPtr state, IntPtr txt);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr timestamptz_extent_transfn(IntPtr state, long t);
+            public static partial IntPtr timestamptz_extent_transfn(IntPtr state, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr timestamptz_union_transfn(IntPtr state, long t);
+            public static partial IntPtr timestamptz_union_transfn(IntPtr state, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long bigint_get_bin(long value, long vsize, long vorigin);
+            public static partial int bigint_get_bin(int value, int vsize, int vorigin);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr bigintspan_bins(IntPtr s, long vsize, long vorigin, IntPtr count);
+            public static partial IntPtr bigintspan_bins(IntPtr s, int vsize, int vorigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr bigintspanset_bins(IntPtr ss, long vsize, long vorigin, IntPtr count);
+            public static partial IntPtr bigintspanset_bins(IntPtr ss, int vsize, int vorigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int date_get_bin(int d, IntPtr duration, int torigin);
@@ -2340,13 +2337,13 @@ namespace MEOS.NET.Internal
             public static partial IntPtr intspanset_bins(IntPtr ss, int vsize, int vorigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long timestamptz_get_bin(long t, IntPtr duration, long torigin);
+            public static partial int timestamptz_get_bin(int t, IntPtr duration, int torigin);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tstzspan_bins(IntPtr s, IntPtr duration, long origin, IntPtr count);
+            public static partial IntPtr tstzspan_bins(IntPtr s, IntPtr duration, int origin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tstzspanset_bins(IntPtr ss, IntPtr duration, long torigin, IntPtr count);
+            public static partial IntPtr tstzspanset_bins(IntPtr ss, IntPtr duration, int torigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial string tbox_as_hexwkb(IntPtr box, IntPtr variant, IntPtr size);
@@ -2367,13 +2364,13 @@ namespace MEOS.NET.Internal
             public static partial string tbox_out(IntPtr box, int maxdd);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr float_timestamptz_to_tbox(double d, long t);
+            public static partial IntPtr float_timestamptz_to_tbox(double d, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr float_tstzspan_to_tbox(double d, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr int_timestamptz_to_tbox(int i, long t);
+            public static partial IntPtr int_timestamptz_to_tbox(int i, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr int_tstzspan_to_tbox(int i, IntPtr s);
@@ -2382,7 +2379,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr numspan_tstzspan_to_tbox(IntPtr span, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr numspan_timestamptz_to_tbox(IntPtr span, long t);
+            public static partial IntPtr numspan_timestamptz_to_tbox(IntPtr span, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tbox_copy(IntPtr box);
@@ -2415,13 +2412,13 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tbox_to_tstzspan(IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr timestamptz_to_tbox(long t);
+            public static partial IntPtr timestamptz_to_tbox(int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial uint tbox_hash(IntPtr box);
+            public static partial int tbox_hash(IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong tbox_hash_extended(IntPtr box, ulong seed);
+            public static partial int tbox_hash_extended(IntPtr box, int seed);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -2640,7 +2637,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tbool_from_base_temp([MarshalAs(UnmanagedType.U1)] bool b, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tboolinst_make([MarshalAs(UnmanagedType.U1)] bool b, long t);
+            public static partial IntPtr tboolinst_make([MarshalAs(UnmanagedType.U1)] bool b, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tboolseq_from_base_tstzset([MarshalAs(UnmanagedType.U1)] bool b, IntPtr s);
@@ -2658,7 +2655,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tfloat_from_base_temp(double d, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tfloatinst_make(double d, long t);
+            public static partial IntPtr tfloatinst_make(double d, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tfloatseq_from_base_tstzset(double d, IntPtr s);
@@ -2673,7 +2670,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tint_from_base_temp(int i, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tintinst_make(int i, long t);
+            public static partial IntPtr tintinst_make(int i, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tintseq_from_base_tstzset(int i, IntPtr s);
@@ -2697,7 +2694,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr ttext_from_base_temp(IntPtr txt, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr ttextinst_make(IntPtr txt, long t);
+            public static partial IntPtr ttextinst_make(IntPtr txt, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr ttextseq_from_base_tstzset(IntPtr txt, IntPtr s);
@@ -2736,7 +2733,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tbool_value_at_timestamptz(IntPtr temp, long t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr value);
+            public static partial bool tbool_value_at_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -2755,10 +2752,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_end_sequence(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long temporal_end_timestamptz(IntPtr temp);
+            public static partial int temporal_end_timestamptz(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial uint temporal_hash(IntPtr temp);
+            public static partial int temporal_hash(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr temporal_instant_n(IntPtr temp, int n);
@@ -2807,7 +2804,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_start_sequence(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long temporal_start_timestamptz(IntPtr temp);
+            public static partial int temporal_start_timestamptz(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr temporal_stops(IntPtr temp, double maxdist, IntPtr minduration);
@@ -2846,7 +2843,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tfloat_value_at_timestamptz(IntPtr temp, long t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr value);
+            public static partial bool tfloat_value_at_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -2869,7 +2866,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tint_value_at_timestamptz(IntPtr temp, long t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr value);
+            public static partial bool tint_value_at_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -2904,7 +2901,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ttext_value_at_timestamptz(IntPtr temp, long t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr value);
+            public static partial bool ttext_value_at_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -2980,7 +2977,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_append_tsequence(IntPtr temp, IntPtr seq, [MarshalAs(UnmanagedType.U1)] bool expand);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr temporal_delete_timestamptz(IntPtr temp, long t, [MarshalAs(UnmanagedType.U1)] bool connect);
+            public static partial IntPtr temporal_delete_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool connect);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr temporal_delete_tstzset(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool connect);
@@ -3010,7 +3007,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tbool_minus_value(IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool b);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr temporal_after_timestamptz(IntPtr temp, long t, [MarshalAs(UnmanagedType.U1)] bool strict);
+            public static partial IntPtr temporal_after_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool strict);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr temporal_at_max(IntPtr temp);
@@ -3019,7 +3016,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_at_min(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr temporal_at_timestamptz(IntPtr temp, long t);
+            public static partial IntPtr temporal_at_timestamptz(IntPtr temp, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr temporal_at_tstzset(IntPtr temp, IntPtr s);
@@ -3034,7 +3031,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_at_values(IntPtr temp, IntPtr set);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr temporal_before_timestamptz(IntPtr temp, long t, [MarshalAs(UnmanagedType.U1)] bool strict);
+            public static partial IntPtr temporal_before_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool strict);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr temporal_minus_max(IntPtr temp);
@@ -3043,7 +3040,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_minus_min(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr temporal_minus_timestamptz(IntPtr temp, long t);
+            public static partial IntPtr temporal_minus_timestamptz(IntPtr temp, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr temporal_minus_tstzset(IntPtr temp, IntPtr s);
@@ -4060,6 +4057,12 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_extent_transfn(IntPtr s, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_merge_transfn(IntPtr state, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_merge_combinefn(IntPtr state1, IntPtr state2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr temporal_tagg_finalfn(IntPtr state);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
@@ -4084,7 +4087,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tfloat_wsum_transfn(IntPtr state, IntPtr temp, IntPtr interv);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr timestamptz_tcount_transfn(IntPtr state, long t);
+            public static partial IntPtr timestamptz_tcount_transfn(IntPtr state, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tint_tmax_transfn(IntPtr state, IntPtr temp);
@@ -4144,10 +4147,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_simplify_min_tdelta(IntPtr temp, IntPtr mint);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr temporal_tprecision(IntPtr temp, IntPtr duration, long origin);
+            public static partial IntPtr temporal_tprecision(IntPtr temp, IntPtr duration, int origin);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr temporal_tsample(IntPtr temp, IntPtr duration, long origin, int interp);
+            public static partial IntPtr temporal_tsample(IntPtr temp, IntPtr duration, int origin, int interp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial double temporal_dyntimewarp_distance(IntPtr temp1, IntPtr temp2);
@@ -4165,13 +4168,13 @@ namespace MEOS.NET.Internal
             public static partial double temporal_hausdorff_distance(IntPtr temp1, IntPtr temp2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr temporal_time_bins(IntPtr temp, IntPtr duration, long origin, IntPtr count);
+            public static partial IntPtr temporal_time_bins(IntPtr temp, IntPtr duration, int origin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr temporal_time_split(IntPtr temp, IntPtr duration, long torigin, IntPtr time_bins, IntPtr count);
+            public static partial IntPtr temporal_time_split(IntPtr temp, IntPtr duration, int torigin, IntPtr time_bins, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tfloat_time_boxes(IntPtr temp, IntPtr duration, long torigin, IntPtr count);
+            public static partial IntPtr tfloat_time_boxes(IntPtr temp, IntPtr duration, int torigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tfloat_value_bins(IntPtr temp, double vsize, double vorigin, IntPtr count);
@@ -4183,22 +4186,22 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tfloat_value_split(IntPtr temp, double size, double origin, IntPtr bins, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tfloat_value_time_boxes(IntPtr temp, double vsize, IntPtr duration, double vorigin, long torigin, IntPtr count);
+            public static partial IntPtr tfloat_value_time_boxes(IntPtr temp, double vsize, IntPtr duration, double vorigin, int torigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tfloat_value_time_split(IntPtr temp, double vsize, IntPtr duration, double vorigin, long torigin, IntPtr value_bins, IntPtr time_bins, IntPtr count);
+            public static partial IntPtr tfloat_value_time_split(IntPtr temp, double vsize, IntPtr duration, double vorigin, int torigin, IntPtr value_bins, IntPtr time_bins, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tfloatbox_time_tiles(IntPtr box, IntPtr duration, long torigin, IntPtr count);
+            public static partial IntPtr tfloatbox_time_tiles(IntPtr box, IntPtr duration, int torigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tfloatbox_value_tiles(IntPtr box, double vsize, double vorigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tfloatbox_value_time_tiles(IntPtr box, double vsize, IntPtr duration, double vorigin, long torigin, IntPtr count);
+            public static partial IntPtr tfloatbox_value_time_tiles(IntPtr box, double vsize, IntPtr duration, double vorigin, int torigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tint_time_boxes(IntPtr temp, IntPtr duration, long torigin, IntPtr count);
+            public static partial IntPtr tint_time_boxes(IntPtr temp, IntPtr duration, int torigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tint_value_bins(IntPtr temp, int vsize, int vorigin, IntPtr count);
@@ -4210,304 +4213,19 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tint_value_split(IntPtr temp, int vsize, int vorigin, IntPtr bins, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tint_value_time_boxes(IntPtr temp, int vsize, IntPtr duration, int vorigin, long torigin, IntPtr count);
+            public static partial IntPtr tint_value_time_boxes(IntPtr temp, int vsize, IntPtr duration, int vorigin, int torigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tint_value_time_split(IntPtr temp, int size, IntPtr duration, int vorigin, long torigin, IntPtr value_bins, IntPtr time_bins, IntPtr count);
+            public static partial IntPtr tint_value_time_split(IntPtr temp, int size, IntPtr duration, int vorigin, int torigin, IntPtr value_bins, IntPtr time_bins, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tintbox_time_tiles(IntPtr box, IntPtr duration, long torigin, IntPtr count);
+            public static partial IntPtr tintbox_time_tiles(IntPtr box, IntPtr duration, int torigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tintbox_value_tiles(IntPtr box, int xsize, int xorigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tintbox_value_time_tiles(IntPtr box, int xsize, IntPtr duration, int xorigin, long torigin, IntPtr count);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool temptype_subtype(int subtype);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool temptype_subtype_all(int subtype);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial string tempsubtype_name(int subtype);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tempsubtype_from_string(string str, IntPtr subtype);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial string meosoper_name(IntPtr oper);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr meosoper_from_string(string name);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial string interptype_name(int interp);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int interptype_from_string(string interp_str);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial string meostype_name(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int temptype_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int settype_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int spantype_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int spantype_spansettype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int spansettype_spantype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int basetype_spantype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int basetype_settype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tnumber_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool geo_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool meos_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool alphanum_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool alphanum_temptype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool time_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool set_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool set_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool numset_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_numset_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool timeset_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool set_spantype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_set_spantype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool alphanumset_type(int settype);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool geoset_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_geoset_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool spatialset_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_spatialset_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool span_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool span_canon_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool span_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool type_span_bbox(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool span_tbox_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_span_tbox_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool numspan_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool numspan_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_numspan_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool timespan_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool timespan_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool spanset_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool timespanset_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_timespanset_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool temporal_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool temporal_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool temptype_continuous(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool basetype_byvalue(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool basetype_varlength(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial short basetype_length(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool talphanum_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool talpha_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tnumber_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_tnumber_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_tnumber_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tnumber_spantype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool spatial_basetype(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tspatial_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_tspatial_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tpoint_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_tpoint_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tgeo_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_tgeo_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tgeo_type_all(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_tgeo_type_all(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tgeometry_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_tgeometry_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tgeodetic_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_tgeodetic_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool ensure_tnumber_tpoint_type(int type);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int geo_get_srid(IntPtr g);
+            public static partial IntPtr tintbox_value_time_tiles(IntPtr box, int xsize, IntPtr duration, int xorigin, int torigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr geo_as_ewkb(IntPtr gs, string endian, IntPtr size);
@@ -4867,7 +4585,7 @@ namespace MEOS.NET.Internal
             public static partial string stbox_out(IntPtr box, int maxdd);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr geo_timestamptz_to_stbox(IntPtr gs, long t);
+            public static partial IntPtr geo_timestamptz_to_stbox(IntPtr gs, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr geo_tstzspan_to_stbox(IntPtr gs, IntPtr s);
@@ -4897,7 +4615,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr stbox_to_tstzspan(IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr timestamptz_to_stbox(long t);
+            public static partial IntPtr timestamptz_to_stbox(int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tstzset_to_stbox(IntPtr s);
@@ -4912,10 +4630,10 @@ namespace MEOS.NET.Internal
             public static partial double stbox_area(IntPtr box, [MarshalAs(UnmanagedType.U1)] bool spheroid);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial uint stbox_hash(IntPtr box);
+            public static partial int stbox_hash(IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong stbox_hash_extended(IntPtr box, ulong seed);
+            public static partial int stbox_hash_extended(IntPtr box, int seed);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -5166,7 +4884,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tgeo_from_base_temp(IntPtr gs, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tgeoinst_make(IntPtr gs, long t);
+            public static partial IntPtr tgeoinst_make(IntPtr gs, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tgeoseq_from_base_tstzset(IntPtr gs, IntPtr s);
@@ -5181,7 +4899,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tpoint_from_base_temp(IntPtr gs, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tpointinst_make(IntPtr gs, long t);
+            public static partial IntPtr tpointinst_make(IntPtr gs, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tpointseq_from_base_tstzset(IntPtr gs, IntPtr s);
@@ -5260,7 +4978,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tgeo_value_at_timestamptz(IntPtr temp, long t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr value);
+            public static partial bool tgeo_value_at_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -5347,13 +5065,19 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tgeo_minus_value(IntPtr temp, IntPtr gs);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tpoint_at_geom(IntPtr temp, IntPtr gs, IntPtr zspan);
+            public static partial IntPtr tpoint_at_elevation(IntPtr temp, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpoint_at_geom(IntPtr temp, IntPtr gs);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tpoint_at_value(IntPtr temp, IntPtr gs);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tpoint_minus_geom(IntPtr temp, IntPtr gs, IntPtr zspan);
+            public static partial IntPtr tpoint_minus_elevation(IntPtr temp, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpoint_minus_geom(IntPtr temp, IntPtr gs);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tpoint_minus_value(IntPtr temp, IntPtr gs);
@@ -5413,7 +5137,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tgeo_space_boxes(IntPtr temp, double xsize, double ysize, double zsize, IntPtr sorigin, [MarshalAs(UnmanagedType.U1)] bool bitmatrix, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tgeo_space_time_boxes(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, [MarshalAs(UnmanagedType.U1)] bool bitmatrix, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr count);
+            public static partial IntPtr tgeo_space_time_boxes(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, int torigin, [MarshalAs(UnmanagedType.U1)] bool bitmatrix, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tgeo_split_each_n_stboxes(IntPtr temp, int elem_count, IntPtr count);
@@ -5755,58 +5479,58 @@ namespace MEOS.NET.Internal
             public static partial int etouches_tpoint_geo(IntPtr temp, IntPtr gs);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tcontains_geo_tgeo(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tcontains_geo_tgeo(IntPtr gs, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tcontains_tgeo_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tcontains_tgeo_geo(IntPtr temp, IntPtr gs);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tcontains_tgeo_tgeo(IntPtr temp1, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tcontains_tgeo_tgeo(IntPtr temp1, IntPtr temp2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tcovers_geo_tgeo(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tcovers_geo_tgeo(IntPtr gs, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tcovers_tgeo_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tcovers_tgeo_geo(IntPtr temp, IntPtr gs);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tcovers_tgeo_tgeo(IntPtr temp1, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tcovers_tgeo_tgeo(IntPtr temp1, IntPtr temp2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tdisjoint_geo_tgeo(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tdisjoint_geo_tgeo(IntPtr gs, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tdisjoint_tgeo_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tdisjoint_tgeo_geo(IntPtr temp, IntPtr gs);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tdisjoint_tgeo_tgeo(IntPtr temp1, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tdisjoint_tgeo_tgeo(IntPtr temp1, IntPtr temp2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tdwithin_geo_tgeo(IntPtr gs, IntPtr temp, double dist, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tdwithin_geo_tgeo(IntPtr gs, IntPtr temp, double dist);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tdwithin_tgeo_geo(IntPtr temp, IntPtr gs, double dist, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tdwithin_tgeo_geo(IntPtr temp, IntPtr gs, double dist);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tdwithin_tgeo_tgeo(IntPtr temp1, IntPtr temp2, double dist, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tdwithin_tgeo_tgeo(IntPtr temp1, IntPtr temp2, double dist);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tintersects_geo_tgeo(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tintersects_geo_tgeo(IntPtr gs, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tintersects_tgeo_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tintersects_tgeo_geo(IntPtr temp, IntPtr gs);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tintersects_tgeo_tgeo(IntPtr temp1, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr tintersects_tgeo_tgeo(IntPtr temp1, IntPtr temp2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr ttouches_geo_tgeo(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr ttouches_geo_tgeo(IntPtr gs, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr ttouches_tgeo_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr ttouches_tgeo_geo(IntPtr temp, IntPtr gs);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr ttouches_tgeo_tgeo(IntPtr temp1, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool restr, [MarshalAs(UnmanagedType.U1)] bool atvalue);
+            public static partial IntPtr ttouches_tgeo_tgeo(IntPtr temp1, IntPtr temp2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tdistance_tgeo_geo(IntPtr temp, IntPtr gs);
@@ -5854,25 +5578,25 @@ namespace MEOS.NET.Internal
             public static partial IntPtr stbox_get_space_tile(IntPtr point, double xsize, double ysize, double zsize, IntPtr sorigin);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr stbox_get_space_time_tile(IntPtr point, long t, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin);
+            public static partial IntPtr stbox_get_space_time_tile(IntPtr point, int t, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, int torigin);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr stbox_get_time_tile(long t, IntPtr duration, long torigin);
+            public static partial IntPtr stbox_get_time_tile(int t, IntPtr duration, int torigin);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr stbox_space_tiles(IntPtr bounds, double xsize, double ysize, double zsize, IntPtr sorigin, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr stbox_space_time_tiles(IntPtr bounds, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr count);
+            public static partial IntPtr stbox_space_time_tiles(IntPtr bounds, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, int torigin, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr stbox_time_tiles(IntPtr bounds, IntPtr duration, long torigin, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr count);
+            public static partial IntPtr stbox_time_tiles(IntPtr bounds, IntPtr duration, int torigin, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tgeo_space_split(IntPtr temp, double xsize, double ysize, double zsize, IntPtr sorigin, [MarshalAs(UnmanagedType.U1)] bool bitmatrix, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr space_bins, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tgeo_space_time_split(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, [MarshalAs(UnmanagedType.U1)] bool bitmatrix, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr space_bins, IntPtr time_bins, IntPtr count);
+            public static partial IntPtr tgeo_space_time_split(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, int torigin, [MarshalAs(UnmanagedType.U1)] bool bitmatrix, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr space_bins, IntPtr time_bins, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr geo_cluster_kmeans(IntPtr geoms, uint ngeoms, uint k);
@@ -5887,31 +5611,929 @@ namespace MEOS.NET.Internal
             public static partial IntPtr geo_cluster_within(IntPtr geoms, uint ngeoms, double tolerance, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string cbuffer_as_ewkt(IntPtr cb, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string cbuffer_as_hexwkb(IntPtr cb, IntPtr variant, IntPtr size);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string cbuffer_as_text(IntPtr cb, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_as_wkb(IntPtr cb, IntPtr variant, IntPtr size_out);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_from_hexwkb(string hexwkb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_from_wkb(IntPtr wkb, ulong size);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_in(string str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string cbuffer_out(IntPtr cb, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_copy(IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_make(IntPtr point, double radius);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_to_geom(IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_to_stbox(IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbufferarr_to_geom(IntPtr cbarr, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geom_to_cbuffer(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int cbuffer_hash(IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int cbuffer_hash_extended(IntPtr cb, int seed);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_point(IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double cbuffer_radius(IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_round(IntPtr cb, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbufferarr_round(IntPtr cbarr, int count, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void cbuffer_set_srid(IntPtr cb, int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int cbuffer_srid(IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_transform(IntPtr cb, int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_transform_pipeline(IntPtr cb, string pipelinestr, int srid, [MarshalAs(UnmanagedType.U1)] bool is_forward);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int contains_cbuffer_cbuffer(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int covers_cbuffer_cbuffer(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int disjoint_cbuffer_cbuffer(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int dwithin_cbuffer_cbuffer(IntPtr cb1, IntPtr cb2, double dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int intersects_cbuffer_cbuffer(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int touches_cbuffer_cbuffer(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_tstzspan_to_stbox(IntPtr cb, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_timestamptz_to_stbox(IntPtr cb, int t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double distance_cbuffer_cbuffer(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double distance_cbuffer_geo(IntPtr cb, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double distance_cbuffer_stbox(IntPtr cb, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_cbuffer_stbox(IntPtr cb, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int cbuffer_cmp(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool cbuffer_eq(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool cbuffer_ge(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool cbuffer_gt(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool cbuffer_le(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool cbuffer_lt(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool cbuffer_ne(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool cbuffer_nsame(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool cbuffer_same(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbufferset_in(string str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string cbufferset_out(IntPtr s, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbufferset_make(IntPtr values, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_to_set(IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbufferset_end_value(IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbufferset_start_value(IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool cbufferset_value_n(IntPtr s, int n, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbufferset_values(IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_union_transfn(IntPtr state, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool contained_cbuffer_set(IntPtr cb, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool contains_set_cbuffer(IntPtr s, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr intersection_cbuffer_set(IntPtr cb, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr intersection_set_cbuffer(IntPtr s, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr minus_cbuffer_set(IntPtr cb, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr minus_set_cbuffer(IntPtr s, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr union_cbuffer_set(IntPtr cb, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr union_set_cbuffer(IntPtr s, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_in(string str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_make(IntPtr tpoint, IntPtr tfloat);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_points(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_radius(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_trav_area(IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool merge_union);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_to_tfloat(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_to_tgeompoint(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tgeometry_to_tcbuffer(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_expand(IntPtr temp, double dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_at_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_at_geom(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_at_stbox(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_minus_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_minus_geom(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_minus_stbox(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdistance_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdistance_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdistance_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_tcbuffer_stbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr nai_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr nai_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr nai_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr shortestline_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr shortestline_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr shortestline_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_eq_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_eq_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_eq_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_ne_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_ne_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_ne_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_eq_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_eq_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_eq_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_ne_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_ne_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_ne_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr teq_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr teq_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tne_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tne_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int acontains_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int acontains_geo_tcbuffer(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int acontains_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int acontains_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int acovers_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int acovers_geo_tcbuffer(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int acovers_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int acovers_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int adisjoint_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int adisjoint_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int adisjoint_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int adwithin_tcbuffer_geo(IntPtr temp, IntPtr gs, double dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int adwithin_tcbuffer_cbuffer(IntPtr temp, IntPtr cb, double dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int adwithin_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2, double dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int aintersects_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int aintersects_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int aintersects_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int atouches_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int atouches_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int atouches_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int econtains_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int econtains_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int econtains_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ecovers_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ecovers_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ecovers_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ecovers_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int edisjoint_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int edisjoint_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int edwithin_tcbuffer_geo(IntPtr temp, IntPtr gs, double dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int edwithin_tcbuffer_cbuffer(IntPtr temp, IntPtr cb, double dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int edwithin_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2, double dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int eintersects_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int eintersects_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int eintersects_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int etouches_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int etouches_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int etouches_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontains_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontains_geo_tcbuffer(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontains_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontains_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontains_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcovers_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcovers_geo_tcbuffer(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcovers_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcovers_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcovers_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdwithin_geo_tcbuffer(IntPtr gs, IntPtr temp, double dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdwithin_tcbuffer_geo(IntPtr temp, IntPtr gs, double dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdwithin_tcbuffer_cbuffer(IntPtr temp, IntPtr cb, double dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdwithin_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2, double dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdisjoint_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdisjoint_geo_tcbuffer(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdisjoint_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdisjoint_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdisjoint_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tintersects_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tintersects_geo_tcbuffer(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tintersects_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tintersects_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tintersects_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr ttouches_geo_tcbuffer(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr ttouches_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr ttouches_cbuffer_tcbuffer(IntPtr cb, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr ttouches_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr ttouches_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_cbuffer_cbuffer(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_cbuffer_geo(IntPtr cb, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_cbuffer_stbox(IntPtr cb, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_cbufferset_cbuffer(IntPtr s, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool cbuffer_collinear(IntPtr cb1, IntPtr cb2, IntPtr cbuf3, double ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffersegm_interpolate(IntPtr start, IntPtr end, IntPtr ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffersegm_locate(IntPtr start, IntPtr end, IntPtr value);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_parse(IntPtr str, [MarshalAs(UnmanagedType.U1)] bool end);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string cbuffer_wkt_out(int value, int maxdd, [MarshalAs(UnmanagedType.U1)] bool extended);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_point_p(IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_cbuffer_round(int buffer, int size);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr cbuffer_transf_pj(IntPtr cb, int srid_to, IntPtr pj);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double cbuffer_distance(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_cbuffer_distance(int cb1, int cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int cbuffersegm_distance_turnpt(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, int lower, int upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int cbuffer_contains(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int cbuffer_covers(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int cbuffer_disjoint(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int cbuffer_intersects(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int cbuffer_dwithin(IntPtr cb1, IntPtr cb2, double dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int cbuffer_touches(IntPtr cb1, IntPtr cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_cbuffer_contains(int cb1, int cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_cbuffer_covers(int cb1, int cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_cbuffer_disjoint(int cb1, int cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_cbuffer_intersects(int cb1, int cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_cbuffer_dwithin(int cb1, int cb2, int dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_cbuffer_touches(int cb1, int cb2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool temptype_subtype(int subtype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool temptype_subtype_all(int subtype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string tempsubtype_name(int subtype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tempsubtype_from_string(string str, IntPtr subtype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string meosoper_name(IntPtr oper);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr meosoper_from_string(string name);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string interptype_name(int interp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int interptype_from_string(string interp_str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string meostype_name(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int temptype_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int settype_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int spantype_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int spantype_spansettype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int spansettype_spantype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int basetype_spantype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int basetype_settype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tnumber_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool geo_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool meos_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool alphanum_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool alphanum_temptype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool time_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool set_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool set_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool numset_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_numset_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool timeset_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool set_spantype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_set_spantype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool alphanumset_type(int settype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool geoset_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_geoset_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool spatialset_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_spatialset_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool span_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool span_canon_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool span_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool type_span_bbox(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool span_tbox_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_span_tbox_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool numspan_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool numspan_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_numspan_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool timespan_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool timespan_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool spanset_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool timespanset_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_timespanset_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool temporal_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool temporal_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool temptype_supports_linear(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool basetype_byvalue(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool basetype_varlength(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial short meostype_length(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool talphanum_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool talpha_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tnumber_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_tnumber_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_tnumber_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tnumber_spantype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool spatial_basetype(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tspatial_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_tspatial_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tpoint_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_tpoint_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tgeo_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_tgeo_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tgeo_type_all(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_tgeo_type_all(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tgeometry_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_tgeometry_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tgeodetic_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_tgeodetic_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_tnumber_tpoint_type(int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr gsl_get_generation_rng();
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr gsl_get_aggregation_rng();
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong datum_ceil(ulong d);
+            public static partial int datum_ceil(IntPtr d);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong datum_degrees(ulong d, ulong normalize);
+            public static partial int datum_degrees(IntPtr d, IntPtr normalize);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong datum_float_round(ulong value, ulong size);
+            public static partial int datum_float_round(IntPtr value, IntPtr size);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong datum_floor(ulong d);
+            public static partial int datum_floor(IntPtr d);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial uint datum_hash(ulong d, int basetype);
+            public static partial int datum_hash(IntPtr d, int basetype);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong datum_hash_extended(ulong d, int basetype, ulong seed);
+            public static partial int datum_hash_extended(IntPtr d, int basetype, int seed);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong datum_radians(ulong d);
+            public static partial int datum_radians(IntPtr d);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial void floatspan_round_set(IntPtr s, int maxdd, IntPtr result);
@@ -5944,10 +6566,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr set_make_free(IntPtr values, int count, int basetype, [MarshalAs(UnmanagedType.U1)] bool order);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr span_make(ulong lower, ulong upper, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int basetype);
+            public static partial IntPtr span_make(IntPtr lower, IntPtr upper, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int basetype);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial void span_set(ulong lower, ulong upper, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int basetype, int spantype, IntPtr s);
+            public static partial void span_set(IntPtr lower, IntPtr upper, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int basetype, int spantype, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr spanset_make_exp(IntPtr spans, int count, int maxcount, [MarshalAs(UnmanagedType.U1)] bool normalize, [MarshalAs(UnmanagedType.U1)] bool order);
@@ -5962,25 +6584,25 @@ namespace MEOS.NET.Internal
             public static partial IntPtr set_spanset(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial void value_set_span(ulong value, int basetype, IntPtr s);
+            public static partial void value_set_span(IntPtr value, int basetype, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr value_set(ulong d, int basetype);
+            public static partial IntPtr value_set(IntPtr d, int basetype);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr value_span(ulong d, int basetype);
+            public static partial IntPtr value_span(IntPtr d, int basetype);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr value_spanset(ulong d, int basetype);
+            public static partial IntPtr value_spanset(IntPtr d, int basetype);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong numspan_width(IntPtr s);
+            public static partial int numspan_width(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong numspanset_width(IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool boundspan);
+            public static partial int numspanset_width(IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool boundspan);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong set_end_value(IntPtr s);
+            public static partial int set_end_value(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int set_mem_size(IntPtr s);
@@ -5992,7 +6614,7 @@ namespace MEOS.NET.Internal
             public static partial void set_set_span(IntPtr s, IntPtr result);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong set_start_value(IntPtr s);
+            public static partial int set_start_value(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -6005,7 +6627,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr set_values(IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong spanset_lower(IntPtr ss);
+            public static partial int spanset_lower(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int spanset_mem_size(IntPtr ss);
@@ -6014,7 +6636,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr spanset_sps(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong spanset_upper(IntPtr ss);
+            public static partial int spanset_upper(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial void datespan_set_tstzspan(IntPtr s1, IntPtr s2);
@@ -6026,16 +6648,16 @@ namespace MEOS.NET.Internal
             public static partial void intspan_set_floatspan(IntPtr s1, IntPtr s2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr numset_shift_scale(IntPtr s, ulong shift, ulong width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
+            public static partial IntPtr numset_shift_scale(IntPtr s, IntPtr shift, IntPtr width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr numspan_expand(IntPtr s, ulong value);
+            public static partial IntPtr numspan_expand(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr numspan_shift_scale(IntPtr s, ulong shift, ulong width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
+            public static partial IntPtr numspan_shift_scale(IntPtr s, IntPtr shift, IntPtr width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr numspanset_shift_scale(IntPtr ss, ulong shift, ulong width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
+            public static partial IntPtr numspanset_shift_scale(IntPtr ss, IntPtr shift, IntPtr width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr set_compact(IntPtr s);
@@ -6047,7 +6669,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr spanset_compact(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tbox_expand_value(IntPtr box, ulong value, int basetyp);
+            public static partial IntPtr tbox_expand_value(IntPtr box, IntPtr value, int basetyp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr textcat_textset_text_common(IntPtr s, IntPtr txt, [MarshalAs(UnmanagedType.U1)] bool invert);
@@ -6057,39 +6679,39 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool adjacent_span_value(IntPtr s, ulong value);
+            public static partial bool adjacent_span_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool adjacent_spanset_value(IntPtr ss, ulong value);
+            public static partial bool adjacent_spanset_value(IntPtr ss, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool adjacent_value_spanset(ulong value, IntPtr ss);
+            public static partial bool adjacent_value_spanset(IntPtr value, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contained_value_set(ulong value, IntPtr s);
+            public static partial bool contained_value_set(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contained_value_span(ulong value, IntPtr s);
+            public static partial bool contained_value_span(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contained_value_spanset(ulong value, IntPtr ss);
+            public static partial bool contained_value_spanset(IntPtr value, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contains_set_value(IntPtr s, ulong value);
+            public static partial bool contains_set_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contains_span_value(IntPtr s, ulong value);
+            public static partial bool contains_span_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool contains_spanset_value(IntPtr ss, ulong value);
+            public static partial bool contains_spanset_value(IntPtr ss, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -6097,27 +6719,27 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool left_set_value(IntPtr s, ulong value);
+            public static partial bool left_set_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool left_span_value(IntPtr s, ulong value);
+            public static partial bool left_span_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool left_spanset_value(IntPtr ss, ulong value);
+            public static partial bool left_spanset_value(IntPtr ss, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool left_value_set(ulong value, IntPtr s);
+            public static partial bool left_value_set(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool left_value_span(ulong value, IntPtr s);
+            public static partial bool left_value_span(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool left_value_spanset(ulong value, IntPtr ss);
+            public static partial bool left_value_spanset(IntPtr value, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -6125,75 +6747,75 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overleft_set_value(IntPtr s, ulong value);
+            public static partial bool overleft_set_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overleft_span_value(IntPtr s, ulong value);
+            public static partial bool overleft_span_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overleft_spanset_value(IntPtr ss, ulong value);
+            public static partial bool overleft_spanset_value(IntPtr ss, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overleft_value_set(ulong value, IntPtr s);
+            public static partial bool overleft_value_set(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overleft_value_span(ulong value, IntPtr s);
+            public static partial bool overleft_value_span(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overleft_value_spanset(ulong value, IntPtr ss);
+            public static partial bool overleft_value_spanset(IntPtr value, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overright_set_value(IntPtr s, ulong value);
+            public static partial bool overright_set_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overright_span_value(IntPtr s, ulong value);
+            public static partial bool overright_span_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overright_spanset_value(IntPtr ss, ulong value);
+            public static partial bool overright_spanset_value(IntPtr ss, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overright_value_set(ulong value, IntPtr s);
+            public static partial bool overright_value_set(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overright_value_span(ulong value, IntPtr s);
+            public static partial bool overright_value_span(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool overright_value_spanset(ulong value, IntPtr ss);
+            public static partial bool overright_value_spanset(IntPtr value, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool right_value_set(ulong value, IntPtr s);
+            public static partial bool right_value_set(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool right_set_value(IntPtr s, ulong value);
+            public static partial bool right_set_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool right_value_span(ulong value, IntPtr s);
+            public static partial bool right_value_span(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool right_value_spanset(ulong value, IntPtr ss);
+            public static partial bool right_value_spanset(IntPtr value, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool right_span_value(IntPtr s, ulong value);
+            public static partial bool right_span_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool right_spanset_value(IntPtr ss, ulong value);
+            public static partial bool right_spanset_value(IntPtr ss, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -6220,100 +6842,100 @@ namespace MEOS.NET.Internal
             public static partial bool inter_span_span(IntPtr s1, IntPtr s2, IntPtr result);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_set_value(IntPtr s, ulong value);
+            public static partial IntPtr intersection_set_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_span_value(IntPtr s, ulong value);
+            public static partial IntPtr intersection_span_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_spanset_value(IntPtr ss, ulong value);
+            public static partial IntPtr intersection_spanset_value(IntPtr ss, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_value_set(ulong value, IntPtr s);
+            public static partial IntPtr intersection_value_set(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_value_span(ulong value, IntPtr s);
+            public static partial IntPtr intersection_value_span(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr intersection_value_spanset(ulong value, IntPtr ss);
+            public static partial IntPtr intersection_value_spanset(IntPtr value, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int mi_span_span(IntPtr s1, IntPtr s2, IntPtr result);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_set_value(IntPtr s, ulong value);
+            public static partial IntPtr minus_set_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_span_value(IntPtr s, ulong value);
+            public static partial IntPtr minus_span_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_spanset_value(IntPtr ss, ulong value);
+            public static partial IntPtr minus_spanset_value(IntPtr ss, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_value_set(ulong value, IntPtr s);
+            public static partial IntPtr minus_value_set(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_value_span(ulong value, IntPtr s);
+            public static partial IntPtr minus_value_span(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr minus_value_spanset(ulong value, IntPtr ss);
+            public static partial IntPtr minus_value_spanset(IntPtr value, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr super_union_span_span(IntPtr s1, IntPtr s2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_set_value(IntPtr s, ulong value);
+            public static partial IntPtr union_set_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_span_value(IntPtr s, ulong value);
+            public static partial IntPtr union_span_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_spanset_value(IntPtr ss, ulong value);
+            public static partial IntPtr union_spanset_value(IntPtr ss, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_value_set(ulong value, IntPtr s);
+            public static partial IntPtr union_value_set(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_value_span(ulong value, IntPtr s);
+            public static partial IntPtr union_value_span(IntPtr value, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr union_value_spanset(ulong value, IntPtr ss);
+            public static partial IntPtr union_value_spanset(IntPtr value, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong distance_set_set(IntPtr s1, IntPtr s2);
+            public static partial int distance_set_set(IntPtr s1, IntPtr s2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong distance_set_value(IntPtr s, ulong value);
+            public static partial int distance_set_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong distance_span_span(IntPtr s1, IntPtr s2);
+            public static partial int distance_span_span(IntPtr s1, IntPtr s2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong distance_span_value(IntPtr s, ulong value);
+            public static partial int distance_span_value(IntPtr s, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong distance_spanset_span(IntPtr ss, IntPtr s);
+            public static partial int distance_spanset_span(IntPtr ss, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong distance_spanset_spanset(IntPtr ss1, IntPtr ss2);
+            public static partial int distance_spanset_spanset(IntPtr ss1, IntPtr ss2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong distance_spanset_value(IntPtr ss, ulong value);
+            public static partial int distance_spanset_value(IntPtr ss, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong distance_value_value(ulong l, ulong r, int basetype);
+            public static partial int distance_value_value(IntPtr l, IntPtr r, int basetype);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr spanbase_extent_transfn(IntPtr state, ulong value, int basetype);
+            public static partial IntPtr spanbase_extent_transfn(IntPtr state, IntPtr value, int basetype);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr value_union_transfn(IntPtr state, ulong value, int basetype);
+            public static partial IntPtr value_union_transfn(IntPtr state, IntPtr value, int basetype);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr number_tstzspan_to_tbox(ulong d, int basetype, IntPtr s);
+            public static partial IntPtr number_tstzspan_to_tbox(IntPtr d, int basetype, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr number_timestamptz_to_tbox(ulong d, int basetype, long t);
+            public static partial IntPtr number_timestamptz_to_tbox(IntPtr d, int basetype, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial void tbox_set(IntPtr s, IntPtr p, IntPtr box);
@@ -6325,10 +6947,10 @@ namespace MEOS.NET.Internal
             public static partial void int_set_tbox(int i, IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial void number_set_tbox(ulong d, int basetype, IntPtr box);
+            public static partial void number_set_tbox(IntPtr d, int basetype, IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr number_tbox(ulong value, int basetype);
+            public static partial IntPtr number_tbox(IntPtr value, int basetype);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial void numset_set_tbox(IntPtr s, IntPtr box);
@@ -6337,7 +6959,7 @@ namespace MEOS.NET.Internal
             public static partial void numspan_set_tbox(IntPtr span, IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial void timestamptz_set_tbox(long t, IntPtr box);
+            public static partial void timestamptz_set_tbox(int t, IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial void tstzset_set_tbox(IntPtr s, IntPtr box);
@@ -6346,7 +6968,7 @@ namespace MEOS.NET.Internal
             public static partial void tstzspan_set_tbox(IntPtr s, IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tbox_shift_scale_value(IntPtr box, ulong shift, ulong width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
+            public static partial IntPtr tbox_shift_scale_value(IntPtr box, IntPtr shift, IntPtr width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial void tbox_expand(IntPtr box1, IntPtr box2);
@@ -6467,28 +7089,28 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_from_mfjson(string mfjson, int temptype);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr temporal_from_base_temp(ulong value, int temptype, IntPtr temp);
+            public static partial IntPtr temporal_from_base_temp(IntPtr value, int temptype, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tinstant_copy(IntPtr inst);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tinstant_make(ulong value, int temptype, long t);
+            public static partial IntPtr tinstant_make(IntPtr value, int temptype, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tinstant_make_free(ulong value, int temptype, long t);
+            public static partial IntPtr tinstant_make_free(IntPtr value, int temptype, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequence_copy(IntPtr seq);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tsequence_from_base_temp(ulong value, int temptype, IntPtr seq);
+            public static partial IntPtr tsequence_from_base_temp(IntPtr value, int temptype, IntPtr seq);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tsequence_from_base_tstzset(ulong value, int temptype, IntPtr s);
+            public static partial IntPtr tsequence_from_base_tstzset(IntPtr value, int temptype, IntPtr s);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tsequence_from_base_tstzspan(ulong value, int temptype, IntPtr s, int interp);
+            public static partial IntPtr tsequence_from_base_tstzspan(IntPtr value, int temptype, IntPtr s, int interp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequence_make_exp(IntPtr instants, int count, int maxcount, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int interp, [MarshalAs(UnmanagedType.U1)] bool normalize);
@@ -6503,10 +7125,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tseqsetarr_to_tseqset(IntPtr seqsets, int count, int totalseqs);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tsequenceset_from_base_temp(ulong value, int temptype, IntPtr ss);
+            public static partial IntPtr tsequenceset_from_base_temp(IntPtr value, int temptype, IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tsequenceset_from_base_tstzspanset(ulong value, int temptype, IntPtr ss, int interp);
+            public static partial IntPtr tsequenceset_from_base_tstzspanset(IntPtr value, int temptype, IntPtr ss, int interp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequenceset_make_exp(IntPtr sequences, int count, int maxcount, [MarshalAs(UnmanagedType.U1)] bool normalize);
@@ -6542,7 +7164,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_end_inst(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong temporal_end_value(IntPtr temp);
+            public static partial int temporal_end_value(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr temporal_inst_n(IntPtr temp, int n);
@@ -6554,7 +7176,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_max_inst_p(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong temporal_max_value(IntPtr temp);
+            public static partial int temporal_max_value(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial ulong temporal_mem_size(IntPtr temp);
@@ -6563,7 +7185,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_min_inst_p(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong temporal_min_value(IntPtr temp);
+            public static partial int temporal_min_value(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr temporal_sequences_p(IntPtr temp, IntPtr count);
@@ -6575,7 +7197,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_start_inst(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong temporal_start_value(IntPtr temp);
+            public static partial int temporal_start_value(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr temporal_values_p(IntPtr temp, IntPtr count);
@@ -6588,7 +7210,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_values(IntPtr temp, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial uint tinstant_hash(IntPtr inst);
+            public static partial int tinstant_hash(IntPtr inst);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tinstant_insts(IntPtr inst, IntPtr count);
@@ -6603,14 +7225,14 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tinstant_timestamps(IntPtr inst, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong tinstant_value_p(IntPtr inst);
+            public static partial int tinstant_value_p(IntPtr inst);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong tinstant_value(IntPtr inst);
+            public static partial int tinstant_value(IntPtr inst);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tinstant_value_at_timestamptz(IntPtr inst, long t, IntPtr result);
+            public static partial bool tinstant_value_at_timestamptz(IntPtr inst, int t, IntPtr result);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tinstant_values_p(IntPtr inst, IntPtr count);
@@ -6637,10 +7259,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tsequence_duration(IntPtr seq);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long tsequence_end_timestamptz(IntPtr seq);
+            public static partial int tsequence_end_timestamptz(IntPtr seq);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial uint tsequence_hash(IntPtr seq);
+            public static partial int tsequence_hash(IntPtr seq);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequence_insts_p(IntPtr seq);
@@ -6649,13 +7271,13 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tsequence_max_inst_p(IntPtr seq);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong tsequence_max_val(IntPtr seq);
+            public static partial int tsequence_max_val(IntPtr seq);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequence_min_inst_p(IntPtr seq);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong tsequence_min_val(IntPtr seq);
+            public static partial int tsequence_min_val(IntPtr seq);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequence_segments(IntPtr seq, IntPtr count);
@@ -6664,7 +7286,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tsequence_seqs(IntPtr seq, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long tsequence_start_timestamptz(IntPtr seq);
+            public static partial int tsequence_start_timestamptz(IntPtr seq);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequence_time(IntPtr seq);
@@ -6674,7 +7296,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tsequence_value_at_timestamptz(IntPtr seq, long t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr result);
+            public static partial bool tsequence_value_at_timestamptz(IntPtr seq, int t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr result);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequence_values_p(IntPtr seq, IntPtr count);
@@ -6683,10 +7305,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tsequenceset_duration(IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool boundspan);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long tsequenceset_end_timestamptz(IntPtr ss);
+            public static partial int tsequenceset_end_timestamptz(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial uint tsequenceset_hash(IntPtr ss);
+            public static partial int tsequenceset_hash(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequenceset_inst_n(IntPtr ss, int n);
@@ -6698,13 +7320,13 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tsequenceset_max_inst_p(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong tsequenceset_max_val(IntPtr ss);
+            public static partial int tsequenceset_max_val(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequenceset_min_inst_p(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong tsequenceset_min_val(IntPtr ss);
+            public static partial int tsequenceset_min_val(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int tsequenceset_num_instants(IntPtr ss);
@@ -6719,7 +7341,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tsequenceset_sequences_p(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long tsequenceset_start_timestamptz(IntPtr ss);
+            public static partial int tsequenceset_start_timestamptz(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequenceset_time(IntPtr ss);
@@ -6733,7 +7355,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool tsequenceset_value_at_timestamptz(IntPtr ss, long t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr result);
+            public static partial bool tsequenceset_value_at_timestamptz(IntPtr ss, int t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr result);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -6764,16 +7386,16 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tinstant_to_tsequenceset(IntPtr inst, int interp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tnumber_shift_scale_value(IntPtr temp, ulong shift, ulong width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
+            public static partial IntPtr tnumber_shift_scale_value(IntPtr temp, IntPtr shift, IntPtr width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tnumberinst_shift_value(IntPtr inst, ulong shift);
+            public static partial IntPtr tnumberinst_shift_value(IntPtr inst, IntPtr shift);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tnumberseq_shift_scale_value(IntPtr seq, ulong shift, ulong width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
+            public static partial IntPtr tnumberseq_shift_scale_value(IntPtr seq, IntPtr shift, IntPtr width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tnumberseqset_shift_scale_value(IntPtr ss, ulong start, ulong width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
+            public static partial IntPtr tnumberseqset_shift_scale_value(IntPtr ss, IntPtr start, IntPtr width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial void tsequence_restart(IntPtr seq, int count);
@@ -6836,7 +7458,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tsequence_append_tsequence(IntPtr seq1, IntPtr seq2, [MarshalAs(UnmanagedType.U1)] bool expand);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tsequence_delete_timestamptz(IntPtr seq, long t, [MarshalAs(UnmanagedType.U1)] bool connect);
+            public static partial IntPtr tsequence_delete_timestamptz(IntPtr seq, int t, [MarshalAs(UnmanagedType.U1)] bool connect);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequence_delete_tstzset(IntPtr seq, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool connect);
@@ -6863,7 +7485,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tsequenceset_append_tsequence(IntPtr ss, IntPtr seq, [MarshalAs(UnmanagedType.U1)] bool expand);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tsequenceset_delete_timestamptz(IntPtr ss, long t);
+            public static partial IntPtr tsequenceset_delete_timestamptz(IntPtr ss, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequenceset_delete_tstzset(IntPtr ss, IntPtr s);
@@ -6896,19 +7518,19 @@ namespace MEOS.NET.Internal
             public static partial void tsequenceset_set_bbox(IntPtr ss, IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tcontseq_after_timestamptz(IntPtr seq, long t, [MarshalAs(UnmanagedType.U1)] bool strict);
+            public static partial IntPtr tcontseq_after_timestamptz(IntPtr seq, int t, [MarshalAs(UnmanagedType.U1)] bool strict);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tcontseq_before_timestamptz(IntPtr seq, long t, [MarshalAs(UnmanagedType.U1)] bool strict);
+            public static partial IntPtr tcontseq_before_timestamptz(IntPtr seq, int t, [MarshalAs(UnmanagedType.U1)] bool strict);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tcontseq_restrict_minmax(IntPtr seq, [MarshalAs(UnmanagedType.U1)] bool min, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tdiscseq_after_timestamptz(IntPtr seq, long t, [MarshalAs(UnmanagedType.U1)] bool strict);
+            public static partial IntPtr tdiscseq_after_timestamptz(IntPtr seq, int t, [MarshalAs(UnmanagedType.U1)] bool strict);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tdiscseq_before_timestamptz(IntPtr seq, long t, [MarshalAs(UnmanagedType.U1)] bool strict);
+            public static partial IntPtr tdiscseq_before_timestamptz(IntPtr seq, int t, [MarshalAs(UnmanagedType.U1)] bool strict);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tdiscseq_restrict_minmax(IntPtr seq, [MarshalAs(UnmanagedType.U1)] bool min, [MarshalAs(UnmanagedType.U1)] bool atfunc);
@@ -6921,7 +7543,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_restrict_minmax(IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool min, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr temporal_restrict_timestamptz(IntPtr temp, long t, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+            public static partial IntPtr temporal_restrict_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr temporal_restrict_tstzset(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
@@ -6933,20 +7555,20 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_restrict_tstzspanset(IntPtr temp, IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr temporal_restrict_value(IntPtr temp, ulong value, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+            public static partial IntPtr temporal_restrict_value(IntPtr temp, IntPtr value, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr temporal_restrict_values(IntPtr temp, IntPtr set, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool temporal_value_at_timestamptz(IntPtr temp, long t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr result);
+            public static partial bool temporal_value_at_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr result);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tinstant_after_timestamptz(IntPtr inst, long t, [MarshalAs(UnmanagedType.U1)] bool strict);
+            public static partial IntPtr tinstant_after_timestamptz(IntPtr inst, int t, [MarshalAs(UnmanagedType.U1)] bool strict);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tinstant_before_timestamptz(IntPtr inst, long t, [MarshalAs(UnmanagedType.U1)] bool strict);
+            public static partial IntPtr tinstant_before_timestamptz(IntPtr inst, int t, [MarshalAs(UnmanagedType.U1)] bool strict);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tinstant_restrict_tstzspan(IntPtr inst, IntPtr period, [MarshalAs(UnmanagedType.U1)] bool atfunc);
@@ -6955,13 +7577,13 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tinstant_restrict_tstzspanset(IntPtr inst, IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tinstant_restrict_timestamptz(IntPtr inst, long t, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+            public static partial IntPtr tinstant_restrict_timestamptz(IntPtr inst, int t, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tinstant_restrict_tstzset(IntPtr inst, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tinstant_restrict_value(IntPtr inst, ulong value, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+            public static partial IntPtr tinstant_restrict_value(IntPtr inst, IntPtr value, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tinstant_restrict_values(IntPtr inst, IntPtr set, [MarshalAs(UnmanagedType.U1)] bool atfunc);
@@ -6985,7 +7607,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tnumberseqset_restrict_spanset(IntPtr ss, IntPtr spanset, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tsequence_at_timestamptz(IntPtr seq, long t);
+            public static partial IntPtr tsequence_at_timestamptz(IntPtr seq, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequence_restrict_tstzspan(IntPtr seq, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
@@ -6994,10 +7616,10 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tsequence_restrict_tstzspanset(IntPtr seq, IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tsequenceset_after_timestamptz(IntPtr ss, long t, [MarshalAs(UnmanagedType.U1)] bool strict);
+            public static partial IntPtr tsequenceset_after_timestamptz(IntPtr ss, int t, [MarshalAs(UnmanagedType.U1)] bool strict);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tsequenceset_before_timestamptz(IntPtr ss, long t, [MarshalAs(UnmanagedType.U1)] bool strict);
+            public static partial IntPtr tsequenceset_before_timestamptz(IntPtr ss, int t, [MarshalAs(UnmanagedType.U1)] bool strict);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequenceset_restrict_minmax(IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool min, [MarshalAs(UnmanagedType.U1)] bool atfunc);
@@ -7009,13 +7631,13 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tsequenceset_restrict_tstzspanset(IntPtr ss, IntPtr ps, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tsequenceset_restrict_timestamptz(IntPtr ss, long t, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+            public static partial IntPtr tsequenceset_restrict_timestamptz(IntPtr ss, int t, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequenceset_restrict_tstzset(IntPtr ss, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tsequenceset_restrict_value(IntPtr ss, ulong value, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+            public static partial IntPtr tsequenceset_restrict_value(IntPtr ss, IntPtr value, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tsequenceset_restrict_values(IntPtr ss, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
@@ -7042,76 +7664,76 @@ namespace MEOS.NET.Internal
             public static partial bool tsequenceset_eq(IntPtr ss1, IntPtr ss2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int always_eq_base_temporal(ulong value, IntPtr temp);
+            public static partial int always_eq_base_temporal(IntPtr value, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int always_eq_temporal_base(IntPtr temp, ulong value);
+            public static partial int always_eq_temporal_base(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int always_ne_base_temporal(ulong value, IntPtr temp);
+            public static partial int always_ne_base_temporal(IntPtr value, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int always_ne_temporal_base(IntPtr temp, ulong value);
+            public static partial int always_ne_temporal_base(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int always_ge_base_temporal(ulong value, IntPtr temp);
+            public static partial int always_ge_base_temporal(IntPtr value, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int always_ge_temporal_base(IntPtr temp, ulong value);
+            public static partial int always_ge_temporal_base(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int always_gt_base_temporal(ulong value, IntPtr temp);
+            public static partial int always_gt_base_temporal(IntPtr value, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int always_gt_temporal_base(IntPtr temp, ulong value);
+            public static partial int always_gt_temporal_base(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int always_le_base_temporal(ulong value, IntPtr temp);
+            public static partial int always_le_base_temporal(IntPtr value, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int always_le_temporal_base(IntPtr temp, ulong value);
+            public static partial int always_le_temporal_base(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int always_lt_base_temporal(ulong value, IntPtr temp);
+            public static partial int always_lt_base_temporal(IntPtr value, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int always_lt_temporal_base(IntPtr temp, ulong value);
+            public static partial int always_lt_temporal_base(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int ever_eq_base_temporal(ulong value, IntPtr temp);
+            public static partial int ever_eq_base_temporal(IntPtr value, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int ever_eq_temporal_base(IntPtr temp, ulong value);
+            public static partial int ever_eq_temporal_base(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int ever_ne_base_temporal(ulong value, IntPtr temp);
+            public static partial int ever_ne_base_temporal(IntPtr value, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int ever_ne_temporal_base(IntPtr temp, ulong value);
+            public static partial int ever_ne_temporal_base(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int ever_ge_base_temporal(ulong value, IntPtr temp);
+            public static partial int ever_ge_base_temporal(IntPtr value, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int ever_ge_temporal_base(IntPtr temp, ulong value);
+            public static partial int ever_ge_temporal_base(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int ever_gt_base_temporal(ulong value, IntPtr temp);
+            public static partial int ever_gt_base_temporal(IntPtr value, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int ever_gt_temporal_base(IntPtr temp, ulong value);
+            public static partial int ever_gt_temporal_base(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int ever_le_base_temporal(ulong value, IntPtr temp);
+            public static partial int ever_le_base_temporal(IntPtr value, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int ever_le_temporal_base(IntPtr temp, ulong value);
+            public static partial int ever_le_temporal_base(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int ever_lt_base_temporal(ulong value, IntPtr temp);
+            public static partial int ever_lt_base_temporal(IntPtr value, IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int ever_lt_temporal_base(IntPtr temp, ulong value);
+            public static partial int ever_lt_temporal_base(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tnumberinst_abs(IntPtr inst);
@@ -7135,13 +7757,13 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tnumberseqset_delta_value(IntPtr ss);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tdistance_tnumber_number(IntPtr temp, ulong value);
+            public static partial IntPtr tdistance_tnumber_number(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial double nad_tbox_tbox(IntPtr box1, IntPtr box2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial double nad_tnumber_number(IntPtr temp, ulong value);
+            public static partial double nad_tnumber_number(IntPtr temp, IntPtr value);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial double nad_tnumber_tbox(IntPtr temp, IntPtr box);
@@ -7201,31 +7823,1055 @@ namespace MEOS.NET.Internal
             public static partial IntPtr temporal_app_tseq_transfn(IntPtr state, IntPtr seq);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr span_bins(IntPtr s, ulong size, ulong origin, IntPtr count);
+            public static partial IntPtr span_bins(IntPtr s, IntPtr size, IntPtr origin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr spanset_bins(IntPtr ss, ulong size, ulong origin, IntPtr count);
+            public static partial IntPtr spanset_bins(IntPtr ss, IntPtr size, IntPtr origin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tnumber_value_bins(IntPtr temp, ulong size, ulong origin, IntPtr count);
+            public static partial IntPtr tnumber_value_bins(IntPtr temp, IntPtr size, IntPtr origin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tnumber_value_time_boxes(IntPtr temp, ulong vsize, IntPtr duration, ulong vorigin, long torigin, IntPtr count);
+            public static partial IntPtr tnumber_value_time_boxes(IntPtr temp, IntPtr vsize, IntPtr duration, IntPtr vorigin, int torigin, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tnumber_value_split(IntPtr temp, ulong vsize, ulong vorigin, IntPtr bins, IntPtr count);
+            public static partial IntPtr tnumber_value_split(IntPtr temp, IntPtr vsize, IntPtr vorigin, IntPtr bins, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tbox_get_value_time_tile(ulong value, long t, ulong vsize, IntPtr duration, ulong vorigin, long torigin, int basetype, int spantype);
+            public static partial IntPtr tbox_get_value_time_tile(IntPtr value, int t, IntPtr vsize, IntPtr duration, IntPtr vorigin, int torigin, int basetype, int spantype);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tnumber_value_time_split(IntPtr temp, ulong size, IntPtr duration, ulong vorigin, long torigin, IntPtr value_bins, IntPtr time_bins, IntPtr count);
+            public static partial IntPtr tnumber_value_time_split(IntPtr temp, IntPtr size, IntPtr duration, IntPtr vorigin, int torigin, IntPtr value_bins, IntPtr time_bins, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string double2_out(IntPtr d, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void double2_set(double a, double b, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr double2_add(IntPtr d1, IntPtr d2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool double2_eq(IntPtr d1, IntPtr d2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string double3_out(IntPtr d, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void double3_set(double a, double b, double c, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr double3_add(IntPtr d1, IntPtr d2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool double3_eq(IntPtr d1, IntPtr d2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string double4_out(IntPtr d, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void double4_set(double a, double b, double c, double d, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr double4_add(IntPtr d1, IntPtr d2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool double4_eq(IntPtr d1, IntPtr d2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool double2_collinear(IntPtr x1, IntPtr x2, IntPtr x3, double ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool double3_collinear(IntPtr x1, IntPtr x2, IntPtr x3, double ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool double4_collinear(IntPtr x1, IntPtr x2, IntPtr x3, double ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr double2segm_interpolate(IntPtr start, IntPtr end, IntPtr ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr double3segm_interpolate(IntPtr start, IntPtr end, IntPtr ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr double4segm_interpolate(IntPtr start, IntPtr end, IntPtr ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int pg_atoi(string s, int size, int c);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_has_X(int type, short flags);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_has_Z(int type, short flags);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_has_T(int type, short flags);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_has_not_Z(int type, short flags);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_not_null(IntPtr ptr);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_one_not_null(IntPtr ptr1, IntPtr ptr2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_one_true([MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_interp(int temptype, int interp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_continuous(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_interp(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_continuous_interp(short flags1, short flags2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_linear_interp(short flags);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_nonlinear_interp(short flags);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_common_dimension(short flags1, short flags2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_temporal_isof_type(IntPtr temp, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_temporal_isof_basetype(IntPtr temp, int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_temporal_isof_subtype(IntPtr temp, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_temporal_type(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tnumber_numspan(IntPtr temp, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tnumber_numspanset(IntPtr temp, IntPtr ss);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tnumber_tbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_temporal_set(IntPtr temp, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_temporal_temporal(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tnumber_tnumber(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_not_negative(int i);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_positive(int i);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool not_negative_datum(IntPtr size, int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_not_negative_datum(IntPtr size, int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool positive_datum(IntPtr size, int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_positive_datum(IntPtr size, int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_day_duration(IntPtr duration);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool positive_duration(IntPtr duration);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_positive_duration(IntPtr duration);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_bbox_ptr(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool intersection_temporal_temporal(IntPtr temp1, IntPtr temp2, IntPtr mode, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string mobilitydb_version();
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string mobilitydb_full_version();
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr round_fn(int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool temporal_bbox_restrict_value(IntPtr temp, IntPtr value);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tcbuffer_cbuffer(IntPtr temp, IntPtr cb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tcbuffer_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tcbuffer_stbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tcbuffersegm_intersection_value(IntPtr start, IntPtr end, IntPtr value, int lower, int upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tcbuffersegm_intersection(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, int lower, int upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tcbuffersegm_dwithin_turnpt(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, IntPtr dist, int lower, int upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tcbuffersegm_distance_turnpt(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, IntPtr dist, int lower, int upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool cbuffer_set_stbox(IntPtr cb, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void cbufferarr_set_stbox(IntPtr values, int count, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool cbuffer_timestamptz_set_stbox(IntPtr cb, int t, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool cbuffer_tstzspan_set_stbox(IntPtr cb, IntPtr s, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tcbufferinst_set_stbox(IntPtr inst, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tcbufferinstarr_set_stbox(IntPtr instants, int count, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tcbufferseq_expand_stbox(IntPtr seq, IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbufferinst_trav_area(IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbufferseq_trav_area(IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbufferseqset_trav_area(IntPtr ss);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffersegm_trav_area(IntPtr inst1, IntPtr inst2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_restrict_cbuffer(IntPtr temp, IntPtr cb, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_restrict_stbox(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcbuffer_restrict_geom(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_contains_geo_tcbuffer(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_contains_tcbuffer_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_contains_tcbuffer_cbuffer(IntPtr temp, IntPtr cb, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_contains_cbuffer_tcbuffer(IntPtr cb, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_covers_geo_tcbuffer(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_covers_tcbuffer_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_covers_tcbuffer_cbuffer(IntPtr temp, IntPtr cb, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_covers_cbuffer_tcbuffer(IntPtr cb, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_covers_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_disjoint_tcbuffer_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_disjoint_geo_tcbuffer(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_disjoint_tcbuffer_cbuffer(IntPtr temp, IntPtr cb, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_disjoint_cbuffer_tcbuffer(IntPtr cb, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_disjoint_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_intersects_tcbuffer_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_intersects_geo_tcbuffer(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_intersects_tcbuffer_cbuffer(IntPtr temp, IntPtr cb, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_intersects_cbuffer_tcbuffer(IntPtr cb, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_intersects_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_touches_tcbuffer_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_touches_geo_tcbuffer(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_touches_tcbuffer_cbuffer(IntPtr temp, IntPtr cb, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_touches_cbuffer_tcbuffer(IntPtr cb, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_touches_tcbuffer_tcbuffer(IntPtr temp1, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tinterrel_tcbuffer_cbuffer(IntPtr temp, IntPtr cb, [MarshalAs(UnmanagedType.U1)] bool tinter);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tinterrel_tcbuffer_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool tinter);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int lwproj_lookup(int srid_from, int srid_to, IntPtr pj);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int spheroid_init_from_srid(int srid, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void srid_check_latlong(int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int srid_is_latlong(int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geom_serialize(IntPtr lwgeom);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geog_serialize(IntPtr lwgeom);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr postgis_valid_typmod(IntPtr gs, int typmod);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string geo_as_wkt(IntPtr gs, int precision, [MarshalAs(UnmanagedType.U1)] bool extended);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr box2d_to_lwgeom(IntPtr box, int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr box3d_to_lwgeom(IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr POSTGIS2GEOS(IntPtr pglwgeom);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr GEOS2POSTGIS(IntPtr geom, byte want3d);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool geom_spatialrel(IntPtr gs1, IntPtr gs2, IntPtr rel);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr lwgeom_line_interpolate_point(IntPtr geom, double fraction, int srid, byte repeat);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void point_get_coords(IntPtr point, [MarshalAs(UnmanagedType.U1)] bool hasz, IntPtr x, IntPtr y, IntPtr z);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tstzset_stbox_slice(IntPtr tsdatum, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tstzspanset_stbox_slice(IntPtr psdatum, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool stbox_index_leaf_consistent(IntPtr key, IntPtr query, int strategy);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool stbox_gist_inner_consistent(IntPtr key, IntPtr query, int strategy);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool stbox_index_recheck(int strategy);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void mobilitydb_init();
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_stbox(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr stbox_geo(IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcomp_geo_tgeo(IntPtr gs, IntPtr temp, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcomp_tgeo_geo(IntPtr temp, IntPtr gs, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_geoaggstate(IntPtr state, int srid, [MarshalAs(UnmanagedType.U1)] bool hasz);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_geoaggstate_state(IntPtr state1, IntPtr state2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpoint_transform_tcentroid(IntPtr temp, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpointinst_tcentroid_finalfn(IntPtr instants, int count, int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpointseq_tcentroid_finalfn(IntPtr sequences, int count, int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool point3d_min_dist(IntPtr p1, IntPtr p2, IntPtr p3, IntPtr p4, IntPtr fraction);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tgeompointsegm_distance_turnpt(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, IntPtr param, int lower, int upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tgeogpointsegm_distance_turnpt(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, IntPtr param, int lower, int upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double tnumberinst_distance(IntPtr inst1, IntPtr inst2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double tinstant_distance(IntPtr inst1, IntPtr inst2, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpointseq_at_geom(IntPtr seq, IntPtr gs, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpointseq_interperiods(IntPtr seq, IntPtr gs, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void datum_point4d(IntPtr value, IntPtr p);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int geopoint_cmp(IntPtr gs1, IntPtr gs2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool geopoint_eq(IntPtr gs1, IntPtr gs2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool geopoint_same(IntPtr gs1, IntPtr gs2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool datum_point_eq(IntPtr point1, IntPtr point2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool datum_point_same(IntPtr point1, IntPtr point2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum2_point_eq(IntPtr point1, IntPtr point2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum2_point_ne(IntPtr point1, IntPtr point2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum2_point_same(IntPtr point1, IntPtr point2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum2_point_nsame(IntPtr point1, IntPtr point2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum2_geom_centroid(IntPtr geo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum2_geog_centroid(IntPtr geo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_extract_elements(IntPtr gs, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_serialize(IntPtr geom);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_distance_fn(short flags);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pt_distance_fn(short flags);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geom_distance2d(IntPtr geom1, IntPtr geom2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geom_distance3d(IntPtr geom1, IntPtr geom2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geog_distance(IntPtr geog1, IntPtr geog2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_pt_distance2d(IntPtr geom1, IntPtr geom2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_pt_distance3d(IntPtr geom1, IntPtr geom2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial short spatial_flags(IntPtr d, int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_srid_is_latlong(int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_spatial_validity(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_not_geodetic(short flags);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_geodetic(short flags1, short flags2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_geodetic_geo(IntPtr gs1, IntPtr gs2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_geodetic_tspatial_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_geodetic_tspatial_base(IntPtr temp, IntPtr @base);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_srid_known(int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_srid(int srid1, int srid2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_dimensionality(short flags1, short flags2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool same_spatial_dimensionality(short flags1, short flags2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_spatial_dimensionality(short flags1, short flags2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_dimensionality_geo(IntPtr gs1, IntPtr gs2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool same_dimensionality_tspatial_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_dimensionality_tspatial_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_spatial_dimensionality_stbox_geo(IntPtr box, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_geodetic_stbox_geo(IntPtr box, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_has_Z_geo(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_has_not_Z_geo(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_has_M_geo(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_has_not_M_geo(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_not_geodetic_geo(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_point_type(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_mline_type(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool circle_type(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_circle_type(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_not_empty(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_stbox_geo(IntPtr box, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tspatial_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tspatial_base(IntPtr temp, IntPtr @base);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tspatial_tspatial(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_spatial_stbox_stbox(IntPtr box1, IntPtr box2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tgeo_stbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_geo_geo(IntPtr gs1, IntPtr gs2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tgeo_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tgeo_tgeo(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tpoint_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tpoint_tpoint(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool mline_type(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpoint_get_coord(IntPtr temp, int coord);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int eacomp_tgeo_geo(IntPtr temp, IntPtr gs, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr closest_point2d_on_segment_ratio(IntPtr p, IntPtr A, IntPtr B, IntPtr closest);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr closest_point3dz_on_segment_ratio(IntPtr p, IntPtr A, IntPtr B, IntPtr closest);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr closest_point_on_segment_sphere(IntPtr p, IntPtr A, IntPtr B, IntPtr closest, IntPtr dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void interpolate_point4d_spheroid(IntPtr p1, IntPtr p2, IntPtr p, IntPtr s, double f);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geopoint_make(double x, double y, double z, [MarshalAs(UnmanagedType.U1)] bool hasz, [MarshalAs(UnmanagedType.U1)] bool geodetic, int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr lwcircle_make(double x, double y, double radius, int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geocircle_make(double x, double y, double radius, int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int pointsegm_interpolate(IntPtr start, IntPtr end, IntPtr ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pointsegm_locate(IntPtr start, IntPtr end, IntPtr point, IntPtr dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tgeompointsegm_intersection(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, int lower, int upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tgeogpointsegm_intersection(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, int lower, int upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool geopoint_collinear(IntPtr value1, IntPtr value2, IntPtr value3, double ratio, [MarshalAs(UnmanagedType.U1)] bool hasz, [MarshalAs(UnmanagedType.U1)] bool geodetic);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr lwpointarr_remove_duplicates(IntPtr points, int count, IntPtr newcount);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr lwpointarr_make_trajectory(IntPtr points, int count, int interp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr lwline_make(IntPtr value1, IntPtr value2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr lwcoll_from_points_lines(IntPtr points, IntPtr lines, int npoints, int nlines);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tpointseq_stops_iter(IntPtr seq, double maxdist, int mintunits, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geom_contains(IntPtr geom1, IntPtr geom2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geom_covers(IntPtr geom1, IntPtr geom2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geom_disjoint2d(IntPtr geom1, IntPtr geom2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geom_disjoint3d(IntPtr geom1, IntPtr geom2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geog_disjoint(IntPtr geog1, IntPtr geog2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geom_intersects2d(IntPtr geom1, IntPtr geom2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geom_intersects3d(IntPtr geom1, IntPtr geom2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geog_intersects(IntPtr geog1, IntPtr geog2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geom_touches(IntPtr geom1, IntPtr geom2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geom_dwithin2d(IntPtr geom1, IntPtr geom2, IntPtr dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geom_dwithin3d(IntPtr geom1, IntPtr geom2, IntPtr dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geog_dwithin(IntPtr geog1, IntPtr geog2, IntPtr dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_geom_relate_pattern(IntPtr geog1, IntPtr geog2, IntPtr p);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_disjoint_fn(short flags1, short flags2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_disjoint_fn_geo(short flags1, IntPtr flags2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_intersects_fn(short flags1, short flags2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_intersects_fn_geo(short flags1, IntPtr flags2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_dwithin_fn(short flags1, short flags2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_dwithin_fn_geo(short flags1, IntPtr flags2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tpointsegm_tdwithin_turnpt(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, IntPtr value, int lower, int upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int spatialrel_geo_geo(IntPtr gs1, IntPtr gs2, IntPtr param, IntPtr func, int numparam, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int spatialrel_tgeo_tgeo(IntPtr temp1, IntPtr temp2, IntPtr param, IntPtr func, int numparam);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_contains_geo_tgeo(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_contains_tgeo_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_contains_tgeo_tgeo(IntPtr temp, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_covers_geo_tgeo(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_covers_tgeo_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_covers_tgeo_tgeo(IntPtr temp, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_disjoint_geo_tgeo(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_disjoint_tgeo_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_disjoint_tgeo_tgeo(IntPtr temp, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_intersects_geo_tgeo(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_intersects_tgeo_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_intersects_tgeo_tgeo(IntPtr temp, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_touches_tpoint_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_touches_tgeo_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_touches_tgeo_tgeo(IntPtr temp, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_dwithin_tgeo_geo(IntPtr temp, IntPtr gs, double dist, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_dwithin_tgeo_tgeo(IntPtr temp1, IntPtr temp2, double dist, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_spatialrel_tspatial_geo(IntPtr temp, IntPtr gs, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool ever, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_spatialrel_tspatial_tspatial(IntPtr temp1, IntPtr temp2, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tspatialrel_tspatial_base(IntPtr temp, IntPtr @base, IntPtr param, IntPtr func, int numparam, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tspatialrel_tspatial_tspatial(IntPtr temp1, IntPtr temp2, IntPtr param, IntPtr func, int numparam, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tinterrel_tgeo_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool tinter);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tinterrel_tspatial_base(IntPtr temp, IntPtr @base, [MarshalAs(UnmanagedType.U1)] bool tinter, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tinterrel_tspatial_tspatial(IntPtr temp1, IntPtr temp2, [MarshalAs(UnmanagedType.U1)] bool tinter);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdwithin_tspatial_tspatial(IntPtr sync1, IntPtr sync2, IntPtr dist, IntPtr func, IntPtr tpfn);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tdwithin_add_solutions(int solutions, int lower, int upper, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc1, int t1, int t2, IntPtr instants, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdwithin_tspatial_spatial(IntPtr temp, IntPtr @base, IntPtr dist, IntPtr func, IntPtr tpfn);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr bitmatrix_make(IntPtr count, int ndims);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tpoint_set_tiles(IntPtr temp, IntPtr state, IntPtr bm);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpoint_at_tile(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void stbox_tile_state_set(double x, double y, double z, int t, double xsize, double ysize, double zsize, int tunits, [MarshalAs(UnmanagedType.U1)] bool hasx, [MarshalAs(UnmanagedType.U1)] bool hasz, [MarshalAs(UnmanagedType.U1)] bool hast, int srid, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr stbox_tile_state_make(IntPtr temp, IntPtr box, double xsize, double ysize, double zsize, IntPtr duration, int sorigin, int torigin, [MarshalAs(UnmanagedType.U1)] bool border_inc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void stbox_tile_state_next(IntPtr state);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool stbox_tile_state_get(IntPtr state, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tgeo_space_time_tile_init(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, int torigin, [MarshalAs(UnmanagedType.U1)] bool bitmatrix, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr ntiles);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr stbox_space_time_tile(IntPtr point, int t, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, int torigin, [MarshalAs(UnmanagedType.U1)] bool hasx, [MarshalAs(UnmanagedType.U1)] bool hast);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr create_trip(IntPtr lines, IntPtr maxSpeeds, IntPtr categories, uint noEdges, int startTime, [MarshalAs(UnmanagedType.U1)] bool disturbData, int verbosity);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr spatialarr_wkt_out(IntPtr spatialarr, int basetype, int count, int maxdd, [MarshalAs(UnmanagedType.U1)] bool extended);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string spatialbase_as_text(IntPtr value, int type, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string spatialbase_as_ewkt(IntPtr value, int type, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool point_transf_pj(IntPtr gs, int srid_to, IntPtr pj);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tgeoinst_set_stbox(IntPtr inst, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tgeoinstarr_set_stbox(IntPtr instants, int count, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tgeoseq_expand_stbox(IntPtr seq, IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tspatialinst_set_stbox(IntPtr inst, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tspatialinstarr_set_stbox(IntPtr instants, int count, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int interp, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tspatialseqarr_set_stbox(IntPtr sequences, int count, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tspatialseq_expand_stbox(IntPtr seq, IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void spatialarr_set_bbox(IntPtr values, int basetype, int count, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool boxop_tspatial_stbox(IntPtr temp, IntPtr box, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool boxop_tspatial_tspatial(IntPtr temp1, IntPtr temp2, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool srid_parse(IntPtr str, IntPtr srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool spatial_parse_elem(IntPtr str, int temptype, byte delim, IntPtr temp_srid, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool geo_parse(IntPtr str, int basetype, byte delim, IntPtr srid, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr stbox_parse(IntPtr str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpoint_parse(IntPtr str, int temptype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tspatialinst_parse(IntPtr str, int temptype, [MarshalAs(UnmanagedType.U1)] bool end, IntPtr temp_srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tspatialseq_disc_parse(IntPtr str, int temptype, IntPtr temp_srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tspatialseq_cont_parse(IntPtr str, int temptype, int interp, [MarshalAs(UnmanagedType.U1)] bool end, IntPtr temp_srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tspatialseqset_parse(IntPtr str, int temptype, int interp, IntPtr temp_srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tspatial_parse(IntPtr str, int temptype);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr proj_get_context();
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong datum_geo_round(ulong value, ulong size);
+            public static partial int datum_geo_round(IntPtr value, IntPtr size);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr point_round(IntPtr gs, int maxdd);
@@ -7245,7 +8891,7 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool spatial_set_stbox(ulong d, int basetype, IntPtr box);
+            public static partial bool spatial_set_stbox(IntPtr d, int basetype, IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial void spatialset_set_stbox(IntPtr set, IntPtr box);
@@ -7271,9 +8917,6 @@ namespace MEOS.NET.Internal
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
             public static partial bool inter_stbox_stbox(IntPtr box1, IntPtr box2, IntPtr result);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr stbox_geo(IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tgeogpointinst_from_mfjson(IntPtr mfjson, int srid);
@@ -7351,44 +8994,44 @@ namespace MEOS.NET.Internal
             public static partial void tspatial_set_stbox(IntPtr temp, IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial void tgeoinst_set_stbox(IntPtr inst, IntPtr box);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial void tspatialseq_set_stbox(IntPtr seq, IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial void tspatialseqset_set_stbox(IntPtr ss, IntPtr box);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tgeo_restrict_geom(IntPtr temp, IntPtr gs, IntPtr zspan, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+            public static partial IntPtr tgeo_restrict_elevation(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tgeo_restrict_geom(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tgeo_restrict_stbox(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tgeoinst_restrict_geom(IntPtr inst, IntPtr gs, IntPtr zspan, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+            public static partial IntPtr tgeoinst_restrict_geom(IntPtr inst, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tgeoinst_restrict_stbox(IntPtr inst, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tgeoseq_restrict_geom(IntPtr seq, IntPtr gs, IntPtr zspan, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+            public static partial IntPtr tgeoseq_restrict_geom(IntPtr seq, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tgeoseq_restrict_stbox(IntPtr seq, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tgeoseqset_restrict_geom(IntPtr ss, IntPtr gs, IntPtr zspan, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+            public static partial IntPtr tgeoseqset_restrict_geom(IntPtr ss, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tgeoseqset_restrict_stbox(IntPtr ss, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial int spatial_srid(ulong d, int basetype);
+            public static partial int spatial_srid(IntPtr d, int basetype);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool spatial_set_srid(ulong d, int basetype, int srid);
+            public static partial bool spatial_set_srid(IntPtr d, int basetype, int srid);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial int tspatialinst_srid(IntPtr inst);
@@ -7433,9 +9076,6 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tgeoseqset_split_n_stboxes(IntPtr ss, int max_count, IntPtr count);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tpoint_get_coord(IntPtr temp, int coord);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tgeominst_tgeoginst(IntPtr inst, [MarshalAs(UnmanagedType.U1)] bool oper);
@@ -7504,10 +9144,10 @@ namespace MEOS.NET.Internal
             public static partial string nsegment_out(IntPtr ns, int maxdd);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr npoint_make(long rid, double pos);
+            public static partial IntPtr npoint_make(int rid, double pos);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr nsegment_make(long rid, double pos1, double pos2);
+            public static partial IntPtr nsegment_make(int rid, double pos1, double pos2);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr geompoint_to_npoint(IntPtr gs);
@@ -7531,35 +9171,35 @@ namespace MEOS.NET.Internal
             public static partial IntPtr nsegment_to_stbox(IntPtr np);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial uint npoint_hash(IntPtr np);
+            public static partial int npoint_hash(IntPtr np);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial ulong npoint_hash_extended(IntPtr np, ulong seed);
+            public static partial int npoint_hash_extended(IntPtr np, int seed);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial double npoint_position(IntPtr np);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long npoint_route(IntPtr np);
+            public static partial int npoint_route(IntPtr np);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial double nsegment_end_position(IntPtr ns);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long nsegment_route(IntPtr ns);
+            public static partial int nsegment_route(IntPtr ns);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial double nsegment_start_position(IntPtr ns);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool route_exists(long rid);
+            public static partial bool route_exists(int rid);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr route_geom(long rid);
+            public static partial IntPtr route_geom(int rid);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial double route_length(long rid);
+            public static partial double route_length(int rid);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr npoint_round(IntPtr np, int maxdd);
@@ -7577,7 +9217,7 @@ namespace MEOS.NET.Internal
             public static partial int nsegment_srid(IntPtr ns);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr npoint_timestamptz_to_stbox(IntPtr np, long t);
+            public static partial IntPtr npoint_timestamptz_to_stbox(IntPtr np, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr npoint_tstzspan_to_stbox(IntPtr np, IntPtr s);
@@ -7704,7 +9344,7 @@ namespace MEOS.NET.Internal
             public static partial string tnpoint_out(IntPtr temp, int maxdd);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr tnpointinst_make(IntPtr np, long t);
+            public static partial IntPtr tnpointinst_make(IntPtr np, int t);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tgeompoint_to_tnpoint(IntPtr temp);
@@ -7722,7 +9362,7 @@ namespace MEOS.NET.Internal
             public static partial IntPtr tnpoint_positions(IntPtr temp, IntPtr count);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial long tnpoint_route(IntPtr temp);
+            public static partial int tnpoint_route(IntPtr temp);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tnpoint_routes(IntPtr temp);
@@ -7843,6 +9483,2071 @@ namespace MEOS.NET.Internal
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr tne_tnpoint_npoint(IntPtr temp, IntPtr np);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string pose_as_ewkt(IntPtr pose, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string pose_as_hexwkb(IntPtr pose, IntPtr variant, IntPtr size);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string pose_as_text(IntPtr pose, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_as_wkb(IntPtr pose, IntPtr variant, IntPtr size_out);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_from_wkb(IntPtr wkb, ulong size);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_from_hexwkb(string hexwkb);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_in(string str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string pose_out(IntPtr pose, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_copy(IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_make_2d(double x, double y, double theta, int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_make_3d(double x, double y, double z, double W, double X, double Y, double Z, int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_make_point2d(IntPtr gs, double theta);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_make_point3d(IntPtr gs, double W, double X, double Y, double Z);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_to_point(IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_to_stbox(IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int pose_hash(IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int pose_hash_extended(IntPtr pose, int seed);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_orientation(IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double pose_rotation(IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_round(IntPtr pose, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr posearr_round(IntPtr posearr, int count, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void pose_set_srid(IntPtr pose, int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int pose_srid(IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_transform(IntPtr pose, int srid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_transform_pipeline(IntPtr pose, string pipelinestr, int srid, [MarshalAs(UnmanagedType.U1)] bool is_forward);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_tstzspan_to_stbox(IntPtr pose, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_timestamptz_to_stbox(IntPtr pose, int t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double distance_pose_geo(IntPtr pose, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double distance_pose_pose(IntPtr pose1, IntPtr pose2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double distance_pose_stbox(IntPtr pose, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int pose_cmp(IntPtr pose1, IntPtr pose2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool pose_eq(IntPtr pose1, IntPtr pose2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool pose_ge(IntPtr pose1, IntPtr pose2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool pose_gt(IntPtr pose1, IntPtr pose2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool pose_le(IntPtr pose1, IntPtr pose2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool pose_lt(IntPtr pose1, IntPtr pose2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool pose_ne(IntPtr pose1, IntPtr pose2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool pose_nsame(IntPtr pose1, IntPtr pose2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool pose_same(IntPtr pose1, IntPtr pose2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr poseset_in(string str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string poseset_out(IntPtr s, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr poseset_make(IntPtr values, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_to_set(IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr poseset_end_value(IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr poseset_start_value(IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool poseset_value_n(IntPtr s, int n, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr poseset_values(IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool contained_pose_set(IntPtr pose, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool contains_set_pose(IntPtr s, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr intersection_pose_set(IntPtr pose, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr intersection_set_pose(IntPtr s, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr minus_pose_set(IntPtr pose, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr minus_set_pose(IntPtr s, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_union_transfn(IntPtr state, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr union_pose_set(IntPtr pose, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr union_set_pose(IntPtr s, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_in(string str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_make(IntPtr tpoint, IntPtr tradius);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_to_tpoint(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_end_value(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_points(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_rotation(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_start_value(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_trajectory(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tpose_value_at_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr value);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tpose_value_n(IntPtr temp, int n, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_values(IntPtr temp, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_at_geom(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_at_stbox(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_at_pose(IntPtr temp, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_minus_geom(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_minus_pose(IntPtr temp, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_minus_stbox(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdistance_tpose_pose(IntPtr temp, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdistance_tpose_point(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdistance_tpose_tpose(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_tpose_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_tpose_pose(IntPtr temp, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_tpose_stbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_tpose_tpose(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr nai_tpose_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr nai_tpose_pose(IntPtr temp, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr nai_tpose_tpose(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr shortestline_tpose_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr shortestline_tpose_pose(IntPtr temp, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr shortestline_tpose_tpose(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_eq_pose_tpose(IntPtr pose, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_eq_tpose_pose(IntPtr temp, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_eq_tpose_tpose(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_ne_pose_tpose(IntPtr pose, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_ne_tpose_pose(IntPtr temp, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_ne_tpose_tpose(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_eq_pose_tpose(IntPtr pose, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_eq_tpose_pose(IntPtr temp, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_eq_tpose_tpose(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_ne_pose_tpose(IntPtr pose, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_ne_tpose_pose(IntPtr temp, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_ne_tpose_tpose(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr teq_pose_tpose(IntPtr pose, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr teq_tpose_pose(IntPtr temp, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tne_pose_tpose(IntPtr pose, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tne_tpose_pose(IntPtr temp, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string trgeo_out(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoinst_make(IntPtr geom, IntPtr pose, int t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_tpose_to_trgeo(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_to_tpose(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_to_tpoint(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_end_instant(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_end_sequence(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_end_value(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_geom(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_instant_n(IntPtr temp, int n);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_instants(IntPtr temp, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_points(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_rotation(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_segments(IntPtr temp, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_sequence_n(IntPtr temp, int i);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_sequences(IntPtr temp, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_start_instant(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_start_sequence(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_start_value(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool trgeo_value_n(IntPtr temp, int n, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_traversed_area(IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool unary_union);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_append_tinstant(IntPtr temp, IntPtr inst, int interp, double maxdist, IntPtr maxt, [MarshalAs(UnmanagedType.U1)] bool expand);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_append_tsequence(IntPtr temp, IntPtr seq, [MarshalAs(UnmanagedType.U1)] bool expand);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_delete_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool connect);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_delete_tstzset(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool connect);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_delete_tstzspan(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool connect);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_delete_tstzspanset(IntPtr temp, IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool connect);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_round(IntPtr temp, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_set_interp(IntPtr temp, int interp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_to_tinstant(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_after_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool strict);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_before_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool strict);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_restrict_value(IntPtr temp, IntPtr value, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_restrict_values(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_restrict_timestamptz(IntPtr temp, int t, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_restrict_tstzset(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_restrict_tstzspan(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_restrict_tstzspanset(IntPtr temp, IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdistance_trgeo_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdistance_trgeo_tpoint(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdistance_trgeo_trgeo(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_stbox_trgeo(IntPtr box, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_trgeo_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_trgeo_stbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_trgeo_tpoint(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double nad_trgeo_trgeo(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr nai_trgeo_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr nai_trgeo_tpoint(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr nai_trgeo_trgeo(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr shortestline_trgeo_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr shortestline_trgeo_tpoint(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr shortestline_trgeo_trgeo(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_eq_geo_trgeo(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_eq_trgeo_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_eq_trgeo_trgeo(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_ne_geo_trgeo(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_ne_trgeo_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int always_ne_trgeo_trgeo(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_eq_geo_trgeo(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_eq_trgeo_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_eq_trgeo_trgeo(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_ne_geo_trgeo(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_ne_trgeo_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ever_ne_trgeo_trgeo(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr teq_geo_trgeo(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr teq_trgeo_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tne_geo_trgeo(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tne_trgeo_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tnpoint_npoint(IntPtr temp, IntPtr np);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tnpoint_npointset(IntPtr temp, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tnpoint_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tnpoint_stbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tnpoint_tnpoint(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tnpointsegm_intersection(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, int lower, int upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool common_rid_tnpoint_npoint(IntPtr temp, IntPtr np);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool common_rid_tnpoint_npointset(IntPtr temp, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool common_rid_tnpoint_tnpoint(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool npoint_collinear(IntPtr np1, IntPtr np2, IntPtr np3, double ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr npointsegm_interpolate(IntPtr start, IntPtr end, IntPtr ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr npointsegm_locate(IntPtr start, IntPtr end, IntPtr value);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr npointarr_geom(IntPtr points, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr nsegmentarr_geom(IntPtr segments, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr nsegmentarr_normalize(IntPtr segments, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string npoint_wkt_out(IntPtr value, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void npoint_set(int rid, double pos, IntPtr np);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void nsegment_set(int rid, double pos1, double pos2, IntPtr ns);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_npoint_round(IntPtr npoint, IntPtr size);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpointinst_tgeompointinst(IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpointseq_tgeompointseq_disc(IntPtr @is);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpointseq_tgeompointseq_cont(IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpointseqset_tgeompointseqset(IntPtr ss);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tgeompointinst_tnpointinst(IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tgeompointseq_tnpointseq(IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tgeompointseqset_tnpointseqset(IntPtr ss);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpointinst_positions(IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpointseq_positions(IntPtr seq, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpointseqset_positions(IntPtr ss, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tnpointinst_route(IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpointinst_routes(IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpointseq_disc_routes(IntPtr @is);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpointseq_cont_routes(IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpointseqset_routes(IntPtr ss);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpointseq_linear_positions(IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpoint_restrict_stbox(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpoint_restrict_npoint(IntPtr temp, IntPtr np, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpoint_restrict_npointset(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool npoint_set_stbox(IntPtr np, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void npointarr_set_stbox(IntPtr values, int count, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool nsegment_set_stbox(IntPtr ns, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool npoint_timestamptz_set_stbox(IntPtr np, int t, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool npoint_tstzspan_set_stbox(IntPtr np, IntPtr s, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tnpointinst_set_stbox(IntPtr inst, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tnpointinstarr_set_stbox(IntPtr inst, int count, int interp, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tnpointseq_expand_stbox(IntPtr seq, IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_npoint_distance(IntPtr np1, IntPtr np2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr npoint_parse(IntPtr str, [MarshalAs(UnmanagedType.U1)] bool end);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr nsegment_parse(IntPtr str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool contains_rid_tnpoint_bigint(IntPtr temp, int rid, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool contained_rid_tnpoint_bigint(IntPtr temp, int rid, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool same_rid_tnpoint_bigint(IntPtr temp, int rid, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool overlaps_rid_tnpoint_bigintset(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool contains_rid_tnpoint_bigintset(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool contained_rid_tnpoint_bigintset(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool same_rid_tnpoint_bigintset(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool contains_rid_tnpoint_npoint(IntPtr temp, IntPtr np, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool contained_rid_npoint_tnpoint(IntPtr temp, IntPtr np, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool same_rid_tnpoint_npoint(IntPtr temp, IntPtr np, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool overlaps_rid_tnpoint_tnpoint(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool contains_rid_tnpoint_tnpoint(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool contained_rid_tnpoint_tnpoint(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool same_rid_tnpoint_tnpoint(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_rid_tnpointinst(IntPtr inst1, IntPtr inst2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnpoint_restrict_geom(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_pose_geo(IntPtr pose, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_pose_stbox(IntPtr pose, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_pose_pose(IntPtr pose1, IntPtr pose2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_poseset_pose(IntPtr s, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool pose_collinear(IntPtr pose1, IntPtr pose2, IntPtr pose3, double ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr posesegm_interpolate(IntPtr start, IntPtr end, double ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr posesegm_locate(IntPtr start, IntPtr end, IntPtr value);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string pose_wkt_out(IntPtr pose, [MarshalAs(UnmanagedType.U1)] bool extended, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pose_parse(IntPtr str, [MarshalAs(UnmanagedType.U1)] bool end);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_pose_point(IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_pose_rotation(IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_pose_round(IntPtr pose, IntPtr size);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int pose_distance(IntPtr pose1, IntPtr pose2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool pose_set_stbox(IntPtr pose, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void posearr_set_stbox(IntPtr values, int count, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool pose_timestamptz_set_stbox(IntPtr pose, int t, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool pose_tstzspan_set_stbox(IntPtr pose, IntPtr p, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tpose_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tpose_pose(IntPtr temp, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tpose_stbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tpose_tpose(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tposesegm_intersection_value(IntPtr start, IntPtr end, IntPtr value, int lower, int upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tposesegm_intersection(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, int lower, int upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tposeinst_set_stbox(IntPtr inst, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tposeinstarr_set_stbox(IntPtr instants, int count, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tposeseq_expand_stbox(IntPtr seq, IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_restrict_geom(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_restrict_stbox(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tpose_restrict_elevation(IntPtr temp, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int geo_get_srid(IntPtr g);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int date_in(string str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string date_out(int d);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int interval_cmp(IntPtr interv1, IntPtr interv2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr interval_in(string str, int typmod);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string interval_out(IntPtr interv);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial long time_in(string str, int typmod);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string time_out(long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial long timestamp_in(string str, int typmod);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string timestamp_out(long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial long timestamptz_in(string str, int typmod);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string timestamptz_out(long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_has_geom(short flags);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_trgeo_geo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_trgeo_stbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_trgeo_trgeo(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_trgeo_tpoint(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_geom_p(IntPtr temp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string trgeo_wkt_out(IntPtr temp, int maxdd, [MarshalAs(UnmanagedType.U1)] bool extended);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_tposeinst_to_trgeo(IntPtr gs, IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_tposeseq_to_trgeo(IntPtr gs, IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr geo_tposeseqset_to_trgeo(IntPtr gs, IntPtr ss);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool trgeo_value_at_timestamptz(IntPtr temp, long t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoinst_geom_p(IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial ulong trgeoinst_pose_varsize(IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void trgeoinst_set_pose(IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoinst_tposeinst(IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoinst_make1(IntPtr geom, IntPtr pose, long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseq_to_tinstant(IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseqset_to_tinstant(IntPtr ts);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseq_geom_p(IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial ulong trgeoseq_pose_varsize(IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void trgeoseq_set_pose(IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseq_tposeseq(IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool trgeoseq_make_valid(IntPtr geom, IntPtr instants, int count, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, [MarshalAs(UnmanagedType.U1)] bool linear);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseq_make1_exp(IntPtr geom, IntPtr instants, int count, int maxcount, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int interp, [MarshalAs(UnmanagedType.U1)] bool normalize);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseq_make1(IntPtr geom, IntPtr instants, int count, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int interp, [MarshalAs(UnmanagedType.U1)] bool normalize);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseq_make_exp(IntPtr geom, IntPtr instants, int count, int maxcount, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int interp, [MarshalAs(UnmanagedType.U1)] bool normalize);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseq_make(IntPtr geom, IntPtr instants, int count, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int interp, [MarshalAs(UnmanagedType.U1)] bool normalize);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseq_make_free_exp(IntPtr geom, IntPtr instants, int count, int maxcount, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int interp, [MarshalAs(UnmanagedType.U1)] bool normalize);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseq_make_free(IntPtr geom, IntPtr instants, int count, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int interp, [MarshalAs(UnmanagedType.U1)] bool normalize);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoinst_to_tsequence(IntPtr inst, int interp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseqset_geom_p(IntPtr ts);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseqset_tposeseqset(IntPtr ss);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseqset_make1_exp(IntPtr geom, IntPtr sequences, int count, int maxcount, [MarshalAs(UnmanagedType.U1)] bool normalize);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseqset_make_exp(IntPtr geom, IntPtr sequences, int count, int maxcount, [MarshalAs(UnmanagedType.U1)] bool normalize);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseqset_make(IntPtr geom, IntPtr sequences, int count, [MarshalAs(UnmanagedType.U1)] bool normalize);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseqset_make_free(IntPtr geom, IntPtr sequences, int count, [MarshalAs(UnmanagedType.U1)] bool normalize);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseqset_make_gaps(IntPtr geom, IntPtr instants, int count, int interp, IntPtr maxt, double maxdist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeoseqset_to_tsequence(IntPtr ss);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_to_tsequence(IntPtr temp, string interp_str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_to_tsequenceset(IntPtr temp, string interp_str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void trgeoinst_set_stbox(IntPtr geom, IntPtr inst, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void trgeoinstarr_static_stbox(IntPtr geom, IntPtr instants, int count, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void trgeoinstarr_rotating_stbox(IntPtr geom, IntPtr instants, int count, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void trgeoinstarr_compute_bbox(IntPtr geom, IntPtr instants, int count, int interp, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr trgeo_parse(IntPtr str, int temptype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_contains_geo_trgeo(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_covers_geo_trgeo(IntPtr gs, IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_covers_trgeo_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int ea_disjoint_trgeo_geo(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_geom(IntPtr gs1, IntPtr gs2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void lwgeom_apply_pose(IntPtr pose, IntPtr geom);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double geom_radius(IntPtr gs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int v_clip_tpoly_point(IntPtr poly, IntPtr point, IntPtr pose, IntPtr poly_feature, IntPtr dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int v_clip_tpoly_tpoly(IntPtr poly1, IntPtr poly2, IntPtr pose1, IntPtr pose2, IntPtr poly1_feature, IntPtr poly2_feature, IntPtr dist);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void apply_pose_point4d(IntPtr p, IntPtr pose);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tfunc_tinstant(IntPtr inst, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tfunc_tsequence(IntPtr seq, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tfunc_tsequenceset(IntPtr ss, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tfunc_temporal(IntPtr temp, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tfunc_tinstant_base(IntPtr inst, IntPtr value, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tfunc_tsequence_base(IntPtr seq, IntPtr value, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tfunc_tsequenceset_base(IntPtr ss, IntPtr value, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tfunc_temporal_base(IntPtr temp, IntPtr value, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tfunc_tinstant_tinstant(IntPtr inst1, IntPtr inst2, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tfunc_tdiscseq_tdiscseq(IntPtr seq1, IntPtr seq2, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tfunc_tcontseq_tcontseq(IntPtr seq1, IntPtr seq2, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tfunc_tsequenceset_tsequenceset(IntPtr ss1, IntPtr ss2, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tfunc_temporal_temporal(IntPtr temp1, IntPtr temp2, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int eafunc_temporal_base(IntPtr temp, IntPtr value, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int eafunc_temporal_temporal(IntPtr temp1, IntPtr temp2, IntPtr lfinfo);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int int4_in(string str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string int4_out(int val);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial long int8_in(string str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string int8_out(long val);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int float8_in(string num, string type_name, string orig_string);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int pg_dsin(int arg1);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int pg_dcos(int arg1);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int pg_datan(int arg1);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int pg_datan2(int arg1, int arg2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr interval_negate(IntPtr interval);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr pg_interval_justify_hours(IntPtr span);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial uint hash_bytes_uint32(uint k);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial uint pg_hashint8(long val);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial uint pg_hashfloat8(int key);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial ulong hash_bytes_uint32_extended(uint k, ulong seed);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial ulong pg_hashint8extended(long val, ulong seed);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial ulong pg_hashfloat8extended(int key, ulong seed);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial uint pg_hashtext(IntPtr key);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial ulong pg_hashtextextended(IntPtr key, ulong seed);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string set_out_fn(IntPtr s, int maxdd, IntPtr value_out);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_set_isof_type(IntPtr s, int settype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_set_set(IntPtr s1, IntPtr s2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool set_find_value(IntPtr s, IntPtr arg1, IntPtr loc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr set_unnest_state_make(IntPtr set);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void set_unnest_state_next(IntPtr state);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_skiplist_subtype(IntPtr state, IntPtr subtype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void skiplist_set_extra(IntPtr state, IntPtr data, ulong size);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr skiplist_headval(IntPtr list);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_span_isof_type(IntPtr s, int spantype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_span_isof_basetype(IntPtr s, int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_span_type(IntPtr s1, IntPtr s2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_span_span(IntPtr s1, IntPtr s2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void span_deserialize(IntPtr s, IntPtr lower, IntPtr upper);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int span_bound_cmp(IntPtr b1, IntPtr b2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int span_bound_qsort_cmp(IntPtr s1, IntPtr s2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int span_lower_cmp(IntPtr s1, IntPtr s2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int span_upper_cmp(IntPtr s1, IntPtr s2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int span_decr_bound(IntPtr upper, int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int span_incr_bound(IntPtr upper, int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr spanarr_normalize(IntPtr spans, int count, [MarshalAs(UnmanagedType.U1)] bool sort, IntPtr newcount);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void span_bounds_shift_scale_value(IntPtr shift, IntPtr width, int type, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth, IntPtr lower, IntPtr upper);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void span_bounds_shift_scale_time(IntPtr shift, IntPtr duration, IntPtr lower, IntPtr upper);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void floatspan_floor_ceil_iter(IntPtr s, int func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void numspan_delta_scale_iter(IntPtr s, IntPtr origin, IntPtr delta, [MarshalAs(UnmanagedType.U1)] bool hasdelta, double scale);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tstzspan_delta_scale_iter(IntPtr s, long origin, long delta, double scale);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void numspan_shift_scale_iter(IntPtr s, IntPtr shift, IntPtr width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth, IntPtr delta, IntPtr scale);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tstzspan_shift_scale1(IntPtr s, IntPtr shift, IntPtr duration, IntPtr delta, IntPtr scale);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int mi_span_value(IntPtr s, IntPtr value, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double dist_double_value_value(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int common_entry_cmp(IntPtr i1, IntPtr i2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool span_index_leaf_consistent(IntPtr key, IntPtr query, int strategy);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool span_gist_inner_consistent(IntPtr key, IntPtr query, int strategy);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool span_index_recheck(int strategy);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_spanset_isof_type(IntPtr ss, int spansettype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_spanset_type(IntPtr ss1, IntPtr ss2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_spanset_span_type(IntPtr ss, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_spanset_span(IntPtr ss, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_spanset_spanset(IntPtr ss1, IntPtr ss2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool spanset_find_value(IntPtr ss, IntPtr v, IntPtr loc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_and(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_or(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr boolop_tbool_bool(IntPtr temp, IntPtr b, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr boolop_tbool_tbool(IntPtr temp1, IntPtr temp2, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_same_dimensionality_tbox(IntPtr box1, IntPtr box2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr set_tbox(IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr span_tbox(IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tbox_tstzspan(IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tbox_intspan(IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tbox_floatspan(IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tbox_index_leaf_consistent(IntPtr key, IntPtr query, int strategy);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tbox_gist_inner_consistent(IntPtr key, IntPtr query, int strategy);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tbox_index_recheck(int strategy);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_min_int32(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_max_int32(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_min_float8(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_max_float8(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_sum_int32(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_sum_float8(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_min_text(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_max_text(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_sum_double2(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_sum_double3(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_sum_double4(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int temporal_skiplist_common(IntPtr list, IntPtr values, int count, IntPtr lower, IntPtr upper, IntPtr update);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_skiplist_merge(IntPtr spliced, int spliced_count, IntPtr values, int count, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool crossings, IntPtr newcount, IntPtr tofree, IntPtr nfree);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tinstant_tagg(IntPtr instants1, int count1, IntPtr instants2, int count2, IntPtr func, IntPtr newcount, IntPtr tofree, IntPtr nfree);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tsequence_tagg(IntPtr sequences1, int count1, IntPtr sequences2, int count2, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool crossings, IntPtr newcount);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_tagg_transfn(IntPtr state, IntPtr seq, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool interpoint);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_tagg_combinefn(IntPtr state1, IntPtr state2, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool crossings);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tinstant_tagg_transfn(IntPtr state, IntPtr inst, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tinstant_tavg_finalfn(IntPtr instants, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tsequence_tavg_finalfn(IntPtr sequences, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnumberinst_transform_tavg(IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_transform_tcount(IntPtr temp, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_transform_tagg(IntPtr temp, IntPtr count, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tsequenceset_tagg_transfn(IntPtr state, IntPtr ss, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool crossings);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdiscseq_tagg_transfn(IntPtr state, IntPtr seq, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_tagg_transfn(IntPtr state, IntPtr temp, IntPtr arg2, [MarshalAs(UnmanagedType.U1)] bool crossings);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_tagg_transform_transfn(IntPtr state, IntPtr temp, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool crossings, IntPtr transform);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double temporal_similarity(IntPtr temp1, IntPtr temp2, IntPtr simfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_similarity_path(IntPtr temp1, IntPtr temp2, IntPtr count, IntPtr simfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial ulong temporal_bbox_size(int tempype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tinstarr_set_bbox(IntPtr instants, int count, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int interp, IntPtr bbox);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tsequence_compute_bbox(IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tseqarr_compute_bbox(IntPtr sequences, int count, IntPtr bbox);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tsequenceset_compute_bbox(IntPtr ss);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool boxop_temporal_tstzspan(IntPtr temp, IntPtr s, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool boxop_temporal_temporal(IntPtr temp1, IntPtr temp2, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool boxop_tnumber_numspan(IntPtr temp, IntPtr span, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool boxop_tnumber_tbox(IntPtr temp, IntPtr box, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool boxop_tnumber_tnumber(IntPtr temp1, IntPtr temp2, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int eacomp_base_temporal(IntPtr value, IntPtr temp, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int eacomp_temporal_base(IntPtr temp, IntPtr value, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int eacomp_temporal_temporal(IntPtr temp1, IntPtr temp2, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool ever);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcomp_base_temporal(IntPtr value, IntPtr temp, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcomp_temporal_base(IntPtr temp, IntPtr value, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcomp_temporal_temporal(IntPtr temp1, IntPtr temp2, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdiscseq_at_timestamptz(IntPtr seq, long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdiscseq_restrict_value(IntPtr seq, IntPtr value, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdiscseq_restrict_values(IntPtr seq, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdiscseq_minus_timestamptz(IntPtr seq, long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdiscseq_restrict_tstzset(IntPtr seq, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdiscseq_restrict_tstzspanset(IntPtr seq, IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tcontseq_restrict_value_iter(IntPtr seq, IntPtr value, [MarshalAs(UnmanagedType.U1)] bool atfunc, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_delete_timestamptz(IntPtr seq, long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_delete_tstzset(IntPtr seq, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_delete_tstzspanset(IntPtr seq, IntPtr ss);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_at_tstzset(IntPtr seq, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_minus_timestamptz(IntPtr seq, long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_minus_tstzset(IntPtr seq, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_minus_tstzspan(IntPtr seq, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_restrict_value(IntPtr seq, IntPtr value, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_restrict_values(IntPtr seq, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tsequence_at_values_iter(IntPtr seq, IntPtr set, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tnumberseq_cont_restrict_span_iter(IntPtr seq, IntPtr span, [MarshalAs(UnmanagedType.U1)] bool atfunc, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tnumberseq_cont_restrict_spanset_iter(IntPtr seq, IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool atfunc, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tsegment_at_timestamptz(IntPtr inst1, IntPtr inst2, int interp, long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tcontseq_minus_timestamp_iter(IntPtr seq, long t, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tcontseq_minus_tstzset_iter(IntPtr seq, IntPtr s, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tcontseq_at_tstzspanset1(IntPtr seq, IntPtr ss, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tcontseq_minus_tstzspanset_iter(IntPtr seq, IntPtr ss, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_at_tstzspan(IntPtr seq, IntPtr s);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_at_timestamptz(IntPtr seq, long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_restrict_tstzspanset(IntPtr seq, IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tdiscseq_value_at_timestamptz(IntPtr seq, long t, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnumberseq_disc_restrict_span(IntPtr seq, IntPtr span, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnumberseq_disc_restrict_spanset(IntPtr seq, IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnumberseq_cont_restrict_span(IntPtr seq, IntPtr span, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnumberseq_cont_restrict_spanset(IntPtr seq, IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double tnumberseq_cont_twavg(IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int span_num_bins(IntPtr s, IntPtr size, IntPtr origin, IntPtr start_bin, IntPtr end_bin);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_time_bin_init(IntPtr temp, IntPtr duration, long torigin, IntPtr nbins);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tbox_tile_state_make(IntPtr temp, IntPtr box, IntPtr vsize, IntPtr duration, IntPtr xorigin, long torigin);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tbox_tile_state_next(IntPtr state);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tbox_tile_state_set(IntPtr value, long t, IntPtr vsize, long tunits, int basetype, int spantype, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial long interval_units(IntPtr interval);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial long timestamptz_bin_start(long timestamp, long tunits, long torigin);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_bin(IntPtr value, IntPtr size, IntPtr offset, int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnumber_value_time_tile_init(IntPtr temp, IntPtr vsize, IntPtr duration, IntPtr vorigin, long torigin, IntPtr ntiles);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tbox_tile_state_get(IntPtr state, IntPtr box);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_transform_wcount(IntPtr temp, IntPtr interval, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tnumber_transform_wavg(IntPtr temp, IntPtr interval, IntPtr count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_wagg_transfn(IntPtr state, IntPtr temp, IntPtr interval, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool min, [MarshalAs(UnmanagedType.U1)] bool crossings);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_wagg_transform_transfn(IntPtr state, IntPtr temp, IntPtr interval, IntPtr func, IntPtr transform);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tinstant_set(IntPtr inst, IntPtr value, long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double tnumberinst_double(IntPtr inst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string tinstant_to_string(IntPtr inst, int maxdd, IntPtr value_out);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tinstant_restrict_values_test(IntPtr inst, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tnumberinst_restrict_span_test(IntPtr inst, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tnumberinst_restrict_spanset_test(IntPtr inst, IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tinstant_restrict_tstzset_test(IntPtr inst, IntPtr s, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tinstant_restrict_tstzspanset_test(IntPtr inst, IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool atfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool intersection_tinstant_tinstant(IntPtr inst1, IntPtr inst2, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tfloat_arithop_turnpt(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, IntPtr param, long lower, long upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr arithop_tnumber_number(IntPtr temp, IntPtr value, IntPtr oper, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr arithop_tnumber_tnumber(IntPtr temp1, IntPtr temp2, IntPtr oper, IntPtr func, IntPtr tpfunc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool float_collinear(double x1, double x2, double x3, double ratio);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double floatsegm_interpolate(double value1, double value2, IntPtr value);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr floatsegm_locate(double value1, double value2, double value);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tnumbersegm_intersection(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, int basetype, long lower, long upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tsequence_norm_test(IntPtr value1, IntPtr value2, IntPtr value3, int basetype, int interp, long t1, long t2, long t3);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tsequence_join_test(IntPtr seq1, IntPtr seq2, IntPtr removelast, IntPtr removefirst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tsequence_join(IntPtr seq1, IntPtr seq2, [MarshalAs(UnmanagedType.U1)] bool removelast, [MarshalAs(UnmanagedType.U1)] bool removefirst);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tinstarr_normalize(IntPtr instants, int interp, int count, IntPtr newcount);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tcontseq_find_timestamptz(IntPtr seq, long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tdiscseq_find_timestamptz(IntPtr seq, long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tseqarr2_to_tseqarr(IntPtr sequences, IntPtr countseqs, int count, int totalseqs);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tinstarr_common(IntPtr instants, int count, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int interp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tsequence_make_exp1(IntPtr instants, int count, int maxcount, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int interp, [MarshalAs(UnmanagedType.U1)] bool normalize, IntPtr bbox);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool synchronize_tsequence_tsequence(IntPtr seq1, IntPtr seq2, IntPtr sync1, IntPtr sync2, [MarshalAs(UnmanagedType.U1)] bool interpoint);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tfloatsegm_intersection_value(IntPtr start, IntPtr end, IntPtr value, long lower, long upper, IntPtr t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tsegment_intersection_value(IntPtr start, IntPtr end, IntPtr value, int temptype, long lower, long upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tsegment_intersection(IntPtr start1, IntPtr end1, IntPtr start2, IntPtr end2, int temptype, long lower, long upper, IntPtr t1, IntPtr t2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tsegment_value_at_timestamptz(IntPtr start, IntPtr end, int temptype, long lower, long upper, long t);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool intersection_tdiscseq_tdiscseq(IntPtr seq1, IntPtr seq2, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool intersection_tcontseq_tdiscseq(IntPtr seq1, IntPtr seq2, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool intersection_tdiscseq_tcontseq(IntPtr @is, IntPtr seq2, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool intersection_tsequence_tinstant(IntPtr seq, IntPtr inst, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool intersection_tinstant_tsequence(IntPtr inst, IntPtr seq, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string tsequence_to_string(IntPtr seq, int maxdd, [MarshalAs(UnmanagedType.U1)] bool component, IntPtr value_out);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_increasing_timestamps(IntPtr inst1, IntPtr inst2, [MarshalAs(UnmanagedType.U1)] bool strict);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void bbox_expand(IntPtr box1, IntPtr box2, int temptype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tinstarr(IntPtr instants, int count, [MarshalAs(UnmanagedType.U1)] bool merge, int interp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tsequence_make_valid(IntPtr instants, int count, [MarshalAs(UnmanagedType.U1)] bool lower_inc, [MarshalAs(UnmanagedType.U1)] bool upper_inc, int interp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tnumberseq_shift_scale_value_iter(IntPtr seq, IntPtr origin, IntPtr delta, [MarshalAs(UnmanagedType.U1)] bool hasdelta, double scale);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tsequence_shift_scale_time_iter(IntPtr seq, long delta, double scale);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tstepseq_to_linear_iter(IntPtr seq, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tstepseq_to_linear(IntPtr seq);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tsequence_segments_iter(IntPtr seq, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tsequence_timestamps_iter(IntPtr seq, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool tsequenceset_find_timestamptz(IntPtr ss, long t, IntPtr loc);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tseqarr_normalize(IntPtr sequences, int count, IntPtr newcount);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double datum_distance(IntPtr value1, IntPtr value2, int basetype, short flags);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr ensure_valid_tinstarr_gaps(IntPtr instants, int count, [MarshalAs(UnmanagedType.U1)] bool merge, double maxdist, IntPtr maxt, IntPtr nsplits);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_valid_tseqarr(IntPtr sequences, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool synchronize_tsequenceset_tsequence(IntPtr ss, IntPtr seq, IntPtr mode, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool synchronize_tsequenceset_tsequenceset(IntPtr ss1, IntPtr ss2, IntPtr mode, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool intersection_tsequenceset_tinstant(IntPtr ss, IntPtr inst, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool intersection_tinstant_tsequenceset(IntPtr inst, IntPtr ss, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool intersection_tsequenceset_tdiscseq(IntPtr ss, IntPtr @is, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool intersection_tdiscseq_tsequenceset(IntPtr @is, IntPtr ss, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool intersection_tsequence_tsequenceset(IntPtr seq, IntPtr ss, IntPtr mode, IntPtr inter1, IntPtr inter2);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string tsequenceset_to_string(IntPtr ss, int maxdd, IntPtr value_out);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_textcat(IntPtr l, IntPtr r);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_lower(IntPtr value);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_upper(IntPtr value);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_initcap(IntPtr value);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr textfunc_ttext(IntPtr temp, int func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr textfunc_ttext_text(IntPtr temp, IntPtr value, IntPtr func, [MarshalAs(UnmanagedType.U1)] bool invert);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr textfunc_ttext_ttext(IntPtr temp1, IntPtr temp2, IntPtr func);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr datum_as_wkb(IntPtr value, int type, IntPtr variant, IntPtr size_out);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string datum_as_hexwkb(IntPtr value, int type, IntPtr variant, IntPtr size);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int type_from_wkb(IntPtr wkb, ulong size, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int type_from_hexwkb(string hexwkb, ulong size, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_end_input(IntPtr str, string type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void p_whitespace(IntPtr str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool p_delimchar(IntPtr str, byte delim);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool p_obrace(IntPtr str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_obrace(IntPtr str, string type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool p_cbrace(IntPtr str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_cbrace(IntPtr str, string type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool p_obracket(IntPtr str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool p_cbracket(IntPtr str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool p_oparen(IntPtr str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_oparen(IntPtr str, string type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool p_cparen(IntPtr str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool ensure_cparen(IntPtr str, string type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool p_comma(IntPtr str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool basetype_parse(IntPtr str, int basetypid, byte delim, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool double_parse(IntPtr str, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool elem_parse(IntPtr str, int basetype, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr set_parse(IntPtr str, int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool span_parse(IntPtr str, int spantype, [MarshalAs(UnmanagedType.U1)] bool end, IntPtr span);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr spanset_parse(IntPtr str, int spantype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tbox_parse(IntPtr str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial long timestamp_parse(IntPtr str);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tinstant_parse(IntPtr str, int temptype, [MarshalAs(UnmanagedType.U1)] bool end);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tdiscseq_parse(IntPtr str, int temptype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tcontseq_parse(IntPtr str, int temptype, int interp, [MarshalAs(UnmanagedType.U1)] bool end);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr tsequenceset_parse(IntPtr str, int temptype, int interp);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr temporal_parse(IntPtr str, int temptype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_copy(IntPtr value, int typid);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double datum_double(IntPtr d, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int double_datum(double d, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial IntPtr bstring2bytea(IntPtr wkb, ulong size);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool basetype_in(string str, int type, [MarshalAs(UnmanagedType.U1)] bool end, IntPtr result);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string basetype_out(IntPtr value, int type, int maxdd);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void pfree_array(IntPtr array, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial string stringarr_to_string(IntPtr strings, int count, ulong outlen, string prefix, byte open, byte close, [MarshalAs(UnmanagedType.U1)] bool quotes, [MarshalAs(UnmanagedType.U1)] bool spaces);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void datumarr_sort(IntPtr values, int count, int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tstzarr_sort(IntPtr times, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void spanarr_sort(IntPtr spans, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tinstarr_sort(IntPtr instants, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial void tseqarr_sort(IntPtr sequences, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datumarr_remove_duplicates(IntPtr values, int count, int basetype);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tstzarr_remove_duplicates(IntPtr values, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int tinstarr_remove_duplicates(IntPtr instants, int count);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_add(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_sub(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_mult(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_div(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum_cmp(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool datum_eq(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool datum_ne(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool datum_lt(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool datum_le(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool datum_gt(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static partial bool datum_ge(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum2_eq(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum2_ne(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum2_lt(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum2_le(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum2_gt(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial int datum2_ge(IntPtr l, IntPtr r, int type);
+
+            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
+            public static partial double hypot3d(double x, double y, double z);
 
         }
     }
