@@ -5978,8 +5978,15 @@ namespace MEOS.NET.Internal
         public static bool cbufferset_value_n(IntPtr s, int n, IntPtr result)
             => SafeExecution<bool>(() => MEOSExternalFunctions.cbufferset_value_n(s, n, result));
 
-        public static IntPtr cbufferset_values(IntPtr s)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.cbufferset_values(s));
+        public static IntPtr[] cbufferset_values(IntPtr s)
+        {
+            int _n = (int)MEOSExposedFunctions.set_num_values(s);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.cbufferset_values(s));
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+            return _out;
+        }
 
         public static IntPtr cbuffer_union_transfn(IntPtr state, IntPtr cb)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.cbuffer_union_transfn(state, cb));
@@ -8401,8 +8408,15 @@ namespace MEOS.NET.Internal
         public static bool poseset_value_n(IntPtr s, int n, IntPtr result)
             => SafeExecution<bool>(() => MEOSExternalFunctions.poseset_value_n(s, n, result));
 
-        public static IntPtr poseset_values(IntPtr s)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.poseset_values(s));
+        public static IntPtr[] poseset_values(IntPtr s)
+        {
+            int _n = (int)MEOSExposedFunctions.set_num_values(s);
+            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.poseset_values(s));
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+            return _out;
+        }
 
         public static bool contained_pose_set(IntPtr pose, IntPtr s)
             => SafeExecution<bool>(() => MEOSExternalFunctions.contained_pose_set(pose, s));
