@@ -4,39 +4,29 @@ __Author__: Dudziak Thomas
 
 __My website__ : https://dudziak-thomas.be/
 
-This is a **proof of concept** for the final MEOS.NET project.
-MEOS.NET is a library that aims to wrap the functions of [MEOS](https://duckduckgo.com), the core component of [MobilityDB](https://mobilitydb.com/).
+MEOS.NET is a .NET binding for [MEOS](https://libmeos.org), the C library underlying [MobilityDB](https://github.com/MobilityDB/MobilityDB). It exposes the MEOS spatiotemporal types and functions to managed C# code, tracking MEOS 1.4.
 
-## What's in this project?
+## What's in this solution?
 
-The application features :
+- `MEOS.NET`: the binding library. Its `Internal/` layer holds the P/Invoke declarations for the MEOS C functions, generated from the [MEOS-API](https://github.com/MobilityDB/MEOS-API) catalog, and its `Types/` layer provides the hand-written, idiomatic C# wrappers over those declarations.
+- `MEOS.NET.NpgSql`: integration with [Npgsql](https://www.npgsql.org/) for reading and writing MobilityDB values over a PostgreSQL connection.
+- `MEOS.NET.Tests`: the unit test suite.
+- `ExampleApp`: a sample application built on the binding.
+- `MEOS.NET.Builder`: the original regex-based header parser. It is superseded by the IDL-driven generator under `tools/` and is kept only for historical reference.
 
-- The MEOS.NET wrapper
-- The unit tests of MEOS.NET
-- An example application based on the wrapper
-- An empty project that will host the code for database communication later
+## Prerequisites
+
+The MEOS shared library must be installed and resolvable by the OS loader through `LD_LIBRARY_PATH` (Linux), `DYLD_LIBRARY_PATH` (macOS), or `PATH` (Windows). See the [MobilityDB](https://github.com/MobilityDB/MobilityDB) build instructions for producing the MEOS library.
 
 ## Build
 
-To build this project, clone this repository and run the following command at the root of the solution. Please note that MobilityDB should be installed before trying to run this project.
+From the root of the solution:
 
 ```
 dotnet build
 ```
 
-If an error is encountered, please remove the following lines from the MEOS.NET.csproj file and retry. This could happen if there is no meos.h file under "~/Externals/MobilityDB/meos/include/meos.h".
-
-```
-  <Target Name="BeforeBuild">
-    <Exec Command="echo Building MEOS Functions..." />
-    <Exec Command="python3 $(ProjectDir)API/Builder/MEOSFunctionsBuilder.py &gt; &quot;$(ProjectDir)API/Internal/MEOSFunctions.cs&quot;" />
-    <Exec Command="echo MEOS Functions built successfully" />
-  </Target>
-```
-
 ## Run the unit tests
-
-To run the unit tests, run the following command in the MEOS.NET.Tests folder. 
 
 ```
 dotnet test
@@ -44,8 +34,11 @@ dotnet test
 
 ## Run the sample application
 
-A sample application is provided under the ExampleApp/ folder. To run the application, please run the following command under the ExampleApp/ folder :
-
 ```
+cd ExampleApp
 dotnet run
 ```
+
+## Regenerating the bindings
+
+The P/Invoke declarations under `MEOS.NET/Internal/` are generated from MEOS-API's `meos-idl.json` catalog rather than written by hand. To regenerate them against a given MEOS version, follow the instructions in [`tools/README.md`](tools/README.md).
