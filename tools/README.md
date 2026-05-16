@@ -10,12 +10,16 @@ single-line-only regex, hardcoded developer DllPath).
 
 ## Quick start
 
-1. Build `meos-idl.json` from the MobilityDB headers you want to target:
+1. Build `meos-idl.json` from the MobilityDB headers you want to target.
+   Current MEOS lives on MobilityDB `master` (there is no stable-1.4
+   branch yet). The bindings consume MEOS-API's shape metadata, available
+   only on the `feat/shape-metadata` branch until it merges to MEOS-API
+   `master`:
    ```
-   git clone https://github.com/MobilityDB/MEOS-API
+   git clone --branch feat/shape-metadata https://github.com/MobilityDB/MEOS-API
    cd MEOS-API
    pip install -r requirements.txt
-   python setup.py --branch stable-1.3            # or master for 1.4
+   python setup.py --branch master                # MobilityDB ref to target
    python run.py                                  # emits output/meos-idl.json
    ```
 
@@ -49,18 +53,16 @@ Pointer types of any depth map to `IntPtr`. `char *` parameters with
 
 The bindings are auto-generated; the high-level C# code under
 `MEOS.NET/Types/` is hand-written and calls into the bindings. When MEOS
-renames or re-types a function, the call sites must follow.
+renames or re-types a function, the call sites must follow. Two recurring
+adaptation classes:
 
-For the MEOS 1.2 → 1.3 bump (this commit's purpose), the regen pulled
-in roughly 1100 new functions and dropped/renamed a handful. The
-hand-written wrappers in `MEOS.NET/Types/` need updates for:
+- `int` / `bool` boundary: `_Bool` returns and parameters marshal as C#
+  `bool` (`UnmanagedType.U1`), so predicate wrappers must not wrap calls
+  in `!= 0` and flags pass as `bool`, not `(cond ? 1 : 0)`.
+- Renames or type-suffixed replacements: a function that no longer
+  resolves directly has moved or been split into type-specific names.
 
-- `int` → `bool` mismatches on predicates (some MEOS 1.3 predicates that
-  used to return `bool` now return `int`, or vice versa).
-- Renames: `tfloat_derivative`, `tfloat_round`, `distance_tfloat_float`
-  and similar names no longer resolve directly; the 1.3 equivalents live
-  under `tnumber_*` or have type-suffixed names.
-
-Running `dotnet build MEOS.NET/MEOS.NET.csproj` against the new
-bindings surfaces every adaptation point as a compiler error — work
-through the list, no hidden runtime breakage.
+Running `dotnet build MEOS.NET/MEOS.NET.csproj` against the regenerated
+bindings surfaces every adaptation point as a compiler error, with no
+hidden runtime breakage. The CI workflow does exactly this on every
+push.

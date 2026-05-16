@@ -4,11 +4,15 @@ on:
   push:
   pull_request:
 
-# Bump this single value when targeting a new MEOS release. Both the
-# libmeos build and the MEOS-API header parse are pinned to it so the
-# regenerated bindings and the runtime library always match.
+# Both the libmeos build and the MEOS-API header parse are pinned to the
+# same MobilityDB ref so the regenerated bindings and the runtime library
+# always match. Current MEOS lives on master (there is no stable-1.4 yet);
+# bump MOBILITYDB_REF once a stable release branch exists.
 env:
-  MOBILITYDB_REF: stable-1.3
+  MOBILITYDB_REF: master
+  # The bindings consume MEOS-API's shape metadata, available only on this
+  # branch until it merges to MEOS-API master.
+  MEOS_API_REF: feat/shape-metadata
 
 jobs:
   build:
@@ -41,7 +45,8 @@ jobs:
 
       - name: Generate meos-idl.json (${{ env.MOBILITYDB_REF }})
         run: |
-          git clone --depth 1 https://github.com/MobilityDB/MEOS-API "$HOME/MEOS-API"
+          git clone --depth 1 --branch "$MEOS_API_REF" \
+            https://github.com/MobilityDB/MEOS-API "$HOME/MEOS-API"
           pip install -r "$HOME/MEOS-API/requirements.txt"
           (cd "$HOME/MEOS-API" && python setup.py --branch "$MOBILITYDB_REF" && python run.py)
 
