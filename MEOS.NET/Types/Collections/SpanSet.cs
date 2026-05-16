@@ -13,7 +13,7 @@ namespace MEOS.NET.Types.Collections
         {
             var setPtr = AllocHelper.AllocateArrayPointer<byte, IntPtr>(bytes, (bytesPtr) =>
             {
-                return MEOSExposedFunctions.spanset_from_wkb(bytesPtr, bytes.Length);
+                return MEOSExposedFunctions.spanset_from_wkb(bytesPtr, (ulong)bytes.Length);
             });
 
             return new SpanSet(setPtr);
@@ -104,55 +104,55 @@ namespace MEOS.NET.Types.Collections
         }
 
         public double Width(bool ignoreGaps = false)
-            => MEOSExposedFunctions.numspanset_width(this._ptr, (ignoreGaps ? 1 : 0));
+            => MEOSExposedFunctions.numspanset_width(this._ptr, ignoreGaps);
 
         public bool IsAdjacent(Span span)
-            => (MEOSExposedFunctions.adjacent_spanset_span(this._ptr, span._ptr) != 0);
+            => (MEOSExposedFunctions.adjacent_spanset_span(this._ptr, span._ptr));
 
         public bool IsAdjacent(SpanSet spanSet)
-            => (MEOSExposedFunctions.adjacent_spanset_spanset(this._ptr, spanSet._ptr) != 0);
+            => (MEOSExposedFunctions.adjacent_spanset_spanset(this._ptr, spanSet._ptr));
 
         public bool IsContainedIn(Span span)
-            => (MEOSExposedFunctions.contained_spanset_span(this._ptr, span._ptr) != 0);
+            => (MEOSExposedFunctions.contained_spanset_span(this._ptr, span._ptr));
 
         public bool IsContainedIn(SpanSet spanSet)
-            => (MEOSExposedFunctions.contained_spanset_spanset(this._ptr, spanSet._ptr) != 0);
+            => (MEOSExposedFunctions.contained_spanset_spanset(this._ptr, spanSet._ptr));
 
         public bool Contains(Span span)
-            => (MEOSExposedFunctions.contains_spanset_span(this._ptr, span._ptr) != 0);
+            => (MEOSExposedFunctions.contains_spanset_span(this._ptr, span._ptr));
 
         public bool Contains(SpanSet spanSet)
-            => (MEOSExposedFunctions.contains_spanset_spanset(this._ptr, spanSet._ptr) != 0);
+            => (MEOSExposedFunctions.contains_spanset_spanset(this._ptr, spanSet._ptr));
 
         public bool Overlaps(Span span)
-            => (MEOSExposedFunctions.overlaps_spanset_span(this._ptr, span._ptr) != 0);
+            => (MEOSExposedFunctions.overlaps_spanset_span(this._ptr, span._ptr));
 
         public bool Overlaps(SpanSet spanSet)
-            => (MEOSExposedFunctions.overlaps_spanset_spanset(this._ptr, spanSet._ptr) != 0);
+            => (MEOSExposedFunctions.overlaps_spanset_spanset(this._ptr, spanSet._ptr));
 
         public bool IsLeftOf(Span span)
-            => (MEOSExposedFunctions.left_spanset_span(this._ptr, span._ptr) != 0);
+            => (MEOSExposedFunctions.left_spanset_span(this._ptr, span._ptr));
 
         public bool IsLeftOf(SpanSet spanSet)
-            => (MEOSExposedFunctions.left_spanset_spanset(this._ptr, spanSet._ptr) != 0);
+            => (MEOSExposedFunctions.left_spanset_spanset(this._ptr, spanSet._ptr));
 
         public bool IsOverOrLeftOf(Span span)
-            => (MEOSExposedFunctions.overleft_spanset_span(this._ptr, span._ptr) != 0);
+            => (MEOSExposedFunctions.overleft_spanset_span(this._ptr, span._ptr));
 
         public bool IsOverOrLeftOf(SpanSet spanSet)
-            => (MEOSExposedFunctions.overleft_spanset_spanset(this._ptr, spanSet._ptr) != 0);
+            => (MEOSExposedFunctions.overleft_spanset_spanset(this._ptr, spanSet._ptr));
 
         public bool IsRightOf(Span span)
-            => (MEOSExposedFunctions.right_spanset_span(this._ptr, span._ptr) != 0);
+            => (MEOSExposedFunctions.right_spanset_span(this._ptr, span._ptr));
 
         public bool IsRightOf(SpanSet spanSet)
-            => (MEOSExposedFunctions.right_spanset_spanset(this._ptr, spanSet._ptr) != 0);
+            => (MEOSExposedFunctions.right_spanset_spanset(this._ptr, spanSet._ptr));
 
         public bool IsOverOrRightOf(Span span)
-            => (MEOSExposedFunctions.overright_spanset_span(this._ptr, span._ptr) != 0);
+            => (MEOSExposedFunctions.overright_spanset_span(this._ptr, span._ptr));
 
         public bool IsOverOrRightOf(SpanSet spanSet)
-            => (MEOSExposedFunctions.overright_spanset_spanset(this._ptr, spanSet._ptr) != 0);
+            => (MEOSExposedFunctions.overright_spanset_spanset(this._ptr, spanSet._ptr));
 
         public double DistanceTo(Set set)
             => this.DistanceTo(set.ToSpanSet());
@@ -200,7 +200,7 @@ namespace MEOS.NET.Types.Collections
         }
 
         public bool Equals(SpanSet spanSet)
-            => (MEOSExposedFunctions.spanset_eq(this._ptr, spanSet._ptr) != 0);
+            => (MEOSExposedFunctions.spanset_eq(this._ptr, spanSet._ptr));
 
         public static SpanSet operator +(SpanSet spanSet1, SpanSet spanSet2)
             => spanSet1.UnionWith(spanSet2);
@@ -212,19 +212,19 @@ namespace MEOS.NET.Types.Collections
             => spanSet1.Equals(spanSet2);
 
         public static bool operator !=(SpanSet spanSet1, SpanSet spanSet2)
-            => (MEOSExposedFunctions.spanset_ne(spanSet1._ptr, spanSet2._ptr) != 0);
+            => (MEOSExposedFunctions.spanset_ne(spanSet1._ptr, spanSet2._ptr));
 
         public static bool operator >(SpanSet spanSet1, SpanSet spanSet2)
-            => (MEOSExposedFunctions.spanset_gt(spanSet1._ptr, spanSet2._ptr) != 0);
+            => (MEOSExposedFunctions.spanset_gt(spanSet1._ptr, spanSet2._ptr));
 
         public static bool operator <(SpanSet spanSet1, SpanSet spanSet2)
-            => (MEOSExposedFunctions.spanset_lt(spanSet1._ptr, spanSet2._ptr) != 0);
+            => (MEOSExposedFunctions.spanset_lt(spanSet1._ptr, spanSet2._ptr));
 
         public static bool operator >=(SpanSet spanSet1, SpanSet spanSet2)
-            => (MEOSExposedFunctions.spanset_ge(spanSet1._ptr, spanSet2._ptr) != 0);
+            => (MEOSExposedFunctions.spanset_ge(spanSet1._ptr, spanSet2._ptr));
 
         public static bool operator <=(SpanSet spanSet1, SpanSet spanSet2)
-            => (MEOSExposedFunctions.spanset_le(spanSet1._ptr, spanSet2._ptr) != 0);
+            => (MEOSExposedFunctions.spanset_le(spanSet1._ptr, spanSet2._ptr));
 
         public override int GetHashCode()
             => (int)MEOSExposedFunctions.spanset_hash(this._ptr);

@@ -170,7 +170,7 @@ namespace MEOS.NET.Types.Temporal.Number.Float
         {
             var res = AllocHelper.AllocatePointer<double?>(sizeof(double), (resultPtr) =>
             {
-                var successful = (MEOSExposedFunctions.tfloat_value_at_timestamptz(this._ptr, timestamp.ToPgTimestamp(), strict: (true ? 1 : 0), resultPtr) != 0);
+                var successful = (MEOSExposedFunctions.tfloat_value_at_timestamptz(this._ptr, timestamp.ToPgTimestamp(), strict: true, resultPtr));
                 return successful ? resultPtr.ToStructure<double>() : default;
             });
 
@@ -190,7 +190,7 @@ namespace MEOS.NET.Types.Temporal.Number.Float
 
         public TemporalFloat ToDegrees(bool normalize = true)
         {
-            var res = MEOSExposedFunctions.tfloat_degrees(this._ptr, (normalize ? 1 : 0));
+            var res = MEOSExposedFunctions.tfloat_degrees(this._ptr, normalize);
             return new TemporalFloat(res);
         }
 

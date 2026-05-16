@@ -14,7 +14,7 @@ namespace MEOS.NET.Types.Collections
         {
             var setPtr = AllocHelper.AllocateArrayPointer<byte, IntPtr>(bytes, (bytesPtr) =>
             {
-                return MEOSExposedFunctions.set_from_wkb(bytesPtr, bytes.Length);
+                return MEOSExposedFunctions.set_from_wkb(bytesPtr, (ulong)bytes.Length);
             });
 
             return new Set(setPtr);
@@ -64,25 +64,25 @@ namespace MEOS.NET.Types.Collections
         }
 
         public bool Contains(Set collection)
-            => (MEOSExposedFunctions.contains_set_set(this._ptr, collection._ptr) != 0);
+            => (MEOSExposedFunctions.contains_set_set(this._ptr, collection._ptr));
 
         public bool IsContainedIn(Set collection)
-            => (MEOSExposedFunctions.contained_set_set(this._ptr, collection._ptr) != 0);
+            => (MEOSExposedFunctions.contained_set_set(this._ptr, collection._ptr));
 
         public bool Overlaps(Set collection)
-            => (MEOSExposedFunctions.overlaps_set_set(this._ptr, collection._ptr) != 0);
+            => (MEOSExposedFunctions.overlaps_set_set(this._ptr, collection._ptr));
 
         public bool IsLeftOf(Set collection)
-            => (MEOSExposedFunctions.left_set_set(this._ptr, collection._ptr) != 0);
+            => (MEOSExposedFunctions.left_set_set(this._ptr, collection._ptr));
 
         public bool IsOverOrLeftOf(Set collection)
-            => (MEOSExposedFunctions.overleft_set_set(this._ptr, collection._ptr) != 0);
+            => (MEOSExposedFunctions.overleft_set_set(this._ptr, collection._ptr));
 
         public bool IsOverOrRightOf(Set collection)
-            => (MEOSExposedFunctions.overright_set_set(this._ptr, collection._ptr) != 0);
+            => (MEOSExposedFunctions.overright_set_set(this._ptr, collection._ptr));
 
         public bool IsRightOf(Set collection)
-            => (MEOSExposedFunctions.right_set_set(this._ptr, collection._ptr) != 0);
+            => (MEOSExposedFunctions.right_set_set(this._ptr, collection._ptr));
 
         public override bool Equals(object? obj)
         {
@@ -91,7 +91,7 @@ namespace MEOS.NET.Types.Collections
                 return false;
             }
 
-            return (MEOSExposedFunctions.set_eq(this._ptr, ((Set)obj)._ptr) != 0);
+            return (MEOSExposedFunctions.set_eq(this._ptr, ((Set)obj)._ptr));
         }
 
         public override int GetHashCode()
