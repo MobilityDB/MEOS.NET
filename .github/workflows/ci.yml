@@ -10,9 +10,15 @@ on:
 # bump MOBILITYDB_REF once a stable release branch exists.
 env:
   MOBILITYDB_REF: master
-  # The bindings consume MEOS-API's shape metadata, available only on this
-  # branch until it merges to MEOS-API master.
+  # The bindings need two not-yet-merged MEOS-API changes: the shape
+  # metadata (PR #2, branch feat/shape-metadata) and the postgres
+  # integer-typedef stub (PR #1, branch fix/stdbool-stub) without which
+  # int64/TimestampTz collapse to 32-bit int. Stack them: check out
+  # feat/shape-metadata and cherry-pick PR #1's fix. Once both land on
+  # MEOS-API master, drop MEOS_API_PR1_BRANCH and set MEOS_API_REF=master.
   MEOS_API_REF: feat/shape-metadata
+  MEOS_API_PR1_BRANCH: fix/stdbool-stub
+  MEOS_API_PR1_COMMIT: fd83b2825af641f8c54f422dd7f66b148b287b68
 
 jobs:
   build:
@@ -45,10 +51,16 @@ jobs:
 
       - name: Generate meos-idl.json (${{ env.MOBILITYDB_REF }})
         run: |
-          git clone --depth 1 --branch "$MEOS_API_REF" \
+          git clone --branch "$MEOS_API_REF" \
             https://github.com/MobilityDB/MEOS-API "$HOME/MEOS-API"
-          pip install -r "$HOME/MEOS-API/requirements.txt"
-          (cd "$HOME/MEOS-API" && python setup.py --branch "$MOBILITYDB_REF" && python run.py)
+          cd "$HOME/MEOS-API"
+          git config user.email ci@local
+          git config user.name CI
+          git fetch origin "$MEOS_API_PR1_BRANCH"
+          git cherry-pick "$MEOS_API_PR1_COMMIT"
+          pip install -r requirements.txt
+          python setup.py --branch "$MOBILITYDB_REF"
+          python run.py
 
       - name: Regenerate bindings
         run: python3 tools/codegen.py "$HOME/MEOS-API/output/meos-idl.json"
