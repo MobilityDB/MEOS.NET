@@ -6,18 +6,21 @@ the two MEOS.NET internal-binding files. Replaces the regex-based MEOS.NET.Build
 known parse defects on signatures like `int32_t srid` (rendered as `int_t`).
 
 Usage:
-    python3 tools/codegen.py path/to/meos-idl.json
+    python3 tools/codegen.py path/to/meos-idl.json [--dll-path NAME]
 
 Writes MEOS.NET/Internal/MEOSExternalFunctions.cs and MEOSExposedFunctions.cs in-place.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
 
-DLL_PATH = "meos"  # let the OS loader resolve via LD_LIBRARY_PATH / DYLD_LIBRARY_PATH / PATH
+# Default lets the OS loader resolve via LD_LIBRARY_PATH / DYLD_LIBRARY_PATH /
+# PATH; override with --dll-path to embed a specific library name or path.
+DLL_PATH = "meos"
 GENERATOR_VERSION = "0.1.0"
 
 # Canonical C type -> C# parameter/return type.
@@ -418,7 +421,9 @@ def _format_params(f: dict) -> tuple[str, str]:
     return ", ".join(params), ", ".join(arg_names)
 
 
-def main(idl_path: str) -> None:
+def main(idl_path: str, dll_path: str = DLL_PATH) -> None:
+    global DLL_PATH
+    DLL_PATH = dll_path
     with open(idl_path) as fh:
         idl = json.load(fh)
     funcs = idl["functions"]
@@ -432,7 +437,12 @@ def main(idl_path: str) -> None:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print(__doc__, file=sys.stderr)
-        sys.exit(1)
-    main(sys.argv[1])
+    parser = argparse.ArgumentParser(
+        description="Generate MEOS.NET bindings from MEOS-API's meos-idl.json.")
+    parser.add_argument("idl", metavar="meos-idl.json",
+                        help="path to the MEOS-API catalog")
+    parser.add_argument("--dll-path", default=DLL_PATH, metavar="NAME",
+                        help='native library name embedded in [LibraryImport] '
+                             f'(default: "{DLL_PATH}", resolved by the OS loader)')
+    args = parser.parse_args()
+    main(args.idl, args.dll_path)

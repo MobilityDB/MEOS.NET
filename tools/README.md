@@ -29,9 +29,14 @@ with bindings for every public MEOS function in the catalog.
 
 ## DllPath
 
-`DllPath` is set to the bare name `"meos"` so the OS loader resolves it
+`DllPath` defaults to the bare name `"meos"` so the OS loader resolves it
 via `LD_LIBRARY_PATH` (Linux), `DYLD_LIBRARY_PATH` (macOS), or `PATH`
-(Windows). No hardcoded developer paths.
+(Windows). No hardcoded developer paths. Override it without editing the
+generator:
+
+```
+python3 tools/codegen.py /path/to/meos-idl.json --dll-path libmeos.so.1
+```
 
 ## Type mapping
 
