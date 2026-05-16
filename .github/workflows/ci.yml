@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+# Bump this single value when targeting a new MEOS release. Both the
+# libmeos build and the MEOS-API header parse are pinned to it so the
+# regenerated bindings and the runtime library always match.
+env:
+  MOBILITYDB_REF: stable-1.3
+
+jobs:
+  build:
+    name: Regenerate, build and smoke-test against MEOS
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install native dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential cmake git python3-pip \
+            libgeos-dev libproj-dev libjson-c-dev libgsl-dev
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build and install libmeos (${{ env.MOBILITYDB_REF }})
+        run: |
+          git clone --depth 1 --branch "$MOBILITYDB_REF" \
+            https://github.com/MobilityDB/MobilityDB "$HOME/MobilityDB"
+          cmake -S "$HOME/MobilityDB" -B "$HOME/MobilityDB/build" \
+            -DCMAKE_BUILD_TYPE=Release -DMEOS=on
+          cmake --build "$HOME/MobilityDB/build" -j "$(nproc)"
+          sudo cmake --install "$HOME/MobilityDB/build"
+          sudo ldconfig
+
+      - name: Generate meos-idl.json (${{ env.MOBILITYDB_REF }})
+        run: |
+          git clone --depth 1 https://github.com/MobilityDB/MEOS-API "$HOME/MEOS-API"
+          pip install -r "$HOME/MEOS-API/requirements.txt"
+          (cd "$HOME/MEOS-API" && python setup.py --branch "$MOBILITYDB_REF" && python run.py)
+
+      - name: Regenerate bindings
+        run: python3 tools/codegen.py "$HOME/MEOS-API/output/meos-idl.json"
+
+      - name: Report binding drift
+        run: git --no-pager diff --stat -- MEOS.NET/Internal || true
+
+      - name: Build solution
+        run: dotnet build MEOS.NET.sln -c Release
+
+      - name: Run tests
+        run: dotnet test MEOS.NET.sln -c Release --no-build
+
+      - name: Smoke-test the FFI
+        run: dotnet run --project ExampleApp/ExampleApp.csproj -c Release --no-build
+        env:
+          LD_LIBRARY_PATH: /usr/local/lib
