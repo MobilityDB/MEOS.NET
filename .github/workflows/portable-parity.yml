@@ -1,0 +1,34 @@
+name: portable-aliases parity
+
+# Gates the portable bare-name dialect (RFC #920; MEOS-API cross-repo
+# handoff PR #9): the generated MEOS.NET symbol set must remain a superset
+# of portableAliases.bareNames — 29/29, 0 unbacked, all six in-scope
+# type families — so a regenerated binding can never silently drop a
+# canonical bare name.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Parity gate (script — generated symbol set ⊇ bareNames)
+        run: python3 tools/portable_parity.py --check
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Parity gate (.NET test — language-independent mirror)
+        run: >
+          dotnet test MEOS.NET.Tests/MEOS.NET.Tests.csproj
+          --filter "FullyQualifiedName~PortableAliasParityTests"
+          -c Release

@@ -59,3 +59,45 @@ hand-written wrappers in `MEOS.NET/Types/` need updates for:
 Running `dotnet build MEOS.NET/MEOS.NET.csproj` against the new
 bindings surfaces every adaptation point as a compiler error — work
 through the list, no hidden runtime breakage.
+
+## Portable bare-name dialect (RFC #920)
+
+The MobilityDB ecosystem defines a canonical, type-agnostic
+operator → bare-name dialect so one query runs identically on every
+engine and binding (a user learns one reference and assumes the rest).
+The contract is **29 operator → bareName pairs** across eight families
+(topology, time-position, space X/Y/Z, temporal-comparison, distance,
+same), the single source of truth being MEOS-API
+`meta/portable-aliases.json` (discussion MobilityDB#861 · RFC #920 ·
+native MobilityDB#1075 · manual MobilityDB#1078).
+
+`tools/portable-aliases.json` is that contract, vendored **byte-identical**
+so this binding is self-contained until MEOS-API folds `portableAliases`
+into `meos-idl.json` (after which the catalog copy is preferred
+automatically).
+
+A bare name is **backed** when the generated symbol set contains a MEOS
+function whose name `== bareName` or `startsWith(bareName + "_")`, with
+`nearestApproachDistance` backed by the verified `nad_*` family
+(`explicitBacking`). MEOS C already names every operator's backing
+function this way, so the generated bindings expose the dialect by
+construction — each portable name reuses the operator's own backing
+function, never a reimplementation. No type-qualified or per-binding
+forms are introduced.
+
+### Verifying parity
+
+```
+python3 tools/portable_parity.py --check
+```
+
+Exits non-zero unless **29/29 bare names are backed, 0 unbacked**, across
+all six in-scope user-facing type families — `temporal`, `geo`,
+`cbuffer`, `npoint`, `pose`, `rgeo` (`cbuffer`/`npoint`/`pose`/`rgeo` are
+full temporal types and are never excluded from the parity headline).
+The same check runs as the `PortableAliasParityTests` MSTest case and in
+the `portable-aliases parity` CI workflow.
+
+Note: the MEOS 1.4 surface is required for full six-family coverage —
+the MEOS 1.3 catalog does not expose `cbuffer`/`pose`/`rgeo` operator
+functions.
