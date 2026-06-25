@@ -1,0 +1,38 @@
+# USER-APPROVED-PIN-WRITE — creating MEOS.NET's first pin manifest (user 2026-06-25,
+#   per-binding generator policy rollout). New file in the MEOS.NET repo, NOT a mutation
+#   of MobilityDB's pin tooling.
+#
+# MEOS.NET pin — THE canonical, dependency-ordered fold manifest (per-binding policy).
+#
+# WHY MEOS.NET NEEDS A PIN: `main` (8558479) still ships the old regex `MEOS.NET.Builder`.
+# The codegen-driven 1.4 surface lives in OPEN PRs. The reviewable frontier = `main` ⊕ the
+# composing PRs, in THIS order. Edit THIS file (reviewed) — never re-derive.
+# (policy: generator-per-binding-canonical-policy, binding-compose-order-manifest)
+#
+# SCOPE: MEOS.NET owns its generator IN-REPO at `tools/codegen.py` (reads the vendored
+# `meos-idl.json` -> emits MEOS.NET/Internal/MEOSExternalFunctions.cs [P/Invoke externs] +
+# MEOSExposedFunctions.cs [exposed wrappers]). End state = generated binding; the regex
+# `MEOS.NET.Builder` is retired generate-then-retire.
+#
+# Format:  <PR#> <fork-branch>            # role.   '?' = membership/order UNCONFIRMED.
+# base = current origin/main. Verified ancestry (git merge-base, this turn): #5 (8 commits
+# over main) CONTAINS #4; #3 is NOT an ancestor of #5 (diverged before #3's CI commit).
+
+# ── WAVE 0 — FRONTIER (the codegen-driven 1.4 surface) ──
+5     work/portable-aliases                 # THE frontier: gates the portable bare-name dialect on the
+                                            #   generated binding. 8 commits over main; CONTAINS #4.
+
+# ── predecessors ──
+4     bump/meos-1.4                          # JSON codegen + 1.4 surface, all six families
+                                            #   (cbuffer 15, npoint 11, pose 13, rgeo 12, geo 75, temporal 423). ANCESTOR of #5.
+?3    bump/meos-1.3-via-meos-idl             # the 1.3 codegen that replaced the regex Builder. SUPERSEDED on the
+                                            #   family surface by #4 (1.3 generates 0 cbuffer/pose/rgeo = a false 29/29).
+                                            #   BUT #4/#5 diverged BEFORE #3's .github/workflows CI commit (stale base) ->
+                                            #   FORWARD-PORT #3's CI workflow onto the frontier, THEN close #3.
+
+# ════════════════════════════════════════════════════════════════════════════════════
+# DISPOSITION (committer review): land #5 as the codegen-driven frontier (carries #4);
+# forward-port #3's CI workflow (absent from #4/#5) then close #3 as superseded. Then the
+# generate-then-retire migration retires the regex MEOS.NET.Builder against the last
+# green-CI version (the equivalence probe). See GENERATION.md.
+# ════════════════════════════════════════════════════════════════════════════════════
