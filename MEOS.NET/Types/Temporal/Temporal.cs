@@ -12,11 +12,15 @@ namespace MEOS.NET.Types.Temporal
         internal Temporal(IntPtr ptr) : base(ptr)
         { }
 
-        public static Temporal FromMFJson(string mfJsonStr)
-        {
-            var res = MEOSExposedFunctions.temporal_from_mfjson(mfJsonStr);
-            return new Temporal(res);
-        }
+        // MEOS 1.3 split mfjson parsing per subtype: tbool_from_mfjson,
+        // tint_from_mfjson, tfloat_from_mfjson, ttext_from_mfjson,
+        // tgeogpoint_from_mfjson.  The previously-generic
+        // temporal_from_mfjson(mfjson) no longer exists in MEOS; the new
+        // temporal_from_mfjson(mfjson, meosType) requires the temptype enum
+        // at the call site.  Provide the typed factories on each subclass
+        // (TemporalBoolean.FromMFJson, TemporalFloat.FromMFJson, ...)
+        // rather than a generic Temporal.FromMFJson that can't pick a
+        // subtype from the JSON content alone.
 
         public TemporalBoolean TemporalEqual(Temporal other)
         {

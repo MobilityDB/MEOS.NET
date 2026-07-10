@@ -64,25 +64,25 @@ namespace MEOS.NET.Types.Collections
         }
 
         public bool Contains(Set collection)
-            => MEOSExposedFunctions.contains_set_set(this._ptr, collection._ptr);
+            => (MEOSExposedFunctions.contains_set_set(this._ptr, collection._ptr));
 
         public bool IsContainedIn(Set collection)
-            => MEOSExposedFunctions.contained_set_set(this._ptr, collection._ptr);
+            => (MEOSExposedFunctions.contained_set_set(this._ptr, collection._ptr));
 
         public bool Overlaps(Set collection)
-            => MEOSExposedFunctions.overlaps_set_set(this._ptr, collection._ptr);
+            => (MEOSExposedFunctions.overlaps_set_set(this._ptr, collection._ptr));
 
         public bool IsLeftOf(Set collection)
-            => MEOSExposedFunctions.left_set_set(this._ptr, collection._ptr);
+            => (MEOSExposedFunctions.left_set_set(this._ptr, collection._ptr));
 
         public bool IsOverOrLeftOf(Set collection)
-            => MEOSExposedFunctions.overleft_set_set(this._ptr, collection._ptr);
+            => (MEOSExposedFunctions.overleft_set_set(this._ptr, collection._ptr));
 
         public bool IsOverOrRightOf(Set collection)
-            => MEOSExposedFunctions.overright_set_set(this._ptr, collection._ptr);
+            => (MEOSExposedFunctions.overright_set_set(this._ptr, collection._ptr));
 
         public bool IsRightOf(Set collection)
-            => MEOSExposedFunctions.right_set_set(this._ptr, collection._ptr);
+            => (MEOSExposedFunctions.right_set_set(this._ptr, collection._ptr));
 
         public override bool Equals(object? obj)
         {
@@ -91,7 +91,7 @@ namespace MEOS.NET.Types.Collections
                 return false;
             }
 
-            return MEOSExposedFunctions.set_eq(this._ptr, ((Set)obj)._ptr);
+            return (MEOSExposedFunctions.set_eq(this._ptr, ((Set)obj)._ptr));
         }
 
         public override int GetHashCode()

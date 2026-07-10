@@ -38,7 +38,7 @@ namespace MEOS.NET.Types.Collections.Float
 
             return AllocHelper.AllocatePointer<double>(sizeof(double), (resultPtr) =>
             {
-                var successful = MEOSExposedFunctions.floatset_value_n(this._ptr, position, resultPtr);
+                var successful = (MEOSExposedFunctions.floatset_value_n(this._ptr, position, resultPtr));
                 return successful ? resultPtr.ToStructure<double>() : throw new InvalidOperationException($"Could not retrieve element at position {position}");
             }); 
         }
@@ -49,12 +49,7 @@ namespace MEOS.NET.Types.Collections.Float
         }
 
         public IEnumerable<double> Values()
-        {
-            var count = this.Count();
-            var valuesArrPtr = MEOSExposedFunctions.floatset_values(this._ptr);
-
-            return valuesArrPtr.ToArrayOfType<double>(count);
-        }
+            => MEOSExposedFunctions.floatset_values(this._ptr);
 
         public FloatSet Shift(double delta)
         {
@@ -75,19 +70,19 @@ namespace MEOS.NET.Types.Collections.Float
         }
 
         public bool Contains(double value)
-            => MEOSExposedFunctions.contains_set_float(this._ptr, value);
+            => (MEOSExposedFunctions.contains_set_float(this._ptr, value));
 
         public bool IsLeftOf(double value)
-            => MEOSExposedFunctions.left_set_float(this._ptr, value);
+            => (MEOSExposedFunctions.left_set_float(this._ptr, value));
 
         public bool IsOverOrLeftOf(double value)
-            => MEOSExposedFunctions.overleft_set_float(this._ptr, value);
+            => (MEOSExposedFunctions.overleft_set_float(this._ptr, value));
 
         public bool IsRightOf(double value)
-            => MEOSExposedFunctions.right_set_float(this._ptr, value);
+            => (MEOSExposedFunctions.right_set_float(this._ptr, value));
 
         public bool IsOverOrRightOf(double value)
-            => MEOSExposedFunctions.overright_set_float(this._ptr, value);
+            => (MEOSExposedFunctions.overright_set_float(this._ptr, value));
 
         public FloatSet? IntersectionWith(double value)
         {

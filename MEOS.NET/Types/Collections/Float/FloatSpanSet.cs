@@ -57,37 +57,37 @@ namespace MEOS.NET.Types.Collections.Float
         }
 
         public bool IsAdjacent(double number)
-            => MEOSExposedFunctions.adjacent_spanset_float(this._ptr, number);
+            => (MEOSExposedFunctions.adjacent_spanset_float(this._ptr, number));
 
         public bool IsAdjacent(int number)
             => this.IsAdjacent((double)number);
 
         public bool Contains(double number)
-            => MEOSExposedFunctions.contains_spanset_float(this._ptr, number);
+            => (MEOSExposedFunctions.contains_spanset_float(this._ptr, number));
 
         public bool Contains(int number)
             => this.IsAdjacent((double)number);
 
         public bool IsLeftOf(double number)
-            => MEOSExposedFunctions.left_spanset_float(this._ptr, number);
+            => (MEOSExposedFunctions.left_spanset_float(this._ptr, number));
 
         public bool IsLeftOf(int number)
             => this.IsLeftOf((double)number);
 
         public bool IsOverOrLeftOf(double number)
-            => MEOSExposedFunctions.overleft_spanset_float(this._ptr, number);
+            => (MEOSExposedFunctions.overleft_spanset_float(this._ptr, number));
 
         public bool IsOverOrLeftOf(int number)
             => this.IsOverOrLeftOf((double)number);
 
         public bool IsRightOf(double number)
-            => MEOSExposedFunctions.right_spanset_float(this._ptr, number);
+            => (MEOSExposedFunctions.right_spanset_float(this._ptr, number));
 
         public bool IsRightOf(int number)
             => this.IsRightOf((double)number);
 
         public bool IsOverOrRightOf(double number)
-            => MEOSExposedFunctions.overright_spanset_float(this._ptr, number);
+            => (MEOSExposedFunctions.overright_spanset_float(this._ptr, number));
 
         public bool IsOverOrRightOf(int number)
             => this.IsOverOrLeftOf((double)number);

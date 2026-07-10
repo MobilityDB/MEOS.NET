@@ -67,19 +67,19 @@ namespace MEOS.NET.Types.Boxes
 
         public static TemporalBox FromTime(TimestampTzSet set)
         {
-            var res = MEOSExposedFunctions.tstzset_to_tbox(set._ptr);
+            var res = MEOSExposedFunctions.set_to_tbox(set._ptr);
             return new TemporalBox(res);
         }
 
         public static TemporalBox FromTime(TimestampTzSpan span)
         {
-            var res = MEOSExposedFunctions.tstzspan_to_tbox(span._ptr);
+            var res = MEOSExposedFunctions.span_to_tbox(span._ptr);
             return new TemporalBox(res);
         }
 
         public static TemporalBox FromTime(TimestampTzSpanSet spanSet)
         {
-            var res = MEOSExposedFunctions.tstzspanset_to_tbox(spanSet._ptr);
+            var res = MEOSExposedFunctions.spanset_to_tbox(spanSet._ptr);
             return new TemporalBox(res);
         }
 
@@ -184,16 +184,16 @@ namespace MEOS.NET.Types.Boxes
         }
 
         public bool HasX()
-            => MEOSExposedFunctions.tbox_hasx(this._ptr);
+            => (MEOSExposedFunctions.tbox_hasx(this._ptr));
 
         public bool HasT()
-            => MEOSExposedFunctions.tbox_hast(this._ptr);
+            => (MEOSExposedFunctions.tbox_hast(this._ptr));
 
         public bool IsMinXInclusive()
         {
             return AllocHelper.AllocatePointer<bool>(sizeof(bool), (resultPtr) =>
             {
-                var successful = MEOSExposedFunctions.tbox_xmin_inc(this._ptr, resultPtr);
+                var successful = (MEOSExposedFunctions.tbox_xmin_inc(this._ptr, resultPtr));
                 return successful ? resultPtr.ToStructure<bool>() : false;
             });
         }
@@ -202,7 +202,7 @@ namespace MEOS.NET.Types.Boxes
         {
             return AllocHelper.AllocatePointer<bool>(sizeof(bool), (resultPtr) =>
             {
-                var successful = MEOSExposedFunctions.tbox_xmax_inc(this._ptr, resultPtr);
+                var successful = (MEOSExposedFunctions.tbox_xmax_inc(this._ptr, resultPtr));
                 return successful ? resultPtr.ToStructure<bool>() : false;
             });
         }
@@ -211,7 +211,7 @@ namespace MEOS.NET.Types.Boxes
         {
             return AllocHelper.AllocatePointer<bool>(sizeof(bool), (resultPtr) =>
             {
-                var successful = MEOSExposedFunctions.tbox_tmin_inc(this._ptr, resultPtr);
+                var successful = (MEOSExposedFunctions.tbox_tmin_inc(this._ptr, resultPtr));
                 return successful ? resultPtr.ToStructure<bool>() : false;
             });
         }
@@ -220,7 +220,7 @@ namespace MEOS.NET.Types.Boxes
         {
             return AllocHelper.AllocatePointer<bool>(sizeof(bool), (resultPtr) =>
             {
-                var successful = MEOSExposedFunctions.tbox_tmax_inc(this._ptr, resultPtr);
+                var successful = (MEOSExposedFunctions.tbox_tmax_inc(this._ptr, resultPtr));
                 return successful ? resultPtr.ToStructure<bool>() : false;
             });
         }
@@ -229,7 +229,7 @@ namespace MEOS.NET.Types.Boxes
         {
             return AllocHelper.AllocatePointer<double>(sizeof(double), (resultPtr) =>
             {
-                var successful = MEOSExposedFunctions.tbox_xmin(this._ptr, resultPtr);
+                var successful = (MEOSExposedFunctions.tbox_xmin(this._ptr, resultPtr));
                 return successful ? resultPtr.ToStructure<double>() : throw new InvalidOperationException("No X Min available");
             });
         }
@@ -238,7 +238,7 @@ namespace MEOS.NET.Types.Boxes
         {
             return AllocHelper.AllocatePointer<double>(sizeof(double), (resultPtr) =>
             {
-                var successful = MEOSExposedFunctions.tbox_xmax(this._ptr, resultPtr);
+                var successful = (MEOSExposedFunctions.tbox_xmax(this._ptr, resultPtr));
                 return successful ? resultPtr.ToStructure<double>() : throw new InvalidOperationException("No X Max available");
             });
         }
@@ -247,7 +247,7 @@ namespace MEOS.NET.Types.Boxes
         {
             var timestamp = AllocHelper.AllocatePointer<TimestampTz>(sizeof(long), (resultPtr) =>
             {
-                var successful = MEOSExposedFunctions.tbox_tmin(this._ptr, resultPtr);
+                var successful = (MEOSExposedFunctions.tbox_tmin(this._ptr, resultPtr));
                 return successful ? resultPtr.ToStructure<TimestampTz>() : throw new InvalidOperationException("No T Min available");
             });
 
@@ -258,7 +258,7 @@ namespace MEOS.NET.Types.Boxes
         {
             var timestamp = AllocHelper.AllocatePointer<TimestampTz>(sizeof(long), (resultPtr) =>
             {
-                var successful = MEOSExposedFunctions.tbox_tmax(this._ptr, resultPtr);
+                var successful = (MEOSExposedFunctions.tbox_tmax(this._ptr, resultPtr));
                 return successful ? resultPtr.ToStructure<TimestampTz>() : throw new InvalidOperationException("No T Max available");
             });
 
@@ -266,25 +266,25 @@ namespace MEOS.NET.Types.Boxes
         }
 
         public bool IsLeftOf(TemporalBox other)
-            => MEOSExposedFunctions.left_tbox_tbox(this._ptr, other._ptr);
+            => (MEOSExposedFunctions.left_tbox_tbox(this._ptr, other._ptr));
 
         public bool IsLeftOf(TemporalNumber other)
             => this.IsLeftOf(other.BoundingBox());
 
         public bool IsOverOrLeftOf(TemporalBox other)
-            => MEOSExposedFunctions.overleft_tbox_tbox(this._ptr, other._ptr);
+            => (MEOSExposedFunctions.overleft_tbox_tbox(this._ptr, other._ptr));
 
         public bool IsOverOrLeftOf(TemporalNumber other)
             => this.IsOverOrLeftOf(other.BoundingBox());
 
         public bool IsRightOf(TemporalBox other)
-            => MEOSExposedFunctions.right_tbox_tbox(this._ptr, other._ptr);
+            => (MEOSExposedFunctions.right_tbox_tbox(this._ptr, other._ptr));
 
         public bool IsRightOf(TemporalNumber other)
             => this.IsRightOf(other.BoundingBox());
 
         public bool IsOverOrRightOf(TemporalBox other)
-            => MEOSExposedFunctions.overright_tbox_tbox(this._ptr, other._ptr);
+            => (MEOSExposedFunctions.overright_tbox_tbox(this._ptr, other._ptr));
 
         public bool IsOverOrRightOf(TemporalNumber other)
             => this.IsOverOrRightOf(other.BoundingBox());
