@@ -11,22 +11,14 @@ namespace MEOS.NET.Types.Temporal
 
         public DateTime Timestamp()
         {
-            int count = 0;
-            var timestampArrPtr = AllocHelper.AllocatePointer(sizeof(int), (countPtr) =>
-            {
-                var res = MEOSExposedFunctions.temporal_timestamps(this._ptr, countPtr);
-                count = countPtr.ToStructure<int>();
+            var timestamps = MEOSExposedFunctions.temporal_timestamps(this._ptr);
 
-                return res;
-            });
-             
-            if (count != 1)
+            if (timestamps.Length != 1)
             {
                 throw new InvalidOperationException("The number of elements in the array of instants should be 1 for a single instant.");
             }
 
-            var array = timestampArrPtr.ToArrayOfType<TimestampTz>(count);
-            return array[0].ToDateTime();
+            return new TimestampTz { Time = timestamps[0] }.ToDateTime();
         }
 
         public IEnumerable<DateTime> TimestampAsEnumerable()

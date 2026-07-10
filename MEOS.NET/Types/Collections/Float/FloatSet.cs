@@ -9,9 +9,10 @@ namespace MEOS.NET.Types.Collections.Float
         internal FloatSet(IntPtr ptr) : base(ptr)
         { }
 
-        internal static FloatSet FromValuesPointer(IntPtr valuesArray, int arrayLength)
+        internal static FloatSet FromValues(double[] values)
         {
-            var res = MEOSExposedFunctions.floatset_make(valuesArray, arrayLength);
+            var res = AllocHelper.AllocateArrayPointer<double, IntPtr>(values,
+                (valuesPtr) => MEOSExposedFunctions.floatset_make(valuesPtr, values.Length));
             return new FloatSet(res);
         }
 

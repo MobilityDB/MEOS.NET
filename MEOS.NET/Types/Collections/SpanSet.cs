@@ -89,11 +89,8 @@ namespace MEOS.NET.Types.Collections
 
         public virtual IEnumerable<Span> GetSpans()
         {
-            var nbSpans = this.SpanCount();
-            var arr = MEOSExposedFunctions.spanset_spans(this._ptr);
-
-            var spans = arr.ToArrayOfType<IntPtr>(nbSpans);
-            List<Span> spanList = new List<Span>(nbSpans);
+            var spans = MEOSExposedFunctions.spanset_spans(this._ptr);
+            List<Span> spanList = new List<Span>(spans.Length);
 
             foreach(var span in spans)
             {

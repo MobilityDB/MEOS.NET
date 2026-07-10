@@ -106,6 +106,9 @@ def csharp_param_name(name: str) -> str:
         "for", "foreach", "while", "do", "if", "else", "switch", "case",
         "break", "continue", "return", "throw", "try", "catch", "finally",
         "goto", "yield", "using", "void",
+        "bool", "byte", "sbyte", "char", "short", "ushort", "int", "uint",
+        "long", "ulong", "float", "double", "decimal", "nint", "nuint",
+        "const",
     }
     return f"@{name}" if name in reserved else name
 
@@ -320,40 +323,64 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
 def _emit_array_return_wrapper(f: dict, ext_params: str, ext_args: str) -> list[str]:
     """Emit a wrapper that materialises an array return via Marshal.Copy.
 
-    Used when shape.arrayReturn is present.  Slice length comes from either
-    a sibling accessor call (kind=accessor) or an output parameter
-    (kind=param) of the same function."""
+    The slice length comes from either a sibling accessor call (kind=accessor)
+    or a by-pointer ``int *count`` output of the same function (kind=param). In
+    the param case the count is allocated internally and hidden from the public
+    signature, mirroring the MEOS ``TYPE *f(..., int *count)`` convention."""
     name = f["name"]
     shape = f["shape"]
     length_meta = shape["arrayReturn"]["lengthFrom"]
     elem, strategy = _csharp_array_element(f["returnType"]["c"], f["returnType"]["canonical"])
     ret_type = f"{elem}[]"
 
-    lines: list[str] = []
-    lines.append(f"        public static {ret_type} {name}({ext_params})")
-    lines.append("        {")
+    def _copy(indent: str) -> list[str]:
+        out = [f"{indent}{elem}[] _out = new {elem}[_n];"]
+        if strategy == "Marshal.Copy":
+            out.append(f"{indent}Marshal.Copy(_p, _out, 0, _n);")
+        else:
+            out.append(f"{indent}for (int _i = 0; _i < _n; _i++)")
+            out.append(f"{indent}{{ _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }}")
+        out.append(f"{indent}return _out;")
+        return out
+
     if length_meta["kind"] == "accessor":
         accessor = length_meta["func"]
         arg = csharp_param_name(length_meta["arg"])
-        lines.append(f"            int _n = (int)MEOSExposedFunctions.{accessor}({arg});")
-    else:
-        # kind == "param": the length is one of the function's own outputs.
-        # Emit a stub for now; full param-output unpacking lives in the
-        # outputArrays wrapper.  Falls back to IntPtr return.
-        return _emit_simple_passthrough(f, ext_params, ext_args, default_rt="IntPtr")
+        lines = [
+            f"        public static {ret_type} {name}({ext_params})",
+            "        {",
+            f"            int _n = (int)MEOSExposedFunctions.{accessor}({arg});",
+            f"            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.{name}({ext_args}));",
+        ]
+        lines += _copy("            ")
+        lines.append("        }")
+        return lines
 
-    lines.append(f"            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.{name}({ext_args}));")
-    if strategy == "Marshal.Copy":
-        lines.append(f"            {elem}[] _out = new {elem}[_n];")
-        lines.append(f"            Marshal.Copy(_p, _out, 0, _n);")
-        lines.append("            return _out;")
-    else:
-        # Read N IntPtrs out of the array.
-        lines.append(f"            {elem}[] _out = new {elem}[_n];")
-        lines.append(f"            for (int _i = 0; _i < _n; _i++)")
-        lines.append(f"            {{ _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }}")
-        lines.append("            return _out;")
-    lines.append("        }")
+    # kind == "param": the length is written back through the function's own
+    # ``int *count`` output.  Allocate it, hide it from the public signature,
+    # and read the count back after the call.
+    count_name = csharp_param_name(length_meta["name"])
+    pub = ", ".join(
+        f"{csharp_param_type(p['cType'], p['canonical'])} {csharp_param_name(p['name'])}"
+        for p in f["params"] if csharp_param_name(p["name"]) != count_name)
+    call_args = ", ".join(
+        "_cnt" if csharp_param_name(p["name"]) == count_name else csharp_param_name(p["name"])
+        for p in f["params"])
+    lines = [
+        f"        public static {ret_type} {name}({pub})",
+        "        {",
+        "            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));",
+        "            try",
+        "            {",
+        f"                IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.{name}({call_args}));",
+        "                int _n = Marshal.ReadInt32(_cnt);",
+    ]
+    lines += _copy("                ")
+    lines += [
+        "            }",
+        "            finally { Marshal.FreeHGlobal(_cnt); }",
+        "        }",
+    ]
     return lines
 
 
@@ -398,7 +425,7 @@ def gen_exposed_functions(funcs: list[dict]) -> str:
         emitted: list[str] = []
         if "outputArrays" in shape:
             emitted = _emit_outputs_wrapper(f)
-        if not emitted and "arrayReturn" in shape and shape["arrayReturn"]["lengthFrom"]["kind"] == "accessor":
+        if not emitted and "arrayReturn" in shape and shape["arrayReturn"]["lengthFrom"]["kind"] in ("accessor", "param"):
             emitted = _emit_array_return_wrapper(f, ext_params, ext_args)
         if not emitted:
             emitted = _emit_simple_passthrough(f, ext_params, ext_args)

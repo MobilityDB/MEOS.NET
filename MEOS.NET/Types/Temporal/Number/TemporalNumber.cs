@@ -146,7 +146,7 @@ namespace MEOS.NET.Types.Temporal.Number
 
         public TemporalNumber Multiply(TemporalNumber other)
         {
-            var res = MEOSExposedFunctions.mult_tnumber_tnumber(this._ptr, other._ptr);
+            var res = MEOSExposedFunctions.mul_tnumber_tnumber(this._ptr, other._ptr);
             return new TemporalNumber(res);
         }
 

@@ -136,7 +136,7 @@ namespace MEOS.NET.Types.Temporal
         public string Duration(bool ignoreGaps = false)
         {
             var res = MEOSExposedFunctions.temporal_duration(this._ptr, ignoreGaps);
-            return MEOSExposedFunctions.pg_interval_out(res);
+            return MEOSExposedFunctions.interval_out(res);
         }
 
         public TimestampTzSpan TimeSpan()
