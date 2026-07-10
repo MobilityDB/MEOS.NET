@@ -73,16 +73,8 @@ namespace MEOS.NET.Types.Temporal.Number.Float
 
         public FloatSet ToFloatSet()
         {
-            int count = 0;
-            var arrayPtr = AllocHelper.AllocatePointer<IntPtr>(sizeof(int), (countPtr) =>
-            {
-                var arr = MEOSExposedFunctions.tfloat_values(this._ptr, countPtr);
-                count = countPtr.ToStructure<int>();
-
-                return arr;
-            });
-
-            return FloatSet.FromValuesPointer(arrayPtr, count);
+            var values = MEOSExposedFunctions.tfloat_values(this._ptr);
+            return FloatSet.FromValues(values);
         }
 
         public bool IsAlwaysLessThan(double value)
@@ -247,7 +239,7 @@ namespace MEOS.NET.Types.Temporal.Number.Float
 
         public TemporalFloat Multiply(double value)
         {
-            var res = MEOSExposedFunctions.mult_tfloat_float(this._ptr, value);
+            var res = MEOSExposedFunctions.mul_tfloat_float(this._ptr, value);
             return new TemporalFloat(res);
         }
 

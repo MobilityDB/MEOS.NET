@@ -4,21 +4,8 @@ on:
   push:
   pull_request:
 
-# Both the libmeos build and the MEOS-API header parse are pinned to the
-# same MobilityDB ref so the regenerated bindings and the runtime library
-# always match. Current MEOS lives on master (there is no stable-1.4 yet);
-# bump MOBILITYDB_REF once a stable release branch exists.
 env:
   MOBILITYDB_REF: master
-  # The bindings need two not-yet-merged MEOS-API changes: the shape
-  # metadata (PR #2, branch feat/shape-metadata) and the postgres
-  # integer-typedef stub (PR #1, branch fix/stdbool-stub) without which
-  # int64/TimestampTz collapse to 32-bit int. Stack them: check out
-  # feat/shape-metadata and cherry-pick PR #1's fix. Once both land on
-  # MEOS-API master, drop MEOS_API_PR1_BRANCH and set MEOS_API_REF=master.
-  MEOS_API_REF: feat/shape-metadata
-  MEOS_API_PR1_BRANCH: fix/stdbool-stub
-  MEOS_API_PR1_COMMIT: fd83b2825af641f8c54f422dd7f66b148b287b68
 
 jobs:
   build:
@@ -28,42 +15,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install native dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            build-essential cmake git python3-pip \
-            libgeos-dev libproj-dev libjson-c-dev libgsl-dev
-
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
-      - name: Build and install libmeos (${{ env.MOBILITYDB_REF }})
-        run: |
-          git clone --depth 1 --branch "$MOBILITYDB_REF" \
-            https://github.com/MobilityDB/MobilityDB "$HOME/MobilityDB"
-          cmake -S "$HOME/MobilityDB" -B "$HOME/MobilityDB/build" \
-            -DCMAKE_BUILD_TYPE=Release -DMEOS=on
-          cmake --build "$HOME/MobilityDB/build" -j "$(nproc)"
-          sudo cmake --install "$HOME/MobilityDB/build"
-          sudo ldconfig
-
-      - name: Generate meos-idl.json (${{ env.MOBILITYDB_REF }})
-        run: |
-          git clone --branch "$MEOS_API_REF" \
-            https://github.com/MobilityDB/MEOS-API "$HOME/MEOS-API"
-          cd "$HOME/MEOS-API"
-          git config user.email ci@local
-          git config user.name CI
-          git fetch origin "$MEOS_API_PR1_BRANCH"
-          git cherry-pick "$MEOS_API_PR1_COMMIT"
-          pip install -r requirements.txt
-          python setup.py --branch "$MOBILITYDB_REF"
-          python run.py
+      - name: Provision MEOS (build libmeos + generate catalog)
+        id: meos
+        uses: MobilityDB/MEOS-API/.github/actions/provision-meos@master
+        with:
+          mobilitydb-ref: ${{ env.MOBILITYDB_REF }}
+          build-libmeos: "true"
 
       - name: Regenerate bindings
-        run: python3 tools/codegen.py "$HOME/MEOS-API/output/meos-idl.json"
+        run: python3 tools/codegen.py "${{ steps.meos.outputs.catalog-path }}"
 
       - name: Report binding drift
         run: git --no-pager diff --stat -- MEOS.NET/Internal || true
@@ -77,4 +41,4 @@ jobs:
       - name: Smoke-test the FFI
         run: dotnet run --project ExampleApp/ExampleApp.csproj -c Release --no-build
         env:
-          LD_LIBRARY_PATH: /usr/local/lib
+          LD_LIBRARY_PATH: ${{ steps.meos.outputs.libmeos-prefix }}/lib
