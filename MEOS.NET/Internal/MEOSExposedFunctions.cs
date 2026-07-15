@@ -11273,60 +11273,6 @@ namespace MEOS.NET.Internal
         public static IntPtr jsonbfunc_jsonbset_text(IntPtr s, IntPtr txt, IntPtr func)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.jsonbfunc_jsonbset_text(s, txt, func));
 
-        public static bool meos_temporal_to_arrow(IntPtr temp, IntPtr out_schema, IntPtr out_array)
-            => SafeExecution<bool>(() => MEOSExternalFunctions.meos_temporal_to_arrow(temp, out_schema, out_array));
-
-        public static IntPtr meos_temporal_from_arrow(IntPtr schema, IntPtr array)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.meos_temporal_from_arrow(schema, array));
-
-        public static IntPtr meos_temporal_arrow_roundtrip(IntPtr temp)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.meos_temporal_arrow_roundtrip(temp));
-
-        public static bool meos_set_to_arrow(IntPtr s, IntPtr out_schema, IntPtr out_array)
-            => SafeExecution<bool>(() => MEOSExternalFunctions.meos_set_to_arrow(s, out_schema, out_array));
-
-        public static IntPtr meos_set_from_arrow(IntPtr schema, IntPtr array)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.meos_set_from_arrow(schema, array));
-
-        public static IntPtr meos_set_arrow_roundtrip(IntPtr s)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.meos_set_arrow_roundtrip(s));
-
-        public static bool meos_span_to_arrow(IntPtr s, IntPtr out_schema, IntPtr out_array)
-            => SafeExecution<bool>(() => MEOSExternalFunctions.meos_span_to_arrow(s, out_schema, out_array));
-
-        public static IntPtr meos_span_from_arrow(IntPtr schema, IntPtr array)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.meos_span_from_arrow(schema, array));
-
-        public static IntPtr meos_span_arrow_roundtrip(IntPtr s)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.meos_span_arrow_roundtrip(s));
-
-        public static bool meos_spanset_to_arrow(IntPtr ss, IntPtr out_schema, IntPtr out_array)
-            => SafeExecution<bool>(() => MEOSExternalFunctions.meos_spanset_to_arrow(ss, out_schema, out_array));
-
-        public static IntPtr meos_spanset_from_arrow(IntPtr schema, IntPtr array)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.meos_spanset_from_arrow(schema, array));
-
-        public static IntPtr meos_spanset_arrow_roundtrip(IntPtr ss)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.meos_spanset_arrow_roundtrip(ss));
-
-        public static bool meos_tbox_to_arrow(IntPtr box, IntPtr out_schema, IntPtr out_array)
-            => SafeExecution<bool>(() => MEOSExternalFunctions.meos_tbox_to_arrow(box, out_schema, out_array));
-
-        public static IntPtr meos_tbox_from_arrow(IntPtr schema, IntPtr array)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.meos_tbox_from_arrow(schema, array));
-
-        public static IntPtr meos_tbox_arrow_roundtrip(IntPtr box)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.meos_tbox_arrow_roundtrip(box));
-
-        public static bool meos_stbox_to_arrow(IntPtr box, IntPtr out_schema, IntPtr out_array)
-            => SafeExecution<bool>(() => MEOSExternalFunctions.meos_stbox_to_arrow(box, out_schema, out_array));
-
-        public static IntPtr meos_stbox_from_arrow(IntPtr schema, IntPtr array)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.meos_stbox_from_arrow(schema, array));
-
-        public static IntPtr meos_stbox_arrow_roundtrip(IntPtr box)
-            => SafeExecution<IntPtr>(() => MEOSExternalFunctions.meos_stbox_arrow_roundtrip(box));
-
         public static IntPtr h3index_from_wkb(IntPtr wkb, IntPtr size)
             => SafeExecution<IntPtr>(() => MEOSExternalFunctions.h3index_from_wkb(wkb, size));
 

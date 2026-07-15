@@ -10345,66 +10345,6 @@ namespace MEOS.NET.Internal
             public static partial IntPtr jsonbfunc_jsonbset_text(IntPtr s, IntPtr txt, IntPtr func);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool meos_temporal_to_arrow(IntPtr temp, IntPtr out_schema, IntPtr out_array);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr meos_temporal_from_arrow(IntPtr schema, IntPtr array);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr meos_temporal_arrow_roundtrip(IntPtr temp);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool meos_set_to_arrow(IntPtr s, IntPtr out_schema, IntPtr out_array);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr meos_set_from_arrow(IntPtr schema, IntPtr array);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr meos_set_arrow_roundtrip(IntPtr s);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool meos_span_to_arrow(IntPtr s, IntPtr out_schema, IntPtr out_array);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr meos_span_from_arrow(IntPtr schema, IntPtr array);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr meos_span_arrow_roundtrip(IntPtr s);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool meos_spanset_to_arrow(IntPtr ss, IntPtr out_schema, IntPtr out_array);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr meos_spanset_from_arrow(IntPtr schema, IntPtr array);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr meos_spanset_arrow_roundtrip(IntPtr ss);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool meos_tbox_to_arrow(IntPtr box, IntPtr out_schema, IntPtr out_array);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr meos_tbox_from_arrow(IntPtr schema, IntPtr array);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr meos_tbox_arrow_roundtrip(IntPtr box);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static partial bool meos_stbox_to_arrow(IntPtr box, IntPtr out_schema, IntPtr out_array);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr meos_stbox_from_arrow(IntPtr schema, IntPtr array);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
-            public static partial IntPtr meos_stbox_arrow_roundtrip(IntPtr box);
-
-            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
             public static partial IntPtr h3index_from_wkb(IntPtr wkb, IntPtr size);
 
             [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]
