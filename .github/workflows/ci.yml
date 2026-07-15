@@ -4,9 +4,6 @@ on:
   push:
   pull_request:
 
-env:
-  MOBILITYDB_REF: master
-
 jobs:
   build:
     name: Regenerate, build and smoke-test against MEOS
@@ -19,15 +16,23 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Provision MEOS (build libmeos + generate catalog)
+      - name: Resolve the MEOS source commit
         id: meos
+        # The MEOS catalog (meos-idl.json) and the libmeos build are derived from one
+        # upstream MobilityDB commit, recorded once in tools/meos-source-commit.txt. CI
+        # reads it so the derived catalog and the native library stay in lockstep with
+        # the pinned surface — bumping the surface is a single edit there, no SHA duplicated.
+        run: echo "sha=$(tr -d '[:space:]' < tools/meos-source-commit.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Provision MEOS (build libmeos + generate catalog)
+        id: provision
         uses: MobilityDB/MEOS-API/.github/actions/provision-meos@master
         with:
-          mobilitydb-ref: ${{ env.MOBILITYDB_REF }}
+          mobilitydb-ref: ${{ steps.meos.outputs.sha }}
           build-libmeos: "true"
 
       - name: Regenerate bindings
-        run: python3 tools/codegen.py "${{ steps.meos.outputs.catalog-path }}"
+        run: python3 tools/codegen.py "${{ steps.provision.outputs.catalog-path }}"
 
       - name: Report binding drift
         run: git --no-pager diff --stat -- MEOS.NET/Internal || true
@@ -41,4 +46,4 @@ jobs:
       - name: Smoke-test the FFI
         run: dotnet run --project ExampleApp/ExampleApp.csproj -c Release --no-build
         env:
-          LD_LIBRARY_PATH: ${{ steps.meos.outputs.libmeos-prefix }}/lib
+          LD_LIBRARY_PATH: ${{ steps.provision.outputs.libmeos-prefix }}/lib
