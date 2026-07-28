@@ -403,3 +403,5 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+# tools/refresh-from-master.sh scratch (sibling clones + libmeos prefix).
+.meos-chain/
