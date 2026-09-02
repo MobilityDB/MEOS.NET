@@ -1,4 +1,6 @@
 ﻿using MEOS.NET.Enums;
+using MEOS.NET.Errors;
+using MEOS.NET.Exceptions;
 using MEOS.NET.Helpers;
 using MEOS.NET.Internal;
 using MEOS.NET.Types.General;
@@ -123,7 +125,13 @@ namespace MEOS.NET.Types.Temporal
 
         public InterpolationType Interpolation()
         {
-            var interpolationStr = MEOSExposedFunctions.temporal_interp(this._ptr);
+            // temporal_interp names one of the interpolations MEOS defines, out of
+            // its own static table, so the name is there for every temporal value.
+            var interpolationStr = MEOSExposedFunctions.temporal_interp(this._ptr)
+                ?? throw new MEOSUnspecifiedInternalException(
+                    (int)MEOSErrorCodes.UnspecifiedInternalError,
+                    MEOSErrorCodes.UnspecifiedInternalError,
+                    "MEOS named no interpolation for this temporal value");
             return EnumConverter.InterpolationTypeFromString(interpolationStr);
         }
 

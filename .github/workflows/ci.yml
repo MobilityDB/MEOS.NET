@@ -38,6 +38,8 @@ jobs:
 
       - name: Run tests
         run: dotnet test MEOS.NET.sln -c Release --no-build
+        env:
+          LD_LIBRARY_PATH: ${{ steps.provision.outputs.libmeos-prefix }}/lib
 
       - name: Smoke-test the FFI
         run: dotnet run --project ExampleApp/ExampleApp.csproj -c Release --no-build
