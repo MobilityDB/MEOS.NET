@@ -35,6 +35,7 @@ import codegen
 
 GENERATOR_VERSION = "0.1.0"
 NAMESPACE = "MEOS.NET.Types"
+ENUM_NAMESPACE = "MEOS.NET.Enums"
 ERROR_NAMESPACE = "MEOS.NET.Errors"
 EXCEPTION_NAMESPACE = "MEOS.NET.Exceptions"
 
@@ -94,6 +95,19 @@ def clean(c_type: str) -> str:
 
 def pascal(oo_name: str) -> str:
     return oo_name[:1].upper() + oo_name[1:]
+
+
+def enum_type_name(name: str) -> str:
+    """The C# name of a catalog enum: `interpType` reads `InterpType`, and a name
+    that already starts upper — `MeosType`, `SPTreeKind`, `ENDIANS` — stands."""
+    return name[:1].upper() + name[1:]
+
+
+def enum_member(value_name: str) -> str:
+    """The C# name of an enum constant: `INTERP_NONE` reads `InterpNone`,
+    `TSEQUENCE` reads `Tsequence` — each underscore-separated part capitalized,
+    the same rule the function names carry."""
+    return "".join(part.capitalize() for part in value_name.lower().split("_") if part)
 
 
 def error_member(code_name: str) -> str:
@@ -271,7 +285,7 @@ class Generator:
         if c == "DateADT":
             return ("DateOnly", f"MEOSConvert.ToDateADT({name})")
         if c == "interpType":
-            return ("InterpolationType", f"(int) {name}")
+            return ("InterpType", f"(int) {name}")
         if c in PASSTHROUGH_C and cs_type != "IntPtr":
             return (cs_type, name)
         if cs_type == "string":
@@ -474,6 +488,37 @@ namespace {NAMESPACE}
     }}
 }}
 '''
+
+    # The error taxonomy has a file of its own, with an exception class per code;
+    # the plain enums are projected as they stand.
+    ENUM_EXCLUDE = ("errorCode",)
+
+    def enum_file(self, enum: dict) -> str:
+        name = enum_type_name(enum["name"])
+        lines = [
+            "#nullable enable",
+            "",
+            f"namespace {ENUM_NAMESPACE}",
+            "{",
+            f"    /// <summary>The MEOS <c>{enum['name']}</c> enum, from <c>{enum.get('file', '')}</c>.</summary>",
+            f'    [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "{GENERATOR_VERSION}")]',
+            f"    public enum {name}",
+            "    {",
+        ]
+        seen: set[str] = set()
+        for value in enum.get("values", []):
+            member = enum_member(value["name"])
+            if member in seen:
+                raise SystemExit(
+                    f"objectgen: {enum['name']} has two values reading {member} in C#")
+            seen.add(member)
+            lines += [
+                f"        /// <summary><c>{value['name']}</c></summary>",
+                f"        {member} = {value['value']},",
+                "",
+            ]
+        lines += ["    }", "}", ""]
+        return "\n".join(lines)
 
     def error_codes(self) -> list[dict]:
         """The error taxonomy the model carries, verbatim from MEOS's own enum."""
@@ -744,6 +789,21 @@ namespace {EXCEPTION_NAMESPACE}
             (out_dir / f"{cls}.g.cs").write_text(self.emit_class(cls))
         (out_dir / "MEOSFactory.g.cs").write_text(self.factory_file())
 
+    def run_enums(self, enums_dir: Path) -> int:
+        """One C# enum per catalog enum, so a caller names a MEOS constant rather
+        than passing the int the C API takes."""
+        if enums_dir.exists():
+            shutil.rmtree(enums_dir)
+        enums_dir.mkdir(parents=True)
+        emitted = 0
+        for enum in self.m.idl.get("enums", []):
+            if not enum.get("name") or enum["name"] in self.ENUM_EXCLUDE:
+                continue
+            (enums_dir / f"{enum_type_name(enum['name'])}.g.cs").write_text(
+                self.enum_file(enum))
+            emitted += 1
+        return emitted
+
     def run_errors(self, errors_dir: Path, exceptions_dir: Path) -> None:
         for directory in (errors_dir, exceptions_dir):
             if directory.exists():
@@ -779,11 +839,12 @@ def main() -> int:
     gen.run(repo_root / "MEOS.NET" / "Types")
     gen.run_errors(repo_root / "MEOS.NET" / "Errors",
                    repo_root / "MEOS.NET" / "Exceptions")
+    enums = gen.run_enums(repo_root / "MEOS.NET" / "Enums")
 
     classes = model.classes()
     total_deferred = sum(len(v) for v in gen.deferred.values())
     print(f"objectgen: {len(classes)} classes, {gen.emitted} methods emitted, "
-          f"{total_deferred} deferred", file=sys.stderr)
+          f"{total_deferred} deferred, {enums} enums", file=sys.stderr)
     if args.report:
         for cls in classes:
             reasons = gen.deferred.get(cls, [])

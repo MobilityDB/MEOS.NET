@@ -149,7 +149,7 @@ namespace MEOS.NET.Types
         public new Temporal?[] Sequences()
             => MEOSFactory.WrapTemporalArray(Meos.TrgeometrySequences(this.Ptr));
 
-        public new Temporal? SetInterp(InterpolationType interp)
+        public new Temporal? SetInterp(InterpType interp)
             => MEOSFactory.WrapTemporal(Meos.TrgeometrySetInterp(this.Ptr, (int) interp));
 
         public Temporal? Speed()
