@@ -233,12 +233,14 @@ class Method:
     """One emitted method: its C# signature and the wrapper call behind it."""
 
     def __init__(self, name: str, ret: str, params: list[tuple[str, str]],
-                 body: str, static: bool):
+                 body: str, static: bool, arrays: list[tuple[str, str]] | None = None):
         self.name = name
         self.ret = ret
         self.params = params
         self.body = body
         self.static = static
+        # (parameter name, element class) for each counted array the method takes.
+        self.arrays = arrays or []
 
 
 class Generator:
@@ -321,16 +323,22 @@ class Generator:
         # `T *values, int count` is MEOS's counted-array convention: the pointer is
         # the first element of an array, not one value, so wrapping it as one
         # object would hand the callee a single element and a length that lies.
-        raw = [p["name"] for p in f.get("params", [])]
+        recv_ctype = self.m.ctype.get(cls)
+        declared = f.get("params", [])
+        receiver_first = (bool(declared)
+                          and clean(declared[0]["cType"]) == f"{recv_ctype} *")
+        # `T *values, int count` is MEOS's counted-array convention. The length is
+        # named `count`; a parameter named `n` is the INDEX of the `*_n`
+        # accessors, whose pointer is the receiver and no array at all.
         counted = set()
-        for i, p in enumerate(f.get("params", [])):
-            nxt = f["params"][i + 1] if i + 1 < len(f["params"]) else None
-            if (clean(p["cType"]).endswith("*") and nxt
-                    and nxt["name"] in ("count", "n")
+        for i, p in enumerate(declared):
+            nxt = declared[i + 1] if i + 1 < len(declared) else None
+            if (i == 0 and receiver_first) or not clean(p["cType"]).endswith("*"):
+                continue
+            if (nxt and nxt["name"] == "count"
                     and clean(nxt["cType"]) in ("int", "int32", "int32_t")):
                 counted.add(codegen.csharp_param_name(p["name"]))
 
-        recv_ctype = self.m.ctype.get(cls)
         params = list(wrapper_params)
         static = True
         args: list[str] = []
@@ -349,12 +357,33 @@ class Generator:
             self.deferred[cls].append(f"{oo}: neither a receiver nor a value to return")
             return None
 
+        # A counted array is one parameter to the caller and two to MEOS: the
+        # array and its length, which the array itself answers.
+        declared = f.get("params", [])
+        count_of = {}
+        for i, p in enumerate(declared):
+            if (codegen.csharp_param_name(p["name"]) in counted
+                    and i + 1 < len(declared)):
+                count_of[codegen.csharp_param_name(declared[i + 1]["name"])] = \
+                    codegen.csharp_param_name(p["name"])
+
         sig: list[tuple[str, str]] = []
+        arrays: list[tuple[str, str]] = []
         for cs_type, pname in params:
+            if pname in count_of:
+                args.append(f"{count_of[pname]}.Length")
+                continue
             if pname in counted:
-                self.deferred[cls].append(
-                    f"{oo}: argument {pname} is a counted array")
-                return None
+                element = self.m.class_for_ctype(clean(c_by_name[pname])[:-1])
+                if element is None:
+                    self.deferred[cls].append(
+                        f"{oo}: argument {pname} is an array of "
+                        f"{clean(c_by_name[pname])[:-1]}, which has no class")
+                    return None
+                sig.append((f"{element}[]", pname))
+                arrays.append((pname, element))
+                args.append(f"_{pname}.AddrOfPinnedObject()")
+                continue
             mapped = self.map_param(c_by_name.get(pname, ""), cs_type, pname)
             if mapped is None:
                 self.deferred[cls].append(
@@ -365,7 +394,8 @@ class Generator:
             args.append(mapped[1])
 
         call = f"Meos.{codegen.public_name(fname)}({', '.join(args)})"
-        return Method(pascal(oo), ret_type, sig, ret_expr.replace("$", call), static)
+        return Method(pascal(oo), ret_type, sig, ret_expr.replace("$", call), static,
+                      arrays)
 
     def inherited_names(self, cls: str) -> set[tuple]:
         names: set[tuple] = set()
@@ -393,6 +423,8 @@ class Generator:
         lines = [
             "#nullable enable",
             "",
+            "using System.Runtime.InteropServices;",
+            "",
             "using MEOS.NET.Enums;",
             "using MEOS.NET.Functions;",
             "",
@@ -411,10 +443,42 @@ class Generator:
             new = "new " if (m.name, tuple(t for t, _ in m.params)) in inherited else ""
             kind = "static " if m.static else ""
             lines.append(f"        public {new}{kind}{m.ret} {m.name}({args})")
-            lines.append(f"            => {m.body};")
+            if m.arrays:
+                lines.extend(self.array_body(m))
+            else:
+                lines.append(f"            => {m.body};")
             lines.append("")
         lines += ["    }", "}", ""]
         return "\n".join(lines)
+
+    def array_body(self, method: Method) -> list[str]:
+        """The body of a method taking a counted array.
+
+        MEOS reads an array of its own values through a pointer to the first
+        element, so the wrappers' pointers are gathered into one array and pinned
+        for the call.  MEOS copies what it keeps, so the pin lasts exactly as long
+        as the call does."""
+        lines = ["        {"]
+        for name, element in method.arrays:
+            lines += [
+                f"            IntPtr[] _{name}Values = new IntPtr[{ident(name)}.Length];",
+                f"            for (int i = 0; i < {ident(name)}.Length; i++)",
+                "            {",
+                f"                _{name}Values[i] = {ident(name)}[i].Ptr;",
+                "            }",
+                "",
+                f"            GCHandle _{name} = GCHandle.Alloc(_{name}Values, GCHandleType.Pinned);",
+            ]
+        lines.append("            try")
+        lines.append("            {")
+        lines.append(f"                return {method.body};")
+        lines.append("            }")
+        lines.append("            finally")
+        lines.append("            {")
+        for name, _ in method.arrays:
+            lines.append(f"                _{name}.Free();")
+        lines += ["            }", "        }"]
+        return lines
 
     def to_string(self, cls: str, methods: list) -> list[str]:
         """`ToString` over the class's own text output, where MEOS publishes one.

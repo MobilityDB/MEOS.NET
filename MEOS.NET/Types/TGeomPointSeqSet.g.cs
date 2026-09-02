@@ -1,5 +1,7 @@
 #nullable enable
 
+using System.Runtime.InteropServices;
+
 using MEOS.NET.Enums;
 using MEOS.NET.Functions;
 
