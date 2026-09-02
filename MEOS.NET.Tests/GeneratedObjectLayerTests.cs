@@ -131,7 +131,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void MalformedTextRaisesTheMeosError()
         {
-            MEOSException raised = Assert.ThrowsException<MEOSUnspecifiedInternalException>(
+            MEOSException raised = Assert.ThrowsException<MEOSInternalErrorException>(
                 () => TFloat.In("e" + Instant));
 
             StringAssert.Contains(raised.Message, "e25.0");

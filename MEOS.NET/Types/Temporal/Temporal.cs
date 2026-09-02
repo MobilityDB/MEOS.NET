@@ -128,9 +128,9 @@ namespace MEOS.NET.Types.Temporal
             // temporal_interp names one of the interpolations MEOS defines, out of
             // its own static table, so the name is there for every temporal value.
             var interpolationStr = MEOSExposedFunctions.temporal_interp(this._ptr)
-                ?? throw new MEOSUnspecifiedInternalException(
-                    (int)MEOSErrorCodes.UnspecifiedInternalError,
-                    MEOSErrorCodes.UnspecifiedInternalError,
+                ?? throw new MEOSInternalErrorException(
+                    (int)MEOSErrorCodes.InternalError,
+                    MEOSErrorCodes.InternalError,
                     "MEOS named no interpolation for this temporal value");
             return EnumConverter.InterpolationTypeFromString(interpolationStr);
         }
