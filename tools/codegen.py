@@ -53,14 +53,31 @@ SCALAR_MAP: dict[str, str] = {
     "uint32": "uint",
     "int64": "long",
     "uint64": "ulong",
+    "int8_t": "sbyte",
+    "int16_t": "short",
+    "int32_t": "int",
+    "int64_t": "long",
+    "uint16_t": "ushort",
+    "uint32_t": "uint",
+    "uint64_t": "ulong",
+    "signed char": "sbyte",
+    "unsigned char": "byte",
+    "unsigned short": "ushort",
     "size_t": "ulong",
     "ssize_t": "long",
-    "meosType": "int",
-    "MeosType": "int",
-    "interpType": "int",
-    "tempSubtype": "int",
-    "spanType": "int",
 }
+
+# The names of the catalog's own enums, filled in by ``configure``.  A C enum is
+# an int at the ABI, and taking the set from the catalog is what keeps a newly
+# added enum from arriving as an opaque pointer the way a hand-list leaves it.
+ENUM_TYPES: set[str] = set()
+
+
+def configure(idl: dict) -> None:
+    """Take from the catalog the type facts the mapping below reads."""
+    ENUM_TYPES.clear()
+    ENUM_TYPES.update(e["name"] for e in idl.get("enums", []) if e.get("name"))
+
 
 # C pointer-to-char marshalled as managed string when StringMarshalling.Utf8 is on.
 def is_string_pointer(c_type: str) -> bool:
@@ -77,6 +94,8 @@ def csharp_type_for(canonical: str) -> str:
     # Pointer of any depth -> IntPtr (we don't propagate pointer types into C# semantics).
     if "*" in t or t.endswith("[]"):
         return "IntPtr"
+    if t in ENUM_TYPES:
+        return "int"
     return SCALAR_MAP.get(t, "IntPtr")  # unknown scalar -> opaque pointer is safer than guessing
 
 
@@ -453,6 +472,7 @@ def main(idl_path: str, dll_path: str = DLL_PATH) -> None:
     DLL_PATH = dll_path
     with open(idl_path) as fh:
         idl = json.load(fh)
+    configure(idl)
     funcs = idl["functions"]
     repo_root = Path(__file__).resolve().parent.parent
     out_dir = repo_root / "MEOS.NET" / "Internal"
