@@ -23,10 +23,10 @@ namespace MEOS.NET.Types
         public Temporal? AsTinstant()
             => MEOSFactory.WrapTemporal(Meos.TemporalAsTinstant(this.Ptr));
 
-        public Temporal? AsTsequence(InterpolationType interp)
+        public Temporal? AsTsequence(InterpType interp)
             => MEOSFactory.WrapTemporal(Meos.TemporalAsTsequence(this.Ptr, (int) interp));
 
-        public Temporal? AsTsequenceset(InterpolationType interp)
+        public Temporal? AsTsequenceset(InterpType interp)
             => MEOSFactory.WrapTemporal(Meos.TemporalAsTsequenceset(this.Ptr, (int) interp));
 
         public Temporal? AtMax()
@@ -194,7 +194,7 @@ namespace MEOS.NET.Types
         public Temporal?[] Sequences()
             => MEOSFactory.WrapTemporalArray(Meos.TemporalSequences(this.Ptr));
 
-        public Temporal? SetInterp(InterpolationType interp)
+        public Temporal? SetInterp(InterpType interp)
             => MEOSFactory.WrapTemporal(Meos.TemporalSetInterp(this.Ptr, (int) interp));
 
         public Temporal? SimplifyDp(double dist, bool synchronized)

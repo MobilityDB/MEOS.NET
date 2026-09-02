@@ -11,7 +11,7 @@ namespace MEOS.NET.Types
     {
         internal TFloatSeqSet(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? FromBaseTstzspanset(double d, SpanSet ss, InterpolationType interp)
+        public static Temporal? FromBaseTstzspanset(double d, SpanSet ss, InterpType interp)
             => MEOSFactory.WrapTemporal(Meos.TfloatseqsetFromBaseTstzspanset(d, ss.Ptr, (int) interp));
 
     }

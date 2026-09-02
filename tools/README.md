@@ -9,8 +9,9 @@ C name in PascalCase — `tfloat_in` reads `TfloatIn`, `meos_initialize` reads
 ecosystem rather than a per-binding invention.
 
 `objectgen.py` regenerates `MEOS.NET/Types/*.g.cs` — the object layer —
-and the error taxonomy under `MEOS.NET/Errors/` and `MEOS.NET/Exceptions/`,
-from the same catalog's `objectModel`, which is the ecosystem-wide
+the error taxonomy under `MEOS.NET/Errors/` and `MEOS.NET/Exceptions/`, and
+one C# enum per catalog enum under `MEOS.NET/Enums/`, from the same catalog's
+`objectModel` and `enums`, which is the ecosystem-wide
 source of truth for the class hierarchy implicit in MEOS.
 
 This replaces the previous regex-based `MEOS.NET.Builder` workflow, which
