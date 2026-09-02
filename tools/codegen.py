@@ -209,6 +209,8 @@ def csharp_param_name(name: str) -> str:
 
 def gen_external_functions(funcs: list[dict]) -> str:
     lines: list[str] = []
+    lines.append("#nullable enable")
+    lines.append("")
     lines.append("using System.CodeDom.Compiler;")
     lines.append("using System.Runtime.InteropServices;")
     lines.append("")
@@ -539,6 +541,10 @@ def gen_exposed_functions(funcs: list[dict], header: str | None = None) -> str:
     sibling-accessor length emits a Marshal.Copy unpack; other shapes
     fall back to the IntPtr passthrough today."""
     lines: list[str] = []
+    # A `.g.cs` file sits outside the project's nullable context, so it declares
+    # its own; the wrappers over a borrowed string return `string?`.
+    lines.append("#nullable enable")
+    lines.append("")
     lines.append("using System.Runtime.InteropServices;")
     lines.append("")
     lines.append(f"namespace {NAMESPACE}")

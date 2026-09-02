@@ -1,5 +1,5 @@
 using MEOS.NET.Exceptions;
-using MEOS.NET.Types.Generated;
+using MEOS.NET.Types;
 
 namespace MEOS.NET.Tests
 {

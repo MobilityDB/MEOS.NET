@@ -8,8 +8,9 @@ C name in PascalCase — `tfloat_in` reads `TfloatIn`, `meos_initialize` reads
 `MeosInitialize` — the spelling GoMEOS exports, so one rule serves the
 ecosystem rather than a per-binding invention.
 
-`objectgen.py` regenerates `MEOS.NET/Types/Generated/*.g.cs` — the object
-layer — from the same catalog's `objectModel`, which is the ecosystem-wide
+`objectgen.py` regenerates `MEOS.NET/Types/*.g.cs` — the object layer —
+and the error taxonomy under `MEOS.NET/Errors/` and `MEOS.NET/Exceptions/`,
+from the same catalog's `objectModel`, which is the ecosystem-wide
 source of truth for the class hierarchy implicit in MEOS.
 
 This replaces the previous regex-based `MEOS.NET.Builder` workflow, which
@@ -39,8 +40,7 @@ single-line-only regex, hardcoded developer DllPath).
 
 `MEOS.NET/Functions/` is rewritten with a binding for every MEOS function in
 the catalog, and
-`MEOS.NET/Types/Generated/` is rewritten with one class per object-model
-class. `--report` lists, per class, every method the object layer leaves
+`MEOS.NET/Types/` is rewritten with one class per object-model class. `--report` lists, per class, every method the object layer leaves
 to the raw binding and why.
 
 ## DllPath

@@ -18,7 +18,8 @@ parameter list, so the two generators cannot disagree about a folded out-paramet
 Usage:
     python3 tools/objectgen.py path/to/meos-idl.json [--report]
 
-Writes MEOS.NET/Types/Generated/*.g.cs, replacing that directory's contents.
+Writes MEOS.NET/Types/*.g.cs, plus the error taxonomy under MEOS.NET/Errors
+ and MEOS.NET/Exceptions, replacing those directories.
 """
 
 from __future__ import annotations
@@ -33,7 +34,7 @@ from pathlib import Path
 import codegen
 
 GENERATOR_VERSION = "0.1.0"
-NAMESPACE = "MEOS.NET.Types.Generated"
+NAMESPACE = "MEOS.NET.Types"
 ERROR_NAMESPACE = "MEOS.NET.Errors"
 EXCEPTION_NAMESPACE = "MEOS.NET.Exceptions"
 
@@ -423,7 +424,9 @@ namespace {NAMESPACE}
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "{GENERATOR_VERSION}")]
     public abstract class MEOSObject
     {{
-        internal IntPtr Ptr {{ get; }}
+        /// <summary>The MEOS value this object holds, for the functions on
+        /// <see cref="MEOS.NET.Functions.Meos"/> that take it.</summary>
+        public IntPtr Ptr {{ get; }}
 
         internal MEOSObject(IntPtr ptr) => this.Ptr = ptr;
     }}
@@ -615,8 +618,13 @@ namespace {EXCEPTION_NAMESPACE}
             "    /// The discriminator is the struct field the catalog records, read at the",
             "    /// offset the catalog's own field layout puts it at.",
             "    /// </summary>",
+            "    /// <remarks>",
+            "    /// This is the way back from a function on",
+            "    /// <see cref=\"MEOS.NET.Functions.Meos\"/>, which answers the MEOS pointer,",
+            "    /// into the object layer.",
+            "    /// </remarks>",
             f'    [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "{GENERATOR_VERSION}")]',
-            "    internal static class MEOSFactory",
+            "    public static class MEOSFactory",
             "    {",
         ]
         temptype_offset = self.m.struct_offset("Temporal", "temptype")
@@ -647,7 +655,7 @@ namespace {EXCEPTION_NAMESPACE}
         lines = [
             f"        /// <summary>The value at <paramref name=\"ptr\"/> as the {root}",
             f"        /// class the model gives its runtime type.</summary>",
-            f"        internal static {root}? Wrap{root}(IntPtr ptr)",
+            f"        public static {root}? Wrap{root}(IntPtr ptr)",
             "        {",
             "            if (ptr == IntPtr.Zero)",
             "            {",
@@ -693,7 +701,7 @@ namespace {EXCEPTION_NAMESPACE}
             "        }",
             "",
             f"        /// <summary>Every element of a C array of {root} pointers, wrapped.</summary>",
-            f"        internal static {root}?[] Wrap{root}Array(IntPtr[] ptrs)",
+            f"        public static {root}?[] Wrap{root}Array(IntPtr[] ptrs)",
             "        {",
             f"            {root}?[] wrapped = new {root}?[ptrs.Length];",
             "            for (int i = 0; i < ptrs.Length; i++)",
@@ -768,7 +776,7 @@ def main() -> int:
     model = Model(idl)
     gen = Generator(model)
     repo_root = Path(__file__).resolve().parent.parent
-    gen.run(repo_root / "MEOS.NET" / "Types" / "Generated")
+    gen.run(repo_root / "MEOS.NET" / "Types")
     gen.run_errors(repo_root / "MEOS.NET" / "Errors",
                    repo_root / "MEOS.NET" / "Exceptions")
 

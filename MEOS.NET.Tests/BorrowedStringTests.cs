@@ -1,5 +1,4 @@
-using MEOS.NET.Enums;
-using MEOS.NET.Types.Temporal.Number.Float;
+using MEOS.NET.Types;
 
 namespace MEOS.NET.Tests
 {
@@ -14,26 +13,34 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void InterpolationOfALinearSequenceIsRead()
         {
-            TemporalFloat temp = TemporalFloat.FromString("[25.0@2024-12-06, 27.0@2024-12-07]");
+            Temporal temp = TFloat.In("[25.0@2024-12-06, 27.0@2024-12-07]")!;
 
-            Assert.AreEqual(InterpolationType.Linear, temp.Interpolation());
+            Assert.AreEqual("Linear", temp.Interp());
         }
 
         [TestMethod]
         public void InterpolationOfADiscreteSequenceIsRead()
         {
-            TemporalFloat temp = TemporalFloat.FromString("{25.0@2024-12-06, 27.0@2024-12-07}");
+            Temporal temp = TFloat.In("{25.0@2024-12-06, 27.0@2024-12-07}")!;
 
-            Assert.AreEqual(InterpolationType.Discrete, temp.Interpolation());
+            Assert.AreEqual("Discrete", temp.Interp());
         }
 
         [TestMethod]
         public void TheSameBorrowedNameIsReadableTwice()
         {
-            TemporalFloat first = TemporalFloat.FromString("[25.0@2024-12-06, 27.0@2024-12-07]");
-            TemporalFloat second = TemporalFloat.FromString("[1.0@2024-12-06, 2.0@2024-12-07]");
+            Temporal first = TFloat.In("[25.0@2024-12-06, 27.0@2024-12-07]")!;
+            Temporal second = TFloat.In("[1.0@2024-12-06, 2.0@2024-12-07]")!;
 
-            Assert.AreEqual(first.Interpolation(), second.Interpolation());
+            Assert.AreEqual(first.Interp(), second.Interp());
+        }
+
+        [TestMethod]
+        public void SubtypeOfASequenceIsRead()
+        {
+            Temporal temp = TFloat.In("[25.0@2024-12-06, 27.0@2024-12-07]")!;
+
+            Assert.AreEqual("Sequence", temp.Subtype());
         }
     }
 }
