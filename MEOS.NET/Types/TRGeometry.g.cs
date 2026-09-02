@@ -1,5 +1,7 @@
 #nullable enable
 
+using System.Runtime.InteropServices;
+
 using MEOS.NET.Enums;
 using MEOS.NET.Functions;
 
@@ -191,6 +193,25 @@ namespace MEOS.NET.Types
 
         public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryIn(str));
+
+        public new static Temporal? MergeArray(Temporal[] temparr)
+        {
+            IntPtr[] _temparrValues = new IntPtr[temparr.Length];
+            for (int i = 0; i < temparr.Length; i++)
+            {
+                _temparrValues[i] = temparr[i].Ptr;
+            }
+
+            GCHandle _temparr = GCHandle.Alloc(_temparrValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTemporal(Meos.TrgeometryMergeArray(_temparr.AddrOfPinnedObject(), temparr.Length));
+            }
+            finally
+            {
+                _temparr.Free();
+            }
+        }
 
     }
 }
