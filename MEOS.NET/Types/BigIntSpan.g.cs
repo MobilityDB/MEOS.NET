@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal BigIntSpan(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out();
+
         public Span? Expand(long value)
             => MEOSFactory.WrapSpan(Meos.BigintspanExpand(this.Ptr, value));
 

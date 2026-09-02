@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal IntSpan(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out();
+
         public Span? Expand(int value)
             => MEOSFactory.WrapSpan(Meos.IntspanExpand(this.Ptr, value));
 

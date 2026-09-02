@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal DateSpan(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out();
+
         public DateOnly Lower()
             => MEOSConvert.ToDateOnly(Meos.DatespanLower(this.Ptr));
 

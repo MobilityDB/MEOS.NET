@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal DateSet(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out();
+
         public DateOnly EndValue()
             => MEOSConvert.ToDateOnly(Meos.DatesetEndValue(this.Ptr));
 

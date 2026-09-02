@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal TJsonb(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out();
+
         public Temporal? ArrayLength()
             => MEOSFactory.WrapTemporal(Meos.TjsonbArrayLength(this.Ptr));
 

@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal BigIntSet(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out();
+
         public long EndValue()
             => Meos.BigintsetEndValue(this.Ptr);
 

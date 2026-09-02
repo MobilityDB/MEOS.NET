@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal IntSet(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out();
+
         public int EndValue()
             => Meos.IntsetEndValue(this.Ptr);
 

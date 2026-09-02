@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal NpointSet(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out(15);
+
         public string Out(int maxdd)
             => Meos.NpointsetOut(this.Ptr, maxdd);
 

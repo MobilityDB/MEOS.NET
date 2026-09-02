@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal FloatSpanSet(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out(15);
+
         public SpanSet? Ceil()
             => MEOSFactory.WrapSpanSet(Meos.FloatspansetCeil(this.Ptr));
 
