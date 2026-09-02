@@ -672,7 +672,12 @@ def main(idl_path: str, dll_path: str = DLL_PATH) -> None:
     with open(idl_path) as fh:
         idl = json.load(fh)
     configure(idl)
-    funcs = idl["functions"]
+    # A binding projects MEOS's own surface. The catalog marks the declarations
+    # that reach it from a project MEOS vendors — pgPointCloud's `pc_api.h` and
+    # `hashtable.h`, PostgreSQL's `pg_numeric.h` — and those are that project's
+    # API, not MEOS's: 150 of them, every one internal, and the only three the
+    # built library does not export at all.
+    funcs = [f for f in idl["functions"] if not f.get("vendored")]
     repo_root = Path(__file__).resolve().parent.parent
     out_dir = repo_root / "MEOS.NET" / "Functions"
     if out_dir.exists():
@@ -699,8 +704,10 @@ def main(idl_path: str, dll_path: str = DLL_PATH) -> None:
     for header, group in sorted(grouped.items()):
         stem = header.removesuffix(".h")
         (out_dir / f"Meos.{stem}.g.cs").write_text(gen_exposed_functions(group, header))
+    vendored = len(idl["functions"]) - len(funcs)
     print(f"Wrote {len(funcs)} functions across {len(grouped)} headers "
-          f"to MEOS.NET/Functions/, {len(BY_VALUE_STRUCTS)} by-value structs",
+          f"to MEOS.NET/Functions/, {len(BY_VALUE_STRUCTS)} by-value structs, "
+          f"{vendored} vendored declarations left to their own project",
           file=sys.stderr)
 
 
