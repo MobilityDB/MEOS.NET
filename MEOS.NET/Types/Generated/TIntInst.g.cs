@@ -1,0 +1,18 @@
+#nullable enable
+
+using MEOS.NET.Enums;
+using MEOS.NET.Internal;
+
+namespace MEOS.NET.Types.Generated
+{
+    /// <summary>A TInt of subtype TInstant.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
+    public class TIntInst : TInt
+    {
+        internal TIntInst(IntPtr ptr) : base(ptr) { }
+
+        public static Temporal? Make(int i, DateTime t)
+            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tintinst_make(i, MEOSConvert.ToTimestampTz(t)));
+
+    }
+}

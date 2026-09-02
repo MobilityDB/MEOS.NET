@@ -30,8 +30,11 @@ jobs:
       - name: Regenerate bindings
         run: python3 tools/codegen.py "${{ steps.provision.outputs.catalog-path }}"
 
+      - name: Regenerate the object layer
+        run: python3 tools/objectgen.py "${{ steps.provision.outputs.catalog-path }}" --report
+
       - name: Report binding drift
-        run: git --no-pager diff --stat -- MEOS.NET/Internal || true
+        run: git --no-pager diff --stat -- MEOS.NET/Internal MEOS.NET/Types/Generated || true
 
       - name: Build solution
         run: dotnet build MEOS.NET.sln -c Release
