@@ -34,6 +34,8 @@ import codegen
 
 GENERATOR_VERSION = "0.1.0"
 NAMESPACE = "MEOS.NET.Types.Generated"
+ERROR_NAMESPACE = "MEOS.NET.Errors"
+EXCEPTION_NAMESPACE = "MEOS.NET.Exceptions"
 
 # The C struct a class's instances are pointers to.  Every other class resolves to
 # one of these through the model's own hierarchy, so this map holds only the roots
@@ -66,6 +68,10 @@ PASSTHROUGH_C = {
     "char *", "void",
 }
 
+# Acronym runs the error names carry, kept upper-case so the C# spelling reads
+# the way the catalog's own camelCase names do (`asMFJSON`).
+ERROR_ACRONYMS = {"wkb", "mfjson", "geojson", "sql", "json"}
+
 RESERVED = {
     "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char",
     "checked", "class", "const", "continue", "decimal", "default", "delegate",
@@ -87,6 +93,15 @@ def clean(c_type: str) -> str:
 
 def pascal(oo_name: str) -> str:
     return oo_name[:1].upper() + oo_name[1:]
+
+
+def error_member(code_name: str) -> str:
+    """The C# name of an errorCode constant: `MEOS_ERR_INVALID_ARG_VALUE` reads
+    `InvalidArgValue`, `MEOS_ERR_MFJSON_INPUT` reads `MFJSONInput`."""
+    bare = code_name.removeprefix("MEOS_ERR_").removeprefix("MEOS_")
+    return "".join(part.upper() if part.lower() in ERROR_ACRONYMS
+                   else part.capitalize()
+                   for part in bare.lower().split("_"))
 
 
 def ident(name: str) -> str:
@@ -457,6 +472,132 @@ namespace {NAMESPACE}
 }}
 '''
 
+    def error_codes(self) -> list[dict]:
+        """The error taxonomy the model carries, verbatim from MEOS's own enum."""
+        return self.m.om["errors"]["codes"]
+
+    def error_codes_file(self) -> str:
+        lines = [
+            "#nullable enable",
+            "",
+            f"namespace {ERROR_NAMESPACE}",
+            "{",
+            "    /// <summary>Every code MEOS raises with, and what each one means.</summary>",
+            f'    [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "{GENERATOR_VERSION}")]',
+            "    public enum MEOSErrorCodes",
+            "    {",
+        ]
+        for code in self.error_codes():
+            lines += [
+                f"        /// <summary>{code['meaning']} (<c>{code['name']}</c>).</summary>",
+                f"        {error_member(code['name'])} = {code['value']},",
+                "",
+            ]
+        lines += ["    }", "}", ""]
+        return "\n".join(lines)
+
+    def exception_file(self, code: dict) -> str:
+        member = error_member(code["name"])
+        return f'''#nullable enable
+
+using {ERROR_NAMESPACE};
+
+namespace {EXCEPTION_NAMESPACE}
+{{
+    /// <summary>{code['meaning']} (<c>{code['name']}</c>).</summary>
+    [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "{GENERATOR_VERSION}")]
+    public class MEOS{member}Exception : MEOSException
+    {{
+        internal MEOS{member}Exception(int level, MEOSErrorCodes code, string message)
+            : base(level, code, message)
+        {{ }}
+    }}
+}}
+'''
+
+    def exception_base_file(self) -> str:
+        return f'''#nullable enable
+
+using {ERROR_NAMESPACE};
+
+namespace {EXCEPTION_NAMESPACE}
+{{
+    /// <summary>An error MEOS raised, with the code and level it raised it at.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "{GENERATOR_VERSION}")]
+    public abstract class MEOSException : Exception
+    {{
+        public int Level {{ get; init; }}
+
+        public MEOSErrorCodes Code {{ get; init; }}
+
+        internal MEOSException(int level, MEOSErrorCodes code, string message)
+            : base(message)
+        {{
+            this.Level = level;
+            this.Code = code;
+        }}
+    }}
+}}
+'''
+
+    def error_handling_file(self) -> str:
+        """The handler MEOS calls, and the check every wrapper makes after a call.
+
+        MEOS reports an error through the handler and returns; the value it returns
+        then means nothing, so the wrapper raises what the handler recorded."""
+        unknown = error_member(next(
+            c["name"] for c in self.error_codes() if c["value"] == 1))
+        lines = [
+            "#nullable enable",
+            "",
+            f"using {EXCEPTION_NAMESPACE};",
+            "",
+            f"namespace {ERROR_NAMESPACE}",
+            "{",
+            "    /// <summary>Turns the error MEOS reports into the exception for its code.</summary>",
+            f'    [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "{GENERATOR_VERSION}")]',
+            "    internal static class MEOSErrorHandling",
+            "    {",
+            "        private static MEOSException? pending;",
+            "",
+            "        /// <summary>Raise what MEOS reported since the last check, if anything.</summary>",
+            "        internal static void CheckError()",
+            "        {",
+            "            if (pending is null)",
+            "            {",
+            "                return;",
+            "            }",
+            "",
+            "            var raised = pending;",
+            "            pending = null;",
+            "            throw raised;",
+            "        }",
+            "",
+            "        /// <summary>The handler MEOS calls; it records, and CheckError raises.</summary>",
+            "        internal static void InternalErrorHandler(int level, int errorCode, string message)",
+            "            => pending = errorCode switch",
+            "            {",
+        ]
+        for code in self.error_codes():
+            member = error_member(code["name"])
+            if code["value"] == 0:
+                lines.append(f"                {code['value']} => null,  // {code['name']}")
+            else:
+                lines.append(
+                    f"                {code['value']} => new MEOS{member}Exception("
+                    f"level, MEOSErrorCodes.{member}, message),")
+        lines += [
+            "                // A code this binding does not name is still an error MEOS",
+            "                // raised, so it reaches the caller rather than being dropped.",
+            f"                _ => new MEOS{unknown}Exception(",
+            f"                    level, MEOSErrorCodes.{unknown}, message),",
+            "            };",
+            "    }",
+            "}",
+            "",
+        ]
+        return "\n".join(lines)
+
     def factory_file(self) -> str:
         """The runtime factory: a MEOS value carries its own type in its header, so
         a pointer is wrapped in the exact class the model gives that type.  Every
@@ -595,6 +736,21 @@ namespace {NAMESPACE}
             (out_dir / f"{cls}.g.cs").write_text(self.emit_class(cls))
         (out_dir / "MEOSFactory.g.cs").write_text(self.factory_file())
 
+    def run_errors(self, errors_dir: Path, exceptions_dir: Path) -> None:
+        for directory in (errors_dir, exceptions_dir):
+            if directory.exists():
+                shutil.rmtree(directory)
+            directory.mkdir(parents=True)
+        (errors_dir / "MEOSErrorCodes.g.cs").write_text(self.error_codes_file())
+        (errors_dir / "MEOSErrorHandling.g.cs").write_text(self.error_handling_file())
+        (exceptions_dir / "MEOSException.g.cs").write_text(self.exception_base_file())
+        for code in self.error_codes():
+            if code["value"] == 0:
+                continue
+            member = error_member(code["name"])
+            (exceptions_dir / f"MEOS{member}Exception.g.cs").write_text(
+                self.exception_file(code))
+
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
@@ -613,6 +769,8 @@ def main() -> int:
     gen = Generator(model)
     repo_root = Path(__file__).resolve().parent.parent
     gen.run(repo_root / "MEOS.NET" / "Types" / "Generated")
+    gen.run_errors(repo_root / "MEOS.NET" / "Errors",
+                   repo_root / "MEOS.NET" / "Exceptions")
 
     classes = model.classes()
     total_deferred = sum(len(v) for v in gen.deferred.values())
