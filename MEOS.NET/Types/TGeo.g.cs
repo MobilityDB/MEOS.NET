@@ -20,5 +20,14 @@ namespace MEOS.NET.Types
         public Temporal? MinusStbox(STBox box, bool border_inc)
             => MEOSFactory.WrapTemporal(Meos.TgeoMinusStbox(this.Ptr, box.Ptr, border_inc));
 
+        public STBox?[] SplitEachNStboxes(int elem_count)
+            => MEOSFactory.WrapSTBoxArray(Meos.TgeoSplitEachNStboxes(this.Ptr, elem_count));
+
+        public STBox?[] SplitNStboxes(int box_count)
+            => MEOSFactory.WrapSTBoxArray(Meos.TgeoSplitNStboxes(this.Ptr, box_count));
+
+        public STBox?[] Stboxes()
+            => MEOSFactory.WrapSTBoxArray(Meos.TgeoStboxes(this.Ptr));
+
     }
 }

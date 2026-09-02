@@ -41,6 +41,15 @@ namespace MEOS.NET.Types
         public Temporal? MinusTbox(TBox box)
             => MEOSFactory.WrapTemporal(Meos.TnumberMinusTbox(this.Ptr, box.Ptr));
 
+        public TBox?[] SplitEachNTboxes(int elem_count)
+            => MEOSFactory.WrapTBoxArray(Meos.TnumberSplitEachNTboxes(this.Ptr, elem_count));
+
+        public TBox?[] SplitNTboxes(int box_count)
+            => MEOSFactory.WrapTBoxArray(Meos.TnumberSplitNTboxes(this.Ptr, box_count));
+
+        public TBox?[] Tboxes()
+            => MEOSFactory.WrapTBoxArray(Meos.TnumberTboxes(this.Ptr));
+
         public Span? ToSpan()
             => MEOSFactory.WrapSpan(Meos.TnumberToSpan(this.Ptr));
 

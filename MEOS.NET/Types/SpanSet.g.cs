@@ -59,6 +59,15 @@ namespace MEOS.NET.Types
         public Span?[] Spanarr()
             => MEOSFactory.WrapSpanArray(Meos.SpansetSpanarr(this.Ptr));
 
+        public Span?[] Spans()
+            => MEOSFactory.WrapSpanArray(Meos.SpansetSpans(this.Ptr));
+
+        public Span?[] SplitEachNSpans(int elems_per_span)
+            => MEOSFactory.WrapSpanArray(Meos.SpansetSplitEachNSpans(this.Ptr, elems_per_span));
+
+        public Span?[] SplitNSpans(int span_count)
+            => MEOSFactory.WrapSpanArray(Meos.SpansetSplitNSpans(this.Ptr, span_count));
+
         public Span? StartSpan()
             => MEOSFactory.WrapSpan(Meos.SpansetStartSpan(this.Ptr));
 

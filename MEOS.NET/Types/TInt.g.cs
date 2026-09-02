@@ -51,6 +51,12 @@ namespace MEOS.NET.Types
         public Temporal? ToTfloat()
             => MEOSFactory.WrapTemporal(Meos.TintToTfloat(this.Ptr));
 
+        public Span?[] ValueBins(int vsize, int vorigin)
+            => MEOSFactory.WrapSpanArray(Meos.TintValueBins(this.Ptr, vsize, vorigin));
+
+        public TBox?[] ValueBoxes(int vsize, int vorigin)
+            => MEOSFactory.WrapTBoxArray(Meos.TintValueBoxes(this.Ptr, vsize, vorigin));
+
         public int[] Values()
             => Meos.TintValues(this.Ptr);
 
