@@ -13,5 +13,8 @@ namespace MEOS.NET.Types
     {
         internal TCbufferInst(IntPtr ptr) : base(ptr) { }
 
+        public static Temporal? Make(Cbuffer cb, DateTime t)
+            => MEOSFactory.WrapTemporal(Meos.TcbufferinstMake(cb.Ptr, MEOSConvert.ToTimestampTz(t)));
+
     }
 }

@@ -44,6 +44,9 @@ namespace MEOS.NET.Types
         public Temporal? AtElevation(Span s)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAtElevation(this.Ptr, s.Ptr));
 
+        public Temporal? AtGeom(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TrgeometryAtGeom(this.Ptr, gs.Ptr));
+
         public Temporal? AtStbox(STBox box, bool border_inc)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAtStbox(this.Ptr, box.Ptr, border_inc));
 
@@ -59,14 +62,23 @@ namespace MEOS.NET.Types
         public new Temporal? AtTstzspanset(SpanSet ss)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAtTstzspanset(this.Ptr, ss.Ptr));
 
+        public Temporal? AtValue(Pose pose)
+            => MEOSFactory.WrapTemporal(Meos.TrgeometryAtValue(this.Ptr, pose.Ptr));
+
         public new Temporal? AtValues(Set s)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAtValues(this.Ptr, s.Ptr));
 
         public new Temporal? BeforeTimestamptz(DateTime t, bool strict)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryBeforeTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict));
 
+        public Temporal? BodyPointTrajectory(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TrgeometryBodyPointTrajectory(this.Ptr, gs.Ptr));
+
         public Temporal? Centroid()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryCentroid(this.Ptr));
+
+        public Geo? ConvexHull()
+            => MEOSFactory.WrapGeo(Meos.TrgeometryConvexHull(this.Ptr));
 
         public Temporal? CumulativeLength()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryCumulativeLength(this.Ptr));
@@ -92,8 +104,14 @@ namespace MEOS.NET.Types
         public new Temporal? EndSequence()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryEndSequence(this.Ptr));
 
+        public Geo? EndValue()
+            => MEOSFactory.WrapGeo(Meos.TrgeometryEndValue(this.Ptr));
+
         public new double FrechetDistance(Temporal temp2)
             => Meos.TrgeometryFrechetDistance(this.Ptr, temp2.Ptr);
+
+        public Geo? Geom()
+            => MEOSFactory.WrapGeo(Meos.TrgeometryGeom(this.Ptr));
 
         public new double HausdorffDistance(Temporal temp2)
             => Meos.TrgeometryHausdorffDistance(this.Ptr, temp2.Ptr);
@@ -113,6 +131,9 @@ namespace MEOS.NET.Types
         public Temporal? MinusElevation(Span s)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryMinusElevation(this.Ptr, s.Ptr));
 
+        public Temporal? MinusGeom(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TrgeometryMinusGeom(this.Ptr, gs.Ptr));
+
         public Temporal? MinusStbox(STBox box, bool border_inc)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryMinusStbox(this.Ptr, box.Ptr, border_inc));
 
@@ -127,6 +148,9 @@ namespace MEOS.NET.Types
 
         public new Temporal? MinusTstzspanset(SpanSet ss)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryMinusTstzspanset(this.Ptr, ss.Ptr));
+
+        public Temporal? MinusValue(Pose pose)
+            => MEOSFactory.WrapTemporal(Meos.TrgeometryMinusValue(this.Ptr, pose.Ptr));
 
         public new Temporal? MinusValues(Set s)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryMinusValues(this.Ptr, s.Ptr));
@@ -158,6 +182,9 @@ namespace MEOS.NET.Types
         public new Temporal? SetInterp(InterpType interp)
             => MEOSFactory.WrapTemporal(Meos.TrgeometrySetInterp(this.Ptr, (int) interp));
 
+        public STBox?[] SpaceBoxes(double xsize, double ysize, double zsize, Geo sorigin, bool bitmatrix, bool border_inc)
+            => MEOSFactory.WrapSTBoxArray(Meos.TrgeometrySpaceBoxes(this.Ptr, xsize, ysize, zsize, sorigin.Ptr, bitmatrix, border_inc));
+
         public Temporal? Speed()
             => MEOSFactory.WrapTemporal(Meos.TrgeometrySpeed(this.Ptr));
 
@@ -173,6 +200,9 @@ namespace MEOS.NET.Types
         public new Temporal? StartSequence()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryStartSequence(this.Ptr));
 
+        public Geo? StartValue()
+            => MEOSFactory.WrapGeo(Meos.TrgeometryStartValue(this.Ptr));
+
         public STBox?[] Stboxes()
             => MEOSFactory.WrapSTBoxArray(Meos.TrgeometryStboxes(this.Ptr));
 
@@ -184,6 +214,12 @@ namespace MEOS.NET.Types
 
         public Temporal? ToTpose()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryToTpose(this.Ptr));
+
+        public Geo? TraversedArea(bool unary_union)
+            => MEOSFactory.WrapGeo(Meos.TrgeometryTraversedArea(this.Ptr, unary_union));
+
+        public Geo? Twcentroid()
+            => MEOSFactory.WrapGeo(Meos.TrgeometryTwcentroid(this.Ptr));
 
         public Temporal? Yaw()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryYaw(this.Ptr));

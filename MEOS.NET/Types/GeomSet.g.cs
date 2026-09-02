@@ -13,8 +13,36 @@ namespace MEOS.NET.Types
     {
         internal GeomSet(IntPtr ptr) : base(ptr) { }
 
+        public Geo? EndValue()
+            => MEOSFactory.WrapGeo(Meos.GeosetEndValue(this.Ptr));
+
+        public Geo? StartValue()
+            => MEOSFactory.WrapGeo(Meos.GeosetStartValue(this.Ptr));
+
+        public Geo?[] Values()
+            => MEOSFactory.WrapGeoArray(Meos.GeosetValues(this.Ptr));
+
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.GeomsetIn(str));
+
+        public static Set? Make(Geo[] values)
+        {
+            IntPtr[] _valuesValues = new IntPtr[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                _valuesValues[i] = values[i].Ptr;
+            }
+
+            GCHandle _values = GCHandle.Alloc(_valuesValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapSet(Meos.GeosetMake(_values.AddrOfPinnedObject(), values.Length));
+            }
+            finally
+            {
+                _values.Free();
+            }
+        }
 
     }
 }

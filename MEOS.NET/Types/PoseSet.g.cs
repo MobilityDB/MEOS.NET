@@ -17,11 +17,39 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out(15);
 
+        public Pose? EndValue()
+            => MEOSFactory.WrapPose(Meos.PosesetEndValue(this.Ptr));
+
         public string Out(int maxdd)
             => Meos.PosesetOut(this.Ptr, maxdd);
 
+        public Pose? StartValue()
+            => MEOSFactory.WrapPose(Meos.PosesetStartValue(this.Ptr));
+
+        public Pose?[] Values()
+            => MEOSFactory.WrapPoseArray(Meos.PosesetValues(this.Ptr));
+
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.PosesetIn(str));
+
+        public static Set? Make(Pose[] values)
+        {
+            IntPtr[] _valuesValues = new IntPtr[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                _valuesValues[i] = values[i].Ptr;
+            }
+
+            GCHandle _values = GCHandle.Alloc(_valuesValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapSet(Meos.PosesetMake(_values.AddrOfPinnedObject(), values.Length));
+            }
+            finally
+            {
+                _values.Free();
+            }
+        }
 
     }
 }

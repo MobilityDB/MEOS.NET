@@ -17,6 +17,9 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public Text? EndValue()
+            => MEOSFactory.WrapText(Meos.TextsetEndValue(this.Ptr));
+
         public Set? Initcap()
             => MEOSFactory.WrapSet(Meos.TextsetInitcap(this.Ptr));
 
@@ -26,11 +29,36 @@ namespace MEOS.NET.Types
         public string Out()
             => Meos.TextsetOut(this.Ptr);
 
+        public Text? StartValue()
+            => MEOSFactory.WrapText(Meos.TextsetStartValue(this.Ptr));
+
         public Set? Upper()
             => MEOSFactory.WrapSet(Meos.TextsetUpper(this.Ptr));
 
+        public Text?[] Values()
+            => MEOSFactory.WrapTextArray(Meos.TextsetValues(this.Ptr));
+
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.TextsetIn(str));
+
+        public static Set? Make(Text[] values)
+        {
+            IntPtr[] _valuesValues = new IntPtr[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                _valuesValues[i] = values[i].Ptr;
+            }
+
+            GCHandle _values = GCHandle.Alloc(_valuesValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapSet(Meos.TextsetMake(_values.AddrOfPinnedObject(), values.Length));
+            }
+            finally
+            {
+                _values.Free();
+            }
+        }
 
     }
 }

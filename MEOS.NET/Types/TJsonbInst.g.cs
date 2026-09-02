@@ -13,5 +13,8 @@ namespace MEOS.NET.Types
     {
         internal TJsonbInst(IntPtr ptr) : base(ptr) { }
 
+        public static Temporal? Make(Jsonb jsonb, DateTime t)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbinstMake(jsonb.Ptr, MEOSConvert.ToTimestampTz(t)));
+
     }
 }

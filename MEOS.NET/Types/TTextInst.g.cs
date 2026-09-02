@@ -13,5 +13,8 @@ namespace MEOS.NET.Types
     {
         internal TTextInst(IntPtr ptr) : base(ptr) { }
 
+        public static Temporal? Make(Text txt, DateTime t)
+            => MEOSFactory.WrapTemporal(Meos.TtextinstMake(txt.Ptr, MEOSConvert.ToTimestampTz(t)));
+
     }
 }

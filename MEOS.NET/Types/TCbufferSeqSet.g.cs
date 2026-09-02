@@ -13,5 +13,8 @@ namespace MEOS.NET.Types
     {
         internal TCbufferSeqSet(IntPtr ptr) : base(ptr) { }
 
+        public static Temporal? FromBaseTstzspanset(Cbuffer cb, SpanSet ss, InterpType interp)
+            => MEOSFactory.WrapTemporal(Meos.TcbufferseqsetFromBaseTstzspanset(cb.Ptr, ss.Ptr, (int) interp));
+
     }
 }

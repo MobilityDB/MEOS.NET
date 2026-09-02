@@ -17,11 +17,39 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out(15);
 
+        public Cbuffer? EndValue()
+            => MEOSFactory.WrapCbuffer(Meos.CbuffersetEndValue(this.Ptr));
+
         public string Out(int maxdd)
             => Meos.CbuffersetOut(this.Ptr, maxdd);
 
+        public Cbuffer? StartValue()
+            => MEOSFactory.WrapCbuffer(Meos.CbuffersetStartValue(this.Ptr));
+
+        public Cbuffer?[] Values()
+            => MEOSFactory.WrapCbufferArray(Meos.CbuffersetValues(this.Ptr));
+
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.CbuffersetIn(str));
+
+        public static Set? Make(Cbuffer[] values)
+        {
+            IntPtr[] _valuesValues = new IntPtr[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                _valuesValues[i] = values[i].Ptr;
+            }
+
+            GCHandle _values = GCHandle.Alloc(_valuesValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapSet(Meos.CbuffersetMake(_values.AddrOfPinnedObject(), values.Length));
+            }
+            finally
+            {
+                _values.Free();
+            }
+        }
 
     }
 }

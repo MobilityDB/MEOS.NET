@@ -13,5 +13,8 @@ namespace MEOS.NET.Types
     {
         internal TPoseInst(IntPtr ptr) : base(ptr) { }
 
+        public static Temporal? Make(Pose pose, DateTime t)
+            => MEOSFactory.WrapTemporal(Meos.TposeinstMake(pose.Ptr, MEOSConvert.ToTimestampTz(t)));
+
     }
 }

@@ -151,13 +151,13 @@ class Model:
         self.ctype: dict[str, str] = {}
         self.meostype: dict[str, str] = {}      # class -> its MeosType constant
         self.subtype_of: dict[str, str] = {}    # concrete class -> template subtype
+        self.wrap_root: dict[str, str] = {}     # C struct -> the class it wraps as
         self._build()
 
     def _build(self) -> None:
         lattice = self.om["lattice"]
         for name, node in lattice.items():
             self.parent[name] = node["parent"]
-            self.ctype[name] = "Temporal"
             temptypes = node.get("temptypes") or []
             if node["kind"] == "leaf" and len(temptypes) == 1:
                 self.meostype[name] = temptypes[0]
@@ -167,7 +167,6 @@ class Model:
             cls = value.get("class")
             if cls:
                 self.parent[cls] = "Temporal"
-                self.ctype[cls] = cls
 
         # A concrete class is `<leaf><suffix>`: it inherits the leaf's family surface
         # and its instances are pointers to the template subtype's struct.
@@ -176,25 +175,44 @@ class Model:
                 concrete = leaf + suffix
                 if concrete in self.om["classes"]:
                     self.parent[concrete] = leaf
-                    self.ctype[concrete] = subtype
                     self.subtype_of[concrete] = subtype
 
-        for family in ("Box", "Collection"):
+        for family in self.companion_families():
             for name, node in self.om["companions"][family]["nodes"].items():
+                if name.startswith("_"):
+                    continue
                 self.parent[name] = node["parent"]
                 if node.get("temptype"):
                     self.meostype[name] = node["temptype"]
-        for name in self.om["companions"]["Collection"]["nodes"]:
-            self.ctype[name] = self._collection_ctype(name)
-        self.ctype["TBox"] = "TBox"
-        self.ctype["STBox"] = "STBox"
 
-    def _collection_ctype(self, name: str) -> str:
-        node = self.om["companions"]["Collection"]["nodes"][name]
-        for a in [name] + list(node["ancestors"]):
-            if a in ROOT_CTYPE:
-                return ROOT_CTYPE[a]
-        return ""
+        # What a class's instances are a pointer to is the catalog's to say, so
+        # every class takes the `cType` the model derives from MEOS's own
+        # signatures. A binding holding that map itself is one a class the model
+        # gains cannot reach until the map is edited.
+        for name, spec in self.om["classes"].items():
+            if spec.get("cType"):
+                self.ctype[name] = spec["cType"]
+
+        # A pointer to a C struct is wrapped in the SHALLOWEST class carrying it,
+        # so a `GSERIALIZED *` is a Geo and its Geometry and Geography leaves stay
+        # distinct classes under it, exactly as a `Set *` is a Set.
+        for name, ct in self.ctype.items():
+            best = self.wrap_root.get(ct)
+            if best is None or self._depth(name) < self._depth(best):
+                self.wrap_root[ct] = name
+
+    def companion_families(self) -> list[str]:
+        """The companion hierarchies the model carries, in its own order."""
+        return [k for k in self.om["companions"] if not k.startswith("_")]
+
+    def _depth(self, cls: str) -> int:
+        depth, seen = 0, {cls}
+        parent = self.parent.get(cls)
+        while parent and parent not in seen:
+            seen.add(parent)
+            depth += 1
+            parent = self.parent.get(parent)
+        return depth
 
     def classes(self) -> list[str]:
         """Every class the model defines, superclass before subclass."""
@@ -236,10 +254,7 @@ class Model:
         base = base[:-2].strip()
         if base in TEMPORAL_STRUCTS:
             return "Temporal"
-        for cls, ct in ROOT_CTYPE.items():
-            if ct == base:
-                return cls
-        return None
+        return self.wrap_root.get(base)
 
 
 class Method:
@@ -286,7 +301,7 @@ class Generator:
             return (wrapper_ret, "$")
         cls = self.m.class_for_ctype(c)
         if cls and wrapper_ret == "IntPtr":
-            return (f"{cls}?", f"MEOSFactory.Wrap{ROOT_CTYPE[cls]}($)")
+            return (f"{cls}?", f"MEOSFactory.Wrap{cls}($)")
         if wrapper_ret == "IntPtr[]":
             # An array of MEOS values reaches the wrapper as an array of pointers,
             # whether MEOS returns pointers (`T **`) or the values themselves
@@ -294,7 +309,7 @@ class Generator:
             # element into the class each value's header names.
             elem = self.m.class_for_ctype(c[:-1] if c.endswith(" **") else c)
             if elem:
-                return (f"{elem}?[]", f"MEOSFactory.Wrap{ROOT_CTYPE[elem]}Array($)")
+                return (f"{elem}?[]", f"MEOSFactory.Wrap{elem}Array($)")
         if wrapper_ret in ("long[]", "int[]", "double[]", "byte[]"):
             return (wrapper_ret, "$")
         return None
@@ -582,7 +597,7 @@ class Generator:
         node = self.m.om["lattice"].get(cls)
         if node and node.get("doc"):
             return node["doc"]
-        for family in ("Box", "Collection"):
+        for family in self.m.companion_families():
             node = self.m.om["companions"][family]["nodes"].get(cls)
             if node and node.get("doc"):
                 return node["doc"]
@@ -855,7 +870,9 @@ namespace {EXCEPTION_NAMESPACE}
         }
         # Only the classes a pointer is actually wrapped in: the template subtypes
         # are Temporal at the surface (see Model.class_for_ctype).
-        for root in ("Temporal", "Set", "Span", "SpanSet", "TBox", "STBox"):
+        roots = [r for c, r in sorted(self.m.wrap_root.items())
+                 if c not in TEMPORAL_STRUCTS or r == "Temporal"]
+        for root in roots:
             lines += self._wrap_method(root, discriminator.get(root),
                                        subtype_offset, subtype_values)
         lines += ["    }", "}", ""]
