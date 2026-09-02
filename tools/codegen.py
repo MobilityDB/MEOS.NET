@@ -72,11 +72,59 @@ SCALAR_MAP: dict[str, str] = {
 # added enum from arriving as an opaque pointer the way a hand-list leaves it.
 ENUM_TYPES: set[str] = set()
 
+# The catalog's structs by name, filled in by ``configure``.  An array of struct
+# values is walked at the struct's own stride, which the field layout the catalog
+# records is what gives.
+STRUCTS: dict[str, dict] = {}
+
 
 def configure(idl: dict) -> None:
     """Take from the catalog the type facts the mapping below reads."""
     ENUM_TYPES.clear()
     ENUM_TYPES.update(e["name"] for e in idl.get("enums", []) if e.get("name"))
+    STRUCTS.clear()
+    STRUCTS.update({s["name"]: s for s in idl.get("structs", []) if s.get("fields")})
+
+
+# Size and alignment in bytes of the scalar C types a struct field can have, on
+# the 64-bit targets the binding ships for.
+_SCALAR_BYTES: dict[str, int] = {
+    "bool": 1, "char": 1, "int8": 1, "int8_t": 1, "uint8": 1, "uint8_t": 1,
+    "short": 2, "int16": 2, "int16_t": 2, "uint16": 2, "uint16_t": 2,
+    "int": 4, "int32": 4, "int32_t": 4, "uint32": 4, "uint32_t": 4,
+    "float": 4, "Oid": 4, "DateADT": 4,
+    "long": 8, "int64": 8, "int64_t": 8, "uint64": 8, "uint64_t": 8,
+    "double": 8, "float8": 8, "Datum": 8, "Timestamp": 8, "TimestampTz": 8,
+    "TimeADT": 8, "size_t": 8, "uintptr_t": 8,
+}
+
+
+def _type_layout(c_type: str) -> tuple[int, int]:
+    """``(size, alignment)`` in bytes of a struct field's type: a scalar, a
+    pointer, a fixed-size array, or a nested catalog struct."""
+    t = c_type.replace("const ", "").strip()
+    if t.endswith("*"):
+        return (8, 8)
+    if "[" in t:
+        base, count = t[:t.index("[")].strip(), int(t[t.index("[") + 1:t.index("]")])
+        size, align = _type_layout(base)
+        return (size * count, align)
+    if t in STRUCTS:
+        return struct_layout(t)
+    if t not in _SCALAR_BYTES:
+        raise KeyError(f"struct field type {t!r} has no known layout")
+    return (_SCALAR_BYTES[t], _SCALAR_BYTES[t])
+
+
+def struct_layout(name: str) -> tuple[int, int]:
+    """``(size, alignment)`` of a catalog struct: each field sits at the offset the
+    catalog records, and the whole is padded to a multiple of its widest field."""
+    size = align = 1
+    for field in STRUCTS[name]["fields"]:
+        fsize, falign = _type_layout(field["cType"])
+        align = max(align, falign)
+        size = max(size, field["offset_bits"] // 8 + fsize)
+    return ((size + align - 1) // align * align, align)
 
 
 # C pointer-to-char marshalled as managed string when StringMarshalling.Utf8 is on.
@@ -216,6 +264,11 @@ def _csharp_array_element(c_type: str, canonical: str) -> tuple[str, str]:
         return (elem, "Marshal.Copy")
     if base == "uint8_t":
         return ("byte", "ByteBuffer")
+    if stars == 1 and base in STRUCTS:
+        # A single pointer to a catalog struct is an array of struct VALUES, not
+        # of pointers: element i sits at the struct's own stride, and reading it
+        # as a pointer reads the first eight bytes of the value itself.
+        return ("IntPtr", f"StructArray:{struct_layout(base)[0]}")
     return ("IntPtr", "IntPtrArray")
 
 
@@ -247,7 +300,8 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
     ext_call_args: list[str] = []
     setup: list[str] = []
     teardown: list[str] = []
-    output_locals: list[tuple[str, dict, str]] = []  # (output_param_local, oa_dict, elem_csharp_type)
+    # (output_param_local, oa_dict, elem_csharp_type, marshal_strategy)
+    output_locals: list[tuple[str, dict, str, str]] = []
 
     for p in f.get("params", []):
         pname = csharp_param_name(p["name"]) if p["name"] else "arg"
@@ -264,8 +318,8 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
             teardown.append(f"            Marshal.FreeHGlobal({local});")
             ext_call_args.append(local)
             oa = next(oa for oa in output_params if oa["param"] == p["name"])
-            elem, _strategy = _csharp_array_element(p["cType"], p["canonical"])
-            output_locals.append((local, oa, elem))
+            elem, strategy = _csharp_array_element(p["cType"], p["canonical"])
+            output_locals.append((local, oa, elem, strategy))
             continue
         sig_params.append(f"{ptype} {pname}")
         ext_call_args.append(pname)
@@ -275,7 +329,7 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
     if array_ret:
         ret_elem, _ = _csharp_array_element(f["returnType"]["c"], f["returnType"]["canonical"])
         ret_pieces.append(f"{ret_elem}[]")
-    for _, _oa, elem in output_locals:
+    for _, _oa, elem, _strategy in output_locals:
         ret_pieces.append(f"{elem}[]")
     if not ret_pieces:
         return []  # nothing to type; fall back.
@@ -308,13 +362,21 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
         lines.append(f"                {ret_elem}[] _resultArr = new {ret_elem}[_n];")
         if ret_strategy == "Marshal.Copy":
             lines.append("                Marshal.Copy(_resultPtr, _resultArr, 0, _n);")
+        elif ret_strategy.startswith("StructArray:"):
+            stride = ret_strategy.split(":", 1)[1]
+            lines.append("                for (int _i = 0; _i < _n; _i++)")
+            lines.append(f"                {{ _resultArr[_i] = IntPtr.Add(_resultPtr, _i * {stride}); }}")
         else:
             lines.append("                for (int _i = 0; _i < _n; _i++)")
             lines.append("                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }")
-    for local, oa, elem in output_locals:
+    for local, oa, elem, strategy in output_locals:
         lines.append(f"                IntPtr _{local}_arr = Marshal.ReadIntPtr({local});")
         lines.append(f"                {elem}[] _{local}_out = new {elem}[_n];")
-        if elem == "IntPtr":
+        if strategy.startswith("StructArray:"):
+            stride = strategy.split(":", 1)[1]
+            lines.append(f"                for (int _i = 0; _i < _n; _i++)")
+            lines.append(f"                {{ _{local}_out[_i] = IntPtr.Add(_{local}_arr, _i * {stride}); }}")
+        elif elem == "IntPtr":
             lines.append(f"                for (int _i = 0; _i < _n; _i++)")
             lines.append(f"                {{ _{local}_out[_i] = Marshal.ReadIntPtr(_{local}_arr, _i * IntPtr.Size); }}")
         else:
@@ -324,7 +386,7 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
     return_pieces: list[str] = []
     if array_ret:
         return_pieces.append("_resultArr")
-    for local, _, _ in output_locals:
+    for local, _, _, _ in output_locals:
         return_pieces.append(f"_{local}_out")
     if len(return_pieces) == 1:
         lines.append(f"                return {return_pieces[0]};")
@@ -356,6 +418,10 @@ def _emit_array_return_wrapper(f: dict, ext_params: str, ext_args: str) -> list[
         out = [f"{indent}{elem}[] _out = new {elem}[_n];"]
         if strategy == "Marshal.Copy":
             out.append(f"{indent}Marshal.Copy(_p, _out, 0, _n);")
+        elif strategy.startswith("StructArray:"):
+            stride = strategy.split(":", 1)[1]
+            out.append(f"{indent}for (int _i = 0; _i < _n; _i++)")
+            out.append(f"{indent}{{ _out[_i] = IntPtr.Add(_p, _i * {stride}); }}")
         else:
             out.append(f"{indent}for (int _i = 0; _i < _n; _i++)")
             out.append(f"{indent}{{ _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }}")
