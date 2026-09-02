@@ -4,6 +4,10 @@
 `MEOS.NET/Internal/MEOSExposedFunctions.cs` from MobilityDB/MEOS-API's
 unified `meos-idl.json` catalog.
 
+`objectgen.py` regenerates `MEOS.NET/Types/Generated/*.g.cs` — the object
+layer — from the same catalog's `objectModel`, which is the ecosystem-wide
+source of truth for the class hierarchy implicit in MEOS.
+
 This replaces the previous regex-based `MEOS.NET.Builder` workflow, which
 had known parse defects (e.g. `int32_t srid` rendered as `int_t srid`,
 single-line-only regex, hardcoded developer DllPath).
@@ -23,13 +27,17 @@ single-line-only regex, hardcoded developer DllPath).
    python run.py                                  # emits output/meos-idl.json
    ```
 
-2. Run the generator from this repo:
+2. Run the generators from this repo:
    ```
    python3 tools/codegen.py /path/to/meos-idl.json
+   python3 tools/objectgen.py /path/to/meos-idl.json --report
    ```
 
 The two `.cs` files under `MEOS.NET/Internal/` are overwritten in place
-with bindings for every public MEOS function in the catalog.
+with bindings for every public MEOS function in the catalog, and
+`MEOS.NET/Types/Generated/` is rewritten with one class per object-model
+class. `--report` lists, per class, every method the object layer leaves
+to the raw binding and why.
 
 ## DllPath
 
@@ -41,6 +49,30 @@ generator:
 ```
 python3 tools/codegen.py /path/to/meos-idl.json --dll-path libmeos.so.1
 ```
+
+## The object layer
+
+One C# class per `objectModel.classes` entry, inheriting along the model's
+own parent edges: the temporal lattice under `Temporal`, the `Set`/`Span`/
+`SpanSet` collections under `Collection`, and `TBox`/`STBox` under `Box`. A
+concrete class is the product leaf x subtype — `TFloatSeq`, `TGeomPointInst`
+— and inherits its leaf, which carries the larger surface.
+
+Every method delegates to the `MEOSExposedFunctions` wrapper of the function
+the model assigns it, reading that wrapper's signature from `codegen.py` so
+the two generators cannot disagree about a folded out-parameter. A returned
+MEOS pointer goes through `MEOSFactory`, which reads the discriminator the
+catalog's own struct layout puts in the value's header — `Temporal.temptype`
+and `Temporal.subtype`, `Set.settype`, `Span.spantype`,
+`SpanSet.spansettype` — and hands back the exact class. Every temporal
+struct starts with the Temporal header, so a `TInstant *` or `TSequence *`
+return is a `Temporal` at the surface whose runtime class is the concrete
+one.
+
+A method whose marshalling the layer does not emit — a `GSERIALIZED *`
+geometry, an `Interval *`, a counted array argument, a scalar
+out-parameter — is reported by `--report` and left to the raw binding, which
+carries every function either way.
 
 ## Type mapping
 

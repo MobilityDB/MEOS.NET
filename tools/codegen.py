@@ -238,6 +238,14 @@ def gen_external_functions(funcs: list[dict]) -> str:
     return "\n".join(lines) + "\n"
 
 
+# The public signature each exposed wrapper is emitted with, keyed by function
+# name: ``(csharp_return_type, [(csharp_param_type, param_name), ...])``.  A
+# wrapper's signature is decided by the shape folding below rather than by the
+# raw C parameter list, so a second generator over the same catalog reads the
+# signature from here instead of re-deriving the folding rules and drifting.
+SIGNATURES: dict[str, tuple[str, list[tuple[str, str]]]] = {}
+
+
 # Element types we know how to Marshal.Copy from a C array pointer back into
 # a managed C# array.  IntPtr is the fallback for wrapped opaque pointers.
 _MARSHAL_ELEM: dict[str, str] = {
@@ -310,6 +318,7 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
     # count from the user-facing signature.
     output_names = {oa["param"] for oa in output_params}
     sig_params: list[str] = []
+    sig_types: list[tuple[str, str]] = []
     ext_call_args: list[str] = []
     setup: list[str] = []
     teardown: list[str] = []
@@ -335,6 +344,7 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
             output_locals.append((local, oa, elem, strategy))
             continue
         sig_params.append(f"{ptype} {pname}")
+        sig_types.append((ptype, pname))
         ext_call_args.append(pname)
 
     # Compose the return tuple type.
@@ -353,6 +363,7 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
 
     user_params = ", ".join(sig_params)
     ext_args = ", ".join(ext_call_args)
+    SIGNATURES[name] = (ret_type, sig_types)
 
     lines: list[str] = []
     lines.append(f"        public static {ret_type} {name}({user_params})")
@@ -442,6 +453,7 @@ def _emit_array_return_wrapper(f: dict, ext_params: str, ext_args: str) -> list[
         return out
 
     if length_meta["kind"] == "accessor":
+        SIGNATURES[name] = (ret_type, _typed_params(f))
         accessor = length_meta["func"]
         arg = csharp_param_name(length_meta["arg"])
         lines = [
@@ -464,6 +476,7 @@ def _emit_array_return_wrapper(f: dict, ext_params: str, ext_args: str) -> list[
     call_args = ", ".join(
         "_cnt" if csharp_param_name(p["name"]) == count_name else csharp_param_name(p["name"])
         for p in f["params"])
+    SIGNATURES[name] = (ret_type, [t for t in _typed_params(f) if t[1] != count_name])
     lines = [
         f"        public static {ret_type} {name}({pub})",
         "        {",
@@ -486,11 +499,13 @@ def _emit_simple_passthrough(f: dict, ext_params: str, ext_args: str, default_rt
     name = f["name"]
     rt = default_rt or csharp_return_type(f["returnType"]["c"], f["returnType"]["canonical"])
     if default_rt is None and is_borrowed_string(f["returnType"]["c"]):
+        SIGNATURES[name] = ("string?", _typed_params(f))
         return [
             f"        public static string? {name}({ext_params})",
             f"            => Marshal.PtrToStringUTF8("
             f"SafeExecution<IntPtr>(() => MEOSExternalFunctions.{name}({ext_args})));",
         ]
+    SIGNATURES[name] = (rt, _typed_params(f))
     if rt == "void":
         return [
             f"        public static void {name}({ext_params})",
@@ -539,6 +554,13 @@ def gen_exposed_functions(funcs: list[dict]) -> str:
     lines.append("    }")
     lines.append("}")
     return "\n".join(lines) + "\n"
+
+
+def _typed_params(f: dict) -> list[tuple[str, str]]:
+    """The wrapper's parameter list as ``(csharp_type, name)`` pairs, in order."""
+    return [(csharp_param_type(p["cType"], p["canonical"]),
+             csharp_param_name(p["name"]) if p["name"] else "arg")
+            for p in f.get("params", [])]
 
 
 def _format_params(f: dict) -> tuple[str, str]:
