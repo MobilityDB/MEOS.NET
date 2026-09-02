@@ -1,4 +1,4 @@
-﻿using MEOS.NET.Internal;
+﻿using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Collections.Integer
 {
@@ -9,7 +9,7 @@ namespace MEOS.NET.Types.Collections.Integer
 
         public static IntegerSpan FromBounds(int xMin, int xMax, bool minInclusive = true, bool maxInclusive = false)
         {
-            var res = MEOSExposedFunctions.intspan_make(xMin, xMax, minInclusive, maxInclusive);
+            var res = Meos.IntspanMake(xMin, xMax, minInclusive, maxInclusive);
             return new IntegerSpan(res);
         }
 

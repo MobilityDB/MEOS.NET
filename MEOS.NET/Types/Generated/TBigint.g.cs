@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,52 +12,52 @@ namespace MEOS.NET.Types.Generated
         internal TBigint(IntPtr ptr) : base(ptr) { }
 
         public long EndValue()
-            => MEOSExposedFunctions.tbigint_end_value(this.Ptr);
+            => Meos.TbigintEndValue(this.Ptr);
 
         public long MaxValue()
-            => MEOSExposedFunctions.tbigint_max_value(this.Ptr);
+            => Meos.TbigintMaxValue(this.Ptr);
 
         public long MinValue()
-            => MEOSExposedFunctions.tbigint_min_value(this.Ptr);
+            => Meos.TbigintMinValue(this.Ptr);
 
         public string Out()
-            => MEOSExposedFunctions.tbigint_out(this.Ptr);
+            => Meos.TbigintOut(this.Ptr);
 
         public Temporal? ScaleValue(long width)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbigint_scale_value(this.Ptr, width));
+            => MEOSFactory.WrapTemporal(Meos.TbigintScaleValue(this.Ptr, width));
 
         public Temporal? ShiftScaleValue(long shift, long width)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbigint_shift_scale_value(this.Ptr, shift, width));
+            => MEOSFactory.WrapTemporal(Meos.TbigintShiftScaleValue(this.Ptr, shift, width));
 
         public Temporal? ShiftValue(long shift)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbigint_shift_value(this.Ptr, shift));
+            => MEOSFactory.WrapTemporal(Meos.TbigintShiftValue(this.Ptr, shift));
 
         public long StartValue()
-            => MEOSExposedFunctions.tbigint_start_value(this.Ptr);
+            => Meos.TbigintStartValue(this.Ptr);
 
         public Temporal? ToTfloat()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbigint_to_tfloat(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TbigintToTfloat(this.Ptr));
 
         public Temporal? ToTh3index()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbigint_to_th3index(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TbigintToTh3index(this.Ptr));
 
         public Temporal? ToTint()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbigint_to_tint(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TbigintToTint(this.Ptr));
 
         public Temporal? ToTquadbin()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbigint_to_tquadbin(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TbigintToTquadbin(this.Ptr));
 
         public Temporal? ToTs2cell()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbigint_to_ts2cell(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TbigintToTs2cell(this.Ptr));
 
         public static Temporal? FromBaseTemp(long i, Temporal temp)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbigint_from_base_temp(i, temp.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TbigintFromBaseTemp(i, temp.Ptr));
 
         public static Temporal? FromMFJSON(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbigint_from_mfjson(str));
+            => MEOSFactory.WrapTemporal(Meos.TbigintFromMfjson(str));
 
         public static Temporal? In(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbigint_in(str));
+            => MEOSFactory.WrapTemporal(Meos.TbigintIn(str));
 
     }
 }

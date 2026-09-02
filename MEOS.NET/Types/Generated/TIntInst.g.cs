@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,7 +12,7 @@ namespace MEOS.NET.Types.Generated
         internal TIntInst(IntPtr ptr) : base(ptr) { }
 
         public static Temporal? Make(int i, DateTime t)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tintinst_make(i, MEOSConvert.ToTimestampTz(t)));
+            => MEOSFactory.WrapTemporal(Meos.TintinstMake(i, MEOSConvert.ToTimestampTz(t)));
 
     }
 }

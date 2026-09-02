@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,19 +12,19 @@ namespace MEOS.NET.Types.Generated
         internal TextSet(IntPtr ptr) : base(ptr) { }
 
         public Set? Initcap()
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.textset_initcap(this.Ptr));
+            => MEOSFactory.WrapSet(Meos.TextsetInitcap(this.Ptr));
 
         public Set? Lower()
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.textset_lower(this.Ptr));
+            => MEOSFactory.WrapSet(Meos.TextsetLower(this.Ptr));
 
         public string Out()
-            => MEOSExposedFunctions.textset_out(this.Ptr);
+            => Meos.TextsetOut(this.Ptr);
 
         public Set? Upper()
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.textset_upper(this.Ptr));
+            => MEOSFactory.WrapSet(Meos.TextsetUpper(this.Ptr));
 
         public static Set? In(string str)
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.textset_in(str));
+            => MEOSFactory.WrapSet(Meos.TextsetIn(str));
 
     }
 }

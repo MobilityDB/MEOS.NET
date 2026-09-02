@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,40 +12,40 @@ namespace MEOS.NET.Types.Generated
         internal TPoint(IntPtr ptr) : base(ptr) { }
 
         public Temporal? AngularDifference()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpoint_angular_difference(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TpointAngularDifference(this.Ptr));
 
         public Temporal? AtElevation(Span s)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpoint_at_elevation(this.Ptr, s.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TpointAtElevation(this.Ptr, s.Ptr));
 
         public Temporal? Azimuth()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpoint_azimuth(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TpointAzimuth(this.Ptr));
 
         public Temporal? CumulativeLength()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpoint_cumulative_length(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TpointCumulativeLength(this.Ptr));
 
         public Temporal? GetX()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpoint_get_x(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TpointGetX(this.Ptr));
 
         public Temporal? GetY()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpoint_get_y(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TpointGetY(this.Ptr));
 
         public Temporal? GetZ()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpoint_get_z(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TpointGetZ(this.Ptr));
 
         public bool IsSimple()
-            => MEOSExposedFunctions.tpoint_is_simple(this.Ptr);
+            => Meos.TpointIsSimple(this.Ptr);
 
         public double Length()
-            => MEOSExposedFunctions.tpoint_length(this.Ptr);
+            => Meos.TpointLength(this.Ptr);
 
         public Temporal?[] MakeSimple()
-            => MEOSFactory.WrapTemporalArray(MEOSExposedFunctions.tpoint_make_simple(this.Ptr));
+            => MEOSFactory.WrapTemporalArray(Meos.TpointMakeSimple(this.Ptr));
 
         public Temporal? MinusElevation(Span s)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpoint_minus_elevation(this.Ptr, s.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TpointMinusElevation(this.Ptr, s.Ptr));
 
         public Temporal? Speed()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpoint_speed(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TpointSpeed(this.Ptr));
 
     }
 }

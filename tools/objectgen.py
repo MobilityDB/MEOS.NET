@@ -9,7 +9,7 @@ the Box and Collection hierarchies, and ``classes.<Class>.methods`` assigns ever
 public MEOS function to the class it is a method of, with its canonical camelCase
 ``ooName``.  This generator projects that model onto C#: one class per model class,
 inheritance from the model's parent edges, and one method per assigned function
-delegating to the ``MEOSExposedFunctions`` wrapper that ``codegen.py`` emits for the
+delegating to the ``Meos`` wrapper that ``codegen.py`` emits for the
 same function.
 
 The wrapper signatures come from ``codegen.SIGNATURES`` rather than from the raw C
@@ -345,7 +345,7 @@ class Generator:
             sig.append((mapped[0], pname))
             args.append(mapped[1])
 
-        call = f"MEOSExposedFunctions.{fname}({', '.join(args)})"
+        call = f"Meos.{codegen.public_name(fname)}({', '.join(args)})"
         return Method(pascal(oo), ret_type, sig, ret_expr.replace("$", call), static)
 
     def inherited_names(self, cls: str) -> set[tuple]:
@@ -375,7 +375,7 @@ class Generator:
             "#nullable enable",
             "",
             "using MEOS.NET.Enums;",
-            "using MEOS.NET.Internal;",
+            "using MEOS.NET.Functions;",
             "",
             f"namespace {NAMESPACE}",
             "{",
@@ -439,7 +439,7 @@ namespace {NAMESPACE}
 
 using System.Globalization;
 
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace {NAMESPACE}
 {{
@@ -449,24 +449,24 @@ namespace {NAMESPACE}
     {{
         /// <summary>A MEOS TimestampTz as a DateTime.</summary>
         internal static DateTime ToDateTime(long timestamptz)
-            => DateTime.Parse(MEOSExposedFunctions.timestamptz_out(timestamptz),
+            => DateTime.Parse(Meos.TimestamptzOut(timestamptz),
                 CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal
                     | DateTimeStyles.AssumeUniversal);
 
         /// <summary>A DateTime as a MEOS TimestampTz.</summary>
         internal static long ToTimestampTz(DateTime moment)
-            => MEOSExposedFunctions.timestamptz_in(
+            => Meos.TimestamptzIn(
                 moment.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss.ffffff+00",
                     CultureInfo.InvariantCulture), -1);
 
         /// <summary>A MEOS DateADT as a DateOnly.</summary>
         internal static DateOnly ToDateOnly(int date)
-            => DateOnly.Parse(MEOSExposedFunctions.date_out(date),
+            => DateOnly.Parse(Meos.DateOut(date),
                 CultureInfo.InvariantCulture);
 
         /// <summary>A DateOnly as a MEOS DateADT.</summary>
         internal static int ToDateADT(DateOnly day)
-            => MEOSExposedFunctions.date_in(
+            => Meos.DateIn(
                 day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
     }}
 }}

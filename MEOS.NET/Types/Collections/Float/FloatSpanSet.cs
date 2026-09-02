@@ -1,4 +1,4 @@
-﻿using MEOS.NET.Internal;
+﻿using MEOS.NET.Functions;
 using MEOS.NET.Types.Collections.Integer;
 
 namespace MEOS.NET.Types.Collections.Float
@@ -10,7 +10,7 @@ namespace MEOS.NET.Types.Collections.Float
 
         public static FloatSpanSet FromString(string input)
         {
-            var res = MEOSExposedFunctions.floatspanset_in(input);
+            var res = Meos.FloatspansetIn(input);
             return new FloatSpanSet(res);
         }
 
@@ -19,12 +19,12 @@ namespace MEOS.NET.Types.Collections.Float
 
         public IntegerSpanSet ToIntegerSpanSet()
         {
-            var res = MEOSExposedFunctions.floatspanset_to_intspanset(this._ptr);
+            var res = Meos.FloatspansetToIntspanset(this._ptr);
             return new IntegerSpanSet(res);
         }
 
         public string Format(int maxDecimals)
-            => MEOSExposedFunctions.floatspanset_out(this._ptr, maxdd: maxDecimals);
+            => Meos.FloatspansetOut(this._ptr, maxdd: maxDecimals);
 
         public override string ToString()
             => this.Format(15);
@@ -40,67 +40,67 @@ namespace MEOS.NET.Types.Collections.Float
 
         public FloatSpanSet Shift(double delta)
         {
-            var res = MEOSExposedFunctions.floatspanset_shift_scale(this._ptr, delta, 0.0, hasshift: true, haswidth: false);
+            var res = Meos.FloatspansetShiftScale(this._ptr, delta, 0.0, hasshift: true, haswidth: false);
             return new FloatSpanSet(res);
         }
 
         public FloatSpanSet Scale(double newWidth)
         {
-            var res = MEOSExposedFunctions.floatspanset_shift_scale(this._ptr, 0.0, newWidth, hasshift: false, haswidth: true);
+            var res = Meos.FloatspansetShiftScale(this._ptr, 0.0, newWidth, hasshift: false, haswidth: true);
             return new FloatSpanSet(res);
         }
 
         public FloatSpanSet ShiftScale(double delta, double newWidth)
         {
-            var res = MEOSExposedFunctions.floatspanset_shift_scale(this._ptr, delta, newWidth, hasshift: true, haswidth: true);
+            var res = Meos.FloatspansetShiftScale(this._ptr, delta, newWidth, hasshift: true, haswidth: true);
             return new FloatSpanSet(res);
         }
 
         public bool IsAdjacent(double number)
-            => (MEOSExposedFunctions.adjacent_spanset_float(this._ptr, number));
+            => (Meos.AdjacentSpansetFloat(this._ptr, number));
 
         public bool IsAdjacent(int number)
             => this.IsAdjacent((double)number);
 
         public bool Contains(double number)
-            => (MEOSExposedFunctions.contains_spanset_float(this._ptr, number));
+            => (Meos.ContainsSpansetFloat(this._ptr, number));
 
         public bool Contains(int number)
             => this.IsAdjacent((double)number);
 
         public bool IsLeftOf(double number)
-            => (MEOSExposedFunctions.left_spanset_float(this._ptr, number));
+            => (Meos.LeftSpansetFloat(this._ptr, number));
 
         public bool IsLeftOf(int number)
             => this.IsLeftOf((double)number);
 
         public bool IsOverOrLeftOf(double number)
-            => (MEOSExposedFunctions.overleft_spanset_float(this._ptr, number));
+            => (Meos.OverleftSpansetFloat(this._ptr, number));
 
         public bool IsOverOrLeftOf(int number)
             => this.IsOverOrLeftOf((double)number);
 
         public bool IsRightOf(double number)
-            => (MEOSExposedFunctions.right_spanset_float(this._ptr, number));
+            => (Meos.RightSpansetFloat(this._ptr, number));
 
         public bool IsRightOf(int number)
             => this.IsRightOf((double)number);
 
         public bool IsOverOrRightOf(double number)
-            => (MEOSExposedFunctions.overright_spanset_float(this._ptr, number));
+            => (Meos.OverrightSpansetFloat(this._ptr, number));
 
         public bool IsOverOrRightOf(int number)
             => this.IsOverOrLeftOf((double)number);
 
         public double DistanceTo(double number)
-            => MEOSExposedFunctions.distance_spanset_float(this._ptr, number);
+            => Meos.DistanceSpansetFloat(this._ptr, number);
 
         public double DistanceTo(int number)
             => this.DistanceTo((double)number);
 
         public FloatSpanSet IntersectionWith(double number)
         {
-            var res = MEOSExposedFunctions.intersection_spanset_float(this._ptr, number);
+            var res = Meos.IntersectionSpansetFloat(this._ptr, number);
             return new FloatSpanSet(res);
         }
 
@@ -109,7 +109,7 @@ namespace MEOS.NET.Types.Collections.Float
 
         public FloatSpanSet Minus(double number)
         {
-            var res = MEOSExposedFunctions.minus_spanset_float(this._ptr, number);
+            var res = Meos.MinusSpansetFloat(this._ptr, number);
             return new FloatSpanSet(res);
         }
 
@@ -118,7 +118,7 @@ namespace MEOS.NET.Types.Collections.Float
 
         public FloatSpanSet UnionWith(double number)
         {
-            var res = MEOSExposedFunctions.union_spanset_float(this._ptr, number);
+            var res = Meos.UnionSpansetFloat(this._ptr, number);
             return new FloatSpanSet(res);
         }
 

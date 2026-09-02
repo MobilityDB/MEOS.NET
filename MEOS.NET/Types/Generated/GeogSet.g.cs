@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,7 +12,7 @@ namespace MEOS.NET.Types.Generated
         internal GeogSet(IntPtr ptr) : base(ptr) { }
 
         public static Set? In(string str)
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.geogset_in(str));
+            => MEOSFactory.WrapSet(Meos.GeogsetIn(str));
 
     }
 }

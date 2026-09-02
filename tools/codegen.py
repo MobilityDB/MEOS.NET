@@ -23,6 +23,11 @@ from pathlib import Path
 DLL_PATH = "meos"
 GENERATOR_VERSION = "0.1.0"
 
+# The public surface: one static class, in one namespace, split across one file
+# per MEOS header exactly as the catalog groups the functions.
+NAMESPACE = "MEOS.NET.Functions"
+CLASS = "Meos"
+
 # Canonical C type -> C# parameter/return type.
 # `canonical` field from meos-idl.json is libclang-normalized (e.g. int32_t -> int).
 SCALAR_MAP: dict[str, str] = {
@@ -173,6 +178,15 @@ def csharp_return_type(c_type: str, canonical: str) -> str:
     return csharp_type_for(canonical)
 
 
+def public_name(c_name: str) -> str:
+    """The C# name of a MEOS function: `tfloat_in` reads `TfloatIn`.
+
+    Each underscore-separated part is capitalized and the underscores dropped,
+    which is the spelling GoMEOS exports (`MeosInitialize`, `TfloatIn`) — one
+    ecosystem-wide rule rather than a per-binding invention."""
+    return "".join(part[:1].upper() + part[1:] for part in c_name.split("_") if part)
+
+
 def csharp_param_name(name: str) -> str:
     """Avoid C# reserved keywords as parameter names."""
     reserved = {
@@ -198,14 +212,12 @@ def gen_external_functions(funcs: list[dict]) -> str:
     lines.append("using System.CodeDom.Compiler;")
     lines.append("using System.Runtime.InteropServices;")
     lines.append("")
-    lines.append("using MEOS.NET.Enums;")
-    lines.append("")
-    lines.append("namespace MEOS.NET.Internal")
+    lines.append(f"namespace {NAMESPACE}")
     lines.append("{")
-    lines.append("    internal partial class MEOSExposedFunctions")
+    lines.append(f"    public static partial class {CLASS}")
     lines.append("    {")
-    lines.append(f'        [GeneratedCode("MEOS.NET.Builder.MEOSIDL", "{GENERATOR_VERSION}")]')
-    lines.append("        private partial class MEOSExternalFunctions")
+    lines.append(f'        [GeneratedCode("MEOS.NET.Codegen", "{GENERATOR_VERSION}")]')
+    lines.append("        private static partial class Native")
     lines.append("        {")
     lines.append(f'            private const string DllPath = "{DLL_PATH}";')
     lines.append("")
@@ -226,10 +238,11 @@ def gen_external_functions(funcs: list[dict]) -> str:
             else:
                 params.append(f"{ptype} {pname}")
         param_list = ", ".join(params)
-        lines.append("            [LibraryImport(DllPath, StringMarshalling = StringMarshalling.Utf8)]")
+        lines.append(f'            [LibraryImport(DllPath, EntryPoint = "{name}", '
+                     "StringMarshalling = StringMarshalling.Utf8)]")
         if rt == "bool":
             lines.append("            [return: MarshalAs(UnmanagedType.U1)]")
-        lines.append(f"            public static partial {rt} {name}({param_list});")
+        lines.append(f"            internal static partial {rt} {public_name(name)}({param_list});")
         lines.append("")
 
     lines.append("        }")
@@ -366,20 +379,20 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
     SIGNATURES[name] = (ret_type, sig_types)
 
     lines: list[str] = []
-    lines.append(f"        public static {ret_type} {name}({user_params})")
+    lines.append(f"        public static {ret_type} {public_name(name)}({user_params})")
     lines.append("        {")
     lines.extend(setup)
     lines.append("            try")
     lines.append("            {")
     if array_ret:
-        lines.append(f"                IntPtr _resultPtr = SafeExecution<IntPtr>(() => MEOSExternalFunctions.{name}({ext_args}));")
+        lines.append(f"                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.{public_name(name)}({ext_args}));")
     else:
         # Void or bool return with only outputs.
         rt = csharp_return_type(f["returnType"]["c"], f["returnType"]["canonical"])
         if rt == "void":
-            lines.append(f"                SafeExecution(() => MEOSExternalFunctions.{name}({ext_args}));")
+            lines.append(f"                SafeExecution(() => Native.{public_name(name)}({ext_args}));")
         else:
-            lines.append(f"                SafeExecution<{rt}>(() => MEOSExternalFunctions.{name}({ext_args}));")
+            lines.append(f"                SafeExecution<{rt}>(() => Native.{public_name(name)}({ext_args}));")
     lines.append(f"                int _n = Marshal.ReadInt32(_count_{count_param});")
     if array_ret:
         ret_elem, ret_strategy = _csharp_array_element(f["returnType"]["c"], f["returnType"]["canonical"])
@@ -457,10 +470,10 @@ def _emit_array_return_wrapper(f: dict, ext_params: str, ext_args: str) -> list[
         accessor = length_meta["func"]
         arg = csharp_param_name(length_meta["arg"])
         lines = [
-            f"        public static {ret_type} {name}({ext_params})",
+            f"        public static {ret_type} {public_name(name)}({ext_params})",
             "        {",
-            f"            int _n = (int)MEOSExposedFunctions.{accessor}({arg});",
-            f"            IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.{name}({ext_args}));",
+            f"            int _n = (int)Meos.{public_name(accessor)}({arg});",
+            f"            IntPtr _p = SafeExecution<IntPtr>(() => Native.{public_name(name)}({ext_args}));",
         ]
         lines += _copy("            ")
         lines.append("        }")
@@ -478,12 +491,12 @@ def _emit_array_return_wrapper(f: dict, ext_params: str, ext_args: str) -> list[
         for p in f["params"])
     SIGNATURES[name] = (ret_type, [t for t in _typed_params(f) if t[1] != count_name])
     lines = [
-        f"        public static {ret_type} {name}({pub})",
+        f"        public static {ret_type} {public_name(name)}({pub})",
         "        {",
         "            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));",
         "            try",
         "            {",
-        f"                IntPtr _p = SafeExecution<IntPtr>(() => MEOSExternalFunctions.{name}({call_args}));",
+        f"                IntPtr _p = SafeExecution<IntPtr>(() => Native.{public_name(name)}({call_args}));",
         "                int _n = Marshal.ReadInt32(_cnt);",
     ]
     lines += _copy("                ")
@@ -501,24 +514,24 @@ def _emit_simple_passthrough(f: dict, ext_params: str, ext_args: str, default_rt
     if default_rt is None and is_borrowed_string(f["returnType"]["c"]):
         SIGNATURES[name] = ("string?", _typed_params(f))
         return [
-            f"        public static string? {name}({ext_params})",
+            f"        public static string? {public_name(name)}({ext_params})",
             f"            => Marshal.PtrToStringUTF8("
-            f"SafeExecution<IntPtr>(() => MEOSExternalFunctions.{name}({ext_args})));",
+            f"SafeExecution<IntPtr>(() => Native.{public_name(name)}({ext_args})));",
         ]
     SIGNATURES[name] = (rt, _typed_params(f))
     if rt == "void":
         return [
-            f"        public static void {name}({ext_params})",
-            f"            => SafeExecution(() => MEOSExternalFunctions.{name}({ext_args}));",
+            f"        public static void {public_name(name)}({ext_params})",
+            f"            => SafeExecution(() => Native.{public_name(name)}({ext_args}));",
         ]
     return [
-        f"        public static {rt} {name}({ext_params})",
-        f"            => SafeExecution<{rt}>(() => MEOSExternalFunctions.{name}({ext_args}));",
+        f"        public static {rt} {public_name(name)}({ext_params})",
+        f"            => SafeExecution<{rt}>(() => Native.{public_name(name)}({ext_args}));",
     ]
 
 
-def gen_exposed_functions(funcs: list[dict]) -> str:
-    """Generate the safe-executed wrappers.
+def gen_exposed_functions(funcs: list[dict], header: str | None = None) -> str:
+    """Generate the public wrappers, for one MEOS header or for all of them.
 
     Each wrapper either delegates straight through SafeExecution or, when
     meos-idl.json carries a ``shape`` annotation for the function, lifts
@@ -526,15 +539,15 @@ def gen_exposed_functions(funcs: list[dict]) -> str:
     sibling-accessor length emits a Marshal.Copy unpack; other shapes
     fall back to the IntPtr passthrough today."""
     lines: list[str] = []
-    lines.append("using System.CodeDom.Compiler;")
     lines.append("using System.Runtime.InteropServices;")
     lines.append("")
-    lines.append("using MEOS.NET.Enums;")
-    lines.append("")
-    lines.append("namespace MEOS.NET.Internal")
+    lines.append(f"namespace {NAMESPACE}")
     lines.append("{")
-    lines.append(f'    [GeneratedCode("MEOS.NET.Builder.MEOSIDL", "{GENERATOR_VERSION}")]')
-    lines.append("    internal partial class MEOSExposedFunctions")
+    if header:
+        lines.append(f"    /// <summary>The MEOS functions <c>{header}</c> declares.</summary>")
+    # The attribute names the whole partial type, so it sits on the one part that
+    # holds the native declarations; a second part carrying it is a duplicate.
+    lines.append(f"    public static partial class {CLASS}")
     lines.append("    {")
 
     for f in funcs:
@@ -554,6 +567,16 @@ def gen_exposed_functions(funcs: list[dict]) -> str:
     lines.append("    }")
     lines.append("}")
     return "\n".join(lines) + "\n"
+
+
+def by_header(funcs: list[dict]) -> dict[str, list[dict]]:
+    """The functions grouped by the header the catalog says declares them, which
+    is how the surface is split into files — the grouping MEOS itself publishes,
+    not one this generator invents."""
+    grouped: dict[str, list[dict]] = {}
+    for f in funcs:
+        grouped.setdefault(f.get("file") or "meos.h", []).append(f)
+    return grouped
 
 
 def _typed_params(f: dict) -> list[tuple[str, str]]:
@@ -582,12 +605,26 @@ def main(idl_path: str, dll_path: str = DLL_PATH) -> None:
     configure(idl)
     funcs = idl["functions"]
     repo_root = Path(__file__).resolve().parent.parent
-    out_dir = repo_root / "MEOS.NET" / "Internal"
+    out_dir = repo_root / "MEOS.NET" / "Functions"
+    if out_dir.exists():
+        for stale in out_dir.glob("*.g.cs"):
+            stale.unlink()
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    (out_dir / "MEOSExternalFunctions.cs").write_text(gen_external_functions(funcs))
-    (out_dir / "MEOSExposedFunctions.cs").write_text(gen_exposed_functions(funcs))
-    print(f"Wrote {len(funcs)} function bindings to MEOS.NET/Internal/", file=sys.stderr)
+    collisions = {}
+    for f in funcs:
+        collisions.setdefault(public_name(f["name"]), []).append(f["name"])
+    clashing = {k: v for k, v in collisions.items() if len(v) > 1}
+    if clashing:
+        raise SystemExit(f"codegen: C names sharing one C# name: {clashing}")
+
+    (out_dir / "Meos.Native.g.cs").write_text(gen_external_functions(funcs))
+    grouped = by_header(funcs)
+    for header, group in sorted(grouped.items()):
+        stem = header.removesuffix(".h")
+        (out_dir / f"Meos.{stem}.g.cs").write_text(gen_exposed_functions(group, header))
+    print(f"Wrote {len(funcs)} functions across {len(grouped)} headers "
+          f"to MEOS.NET/Functions/", file=sys.stderr)
 
 
 if __name__ == "__main__":

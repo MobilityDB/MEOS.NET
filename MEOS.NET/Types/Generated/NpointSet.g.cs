@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,13 +12,13 @@ namespace MEOS.NET.Types.Generated
         internal NpointSet(IntPtr ptr) : base(ptr) { }
 
         public string Out(int maxdd)
-            => MEOSExposedFunctions.npointset_out(this.Ptr, maxdd);
+            => Meos.NpointsetOut(this.Ptr, maxdd);
 
         public Set? Routes()
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.npointset_routes(this.Ptr));
+            => MEOSFactory.WrapSet(Meos.NpointsetRoutes(this.Ptr));
 
         public static Set? In(string str)
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.npointset_in(str));
+            => MEOSFactory.WrapSet(Meos.NpointsetIn(str));
 
     }
 }

@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,25 +12,25 @@ namespace MEOS.NET.Types.Generated
         internal IntSet(IntPtr ptr) : base(ptr) { }
 
         public int EndValue()
-            => MEOSExposedFunctions.intset_end_value(this.Ptr);
+            => Meos.IntsetEndValue(this.Ptr);
 
         public string Out()
-            => MEOSExposedFunctions.intset_out(this.Ptr);
+            => Meos.IntsetOut(this.Ptr);
 
         public Set? ShiftScale(int shift, int width, bool hasshift, bool haswidth)
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.intset_shift_scale(this.Ptr, shift, width, hasshift, haswidth));
+            => MEOSFactory.WrapSet(Meos.IntsetShiftScale(this.Ptr, shift, width, hasshift, haswidth));
 
         public int StartValue()
-            => MEOSExposedFunctions.intset_start_value(this.Ptr);
+            => Meos.IntsetStartValue(this.Ptr);
 
         public Set? ToFloatset()
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.intset_to_floatset(this.Ptr));
+            => MEOSFactory.WrapSet(Meos.IntsetToFloatset(this.Ptr));
 
         public int[] Values()
-            => MEOSExposedFunctions.intset_values(this.Ptr);
+            => Meos.IntsetValues(this.Ptr);
 
         public static Set? In(string str)
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.intset_in(str));
+            => MEOSFactory.WrapSet(Meos.IntsetIn(str));
 
     }
 }

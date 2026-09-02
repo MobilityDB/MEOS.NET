@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,25 +12,25 @@ namespace MEOS.NET.Types.Generated
         internal TsTzSet(IntPtr ptr) : base(ptr) { }
 
         public DateTime EndValue()
-            => MEOSConvert.ToDateTime(MEOSExposedFunctions.tstzset_end_value(this.Ptr));
+            => MEOSConvert.ToDateTime(Meos.TstzsetEndValue(this.Ptr));
 
         public string Out()
-            => MEOSExposedFunctions.tstzset_out(this.Ptr);
+            => Meos.TstzsetOut(this.Ptr);
 
         public DateTime StartValue()
-            => MEOSConvert.ToDateTime(MEOSExposedFunctions.tstzset_start_value(this.Ptr));
+            => MEOSConvert.ToDateTime(Meos.TstzsetStartValue(this.Ptr));
 
         public Set? ToDateset()
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.tstzset_to_dateset(this.Ptr));
+            => MEOSFactory.WrapSet(Meos.TstzsetToDateset(this.Ptr));
 
         public STBox? ToStbox()
-            => MEOSFactory.WrapSTBox(MEOSExposedFunctions.tstzset_to_stbox(this.Ptr));
+            => MEOSFactory.WrapSTBox(Meos.TstzsetToStbox(this.Ptr));
 
         public long[] Values()
-            => MEOSExposedFunctions.tstzset_values(this.Ptr);
+            => Meos.TstzsetValues(this.Ptr);
 
         public static Set? In(string str)
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.tstzset_in(str));
+            => MEOSFactory.WrapSet(Meos.TstzsetIn(str));
 
     }
 }

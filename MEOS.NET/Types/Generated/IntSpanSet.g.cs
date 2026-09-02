@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,25 +12,25 @@ namespace MEOS.NET.Types.Generated
         internal IntSpanSet(IntPtr ptr) : base(ptr) { }
 
         public int Lower()
-            => MEOSExposedFunctions.intspanset_lower(this.Ptr);
+            => Meos.IntspansetLower(this.Ptr);
 
         public string Out()
-            => MEOSExposedFunctions.intspanset_out(this.Ptr);
+            => Meos.IntspansetOut(this.Ptr);
 
         public SpanSet? ShiftScale(int shift, int width, bool hasshift, bool haswidth)
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.intspanset_shift_scale(this.Ptr, shift, width, hasshift, haswidth));
+            => MEOSFactory.WrapSpanSet(Meos.IntspansetShiftScale(this.Ptr, shift, width, hasshift, haswidth));
 
         public SpanSet? ToFloatspanset()
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.intspanset_to_floatspanset(this.Ptr));
+            => MEOSFactory.WrapSpanSet(Meos.IntspansetToFloatspanset(this.Ptr));
 
         public int Upper()
-            => MEOSExposedFunctions.intspanset_upper(this.Ptr);
+            => Meos.IntspansetUpper(this.Ptr);
 
         public int Width(bool boundspan)
-            => MEOSExposedFunctions.intspanset_width(this.Ptr, boundspan);
+            => Meos.IntspansetWidth(this.Ptr, boundspan);
 
         public static SpanSet? In(string str)
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.intspanset_in(str));
+            => MEOSFactory.WrapSpanSet(Meos.IntspansetIn(str));
 
     }
 }

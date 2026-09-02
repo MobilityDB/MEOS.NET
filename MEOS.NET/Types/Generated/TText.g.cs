@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,25 +12,25 @@ namespace MEOS.NET.Types.Generated
         internal TText(IntPtr ptr) : base(ptr) { }
 
         public Temporal? Initcap()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.ttext_initcap(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TtextInitcap(this.Ptr));
 
         public Temporal? Lower()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.ttext_lower(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TtextLower(this.Ptr));
 
         public string Out()
-            => MEOSExposedFunctions.ttext_out(this.Ptr);
+            => Meos.TtextOut(this.Ptr);
 
         public Temporal? ToTjsonb()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.ttext_to_tjsonb(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TtextToTjsonb(this.Ptr));
 
         public Temporal? Upper()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.ttext_upper(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TtextUpper(this.Ptr));
 
         public static Temporal? FromMFJSON(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.ttext_from_mfjson(str));
+            => MEOSFactory.WrapTemporal(Meos.TtextFromMfjson(str));
 
         public static Temporal? In(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.ttext_in(str));
+            => MEOSFactory.WrapTemporal(Meos.TtextIn(str));
 
     }
 }

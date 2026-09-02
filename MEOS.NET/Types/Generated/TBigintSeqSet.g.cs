@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,7 +12,7 @@ namespace MEOS.NET.Types.Generated
         internal TBigintSeqSet(IntPtr ptr) : base(ptr) { }
 
         public static Temporal? FromBaseTstzspanset(long i, SpanSet ss)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbigintseqset_from_base_tstzspanset(i, ss.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TbigintseqsetFromBaseTstzspanset(i, ss.Ptr));
 
     }
 }

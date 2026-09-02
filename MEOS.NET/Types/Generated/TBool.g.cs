@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,34 +12,34 @@ namespace MEOS.NET.Types.Generated
         internal TBool(IntPtr ptr) : base(ptr) { }
 
         public Temporal? AtValue(bool b)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbool_at_value(this.Ptr, b));
+            => MEOSFactory.WrapTemporal(Meos.TboolAtValue(this.Ptr, b));
 
         public bool EndValue()
-            => MEOSExposedFunctions.tbool_end_value(this.Ptr);
+            => Meos.TboolEndValue(this.Ptr);
 
         public Temporal? MinusValue(bool b)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbool_minus_value(this.Ptr, b));
+            => MEOSFactory.WrapTemporal(Meos.TboolMinusValue(this.Ptr, b));
 
         public string Out()
-            => MEOSExposedFunctions.tbool_out(this.Ptr);
+            => Meos.TboolOut(this.Ptr);
 
         public bool StartValue()
-            => MEOSExposedFunctions.tbool_start_value(this.Ptr);
+            => Meos.TboolStartValue(this.Ptr);
 
         public Temporal? ToTint()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbool_to_tint(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TboolToTint(this.Ptr));
 
         public SpanSet? WhenTrue()
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.tbool_when_true(this.Ptr));
+            => MEOSFactory.WrapSpanSet(Meos.TboolWhenTrue(this.Ptr));
 
         public static Temporal? FromBaseTemp(bool b, Temporal temp)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbool_from_base_temp(b, temp.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TboolFromBaseTemp(b, temp.Ptr));
 
         public static Temporal? FromMFJSON(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbool_from_mfjson(str));
+            => MEOSFactory.WrapTemporal(Meos.TboolFromMfjson(str));
 
         public static Temporal? In(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbool_in(str));
+            => MEOSFactory.WrapTemporal(Meos.TboolIn(str));
 
     }
 }

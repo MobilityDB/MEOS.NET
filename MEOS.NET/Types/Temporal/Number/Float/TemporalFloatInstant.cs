@@ -1,5 +1,5 @@
 ﻿using MEOS.NET.Helpers;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Temporal.Number.Float
 {
@@ -15,12 +15,12 @@ namespace MEOS.NET.Types.Temporal.Number.Float
 
         public static TemporalFloatInstant FromTimestamp(DateTime timestamp, double value)
         {
-            var res = MEOSExposedFunctions.tfloatinst_make(value, timestamp.ToPgTimestamp());
+            var res = Meos.TfloatinstMake(value, timestamp.ToPgTimestamp());
             return new TemporalFloatInstant(res);
         }
 
         public double Value()
-            => MEOSExposedFunctions.tfloat_start_value(this._ptr);
+            => Meos.TfloatStartValue(this._ptr);
     }
 }
 

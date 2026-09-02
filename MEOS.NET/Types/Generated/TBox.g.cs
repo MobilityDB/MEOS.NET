@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,67 +12,67 @@ namespace MEOS.NET.Types.Generated
         internal TBox(IntPtr ptr) : base(ptr) { }
 
         public int Cmp(TBox box2)
-            => MEOSExposedFunctions.tbox_cmp(this.Ptr, box2.Ptr);
+            => Meos.TboxCmp(this.Ptr, box2.Ptr);
 
         public TBox? Copy()
-            => MEOSFactory.WrapTBox(MEOSExposedFunctions.tbox_copy(this.Ptr));
+            => MEOSFactory.WrapTBox(Meos.TboxCopy(this.Ptr));
 
         public bool Eq(TBox box2)
-            => MEOSExposedFunctions.tbox_eq(this.Ptr, box2.Ptr);
+            => Meos.TboxEq(this.Ptr, box2.Ptr);
 
         public bool Ge(TBox box2)
-            => MEOSExposedFunctions.tbox_ge(this.Ptr, box2.Ptr);
+            => Meos.TboxGe(this.Ptr, box2.Ptr);
 
         public bool Gt(TBox box2)
-            => MEOSExposedFunctions.tbox_gt(this.Ptr, box2.Ptr);
+            => Meos.TboxGt(this.Ptr, box2.Ptr);
 
         public uint Hash()
-            => MEOSExposedFunctions.tbox_hash(this.Ptr);
+            => Meos.TboxHash(this.Ptr);
 
         public ulong HashExtended(ulong seed)
-            => MEOSExposedFunctions.tbox_hash_extended(this.Ptr, seed);
+            => Meos.TboxHashExtended(this.Ptr, seed);
 
         public bool Hast()
-            => MEOSExposedFunctions.tbox_hast(this.Ptr);
+            => Meos.TboxHast(this.Ptr);
 
         public bool Hasx()
-            => MEOSExposedFunctions.tbox_hasx(this.Ptr);
+            => Meos.TboxHasx(this.Ptr);
 
         public bool Le(TBox box2)
-            => MEOSExposedFunctions.tbox_le(this.Ptr, box2.Ptr);
+            => Meos.TboxLe(this.Ptr, box2.Ptr);
 
         public bool Lt(TBox box2)
-            => MEOSExposedFunctions.tbox_lt(this.Ptr, box2.Ptr);
+            => Meos.TboxLt(this.Ptr, box2.Ptr);
 
         public bool Ne(TBox box2)
-            => MEOSExposedFunctions.tbox_ne(this.Ptr, box2.Ptr);
+            => Meos.TboxNe(this.Ptr, box2.Ptr);
 
         public string Out(int maxdd)
-            => MEOSExposedFunctions.tbox_out(this.Ptr, maxdd);
+            => Meos.TboxOut(this.Ptr, maxdd);
 
         public TBox? Round(int maxdd)
-            => MEOSFactory.WrapTBox(MEOSExposedFunctions.tbox_round(this.Ptr, maxdd));
+            => MEOSFactory.WrapTBox(Meos.TboxRound(this.Ptr, maxdd));
 
         public Span? ToBigintspan()
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.tbox_to_bigintspan(this.Ptr));
+            => MEOSFactory.WrapSpan(Meos.TboxToBigintspan(this.Ptr));
 
         public Span? ToFloatspan()
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.tbox_to_floatspan(this.Ptr));
+            => MEOSFactory.WrapSpan(Meos.TboxToFloatspan(this.Ptr));
 
         public Span? ToIntspan()
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.tbox_to_intspan(this.Ptr));
+            => MEOSFactory.WrapSpan(Meos.TboxToIntspan(this.Ptr));
 
         public Span? ToTstzspan()
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.tbox_to_tstzspan(this.Ptr));
+            => MEOSFactory.WrapSpan(Meos.TboxToTstzspan(this.Ptr));
 
         public static TBox? FromHEXWKB(string hexwkb)
-            => MEOSFactory.WrapTBox(MEOSExposedFunctions.tbox_from_hexwkb(hexwkb));
+            => MEOSFactory.WrapTBox(Meos.TboxFromHexwkb(hexwkb));
 
         public static TBox? In(string str)
-            => MEOSFactory.WrapTBox(MEOSExposedFunctions.tbox_in(str));
+            => MEOSFactory.WrapTBox(Meos.TboxIn(str));
 
         public static TBox? Make(Span s, Span p)
-            => MEOSFactory.WrapTBox(MEOSExposedFunctions.tbox_make(s.Ptr, p.Ptr));
+            => MEOSFactory.WrapTBox(Meos.TboxMake(s.Ptr, p.Ptr));
 
     }
 }

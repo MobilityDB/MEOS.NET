@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,7 +12,7 @@ namespace MEOS.NET.Types.Generated
         internal TBigintInst(IntPtr ptr) : base(ptr) { }
 
         public static Temporal? Make(long i, DateTime t)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tbigintinst_make(i, MEOSConvert.ToTimestampTz(t)));
+            => MEOSFactory.WrapTemporal(Meos.TbigintinstMake(i, MEOSConvert.ToTimestampTz(t)));
 
     }
 }

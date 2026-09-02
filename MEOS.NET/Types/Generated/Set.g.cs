@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,52 +12,52 @@ namespace MEOS.NET.Types.Generated
         internal Set(IntPtr ptr) : base(ptr) { }
 
         public int Cmp(Set s2)
-            => MEOSExposedFunctions.set_cmp(this.Ptr, s2.Ptr);
+            => Meos.SetCmp(this.Ptr, s2.Ptr);
 
         public Set? Copy()
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.set_copy(this.Ptr));
+            => MEOSFactory.WrapSet(Meos.SetCopy(this.Ptr));
 
         public bool Eq(Set s2)
-            => MEOSExposedFunctions.set_eq(this.Ptr, s2.Ptr);
+            => Meos.SetEq(this.Ptr, s2.Ptr);
 
         public bool Ge(Set s2)
-            => MEOSExposedFunctions.set_ge(this.Ptr, s2.Ptr);
+            => Meos.SetGe(this.Ptr, s2.Ptr);
 
         public bool Gt(Set s2)
-            => MEOSExposedFunctions.set_gt(this.Ptr, s2.Ptr);
+            => Meos.SetGt(this.Ptr, s2.Ptr);
 
         public uint Hash()
-            => MEOSExposedFunctions.set_hash(this.Ptr);
+            => Meos.SetHash(this.Ptr);
 
         public ulong HashExtended(ulong seed)
-            => MEOSExposedFunctions.set_hash_extended(this.Ptr, seed);
+            => Meos.SetHashExtended(this.Ptr, seed);
 
         public bool Le(Set s2)
-            => MEOSExposedFunctions.set_le(this.Ptr, s2.Ptr);
+            => Meos.SetLe(this.Ptr, s2.Ptr);
 
         public bool Lt(Set s2)
-            => MEOSExposedFunctions.set_lt(this.Ptr, s2.Ptr);
+            => Meos.SetLt(this.Ptr, s2.Ptr);
 
         public bool Ne(Set s2)
-            => MEOSExposedFunctions.set_ne(this.Ptr, s2.Ptr);
+            => Meos.SetNe(this.Ptr, s2.Ptr);
 
         public int NumValues()
-            => MEOSExposedFunctions.set_num_values(this.Ptr);
+            => Meos.SetNumValues(this.Ptr);
 
         public Set? Round(int maxdd)
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.set_round(this.Ptr, maxdd));
+            => MEOSFactory.WrapSet(Meos.SetRound(this.Ptr, maxdd));
 
         public Span? ToSpan()
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.set_to_span(this.Ptr));
+            => MEOSFactory.WrapSpan(Meos.SetToSpan(this.Ptr));
 
         public SpanSet? ToSpanset()
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.set_to_spanset(this.Ptr));
+            => MEOSFactory.WrapSpanSet(Meos.SetToSpanset(this.Ptr));
 
         public TBox? ToTbox()
-            => MEOSFactory.WrapTBox(MEOSExposedFunctions.set_to_tbox(this.Ptr));
+            => MEOSFactory.WrapTBox(Meos.SetToTbox(this.Ptr));
 
         public static Set? FromHEXWKB(string hexwkb)
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.set_from_hexwkb(hexwkb));
+            => MEOSFactory.WrapSet(Meos.SetFromHexwkb(hexwkb));
 
     }
 }

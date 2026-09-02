@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,28 +12,28 @@ namespace MEOS.NET.Types.Generated
         internal TJsonb(IntPtr ptr) : base(ptr) { }
 
         public Temporal? ArrayLength()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tjsonb_array_length(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TjsonbArrayLength(this.Ptr));
 
         public Temporal? DeleteIndex(int idx)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tjsonb_delete_index(this.Ptr, idx));
+            => MEOSFactory.WrapTemporal(Meos.TjsonbDeleteIndex(this.Ptr, idx));
 
         public string Out()
-            => MEOSExposedFunctions.tjsonb_out(this.Ptr);
+            => Meos.TjsonbOut(this.Ptr);
 
         public Temporal? Pretty()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tjsonb_pretty(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TjsonbPretty(this.Ptr));
 
         public Temporal? StripNulls(bool strip_in_arrays)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tjsonb_strip_nulls(this.Ptr, strip_in_arrays));
+            => MEOSFactory.WrapTemporal(Meos.TjsonbStripNulls(this.Ptr, strip_in_arrays));
 
         public Temporal? ToTtext()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tjsonb_to_ttext(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TjsonbToTtext(this.Ptr));
 
         public static Temporal? FromMFJSON(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tjsonb_from_mfjson(str));
+            => MEOSFactory.WrapTemporal(Meos.TjsonbFromMfjson(str));
 
         public static Temporal? In(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tjsonb_in(str));
+            => MEOSFactory.WrapTemporal(Meos.TjsonbIn(str));
 
     }
 }

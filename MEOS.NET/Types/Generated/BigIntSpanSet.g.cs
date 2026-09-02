@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,22 +12,22 @@ namespace MEOS.NET.Types.Generated
         internal BigIntSpanSet(IntPtr ptr) : base(ptr) { }
 
         public long Lower()
-            => MEOSExposedFunctions.bigintspanset_lower(this.Ptr);
+            => Meos.BigintspansetLower(this.Ptr);
 
         public string Out()
-            => MEOSExposedFunctions.bigintspanset_out(this.Ptr);
+            => Meos.BigintspansetOut(this.Ptr);
 
         public SpanSet? ShiftScale(long shift, long width, bool hasshift, bool haswidth)
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.bigintspanset_shift_scale(this.Ptr, shift, width, hasshift, haswidth));
+            => MEOSFactory.WrapSpanSet(Meos.BigintspansetShiftScale(this.Ptr, shift, width, hasshift, haswidth));
 
         public long Upper()
-            => MEOSExposedFunctions.bigintspanset_upper(this.Ptr);
+            => Meos.BigintspansetUpper(this.Ptr);
 
         public long Width(bool boundspan)
-            => MEOSExposedFunctions.bigintspanset_width(this.Ptr, boundspan);
+            => Meos.BigintspansetWidth(this.Ptr, boundspan);
 
         public static SpanSet? In(string str)
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.bigintspanset_in(str));
+            => MEOSFactory.WrapSpanSet(Meos.BigintspansetIn(str));
 
     }
 }

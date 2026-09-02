@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,34 +12,34 @@ namespace MEOS.NET.Types.Generated
         internal DateSpanSet(IntPtr ptr) : base(ptr) { }
 
         public Set? Dates()
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.datespanset_dates(this.Ptr));
+            => MEOSFactory.WrapSet(Meos.DatespansetDates(this.Ptr));
 
         public DateOnly EndDate()
-            => MEOSConvert.ToDateOnly(MEOSExposedFunctions.datespanset_end_date(this.Ptr));
+            => MEOSConvert.ToDateOnly(Meos.DatespansetEndDate(this.Ptr));
 
         public DateOnly Lower()
-            => MEOSConvert.ToDateOnly(MEOSExposedFunctions.datespanset_lower(this.Ptr));
+            => MEOSConvert.ToDateOnly(Meos.DatespansetLower(this.Ptr));
 
         public int NumDates()
-            => MEOSExposedFunctions.datespanset_num_dates(this.Ptr);
+            => Meos.DatespansetNumDates(this.Ptr);
 
         public string Out()
-            => MEOSExposedFunctions.datespanset_out(this.Ptr);
+            => Meos.DatespansetOut(this.Ptr);
 
         public SpanSet? ShiftScale(int shift, int width, bool hasshift, bool haswidth)
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.datespanset_shift_scale(this.Ptr, shift, width, hasshift, haswidth));
+            => MEOSFactory.WrapSpanSet(Meos.DatespansetShiftScale(this.Ptr, shift, width, hasshift, haswidth));
 
         public DateOnly StartDate()
-            => MEOSConvert.ToDateOnly(MEOSExposedFunctions.datespanset_start_date(this.Ptr));
+            => MEOSConvert.ToDateOnly(Meos.DatespansetStartDate(this.Ptr));
 
         public SpanSet? ToTstzspanset()
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.datespanset_to_tstzspanset(this.Ptr));
+            => MEOSFactory.WrapSpanSet(Meos.DatespansetToTstzspanset(this.Ptr));
 
         public DateOnly Upper()
-            => MEOSConvert.ToDateOnly(MEOSExposedFunctions.datespanset_upper(this.Ptr));
+            => MEOSConvert.ToDateOnly(Meos.DatespansetUpper(this.Ptr));
 
         public static SpanSet? In(string str)
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.datespanset_in(str));
+            => MEOSFactory.WrapSpanSet(Meos.DatespansetIn(str));
 
     }
 }
