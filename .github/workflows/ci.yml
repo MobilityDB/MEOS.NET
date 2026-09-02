@@ -27,6 +27,20 @@ jobs:
           mobilitydb-ref: master
           build-libmeos: "true"
 
+      # The committed generated tree is what a consumer of this repository
+      # compiles, and every step below overwrites it, so whether it still holds
+      # together is decided HERE or nowhere. Drift against a freshly derived
+      # catalog is ordinary — MobilityDB master moves independently of this
+      # binding — but a snapshot declaring a function MEOS no longer exports
+      # reaches that consumer as an EntryPointNotFoundException at run time.
+      - name: Resolve the COMMITTED snapshot against MEOS
+        run: |
+          dotnet build MEOS.NET.sln -c Release
+          dotnet test MEOS.NET.sln -c Release --no-build \
+            --filter "FullyQualifiedName~NativeSymbolTests"
+        env:
+          LD_LIBRARY_PATH: ${{ steps.provision.outputs.libmeos-prefix }}/lib
+
       - name: Regenerate bindings
         run: python3 tools/codegen.py "${{ steps.provision.outputs.catalog-path }}"
 
