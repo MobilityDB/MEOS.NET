@@ -32,6 +32,24 @@ namespace MEOS.NET.Types
         public STBox? ToStbox()
             => MEOSFactory.WrapSTBox(Meos.TstzsetToStbox(this.Ptr));
 
+        public DateTime? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TstzsetValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return MEOSConvert.ToDateTime(Marshal.ReadInt64(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public long[] Values()
             => Meos.TstzsetValues(this.Ptr);
 

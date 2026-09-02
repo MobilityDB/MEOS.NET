@@ -89,6 +89,78 @@ namespace MEOS.NET.Types
         public double SpatialDistance(STBox box2)
             => Meos.StboxSpatialDistance(this.Ptr, box2.Ptr);
 
+        public DateTime? Tmax()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.StboxTmax(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return MEOSConvert.ToDateTime(Marshal.ReadInt64(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public bool? TmaxInc()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(1);
+            try
+            {
+                if (!Meos.StboxTmaxInc(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadByte(_result) != 0;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public DateTime? Tmin()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.StboxTmin(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return MEOSConvert.ToDateTime(Marshal.ReadInt64(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public bool? TminInc()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(1);
+            try
+            {
+                if (!Meos.StboxTminInc(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadByte(_result) != 0;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Span? ToTstzspan()
             => MEOSFactory.WrapSpan(Meos.StboxToTstzspan(this.Ptr));
 
@@ -100,6 +172,114 @@ namespace MEOS.NET.Types
 
         public double Volume()
             => Meos.StboxVolume(this.Ptr);
+
+        public double? Xmax()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.StboxXmax(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public double? Xmin()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.StboxXmin(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public double? Ymax()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.StboxYmax(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public double? Ymin()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.StboxYmin(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public double? Zmax()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.StboxZmax(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public double? Zmin()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.StboxZmin(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
 
         public static STBox? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapSTBox(Meos.StboxFromHexwkb(hexwkb));

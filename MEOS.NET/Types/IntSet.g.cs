@@ -32,6 +32,24 @@ namespace MEOS.NET.Types
         public Set? ToFloatset()
             => MEOSFactory.WrapSet(Meos.IntsetToFloatset(this.Ptr));
 
+        public int? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(4);
+            try
+            {
+                if (!Meos.IntsetValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadInt32(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public int[] Values()
             => Meos.IntsetValues(this.Ptr);
 

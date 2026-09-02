@@ -29,6 +29,24 @@ namespace MEOS.NET.Types
         public long StartValue()
             => Meos.BigintsetStartValue(this.Ptr);
 
+        public long? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.BigintsetValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadInt64(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public long[] Values()
             => Meos.BigintsetValues(this.Ptr);
 

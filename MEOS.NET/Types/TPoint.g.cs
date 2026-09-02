@@ -25,6 +25,24 @@ namespace MEOS.NET.Types
         public Temporal? CumulativeLength()
             => MEOSFactory.WrapTemporal(Meos.TpointCumulativeLength(this.Ptr));
 
+        public double? Direction()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TpointDirection(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Temporal? GetX()
             => MEOSFactory.WrapTemporal(Meos.TpointGetX(this.Ptr));
 

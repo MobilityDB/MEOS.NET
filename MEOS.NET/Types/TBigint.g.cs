@@ -56,6 +56,42 @@ namespace MEOS.NET.Types
         public Temporal? ToTs2cell()
             => MEOSFactory.WrapTemporal(Meos.TbigintToTs2cell(this.Ptr));
 
+        public long? ValueAtTimestamptz(DateTime t, bool strict)
+        {
+            IntPtr _value = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TbigintValueAtTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict, _value))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadInt64(_value);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_value);
+            }
+        }
+
+        public long? ValueN(long n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TbigintValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadInt64(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public static Temporal? FromBaseTemp(long i, Temporal temp)
             => MEOSFactory.WrapTemporal(Meos.TbigintFromBaseTemp(i, temp.Ptr));
 

@@ -59,6 +59,78 @@ namespace MEOS.NET.Types
         public TBox? Round(int maxdd)
             => MEOSFactory.WrapTBox(Meos.TboxRound(this.Ptr, maxdd));
 
+        public DateTime? Tmax()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TboxTmax(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return MEOSConvert.ToDateTime(Marshal.ReadInt64(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public bool? TmaxInc()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(1);
+            try
+            {
+                if (!Meos.TboxTmaxInc(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadByte(_result) != 0;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public DateTime? Tmin()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TboxTmin(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return MEOSConvert.ToDateTime(Marshal.ReadInt64(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public bool? TminInc()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(1);
+            try
+            {
+                if (!Meos.TboxTminInc(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadByte(_result) != 0;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Span? ToBigintspan()
             => MEOSFactory.WrapSpan(Meos.TboxToBigintspan(this.Ptr));
 
@@ -70,6 +142,78 @@ namespace MEOS.NET.Types
 
         public Span? ToTstzspan()
             => MEOSFactory.WrapSpan(Meos.TboxToTstzspan(this.Ptr));
+
+        public double? Xmax()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TboxXmax(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public bool? XmaxInc()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(1);
+            try
+            {
+                if (!Meos.TboxXmaxInc(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadByte(_result) != 0;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public double? Xmin()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TboxXmin(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public bool? XminInc()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(1);
+            try
+            {
+                if (!Meos.TboxXminInc(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadByte(_result) != 0;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
 
         public static TBox? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapTBox(Meos.TboxFromHexwkb(hexwkb));
