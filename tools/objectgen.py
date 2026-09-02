@@ -269,8 +269,12 @@ class Generator:
         cls = self.m.class_for_ctype(c)
         if cls and wrapper_ret == "IntPtr":
             return (f"{cls}?", f"MEOSFactory.Wrap{ROOT_CTYPE[cls]}($)")
-        if c.endswith(" **") and wrapper_ret == "IntPtr[]":
-            elem = self.m.class_for_ctype(c[:-1])
+        if wrapper_ret == "IntPtr[]":
+            # An array of MEOS values reaches the wrapper as an array of pointers,
+            # whether MEOS returns pointers (`T **`) or the values themselves
+            # (`T *`, walked at the struct's own stride), so both wrap element by
+            # element into the class each value's header names.
+            elem = self.m.class_for_ctype(c[:-1] if c.endswith(" **") else c)
             if elem:
                 return (f"{elem}?[]", f"MEOSFactory.Wrap{ROOT_CTYPE[elem]}Array($)")
         if wrapper_ret in ("long[]", "int[]", "double[]", "byte[]"):

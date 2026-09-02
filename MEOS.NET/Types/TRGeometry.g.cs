@@ -159,11 +159,20 @@ namespace MEOS.NET.Types
         public Temporal? Speed()
             => MEOSFactory.WrapTemporal(Meos.TrgeometrySpeed(this.Ptr));
 
+        public STBox?[] SplitEachNStboxes(int elem_count)
+            => MEOSFactory.WrapSTBoxArray(Meos.TrgeometrySplitEachNStboxes(this.Ptr, elem_count));
+
+        public STBox?[] SplitNStboxes(int box_count)
+            => MEOSFactory.WrapSTBoxArray(Meos.TrgeometrySplitNStboxes(this.Ptr, box_count));
+
         public new Temporal? StartInstant()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryStartInstant(this.Ptr));
 
         public new Temporal? StartSequence()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryStartSequence(this.Ptr));
+
+        public STBox?[] Stboxes()
+            => MEOSFactory.WrapSTBoxArray(Meos.TrgeometryStboxes(this.Ptr));
 
         public Temporal? ToTgeometry()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryToTgeometry(this.Ptr));

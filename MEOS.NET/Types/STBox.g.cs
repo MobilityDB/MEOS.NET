@@ -72,6 +72,9 @@ namespace MEOS.NET.Types
         public double Perimeter(bool spheroid)
             => Meos.StboxPerimeter(this.Ptr, spheroid);
 
+        public STBox?[] QuadSplit()
+            => MEOSFactory.WrapSTBoxArray(Meos.StboxQuadSplit(this.Ptr));
+
         public STBox? Round(int maxdd)
             => MEOSFactory.WrapSTBox(Meos.StboxRound(this.Ptr, maxdd));
 

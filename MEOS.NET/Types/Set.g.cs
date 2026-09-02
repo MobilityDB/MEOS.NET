@@ -47,6 +47,15 @@ namespace MEOS.NET.Types
         public Set? Round(int maxdd)
             => MEOSFactory.WrapSet(Meos.SetRound(this.Ptr, maxdd));
 
+        public Span?[] Spans()
+            => MEOSFactory.WrapSpanArray(Meos.SetSpans(this.Ptr));
+
+        public Span?[] SplitEachNSpans(int elems_per_span)
+            => MEOSFactory.WrapSpanArray(Meos.SetSplitEachNSpans(this.Ptr, elems_per_span));
+
+        public Span?[] SplitNSpans(int span_count)
+            => MEOSFactory.WrapSpanArray(Meos.SetSplitNSpans(this.Ptr, span_count));
+
         public Span? ToSpan()
             => MEOSFactory.WrapSpan(Meos.SetToSpan(this.Ptr));
 

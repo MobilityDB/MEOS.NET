@@ -206,6 +206,15 @@ namespace MEOS.NET.Types
         public Temporal? SimplifyMinDist(double dist)
             => MEOSFactory.WrapTemporal(Meos.TemporalSimplifyMinDist(this.Ptr, dist));
 
+        public Span?[] Spans()
+            => MEOSFactory.WrapSpanArray(Meos.TemporalSpans(this.Ptr));
+
+        public Span?[] SplitEachNSpans(int elem_count)
+            => MEOSFactory.WrapSpanArray(Meos.TemporalSplitEachNSpans(this.Ptr, elem_count));
+
+        public Span?[] SplitNSpans(int span_count)
+            => MEOSFactory.WrapSpanArray(Meos.TemporalSplitNSpans(this.Ptr, span_count));
+
         public Temporal? StartInstant()
             => MEOSFactory.WrapTemporal(Meos.TemporalStartInstant(this.Ptr));
 
