@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,25 +12,25 @@ namespace MEOS.NET.Types.Generated
         internal DateSpan(IntPtr ptr) : base(ptr) { }
 
         public DateOnly Lower()
-            => MEOSConvert.ToDateOnly(MEOSExposedFunctions.datespan_lower(this.Ptr));
+            => MEOSConvert.ToDateOnly(Meos.DatespanLower(this.Ptr));
 
         public string Out()
-            => MEOSExposedFunctions.datespan_out(this.Ptr);
+            => Meos.DatespanOut(this.Ptr);
 
         public Span? ShiftScale(int shift, int width, bool hasshift, bool haswidth)
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.datespan_shift_scale(this.Ptr, shift, width, hasshift, haswidth));
+            => MEOSFactory.WrapSpan(Meos.DatespanShiftScale(this.Ptr, shift, width, hasshift, haswidth));
 
         public Span? ToTstzspan()
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.datespan_to_tstzspan(this.Ptr));
+            => MEOSFactory.WrapSpan(Meos.DatespanToTstzspan(this.Ptr));
 
         public DateOnly Upper()
-            => MEOSConvert.ToDateOnly(MEOSExposedFunctions.datespan_upper(this.Ptr));
+            => MEOSConvert.ToDateOnly(Meos.DatespanUpper(this.Ptr));
 
         public static Span? In(string str)
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.datespan_in(str));
+            => MEOSFactory.WrapSpan(Meos.DatespanIn(str));
 
         public static Span? Make(DateOnly lower, DateOnly upper, bool lower_inc, bool upper_inc)
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.datespan_make(MEOSConvert.ToDateADT(lower), MEOSConvert.ToDateADT(upper), lower_inc, upper_inc));
+            => MEOSFactory.WrapSpan(Meos.DatespanMake(MEOSConvert.ToDateADT(lower), MEOSConvert.ToDateADT(upper), lower_inc, upper_inc));
 
     }
 }

@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,43 +12,43 @@ namespace MEOS.NET.Types.Generated
         internal TNpoint(IntPtr ptr) : base(ptr) { }
 
         public Temporal? AtNpointset(Set s)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tnpoint_at_npointset(this.Ptr, s.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TnpointAtNpointset(this.Ptr, s.Ptr));
 
         public Temporal? AtStbox(STBox box, bool border_inc)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tnpoint_at_stbox(this.Ptr, box.Ptr, border_inc));
+            => MEOSFactory.WrapTemporal(Meos.TnpointAtStbox(this.Ptr, box.Ptr, border_inc));
 
         public Temporal? CumulativeLength()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tnpoint_cumulative_length(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TnpointCumulativeLength(this.Ptr));
 
         public double Length()
-            => MEOSExposedFunctions.tnpoint_length(this.Ptr);
+            => Meos.TnpointLength(this.Ptr);
 
         public Temporal? MinusNpointset(Set s)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tnpoint_minus_npointset(this.Ptr, s.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TnpointMinusNpointset(this.Ptr, s.Ptr));
 
         public Temporal? MinusStbox(STBox box, bool border_inc)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tnpoint_minus_stbox(this.Ptr, box.Ptr, border_inc));
+            => MEOSFactory.WrapTemporal(Meos.TnpointMinusStbox(this.Ptr, box.Ptr, border_inc));
 
         public new string Out(int maxdd)
-            => MEOSExposedFunctions.tnpoint_out(this.Ptr, maxdd);
+            => Meos.TnpointOut(this.Ptr, maxdd);
 
         public long Route()
-            => MEOSExposedFunctions.tnpoint_route(this.Ptr);
+            => Meos.TnpointRoute(this.Ptr);
 
         public Set? Routes()
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.tnpoint_routes(this.Ptr));
+            => MEOSFactory.WrapSet(Meos.TnpointRoutes(this.Ptr));
 
         public Temporal? Speed()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tnpoint_speed(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TnpointSpeed(this.Ptr));
 
         public Temporal? ToTgeompoint()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tnpoint_to_tgeompoint(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TnpointToTgeompoint(this.Ptr));
 
         public static Temporal? FromMFJSON(string mfjson)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tnpoint_from_mfjson(mfjson));
+            => MEOSFactory.WrapTemporal(Meos.TnpointFromMfjson(mfjson));
 
         public static Temporal? In(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tnpoint_in(str));
+            => MEOSFactory.WrapTemporal(Meos.TnpointIn(str));
 
     }
 }

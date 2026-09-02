@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,34 +12,34 @@ namespace MEOS.NET.Types.Generated
         internal TsTzSpanSet(IntPtr ptr) : base(ptr) { }
 
         public DateTime EndTimestamptz()
-            => MEOSConvert.ToDateTime(MEOSExposedFunctions.tstzspanset_end_timestamptz(this.Ptr));
+            => MEOSConvert.ToDateTime(Meos.TstzspansetEndTimestamptz(this.Ptr));
 
         public DateTime Lower()
-            => MEOSConvert.ToDateTime(MEOSExposedFunctions.tstzspanset_lower(this.Ptr));
+            => MEOSConvert.ToDateTime(Meos.TstzspansetLower(this.Ptr));
 
         public int NumTimestamps()
-            => MEOSExposedFunctions.tstzspanset_num_timestamps(this.Ptr);
+            => Meos.TstzspansetNumTimestamps(this.Ptr);
 
         public string Out()
-            => MEOSExposedFunctions.tstzspanset_out(this.Ptr);
+            => Meos.TstzspansetOut(this.Ptr);
 
         public DateTime StartTimestamptz()
-            => MEOSConvert.ToDateTime(MEOSExposedFunctions.tstzspanset_start_timestamptz(this.Ptr));
+            => MEOSConvert.ToDateTime(Meos.TstzspansetStartTimestamptz(this.Ptr));
 
         public Set? Timestamps()
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.tstzspanset_timestamps(this.Ptr));
+            => MEOSFactory.WrapSet(Meos.TstzspansetTimestamps(this.Ptr));
 
         public SpanSet? ToDatespanset()
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.tstzspanset_to_datespanset(this.Ptr));
+            => MEOSFactory.WrapSpanSet(Meos.TstzspansetToDatespanset(this.Ptr));
 
         public STBox? ToStbox()
-            => MEOSFactory.WrapSTBox(MEOSExposedFunctions.tstzspanset_to_stbox(this.Ptr));
+            => MEOSFactory.WrapSTBox(Meos.TstzspansetToStbox(this.Ptr));
 
         public DateTime Upper()
-            => MEOSConvert.ToDateTime(MEOSExposedFunctions.tstzspanset_upper(this.Ptr));
+            => MEOSConvert.ToDateTime(Meos.TstzspansetUpper(this.Ptr));
 
         public static SpanSet? In(string str)
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.tstzspanset_in(str));
+            => MEOSFactory.WrapSpanSet(Meos.TstzspansetIn(str));
 
     }
 }

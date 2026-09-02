@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,34 +12,34 @@ namespace MEOS.NET.Types.Generated
         internal IntSpan(IntPtr ptr) : base(ptr) { }
 
         public Span? Expand(int value)
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.intspan_expand(this.Ptr, value));
+            => MEOSFactory.WrapSpan(Meos.IntspanExpand(this.Ptr, value));
 
         public int Lower()
-            => MEOSExposedFunctions.intspan_lower(this.Ptr);
+            => Meos.IntspanLower(this.Ptr);
 
         public string Out()
-            => MEOSExposedFunctions.intspan_out(this.Ptr);
+            => Meos.IntspanOut(this.Ptr);
 
         public Span? ShiftScale(int shift, int width, bool hasshift, bool haswidth)
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.intspan_shift_scale(this.Ptr, shift, width, hasshift, haswidth));
+            => MEOSFactory.WrapSpan(Meos.IntspanShiftScale(this.Ptr, shift, width, hasshift, haswidth));
 
         public Span? ToBigintspan()
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.intspan_to_bigintspan(this.Ptr));
+            => MEOSFactory.WrapSpan(Meos.IntspanToBigintspan(this.Ptr));
 
         public Span? ToFloatspan()
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.intspan_to_floatspan(this.Ptr));
+            => MEOSFactory.WrapSpan(Meos.IntspanToFloatspan(this.Ptr));
 
         public int Upper()
-            => MEOSExposedFunctions.intspan_upper(this.Ptr);
+            => Meos.IntspanUpper(this.Ptr);
 
         public int Width()
-            => MEOSExposedFunctions.intspan_width(this.Ptr);
+            => Meos.IntspanWidth(this.Ptr);
 
         public static Span? In(string str)
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.intspan_in(str));
+            => MEOSFactory.WrapSpan(Meos.IntspanIn(str));
 
         public static Span? Make(int lower, int upper, bool lower_inc, bool upper_inc)
-            => MEOSFactory.WrapSpan(MEOSExposedFunctions.intspan_make(lower, upper, lower_inc, upper_inc));
+            => MEOSFactory.WrapSpan(Meos.IntspanMake(lower, upper, lower_inc, upper_inc));
 
     }
 }

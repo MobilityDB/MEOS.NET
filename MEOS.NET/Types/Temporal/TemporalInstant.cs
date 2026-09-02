@@ -1,5 +1,5 @@
 ﻿using MEOS.NET.Helpers;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types.Temporal
@@ -11,7 +11,7 @@ namespace MEOS.NET.Types.Temporal
 
         public DateTime Timestamp()
         {
-            var timestamps = MEOSExposedFunctions.temporal_timestamps(this._ptr);
+            var timestamps = Meos.TemporalTimestamps(this._ptr);
 
             if (timestamps.Length != 1)
             {

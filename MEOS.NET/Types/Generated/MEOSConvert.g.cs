@@ -2,7 +2,7 @@
 
 using System.Globalization;
 
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,24 +12,24 @@ namespace MEOS.NET.Types.Generated
     {
         /// <summary>A MEOS TimestampTz as a DateTime.</summary>
         internal static DateTime ToDateTime(long timestamptz)
-            => DateTime.Parse(MEOSExposedFunctions.timestamptz_out(timestamptz),
+            => DateTime.Parse(Meos.TimestamptzOut(timestamptz),
                 CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal
                     | DateTimeStyles.AssumeUniversal);
 
         /// <summary>A DateTime as a MEOS TimestampTz.</summary>
         internal static long ToTimestampTz(DateTime moment)
-            => MEOSExposedFunctions.timestamptz_in(
+            => Meos.TimestamptzIn(
                 moment.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss.ffffff+00",
                     CultureInfo.InvariantCulture), -1);
 
         /// <summary>A MEOS DateADT as a DateOnly.</summary>
         internal static DateOnly ToDateOnly(int date)
-            => DateOnly.Parse(MEOSExposedFunctions.date_out(date),
+            => DateOnly.Parse(Meos.DateOut(date),
                 CultureInfo.InvariantCulture);
 
         /// <summary>A DateOnly as a MEOS DateADT.</summary>
         internal static int ToDateADT(DateOnly day)
-            => MEOSExposedFunctions.date_in(
+            => Meos.DateIn(
                 day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
     }
 }

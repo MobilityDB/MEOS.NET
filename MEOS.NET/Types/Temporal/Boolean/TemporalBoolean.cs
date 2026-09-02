@@ -1,4 +1,4 @@
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Temporal.Boolean
 {
@@ -8,6 +8,6 @@ namespace MEOS.NET.Types.Temporal.Boolean
         { }
 
         public static TemporalBoolean FromMFJson(string mfJsonStr)
-            => new TemporalBoolean(MEOSExposedFunctions.tbool_from_mfjson(mfJsonStr));
+            => new TemporalBoolean(Meos.TboolFromMfjson(mfJsonStr));
     }
 }

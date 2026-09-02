@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,40 +12,40 @@ namespace MEOS.NET.Types.Generated
         internal FloatSpanSet(IntPtr ptr) : base(ptr) { }
 
         public SpanSet? Ceil()
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.floatspanset_ceil(this.Ptr));
+            => MEOSFactory.WrapSpanSet(Meos.FloatspansetCeil(this.Ptr));
 
         public SpanSet? Degrees(bool normalize)
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.floatspanset_degrees(this.Ptr, normalize));
+            => MEOSFactory.WrapSpanSet(Meos.FloatspansetDegrees(this.Ptr, normalize));
 
         public SpanSet? Floor()
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.floatspanset_floor(this.Ptr));
+            => MEOSFactory.WrapSpanSet(Meos.FloatspansetFloor(this.Ptr));
 
         public double Lower()
-            => MEOSExposedFunctions.floatspanset_lower(this.Ptr);
+            => Meos.FloatspansetLower(this.Ptr);
 
         public string Out(int maxdd)
-            => MEOSExposedFunctions.floatspanset_out(this.Ptr, maxdd);
+            => Meos.FloatspansetOut(this.Ptr, maxdd);
 
         public SpanSet? Radians()
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.floatspanset_radians(this.Ptr));
+            => MEOSFactory.WrapSpanSet(Meos.FloatspansetRadians(this.Ptr));
 
         public SpanSet? Round(int maxdd)
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.floatspanset_round(this.Ptr, maxdd));
+            => MEOSFactory.WrapSpanSet(Meos.FloatspansetRound(this.Ptr, maxdd));
 
         public SpanSet? ShiftScale(double shift, double width, bool hasshift, bool haswidth)
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.floatspanset_shift_scale(this.Ptr, shift, width, hasshift, haswidth));
+            => MEOSFactory.WrapSpanSet(Meos.FloatspansetShiftScale(this.Ptr, shift, width, hasshift, haswidth));
 
         public SpanSet? ToIntspanset()
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.floatspanset_to_intspanset(this.Ptr));
+            => MEOSFactory.WrapSpanSet(Meos.FloatspansetToIntspanset(this.Ptr));
 
         public double Upper()
-            => MEOSExposedFunctions.floatspanset_upper(this.Ptr);
+            => Meos.FloatspansetUpper(this.Ptr);
 
         public double Width(bool boundspan)
-            => MEOSExposedFunctions.floatspanset_width(this.Ptr, boundspan);
+            => Meos.FloatspansetWidth(this.Ptr, boundspan);
 
         public static SpanSet? In(string str)
-            => MEOSFactory.WrapSpanSet(MEOSExposedFunctions.floatspanset_in(str));
+            => MEOSFactory.WrapSpanSet(Meos.FloatspansetIn(str));
 
     }
 }

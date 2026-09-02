@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,64 +12,64 @@ namespace MEOS.NET.Types.Generated
         internal TPose(IntPtr ptr) : base(ptr) { }
 
         public Temporal? AngularSpeed()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_angular_speed(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TposeAngularSpeed(this.Ptr));
 
         public string AsGeopose(int conformance, int precision)
-            => MEOSExposedFunctions.tpose_as_geopose(this.Ptr, conformance, precision);
+            => Meos.TposeAsGeopose(this.Ptr, conformance, precision);
 
         public string AsGeoposeStream(int precision)
-            => MEOSExposedFunctions.tpose_as_geopose_stream(this.Ptr, precision);
+            => Meos.TposeAsGeoposeStream(this.Ptr, precision);
 
         public string AsGeoposeStreamElement(Temporal inst, int precision)
-            => MEOSExposedFunctions.tpose_as_geopose_stream_element(this.Ptr, inst.Ptr, precision);
+            => Meos.TposeAsGeoposeStreamElement(this.Ptr, inst.Ptr, precision);
 
         public Temporal? AtElevation(Span s)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_at_elevation(this.Ptr, s.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TposeAtElevation(this.Ptr, s.Ptr));
 
         public Temporal? AtStbox(STBox box, bool border_inc)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_at_stbox(this.Ptr, box.Ptr, border_inc));
+            => MEOSFactory.WrapTemporal(Meos.TposeAtStbox(this.Ptr, box.Ptr, border_inc));
 
         public Temporal? ComposeTpose(Temporal frame)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_compose_tpose(this.Ptr, frame.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TposeComposeTpose(this.Ptr, frame.Ptr));
 
         public Temporal? Inverse()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_inverse(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TposeInverse(this.Ptr));
 
         public Temporal? Make(Temporal ttheta)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_make(this.Ptr, ttheta.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TposeMake(this.Ptr, ttheta.Ptr));
 
         public Temporal? MinusElevation(Span s)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_minus_elevation(this.Ptr, s.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TposeMinusElevation(this.Ptr, s.Ptr));
 
         public Temporal? MinusStbox(STBox box, bool border_inc)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_minus_stbox(this.Ptr, box.Ptr, border_inc));
+            => MEOSFactory.WrapTemporal(Meos.TposeMinusStbox(this.Ptr, box.Ptr, border_inc));
 
         public Temporal? Pitch()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_pitch(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TposePitch(this.Ptr));
 
         public Set? Points()
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.tpose_points(this.Ptr));
+            => MEOSFactory.WrapSet(Meos.TposePoints(this.Ptr));
 
         public Temporal? Roll()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_roll(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TposeRoll(this.Ptr));
 
         public Temporal? Speed()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_speed(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TposeSpeed(this.Ptr));
 
         public Temporal? ToTpoint()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_to_tpoint(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TposeToTpoint(this.Ptr));
 
         public Temporal? Yaw()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_yaw(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TposeYaw(this.Ptr));
 
         public static Temporal? FromGeopose(string json)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_from_geopose(json));
+            => MEOSFactory.WrapTemporal(Meos.TposeFromGeopose(json));
 
         public static Temporal? FromMFJSON(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_from_mfjson(str));
+            => MEOSFactory.WrapTemporal(Meos.TposeFromMfjson(str));
 
         public static Temporal? In(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tpose_in(str));
+            => MEOSFactory.WrapTemporal(Meos.TposeIn(str));
 
     }
 }

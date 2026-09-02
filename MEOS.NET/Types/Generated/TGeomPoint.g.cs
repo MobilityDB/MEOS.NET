@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,19 +12,19 @@ namespace MEOS.NET.Types.Generated
         internal TGeomPoint(IntPtr ptr) : base(ptr) { }
 
         public Temporal? ToTgeometry()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tgeompoint_to_tgeometry(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TgeompointToTgeometry(this.Ptr));
 
         public Temporal? ToTh3index(int resolution)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tgeompoint_to_th3index(this.Ptr, resolution));
+            => MEOSFactory.WrapTemporal(Meos.TgeompointToTh3index(this.Ptr, resolution));
 
         public Temporal? ToTnpoint()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tgeompoint_to_tnpoint(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TgeompointToTnpoint(this.Ptr));
 
         public static Temporal? FromMFJSON(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tgeompoint_from_mfjson(str));
+            => MEOSFactory.WrapTemporal(Meos.TgeompointFromMfjson(str));
 
         public static Temporal? In(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tgeompoint_in(str));
+            => MEOSFactory.WrapTemporal(Meos.TgeompointIn(str));
 
     }
 }

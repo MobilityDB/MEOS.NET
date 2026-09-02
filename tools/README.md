@@ -1,8 +1,12 @@
 # MEOS.NET binding regen via MEOS-API
 
-`codegen.py` regenerates `MEOS.NET/Internal/MEOSExternalFunctions.cs` and
-`MEOS.NET/Internal/MEOSExposedFunctions.cs` from MobilityDB/MEOS-API's
-unified `meos-idl.json` catalog.
+`codegen.py` regenerates `MEOS.NET/Functions/` from MobilityDB/MEOS-API's
+unified `meos-idl.json` catalog: the public `MEOS.NET.Functions.Meos` class,
+one file per MEOS header exactly as the catalog groups the declarations, plus
+`Meos.Native.g.cs` with the P/Invoke declarations behind them. A method is the
+C name in PascalCase — `tfloat_in` reads `TfloatIn`, `meos_initialize` reads
+`MeosInitialize` — the spelling GoMEOS exports, so one rule serves the
+ecosystem rather than a per-binding invention.
 
 `objectgen.py` regenerates `MEOS.NET/Types/Generated/*.g.cs` — the object
 layer — from the same catalog's `objectModel`, which is the ecosystem-wide
@@ -33,8 +37,8 @@ single-line-only regex, hardcoded developer DllPath).
    python3 tools/objectgen.py /path/to/meos-idl.json --report
    ```
 
-The two `.cs` files under `MEOS.NET/Internal/` are overwritten in place
-with bindings for every public MEOS function in the catalog, and
+`MEOS.NET/Functions/` is rewritten with a binding for every MEOS function in
+the catalog, and
 `MEOS.NET/Types/Generated/` is rewritten with one class per object-model
 class. `--report` lists, per class, every method the object layer leaves
 to the raw binding and why.

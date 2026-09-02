@@ -1,4 +1,4 @@
-﻿using MEOS.NET.Internal;
+﻿using MEOS.NET.Functions;
 using MEOS.NET.Structures;
 
 namespace MEOS.NET.Helpers
@@ -7,13 +7,13 @@ namespace MEOS.NET.Helpers
     {
         internal static DateTime ToDateTime(this TimestampTz pgTimestamp)
         {
-            var str = MEOSExposedFunctions.timestamptz_out(pgTimestamp.Time);
+            var str = Meos.TimestamptzOut(pgTimestamp.Time);
             return DateTime.Parse(str);
         }
 
         internal static long ToPgTimestamp(this DateTime dateTime)
         {
-            var res = MEOSExposedFunctions.timestamptz_in(dateTime.ToString("s"), -1); // ToString("s") -> ISO 8601 formatted date string
+            var res = Meos.TimestamptzIn(dateTime.ToString("s"), -1); // ToString("s") -> ISO 8601 formatted date string
             return res;
         }
     }

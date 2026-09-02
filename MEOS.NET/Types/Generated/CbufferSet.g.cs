@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,10 +12,10 @@ namespace MEOS.NET.Types.Generated
         internal CbufferSet(IntPtr ptr) : base(ptr) { }
 
         public string Out(int maxdd)
-            => MEOSExposedFunctions.cbufferset_out(this.Ptr, maxdd);
+            => Meos.CbuffersetOut(this.Ptr, maxdd);
 
         public static Set? In(string str)
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.cbufferset_in(str));
+            => MEOSFactory.WrapSet(Meos.CbuffersetIn(str));
 
     }
 }

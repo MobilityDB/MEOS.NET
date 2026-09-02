@@ -1,5 +1,5 @@
 ﻿using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 using MEOS.NET.Types.Collections.Time.Timestamp;
 
 namespace MEOS.NET.Types.Temporal.Number.Float
@@ -13,7 +13,7 @@ namespace MEOS.NET.Types.Temporal.Number.Float
 
         public static TemporalFloatSequenceSet FromTimestampSpanSet(TimestampTzSpanSet tsTzSpanSet, double value, InterpolationType interpolation =  InterpolationType.None)
         {
-            var res = MEOSExposedFunctions.tfloatseqset_from_base_tstzspanset(value, tsTzSpanSet._ptr, (int)interpolation);
+            var res = Meos.TfloatseqsetFromBaseTstzspanset(value, tsTzSpanSet._ptr, (int)interpolation);
             return new TemporalFloatSequenceSet(res);
         }
     }

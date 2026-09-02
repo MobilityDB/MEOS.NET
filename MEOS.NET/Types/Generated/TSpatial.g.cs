@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,28 +12,28 @@ namespace MEOS.NET.Types.Generated
         internal TSpatial(IntPtr ptr) : base(ptr) { }
 
         public string AsEWKT(int maxdd)
-            => MEOSExposedFunctions.tspatial_as_ewkt(this.Ptr, maxdd);
+            => Meos.TspatialAsEwkt(this.Ptr, maxdd);
 
         public string AsText(int maxdd)
-            => MEOSExposedFunctions.tspatial_as_text(this.Ptr, maxdd);
+            => Meos.TspatialAsText(this.Ptr, maxdd);
 
         public string Out(int maxdd)
-            => MEOSExposedFunctions.tspatial_out(this.Ptr, maxdd);
+            => Meos.TspatialOut(this.Ptr, maxdd);
 
         public int SRID()
-            => MEOSExposedFunctions.tspatial_srid(this.Ptr);
+            => Meos.TspatialSrid(this.Ptr);
 
         public Temporal? SetSRID(int srid)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tspatial_set_srid(this.Ptr, srid));
+            => MEOSFactory.WrapTemporal(Meos.TspatialSetSrid(this.Ptr, srid));
 
         public STBox? ToStbox()
-            => MEOSFactory.WrapSTBox(MEOSExposedFunctions.tspatial_to_stbox(this.Ptr));
+            => MEOSFactory.WrapSTBox(Meos.TspatialToStbox(this.Ptr));
 
         public Temporal? Transform(int srid)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tspatial_transform(this.Ptr, srid));
+            => MEOSFactory.WrapTemporal(Meos.TspatialTransform(this.Ptr, srid));
 
         public Temporal? TransformPipeline(string pipelinestr, int srid, bool is_forward)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tspatial_transform_pipeline(this.Ptr, pipelinestr, srid, is_forward));
+            => MEOSFactory.WrapTemporal(Meos.TspatialTransformPipeline(this.Ptr, pipelinestr, srid, is_forward));
 
     }
 }

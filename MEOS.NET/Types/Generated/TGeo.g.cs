@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,13 +12,13 @@ namespace MEOS.NET.Types.Generated
         internal TGeo(IntPtr ptr) : base(ptr) { }
 
         public Temporal? AtStbox(STBox box, bool border_inc)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tgeo_at_stbox(this.Ptr, box.Ptr, border_inc));
+            => MEOSFactory.WrapTemporal(Meos.TgeoAtStbox(this.Ptr, box.Ptr, border_inc));
 
         public Temporal? Centroid()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tgeo_centroid(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TgeoCentroid(this.Ptr));
 
         public Temporal? MinusStbox(STBox box, bool border_inc)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tgeo_minus_stbox(this.Ptr, box.Ptr, border_inc));
+            => MEOSFactory.WrapTemporal(Meos.TgeoMinusStbox(this.Ptr, box.Ptr, border_inc));
 
     }
 }

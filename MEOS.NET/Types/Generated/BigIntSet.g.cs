@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,22 +12,22 @@ namespace MEOS.NET.Types.Generated
         internal BigIntSet(IntPtr ptr) : base(ptr) { }
 
         public long EndValue()
-            => MEOSExposedFunctions.bigintset_end_value(this.Ptr);
+            => Meos.BigintsetEndValue(this.Ptr);
 
         public string Out()
-            => MEOSExposedFunctions.bigintset_out(this.Ptr);
+            => Meos.BigintsetOut(this.Ptr);
 
         public Set? ShiftScale(long shift, long width, bool hasshift, bool haswidth)
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.bigintset_shift_scale(this.Ptr, shift, width, hasshift, haswidth));
+            => MEOSFactory.WrapSet(Meos.BigintsetShiftScale(this.Ptr, shift, width, hasshift, haswidth));
 
         public long StartValue()
-            => MEOSExposedFunctions.bigintset_start_value(this.Ptr);
+            => Meos.BigintsetStartValue(this.Ptr);
 
         public long[] Values()
-            => MEOSExposedFunctions.bigintset_values(this.Ptr);
+            => Meos.BigintsetValues(this.Ptr);
 
         public static Set? In(string str)
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.bigintset_in(str));
+            => MEOSFactory.WrapSet(Meos.BigintsetIn(str));
 
     }
 }

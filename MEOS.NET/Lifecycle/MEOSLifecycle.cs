@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 
 using MEOS.NET.Errors;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Lifecycle
 {
@@ -12,18 +12,18 @@ namespace MEOS.NET.Lifecycle
         // function pointer.  MEOS 1.3 `meos_initialize_error_handler` takes a
         // raw `error_handler_fn` (function pointer / nint) rather than a P/Invoke
         // delegate, so the call site marshals the delegate explicitly.
-        private static MEOSExposedFunctions.ErrorHandlingMethod? errorHandlerDelegate;
+        private static Meos.ErrorHandlingMethod? errorHandlerDelegate;
 
         public static void Initialize(string timeZone)
         {
-            MEOSExposedFunctions.meos_initialize();
-            MEOSExposedFunctions.meos_initialize_timezone(timeZone);
+            Meos.MeosInitialize();
+            Meos.MeosInitializeTimezone(timeZone);
             errorHandlerDelegate = MEOSErrorHandling.InternalErrorHandler;
             var fnPtr = Marshal.GetFunctionPointerForDelegate(errorHandlerDelegate);
-            MEOSExposedFunctions.meos_initialize_error_handler(fnPtr);
+            Meos.MeosInitializeErrorHandler(fnPtr);
         }
 
         public static void Terminate()
-            => MEOSExposedFunctions.meos_finalize();
+            => Meos.MeosFinalize();
     }
 }

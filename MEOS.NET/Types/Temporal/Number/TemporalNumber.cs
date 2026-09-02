@@ -1,4 +1,4 @@
-﻿using MEOS.NET.Internal;
+﻿using MEOS.NET.Functions;
 using MEOS.NET.Types.Boxes;
 using MEOS.NET.Types.Collections;
 using MEOS.NET.Types.Collections.Float;
@@ -14,37 +14,37 @@ namespace MEOS.NET.Types.Temporal.Number
 
         private TemporalNumber At(Set set)
         {
-            var res = MEOSExposedFunctions.temporal_at_values(this._ptr, set._ptr);
+            var res = Meos.TemporalAtValues(this._ptr, set._ptr);
             return new TemporalNumber(res);
         }
 
         private TemporalNumber At(Span span)
         {
-            var res = MEOSExposedFunctions.tnumber_at_span(this._ptr, span._ptr);
+            var res = Meos.TnumberAtSpan(this._ptr, span._ptr);
             return new TemporalNumber(res);
         }
 
         private TemporalNumber At(SpanSet spanSet)
         {
-            var res = MEOSExposedFunctions.tnumber_at_spanset(this._ptr, spanSet._ptr);
+            var res = Meos.TnumberAtSpanset(this._ptr, spanSet._ptr);
             return new TemporalNumber(res);
         }
 
         private TemporalNumber Minus(Set set)
         {
-            var res = MEOSExposedFunctions.temporal_minus_values(this._ptr, set._ptr);
+            var res = Meos.TemporalMinusValues(this._ptr, set._ptr);
             return new TemporalNumber(res);
         }
 
         private TemporalNumber Minus(Span span)
         {
-            var res = MEOSExposedFunctions.tnumber_minus_span(this._ptr, span._ptr);
+            var res = Meos.TnumberMinusSpan(this._ptr, span._ptr);
             return new TemporalNumber(res);
         }
 
         private TemporalNumber Minus(SpanSet spanSet)
         {
-            var res = MEOSExposedFunctions.tnumber_minus_spanset(this._ptr, spanSet._ptr);
+            var res = Meos.TnumberMinusSpanset(this._ptr, spanSet._ptr);
             return new TemporalNumber(res);
         }
 
@@ -68,7 +68,7 @@ namespace MEOS.NET.Types.Temporal.Number
 
         public TemporalNumber At(TemporalBox box)
         {
-            var res = MEOSExposedFunctions.tnumber_at_tbox(this._ptr, box._ptr);
+            var res = Meos.TnumberAtTbox(this._ptr, box._ptr);
             return new TemporalNumber(res);
         }
 
@@ -92,21 +92,21 @@ namespace MEOS.NET.Types.Temporal.Number
 
         public TemporalNumber Minus(TemporalBox box)
         {
-            var res = MEOSExposedFunctions.tnumber_minus_tbox(this._ptr, box._ptr);
+            var res = Meos.TnumberMinusTbox(this._ptr, box._ptr);
             return new TemporalNumber(res);
         }
 
         public TemporalBox BoundingBox()
         {
-            var res = MEOSExposedFunctions.tnumber_to_tbox(this._ptr);
+            var res = Meos.TnumberToTbox(this._ptr);
             return new TemporalBox(res);
         }
 
         public double Integral()
-            => MEOSExposedFunctions.tnumber_integral(this._ptr);
+            => Meos.TnumberIntegral(this._ptr);
 
         public double TimeWeightedAverage()
-            => MEOSExposedFunctions.tnumber_twavg(this._ptr);
+            => Meos.TnumberTwavg(this._ptr);
 
         public bool IsLeftOf(TemporalBox other)
             => this.BoundingBox().IsLeftOf(other);
@@ -134,51 +134,51 @@ namespace MEOS.NET.Types.Temporal.Number
 
         public TemporalNumber Add(TemporalNumber other)
         {
-            var res = MEOSExposedFunctions.add_tnumber_tnumber(this._ptr, other._ptr);
+            var res = Meos.AddTnumberTnumber(this._ptr, other._ptr);
             return new TemporalNumber(res);
         }
 
         public TemporalNumber Minus(TemporalNumber other)
         {
-            var res = MEOSExposedFunctions.sub_tnumber_tnumber(this._ptr, other._ptr);
+            var res = Meos.SubTnumberTnumber(this._ptr, other._ptr);
             return new TemporalNumber(res);
         }
 
         public TemporalNumber Multiply(TemporalNumber other)
         {
-            var res = MEOSExposedFunctions.mul_tnumber_tnumber(this._ptr, other._ptr);
+            var res = Meos.MulTnumberTnumber(this._ptr, other._ptr);
             return new TemporalNumber(res);
         }
 
         public TemporalNumber Divide(TemporalNumber other)
         {
-            var res = MEOSExposedFunctions.div_tnumber_tnumber(this._ptr, other._ptr);
+            var res = Meos.DivTnumberTnumber(this._ptr, other._ptr);
             return new TemporalNumber(res);
         }
 
         public TemporalNumber Absolute()
         {
-            var res = MEOSExposedFunctions.tnumber_abs(this._ptr);
+            var res = Meos.TnumberAbs(this._ptr);
             return new TemporalNumber(res);
         }
 
         public TemporalNumber Delta()
         {
-            var res = MEOSExposedFunctions.tnumber_delta_value(this._ptr);
+            var res = Meos.TnumberDeltaValue(this._ptr);
             return new TemporalNumber(res);
         }
 
         public TemporalNumber DistanceTo(TemporalNumber other)
         {
-            var res = MEOSExposedFunctions.tdistance_tnumber_tnumber(this._ptr, other._ptr);
+            var res = Meos.TdistanceTnumberTnumber(this._ptr, other._ptr);
             return new TemporalNumber(res);
         }
 
         public double NearestApproachDistance(TemporalNumber other)
-            => MEOSExposedFunctions.nad_tfloat_tfloat(this._ptr, other._ptr);
+            => Meos.NadTfloatTfloat(this._ptr, other._ptr);
 
         public double NearestApproachDistance(TemporalBox other)
-            => MEOSExposedFunctions.nad_tnumber_tbox(this._ptr, other._ptr);
+            => Meos.NadTnumberTbox(this._ptr, other._ptr);
 
         public static TemporalNumber operator /(TemporalNumber tNumber1, TemporalNumber tNumber2)
             => tNumber1.Divide(tNumber2);

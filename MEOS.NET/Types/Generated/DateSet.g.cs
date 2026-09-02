@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,25 +12,25 @@ namespace MEOS.NET.Types.Generated
         internal DateSet(IntPtr ptr) : base(ptr) { }
 
         public DateOnly EndValue()
-            => MEOSConvert.ToDateOnly(MEOSExposedFunctions.dateset_end_value(this.Ptr));
+            => MEOSConvert.ToDateOnly(Meos.DatesetEndValue(this.Ptr));
 
         public string Out()
-            => MEOSExposedFunctions.dateset_out(this.Ptr);
+            => Meos.DatesetOut(this.Ptr);
 
         public Set? ShiftScale(int shift, int width, bool hasshift, bool haswidth)
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.dateset_shift_scale(this.Ptr, shift, width, hasshift, haswidth));
+            => MEOSFactory.WrapSet(Meos.DatesetShiftScale(this.Ptr, shift, width, hasshift, haswidth));
 
         public DateOnly StartValue()
-            => MEOSConvert.ToDateOnly(MEOSExposedFunctions.dateset_start_value(this.Ptr));
+            => MEOSConvert.ToDateOnly(Meos.DatesetStartValue(this.Ptr));
 
         public Set? ToTstzset()
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.dateset_to_tstzset(this.Ptr));
+            => MEOSFactory.WrapSet(Meos.DatesetToTstzset(this.Ptr));
 
         public int[] Values()
-            => MEOSExposedFunctions.dateset_values(this.Ptr);
+            => Meos.DatesetValues(this.Ptr);
 
         public static Set? In(string str)
-            => MEOSFactory.WrapSet(MEOSExposedFunctions.dateset_in(str));
+            => MEOSFactory.WrapSet(Meos.DatesetIn(str));
 
     }
 }

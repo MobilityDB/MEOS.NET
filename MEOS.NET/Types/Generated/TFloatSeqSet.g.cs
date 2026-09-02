@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,7 +12,7 @@ namespace MEOS.NET.Types.Generated
         internal TFloatSeqSet(IntPtr ptr) : base(ptr) { }
 
         public static Temporal? FromBaseTstzspanset(double d, SpanSet ss, InterpolationType interp)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tfloatseqset_from_base_tstzspanset(d, ss.Ptr, (int) interp));
+            => MEOSFactory.WrapTemporal(Meos.TfloatseqsetFromBaseTstzspanset(d, ss.Ptr, (int) interp));
 
     }
 }

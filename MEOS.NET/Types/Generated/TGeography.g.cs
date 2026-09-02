@@ -1,7 +1,7 @@
 #nullable enable
 
 using MEOS.NET.Enums;
-using MEOS.NET.Internal;
+using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types.Generated
 {
@@ -12,16 +12,16 @@ namespace MEOS.NET.Types.Generated
         internal TGeography(IntPtr ptr) : base(ptr) { }
 
         public Temporal? ToTgeogpoint()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tgeography_to_tgeogpoint(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TgeographyToTgeogpoint(this.Ptr));
 
         public Temporal? ToTgeometry()
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tgeography_to_tgeometry(this.Ptr));
+            => MEOSFactory.WrapTemporal(Meos.TgeographyToTgeometry(this.Ptr));
 
         public static Temporal? FromMFJSON(string mfjson)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tgeography_from_mfjson(mfjson));
+            => MEOSFactory.WrapTemporal(Meos.TgeographyFromMfjson(mfjson));
 
         public static Temporal? In(string str)
-            => MEOSFactory.WrapTemporal(MEOSExposedFunctions.tgeography_in(str));
+            => MEOSFactory.WrapTemporal(Meos.TgeographyIn(str));
 
     }
 }
