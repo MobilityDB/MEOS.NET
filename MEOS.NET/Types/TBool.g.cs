@@ -35,6 +35,42 @@ namespace MEOS.NET.Types
         public Temporal? ToTint()
             => MEOSFactory.WrapTemporal(Meos.TboolToTint(this.Ptr));
 
+        public bool? ValueAtTimestamptz(DateTime t, bool strict)
+        {
+            IntPtr _value = Marshal.AllocHGlobal(1);
+            try
+            {
+                if (!Meos.TboolValueAtTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict, _value))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadByte(_value) != 0;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_value);
+            }
+        }
+
+        public bool? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(1);
+            try
+            {
+                if (!Meos.TboolValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadByte(_result) != 0;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public SpanSet? WhenTrue()
             => MEOSFactory.WrapSpanSet(Meos.TboolWhenTrue(this.Ptr));
 

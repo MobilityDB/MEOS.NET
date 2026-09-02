@@ -35,6 +35,24 @@ namespace MEOS.NET.Types
         public Set? Timestamps()
             => MEOSFactory.WrapSet(Meos.TstzspansetTimestamps(this.Ptr));
 
+        public DateTime? TimestamptzN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TstzspansetTimestamptzN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return MEOSConvert.ToDateTime(Marshal.ReadInt64(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public SpanSet? ToDatespanset()
             => MEOSFactory.WrapSpanSet(Meos.TstzspansetToDatespanset(this.Ptr));
 

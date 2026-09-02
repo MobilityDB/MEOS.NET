@@ -53,11 +53,47 @@ namespace MEOS.NET.Types
         public Temporal? ToTfloat()
             => MEOSFactory.WrapTemporal(Meos.TintToTfloat(this.Ptr));
 
+        public int? ValueAtTimestamptz(DateTime t, bool strict)
+        {
+            IntPtr _value = Marshal.AllocHGlobal(4);
+            try
+            {
+                if (!Meos.TintValueAtTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict, _value))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadInt32(_value);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_value);
+            }
+        }
+
         public Span?[] ValueBins(int vsize, int vorigin)
             => MEOSFactory.WrapSpanArray(Meos.TintValueBins(this.Ptr, vsize, vorigin));
 
         public TBox?[] ValueBoxes(int vsize, int vorigin)
             => MEOSFactory.WrapTBoxArray(Meos.TintValueBoxes(this.Ptr, vsize, vorigin));
+
+        public int? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(4);
+            try
+            {
+                if (!Meos.TintValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.ReadInt32(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
 
         public int[] Values()
             => Meos.TintValues(this.Ptr);

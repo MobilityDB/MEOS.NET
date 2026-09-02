@@ -61,6 +61,19 @@ TEMPORAL_STRUCTS = ("Temporal", "TInstant", "TSequence", "TSequenceSet")
 # The template axis: a concrete class is the product `<leaf><suffix>`.
 SUBTYPE_SUFFIX = {"TInstant": "Inst", "TSequence": "Seq", "TSequenceSet": "SeqSet"}
 
+# What a value out-parameter of each pointee type reads back as: the C# type, the
+# bytes to allocate for it, and how to read the value MEOS wrote there.
+OUT_PARAM_READERS = {
+    "double *": ("double", 8, "Marshal.PtrToStructure<double>({0})"),
+    "float8 *": ("double", 8, "Marshal.PtrToStructure<double>({0})"),
+    "bool *": ("bool", 1, "Marshal.ReadByte({0}) != 0"),
+    "int *": ("int", 4, "Marshal.ReadInt32({0})"),
+    "int32_t *": ("int", 4, "Marshal.ReadInt32({0})"),
+    "int64_t *": ("long", 8, "Marshal.ReadInt64({0})"),
+    "TimestampTz *": ("DateTime", 8, "MEOSConvert.ToDateTime(Marshal.ReadInt64({0}))"),
+    "DateADT *": ("DateOnly", 4, "MEOSConvert.ToDateOnly(Marshal.ReadInt32({0}))"),
+}
+
 # C types the object layer passes and returns as C# scalars, keyed by the cleaned
 # C spelling.  Everything else is either a wrapped class pointer or deferred.
 PASSTHROUGH_C = {
@@ -233,7 +246,8 @@ class Method:
     """One emitted method: its C# signature and the wrapper call behind it."""
 
     def __init__(self, name: str, ret: str, params: list[tuple[str, str]],
-                 body: str, static: bool, arrays: list[tuple[str, str]] | None = None):
+                 body: str, static: bool, arrays: list[tuple[str, str]] | None = None,
+                 out_param: tuple[str, int, str] | None = None):
         self.name = name
         self.ret = ret
         self.params = params
@@ -241,6 +255,8 @@ class Method:
         self.static = static
         # (parameter name, element class) for each counted array the method takes.
         self.arrays = arrays or []
+        # (parameter name, bytes, reader expression) for a value out-parameter.
+        self.out_param = out_param
 
 
 class Generator:
@@ -347,6 +363,23 @@ class Generator:
             args.append("this.Ptr")
             params = params[1:]
 
+        # A `bool` return with one value out-parameter is MEOS saying whether the
+        # value exists: the method answers the value, or nothing.
+        out_params = (f.get("shape") or {}).get("outParams") or []
+        result_out = None
+        if clean(f["returnType"]["c"]) == "bool" and len(out_params) == 1:
+            pointee = clean(next(
+                (p["cType"] for p in f.get("params", [])
+                 if p["name"] == out_params[0]), ""))
+            reader = OUT_PARAM_READERS.get(pointee)
+            if reader:
+                result_out = (codegen.csharp_param_name(out_params[0]), reader)
+            else:
+                self.deferred[cls].append(
+                    f"{oo}: the value out-parameter {out_params[0]} is a "
+                    f"{pointee}, which has no reader")
+                return None
+
         ret = self.map_return(f, wrapper_ret)
         if ret is None:
             self.deferred[cls].append(
@@ -367,9 +400,16 @@ class Generator:
                 count_of[codegen.csharp_param_name(declared[i + 1]["name"])] = \
                     codegen.csharp_param_name(p["name"])
 
+        if result_out is not None:
+            ret_type = f"{result_out[1][0]}?"
+            ret_expr = "$"
+
         sig: list[tuple[str, str]] = []
         arrays: list[tuple[str, str]] = []
         for cs_type, pname in params:
+            if result_out is not None and pname == result_out[0]:
+                args.append(f"_{pname}")
+                continue
             if pname in count_of:
                 args.append(f"{count_of[pname]}.Length")
                 continue
@@ -394,8 +434,12 @@ class Generator:
             args.append(mapped[1])
 
         call = f"Meos.{codegen.public_name(fname)}({', '.join(args)})"
+        out = None
+        if result_out is not None:
+            name, (_, size, reader) = result_out
+            out = (name, size, reader.format(f"_{name}"))
         return Method(pascal(oo), ret_type, sig, ret_expr.replace("$", call), static,
-                      arrays)
+                      arrays, out)
 
     def inherited_names(self, cls: str) -> set[tuple]:
         names: set[tuple] = set()
@@ -443,13 +487,41 @@ class Generator:
             new = "new " if (m.name, tuple(t for t, _ in m.params)) in inherited else ""
             kind = "static " if m.static else ""
             lines.append(f"        public {new}{kind}{m.ret} {m.name}({args})")
-            if m.arrays:
+            if m.out_param:
+                lines.extend(self.out_param_body(m))
+            elif m.arrays:
                 lines.extend(self.array_body(m))
             else:
                 lines.append(f"            => {m.body};")
             lines.append("")
         lines += ["    }", "}", ""]
         return "\n".join(lines)
+
+    def out_param_body(self, method: Method) -> list[str]:
+        """The body of a method whose value MEOS writes through an out-parameter.
+
+        MEOS answers `false` when the value does not exist and leaves the
+        out-parameter untouched, so the method answers null there and the value
+        otherwise."""
+        name, size, reader = method.out_param
+        return [
+            "        {",
+            f"            IntPtr _{name} = Marshal.AllocHGlobal({size});",
+            "            try",
+            "            {",
+            f"                if (!{method.body})",
+            "                {",
+            "                    return null;",
+            "                }",
+            "",
+            f"                return {reader};",
+            "            }",
+            "            finally",
+            "            {",
+            f"                Marshal.FreeHGlobal(_{name});",
+            "            }",
+            "        }",
+        ]
 
     def array_body(self, method: Method) -> list[str]:
         """The body of a method taking a counted array.

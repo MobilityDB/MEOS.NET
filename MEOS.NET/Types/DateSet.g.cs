@@ -32,6 +32,24 @@ namespace MEOS.NET.Types
         public Set? ToTstzset()
             => MEOSFactory.WrapSet(Meos.DatesetToTstzset(this.Ptr));
 
+        public DateOnly? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(4);
+            try
+            {
+                if (!Meos.DatesetValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return MEOSConvert.ToDateOnly(Marshal.ReadInt32(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public int[] Values()
             => Meos.DatesetValues(this.Ptr);
 
