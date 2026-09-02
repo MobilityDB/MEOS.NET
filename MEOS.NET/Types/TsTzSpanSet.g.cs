@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal TsTzSpanSet(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out();
+
         public DateTime EndTimestamptz()
             => MEOSConvert.ToDateTime(Meos.TstzspansetEndTimestamptz(this.Ptr));
 

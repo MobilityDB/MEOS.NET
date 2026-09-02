@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal TText(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out();
+
         public Temporal? Initcap()
             => MEOSFactory.WrapTemporal(Meos.TtextInitcap(this.Ptr));
 

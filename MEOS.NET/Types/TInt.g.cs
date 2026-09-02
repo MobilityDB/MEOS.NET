@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal TInt(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out();
+
         public Temporal? AtValue(int i)
             => MEOSFactory.WrapTemporal(Meos.TintAtValue(this.Ptr, i));
 

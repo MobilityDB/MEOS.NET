@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal STBox(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out(15);
+
         public double Area(bool spheroid)
             => Meos.StboxArea(this.Ptr, spheroid);
 

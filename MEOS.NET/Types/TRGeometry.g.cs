@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal TRGeometry(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out();
+
         public new Temporal? AfterTimestamptz(DateTime t, bool strict)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAfterTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict));
 

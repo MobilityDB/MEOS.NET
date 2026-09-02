@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal TBox(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out(15);
+
         public int Cmp(TBox box2)
             => Meos.TboxCmp(this.Ptr, box2.Ptr);
 

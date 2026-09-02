@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal TFloat(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out(15);
+
         public Temporal? AtValue(double d)
             => MEOSFactory.WrapTemporal(Meos.TfloatAtValue(this.Ptr, d));
 

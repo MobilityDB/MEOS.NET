@@ -401,6 +401,7 @@ class Generator:
             f"        internal {cls}(IntPtr ptr) : base(ptr) {{ }}",
             "",
         ]
+        lines += self.to_string(cls, methods)
         for m in methods:
             args = ", ".join(f"{t} {ident(n)}" for t, n in m.params)
             new = "new " if (m.name, tuple(t for t, _ in m.params)) in inherited else ""
@@ -410,6 +411,32 @@ class Generator:
             lines.append("")
         lines += ["    }", "}", ""]
         return "\n".join(lines)
+
+    def to_string(self, cls: str, methods: list) -> list[str]:
+        """`ToString` over the class's own text output, where MEOS publishes one.
+
+        MEOS publishes text output per concrete type — `tfloat_out`, `stbox_out`,
+        `floatspan_out` — and keeps the generic dispatchers internal, so a class
+        that carries an `Out` of its own is exactly a class whose values MEOS
+        writes.  The decimal digits are the default the catalog records for that
+        C type's text encoding."""
+        out = next((m for m in methods if m.name == "Out" and not m.static
+                    and [t for t, _ in m.params] in ([], ["int"])), None)
+        if out is None:
+            return []
+        ctype = self.m.ctype.get(cls)
+        encoding = self.m.idl.get("typeEncodings", {}).get(ctype, {})
+        aux = {a["name"]: a["default"] for a in encoding.get("out_aux", [])}
+        argument = str(aux.get("maxdd", "")) if out.params else ""
+        if out.params and not argument:
+            return []
+        nullable = "?" if out.ret.endswith("?") else ""
+        return [
+            "        /// <summary>The text MEOS writes this value as.</summary>",
+            f"        public override string{nullable} ToString()",
+            f"            => this.Out({argument});",
+            "",
+        ]
 
     def doc_for(self, cls: str) -> str:
         node = self.m.om["lattice"].get(cls)

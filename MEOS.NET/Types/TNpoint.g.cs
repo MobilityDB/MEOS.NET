@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal TNpoint(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out(15);
+
         public Temporal? AtNpointset(Set s)
             => MEOSFactory.WrapTemporal(Meos.TnpointAtNpointset(this.Ptr, s.Ptr));
 

@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal TSpatial(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out(15);
+
         public string AsEWKT(int maxdd)
             => Meos.TspatialAsEwkt(this.Ptr, maxdd);
 

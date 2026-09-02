@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal DateSpanSet(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out();
+
         public Set? Dates()
             => MEOSFactory.WrapSet(Meos.DatespansetDates(this.Ptr));
 

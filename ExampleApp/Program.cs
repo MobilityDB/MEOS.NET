@@ -10,14 +10,14 @@ try
     Console.WriteLine("Reading a temporal float instant from \"25.0@2024-12-06\"");
     Temporal tfi = TFloat.In("25.0@2024-12-06")!;
     Console.WriteLine($"  class            : {tfi.GetType().Name}");
-    Console.WriteLine($"  text             : {Meos.TfloatOut(tfi.Ptr, 15)}");
+    Console.WriteLine($"  text             : {tfi}");
     Console.WriteLine($"  start timestamp  : {tfi.StartTimestamptz():u}");
     Console.WriteLine($"  MF-JSON          : {tfi.AsMFJSON(false, 0, 6, string.Empty)}");
     Console.WriteLine($"  always 25.0?     : {Meos.AlwaysEqTfloatFloat(tfi.Ptr, 25.0) == 1}\n");
 
     Console.WriteLine("Making one from a value and a moment");
     Temporal made = TFloatInst.Make(26.0, DateTime.UtcNow)!;
-    Console.WriteLine($"  text             : {Meos.TfloatOut(made.Ptr, 15)}");
+    Console.WriteLine($"  text             : {made}");
     Console.WriteLine("  adding 34 to its value");
     Temporal sum = MEOSFactory.WrapTemporal(Meos.AddTfloatFloat(made.Ptr, 34.0))!;
     Console.WriteLine($"  text             : {Meos.TfloatOut(sum.Ptr, 15)}");
@@ -29,7 +29,7 @@ try
     Console.WriteLine($"  spans            : {spanset.NumSpans()}");
     foreach (Span? span in spanset.Spanarr())
     {
-        Console.WriteLine($"    {((FloatSpan)span!).Out(15)}");
+        Console.WriteLine($"    {span}");
     }
 
     Console.WriteLine($"  contains 9.0?    : {Meos.ContainsSpansetFloat(spanset.Ptr, 9.0)}");

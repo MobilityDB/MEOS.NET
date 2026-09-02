@@ -11,6 +11,10 @@ namespace MEOS.NET.Types
     {
         internal TsTzSpan(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.Out();
+
         public DateTime Lower()
             => MEOSConvert.ToDateTime(Meos.TstzspanLower(this.Ptr));
 
