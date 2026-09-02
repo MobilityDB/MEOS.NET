@@ -2,6 +2,8 @@
 
 using System.Runtime.InteropServices;
 
+using MEOS.NET.Structures;
+
 namespace MEOS.NET.Functions
 {
     /// <summary>The MEOS functions <c>meos_geo.h</c> declares.</summary>
@@ -760,8 +762,8 @@ namespace MEOS.NET.Functions
         public static IntPtr TgeompointToTgeometry(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TgeompointToTgeometry(temp));
 
-        public static IntPtr TpointAsMvtgeom(IntPtr temp, IntPtr bounds, int extent, int buffer, bool clip_geom)
-            => SafeExecution<IntPtr>(() => Native.TpointAsMvtgeom(temp, bounds, extent, buffer, clip_geom));
+        public static MvtGeom TpointAsMvtgeom(IntPtr temp, IntPtr bounds, int extent, int buffer, bool clip_geom)
+            => SafeExecution<MvtGeom>(() => Native.TpointAsMvtgeom(temp, bounds, extent, buffer, clip_geom));
 
         public static bool TpointTfloatToGeomeas(IntPtr tpoint, IntPtr measure, bool segmentize, IntPtr result)
             => SafeExecution<bool>(() => Native.TpointTfloatToGeomeas(tpoint, measure, segmentize, result));
@@ -1714,11 +1716,11 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr TgeoSpaceSplit(IntPtr temp, double xsize, double ysize, double zsize, IntPtr sorigin, bool bitmatrix, bool border_inc)
-            => SafeExecution<IntPtr>(() => Native.TgeoSpaceSplit(temp, xsize, ysize, zsize, sorigin, bitmatrix, border_inc));
+        public static SpaceSplit TgeoSpaceSplit(IntPtr temp, double xsize, double ysize, double zsize, IntPtr sorigin, bool bitmatrix, bool border_inc)
+            => SafeExecution<SpaceSplit>(() => Native.TgeoSpaceSplit(temp, xsize, ysize, zsize, sorigin, bitmatrix, border_inc));
 
-        public static IntPtr TgeoSpaceTimeSplit(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, bool bitmatrix, bool border_inc)
-            => SafeExecution<IntPtr>(() => Native.TgeoSpaceTimeSplit(temp, xsize, ysize, zsize, duration, sorigin, torigin, bitmatrix, border_inc));
+        public static SpaceTimeSplit TgeoSpaceTimeSplit(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, bool bitmatrix, bool border_inc)
+            => SafeExecution<SpaceTimeSplit>(() => Native.TgeoSpaceTimeSplit(temp, xsize, ysize, zsize, duration, sorigin, torigin, bitmatrix, border_inc));
 
         public static int[] GeoClusterKmeans(IntPtr geoms, uint ngeoms, uint k)
         {

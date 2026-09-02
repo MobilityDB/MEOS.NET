@@ -27,6 +27,7 @@ GENERATOR_VERSION = "0.1.0"
 # per MEOS header exactly as the catalog groups the functions.
 NAMESPACE = "MEOS.NET.Functions"
 CLASS = "Meos"
+STRUCT_NAMESPACE = "MEOS.NET.Structures"
 
 # Canonical C type -> C# parameter/return type.
 # `canonical` field from meos-idl.json is libclang-normalized (e.g. int32_t -> int).
@@ -89,6 +90,12 @@ def configure(idl: dict) -> None:
     ENUM_TYPES.update(e["name"] for e in idl.get("enums", []) if e.get("name"))
     STRUCTS.clear()
     STRUCTS.update({s["name"]: s for s in idl.get("structs", []) if s.get("fields")})
+    BY_VALUE_STRUCTS.clear()
+    for f in idl.get("functions", []):
+        for spot in [f["returnType"]] + list(f.get("params", [])):
+            canonical = spot["canonical"].replace("const ", "").strip()
+            if "*" not in canonical and canonical in STRUCTS:
+                BY_VALUE_STRUCTS.add(canonical)
 
 
 # Size and alignment in bytes of the scalar C types a struct field can have, on
@@ -102,6 +109,56 @@ _SCALAR_BYTES: dict[str, int] = {
     "double": 8, "float8": 8, "Datum": 8, "Timestamp": 8, "TimestampTz": 8,
     "TimeADT": 8, "size_t": 8, "uintptr_t": 8,
 }
+
+
+# The catalog structs a function returns or takes BY VALUE, filled in by
+# ``configure``.  Those are the only ones the binding gives a C# type: every
+# other MEOS struct crosses the boundary as a pointer and stays opaque.
+BY_VALUE_STRUCTS: set[str] = set()
+
+
+def csharp_field_type(c_type: str) -> str:
+    """The C# type of a by-value struct's field."""
+    t = c_type.replace("const ", "").strip()
+    if t.endswith("*"):
+        return "IntPtr"
+    if t in ENUM_TYPES:
+        return "int"
+    if t not in SCALAR_MAP:
+        raise SystemExit(f"codegen: struct field type {t!r} has no C# mapping")
+    return SCALAR_MAP[t]
+
+
+def gen_structs() -> str:
+    """The C# form of each struct a function hands back by value.
+
+    A struct return is not a pointer: the ABI passes it in registers or through a
+    hidden pointer the caller supplies, so declaring it as an IntPtr reads an
+    address where there is none."""
+    lines = [
+        "#nullable enable",
+        "",
+        "using System.CodeDom.Compiler;",
+        "using System.Runtime.InteropServices;",
+        "",
+        f"namespace {STRUCT_NAMESPACE}",
+        "{",
+    ]
+    for name in sorted(BY_VALUE_STRUCTS):
+        struct = STRUCTS[name]
+        lines += [
+            f"    /// <summary>The MEOS <c>{name}</c> struct, as MEOS returns it.</summary>",
+            f'    [GeneratedCode("MEOS.NET.Codegen", "{GENERATOR_VERSION}")]',
+            "    [StructLayout(LayoutKind.Sequential)]",
+            f"    public struct {name}",
+            "    {",
+        ]
+        for field in struct["fields"]:
+            lines.append(f"        public {csharp_field_type(field['cType'])} "
+                         f"{csharp_param_name(field['name'])};")
+        lines += ["    }", ""]
+    lines += ["}", ""]
+    return "\n".join(lines)
 
 
 def _type_layout(c_type: str) -> tuple[int, int]:
@@ -160,6 +217,8 @@ def csharp_type_for(canonical: str) -> str:
         return "IntPtr"
     if t in ENUM_TYPES:
         return "int"
+    if t in BY_VALUE_STRUCTS:
+        return t
     return SCALAR_MAP.get(t, "IntPtr")  # unknown scalar -> opaque pointer is safer than guessing
 
 
@@ -213,6 +272,8 @@ def gen_external_functions(funcs: list[dict]) -> str:
     lines.append("")
     lines.append("using System.CodeDom.Compiler;")
     lines.append("using System.Runtime.InteropServices;")
+    lines.append("")
+    lines.append(f"using {STRUCT_NAMESPACE};")
     lines.append("")
     lines.append(f"namespace {NAMESPACE}")
     lines.append("{")
@@ -547,6 +608,8 @@ def gen_exposed_functions(funcs: list[dict], header: str | None = None) -> str:
     lines.append("")
     lines.append("using System.Runtime.InteropServices;")
     lines.append("")
+    lines.append(f"using {STRUCT_NAMESPACE};")
+    lines.append("")
     lines.append(f"namespace {NAMESPACE}")
     lines.append("{")
     if header:
@@ -624,13 +687,21 @@ def main(idl_path: str, dll_path: str = DLL_PATH) -> None:
     if clashing:
         raise SystemExit(f"codegen: C names sharing one C# name: {clashing}")
 
+    struct_dir = repo_root / "MEOS.NET" / "Structures"
+    if struct_dir.exists():
+        for stale in struct_dir.glob("*.g.cs"):
+            stale.unlink()
+    struct_dir.mkdir(parents=True, exist_ok=True)
+    (struct_dir / "MeosStructs.g.cs").write_text(gen_structs())
+
     (out_dir / "Meos.Native.g.cs").write_text(gen_external_functions(funcs))
     grouped = by_header(funcs)
     for header, group in sorted(grouped.items()):
         stem = header.removesuffix(".h")
         (out_dir / f"Meos.{stem}.g.cs").write_text(gen_exposed_functions(group, header))
     print(f"Wrote {len(funcs)} functions across {len(grouped)} headers "
-          f"to MEOS.NET/Functions/", file=sys.stderr)
+          f"to MEOS.NET/Functions/, {len(BY_VALUE_STRUCTS)} by-value structs",
+          file=sys.stderr)
 
 
 if __name__ == "__main__":

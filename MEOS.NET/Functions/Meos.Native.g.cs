@@ -3,6 +3,8 @@
 using System.CodeDom.Compiler;
 using System.Runtime.InteropServices;
 
+using MEOS.NET.Structures;
+
 namespace MEOS.NET.Functions
 {
     public static partial class Meos
@@ -5746,7 +5748,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TgeompointToTgeometry(IntPtr temp);
 
             [LibraryImport(DllPath, EntryPoint = "tpoint_as_mvtgeom", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr TpointAsMvtgeom(IntPtr temp, IntPtr bounds, int extent, int buffer, [MarshalAs(UnmanagedType.U1)] bool clip_geom);
+            internal static partial MvtGeom TpointAsMvtgeom(IntPtr temp, IntPtr bounds, int extent, int buffer, [MarshalAs(UnmanagedType.U1)] bool clip_geom);
 
             [LibraryImport(DllPath, EntryPoint = "tpoint_tfloat_to_geomeas", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -6481,10 +6483,10 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr StboxTimeTiles(IntPtr bounds, IntPtr duration, long torigin, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr count);
 
             [LibraryImport(DllPath, EntryPoint = "tgeo_space_split", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr TgeoSpaceSplit(IntPtr temp, double xsize, double ysize, double zsize, IntPtr sorigin, [MarshalAs(UnmanagedType.U1)] bool bitmatrix, [MarshalAs(UnmanagedType.U1)] bool border_inc);
+            internal static partial SpaceSplit TgeoSpaceSplit(IntPtr temp, double xsize, double ysize, double zsize, IntPtr sorigin, [MarshalAs(UnmanagedType.U1)] bool bitmatrix, [MarshalAs(UnmanagedType.U1)] bool border_inc);
 
             [LibraryImport(DllPath, EntryPoint = "tgeo_space_time_split", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr TgeoSpaceTimeSplit(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, [MarshalAs(UnmanagedType.U1)] bool bitmatrix, [MarshalAs(UnmanagedType.U1)] bool border_inc);
+            internal static partial SpaceTimeSplit TgeoSpaceTimeSplit(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, [MarshalAs(UnmanagedType.U1)] bool bitmatrix, [MarshalAs(UnmanagedType.U1)] bool border_inc);
 
             [LibraryImport(DllPath, EntryPoint = "geo_cluster_kmeans", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GeoClusterKmeans(IntPtr geoms, uint ngeoms, uint k, IntPtr count);

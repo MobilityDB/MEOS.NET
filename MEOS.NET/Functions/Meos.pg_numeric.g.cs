@@ -2,6 +2,8 @@
 
 using System.Runtime.InteropServices;
 
+using MEOS.NET.Structures;
+
 namespace MEOS.NET.Functions
 {
     /// <summary>The MEOS functions <c>pg_numeric.h</c> declares.</summary>
