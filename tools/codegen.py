@@ -133,6 +133,17 @@ def is_string_pointer(c_type: str) -> bool:
     return t in ("char *", "char**", "char *const *", "const char *")
 
 
+def is_borrowed_string(c_type: str) -> bool:
+    """A ``const char *`` return the caller does not own.
+
+    The Utf8 string marshaller frees what it is handed back, which is right for
+    the ``char *`` MEOS mallocs for the caller and fatal for the ``const char *``
+    it returns out of a static table — ``interptype_name`` hands back an element
+    of ``MEOS_INTERPTYPE_NAMES``.  A borrowed return comes back as the pointer
+    itself and is read without a free."""
+    return " ".join(c_type.split()).startswith("const char *")
+
+
 def csharp_type_for(canonical: str) -> str:
     """Translate a libclang-canonical C type to a C# type for LibraryImport signatures."""
     t = canonical.strip()
@@ -155,6 +166,8 @@ def csharp_param_type(c_type: str, canonical: str) -> str:
 
 
 def csharp_return_type(c_type: str, canonical: str) -> str:
+    if is_borrowed_string(c_type):
+        return "IntPtr"
     if is_string_pointer(c_type):
         return "string"
     return csharp_type_for(canonical)
@@ -472,6 +485,12 @@ def _emit_array_return_wrapper(f: dict, ext_params: str, ext_args: str) -> list[
 def _emit_simple_passthrough(f: dict, ext_params: str, ext_args: str, default_rt: str | None = None) -> list[str]:
     name = f["name"]
     rt = default_rt or csharp_return_type(f["returnType"]["c"], f["returnType"]["canonical"])
+    if default_rt is None and is_borrowed_string(f["returnType"]["c"]):
+        return [
+            f"        public static string? {name}({ext_params})",
+            f"            => Marshal.PtrToStringUTF8("
+            f"SafeExecution<IntPtr>(() => MEOSExternalFunctions.{name}({ext_args})));",
+        ]
     if rt == "void":
         return [
             f"        public static void {name}({ext_params})",
