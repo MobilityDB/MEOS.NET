@@ -9213,6 +9213,24 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "geo_edge_ctx_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GeoEdgeCtxMake(IntPtr gs);
 
+            [LibraryImport(DllPath, EntryPoint = "geo_is_planar_linear", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool GeoIsPlanarLinear(IntPtr gs);
+
+            [LibraryImport(DllPath, EntryPoint = "geo_is_point_set", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool GeoIsPointSet(IntPtr gs);
+
+            [LibraryImport(DllPath, EntryPoint = "geo_meos_supported", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool GeoMeosSupported(IntPtr gs);
+
+            [LibraryImport(DllPath, EntryPoint = "geo_points_covered", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr GeoPointsCovered(IntPtr pts, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool covered);
+
+            [LibraryImport(DllPath, EntryPoint = "geo_clip_linear_geom", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr GeoClipLinearGeom(IntPtr line, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool inside);
+
             [LibraryImport(DllPath, EntryPoint = "geo_edge_ctx_free", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial void GeoEdgeCtxFree(IntPtr ctx);
 

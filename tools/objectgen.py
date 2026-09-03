@@ -74,14 +74,18 @@ OUT_PARAM_READERS = {
     "DateADT *": ("DateOnly", 4, "MEOSConvert.ToDateOnly(Marshal.ReadInt32({0}))"),
 }
 
-# C types the object layer passes and returns as C# scalars, keyed by the cleaned
-# C spelling.  Everything else is either a wrapped class pointer or deferred.
-PASSTHROUGH_C = {
-    "bool", "char", "int", "int8", "int8_t", "uint8", "uint8_t", "int16", "int16_t",
-    "uint16", "uint16_t", "int32", "int32_t", "uint32", "uint32_t", "int64",
-    "int64_t", "uint64", "uint64_t", "long", "double", "float", "size_t",
-    "char *", "void",
-}
+def is_scalar(cs_type: str) -> bool:
+    """Whether the wrapper already states this as a C# value the layer hands on.
+
+    The wrapper's own C# type is what decides it: codegen resolves every scalar
+    the catalog names — through the typedefs it carries, so `S2CellId` reads
+    `ulong` and `float8` reads `double` — and a struct it carries by value is a
+    value too. A second list of C spellings here would answer for the ones the
+    layer was told about and defer the rest."""
+    return cs_type in _SCALAR_CS or cs_type in codegen.BY_VALUE_STRUCTS
+
+
+_SCALAR_CS = set(codegen.SCALAR_MAP.values()) | {"void", "bool", "string", "string?"}
 
 # Acronym runs the error names carry, kept upper-case so the C# spelling reads
 # the way the catalog's own camelCase names do (`asMFJSON`).
@@ -308,7 +312,9 @@ class Generator:
             return ("DateOnly", "MEOSConvert.ToDateOnly($)")
         if wrapper_ret in ("string", "string?"):
             return (wrapper_ret, "$")
-        if c in PASSTHROUGH_C and wrapper_ret != "IntPtr":
+        if c in codegen.ENUM_TYPES:
+            return (enum_type_name(c), f"({enum_type_name(c)}) $")
+        if is_scalar(wrapper_ret):
             return (wrapper_ret, "$")
         cls = self.m.class_for_ctype(c)
         if cls and wrapper_ret == "IntPtr":
@@ -361,9 +367,13 @@ class Generator:
             return ("DateTime", f"MEOSConvert.ToTimestampTz({name})")
         if c == "DateADT":
             return ("DateOnly", f"MEOSConvert.ToDateADT({name})")
-        if c == "interpType":
-            return ("InterpType", f"(int) {name}")
-        if c in PASSTHROUGH_C and cs_type != "IntPtr":
+        if c in codegen.ENUM_TYPES:
+            # The wrapper takes the enum's value as an int, and the catalog
+            # already names every enum the surface uses — so a method takes the
+            # C# enum whichever one it is, rather than the one enum the layer
+            # was told about.
+            return (enum_type_name(c), f"(int) {name}")
+        if is_scalar(cs_type):
             return (cs_type, name)
         if cs_type == "string":
             return ("string", name)

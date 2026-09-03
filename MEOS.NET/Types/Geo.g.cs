@@ -96,6 +96,9 @@ namespace MEOS.NET.Types
         public ulong ToQuadbinCell(int resolution)
             => Meos.GeoToQuadbinCell(this.Ptr, resolution);
 
+        public ulong ToS2cellCell(int level)
+            => Meos.GeoToS2cellCell(this.Ptr, level);
+
         public Set? ToSet()
             => MEOSFactory.WrapSet(Meos.GeoToSet(this.Ptr));
 

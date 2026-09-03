@@ -252,6 +252,21 @@ namespace MEOS.NET.Functions
         public static IntPtr GeoEdgeCtxMake(IntPtr gs)
             => SafeExecution<IntPtr>(() => Native.GeoEdgeCtxMake(gs));
 
+        public static bool GeoIsPlanarLinear(IntPtr gs)
+            => SafeExecution<bool>(() => Native.GeoIsPlanarLinear(gs));
+
+        public static bool GeoIsPointSet(IntPtr gs)
+            => SafeExecution<bool>(() => Native.GeoIsPointSet(gs));
+
+        public static bool GeoMeosSupported(IntPtr gs)
+            => SafeExecution<bool>(() => Native.GeoMeosSupported(gs));
+
+        public static IntPtr GeoPointsCovered(IntPtr pts, IntPtr gs, bool covered)
+            => SafeExecution<IntPtr>(() => Native.GeoPointsCovered(pts, gs, covered));
+
+        public static IntPtr GeoClipLinearGeom(IntPtr line, IntPtr gs, bool inside)
+            => SafeExecution<IntPtr>(() => Native.GeoClipLinearGeom(line, gs, inside));
+
         public static void GeoEdgeCtxFree(IntPtr ctx)
             => SafeExecution(() => Native.GeoEdgeCtxFree(ctx));
 

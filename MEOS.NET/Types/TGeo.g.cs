@@ -61,6 +61,9 @@ namespace MEOS.NET.Types
         public STBox?[] SpaceBoxes(double xsize, double ysize, double zsize, Geo sorigin, bool bitmatrix, bool border_inc)
             => MEOSFactory.WrapSTBoxArray(Meos.TgeoSpaceBoxes(this.Ptr, xsize, ysize, zsize, sorigin.Ptr, bitmatrix, border_inc));
 
+        public SpaceSplit SpaceSplit(double xsize, double ysize, double zsize, Geo sorigin, bool bitmatrix, bool border_inc)
+            => Meos.TgeoSpaceSplit(this.Ptr, xsize, ysize, zsize, sorigin.Ptr, bitmatrix, border_inc);
+
         public STBox?[] SpaceTimeBoxes(double xsize, double ysize, double zsize, Interval duration, Geo sorigin, DateTime torigin, bool bitmatrix, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
@@ -68,6 +71,20 @@ namespace MEOS.NET.Types
             {
                 Marshal.StructureToPtr(duration, _duration, false);
                 return MEOSFactory.WrapSTBoxArray(Meos.TgeoSpaceTimeBoxes(this.Ptr, xsize, ysize, zsize, _duration, sorigin.Ptr, MEOSConvert.ToTimestampTz(torigin), bitmatrix, border_inc));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public SpaceTimeSplit SpaceTimeSplit(double xsize, double ysize, double zsize, Interval duration, Geo sorigin, DateTime torigin, bool bitmatrix, bool border_inc)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return Meos.TgeoSpaceTimeSplit(this.Ptr, xsize, ysize, zsize, _duration, sorigin.Ptr, MEOSConvert.ToTimestampTz(torigin), bitmatrix, border_inc);
             }
             finally
             {
