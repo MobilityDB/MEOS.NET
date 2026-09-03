@@ -14,6 +14,40 @@ namespace MEOS.NET.Types
     {
         internal Span(IntPtr ptr) : base(ptr) { }
 
+        public string AsHEXWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.SpanAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public byte[]? AsWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.SpanAsWkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public int Cmp(Span s2)
             => Meos.SpanCmp(this.Ptr, s2.Ptr);
 
@@ -58,6 +92,19 @@ namespace MEOS.NET.Types
 
         public static Span? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapSpan(Meos.SpanFromHexwkb(hexwkb));
+
+        public static Span? FromWKB(byte[] wkb)
+        {
+            GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapSpan(Meos.SpanFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+            }
+            finally
+            {
+                _wkb.Free();
+            }
+        }
 
     }
 }

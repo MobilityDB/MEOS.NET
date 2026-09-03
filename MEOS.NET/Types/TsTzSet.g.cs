@@ -88,5 +88,18 @@ namespace MEOS.NET.Types
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.TstzsetIn(str));
 
+        public static Set? Make(long[] values)
+        {
+            GCHandle _values = GCHandle.Alloc(values, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapSet(Meos.TstzsetMake(_values.AddrOfPinnedObject(), values.Length));
+            }
+            finally
+            {
+                _values.Free();
+            }
+        }
+
     }
 }

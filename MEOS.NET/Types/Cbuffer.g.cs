@@ -21,8 +21,42 @@ namespace MEOS.NET.Types
         public string AsEWKT(int maxdd)
             => Meos.CbufferAsEwkt(this.Ptr, maxdd);
 
+        public string AsHEXWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.CbufferAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public string AsText(int maxdd)
             => Meos.CbufferAsText(this.Ptr, maxdd);
+
+        public byte[]? AsWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.CbufferAsWkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
 
         public int Cmp(Cbuffer cb2)
             => Meos.CbufferCmp(this.Ptr, cb2.Ptr);
@@ -101,6 +135,19 @@ namespace MEOS.NET.Types
 
         public static Cbuffer? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapCbuffer(Meos.CbufferFromHexwkb(hexwkb));
+
+        public static Cbuffer? FromWKB(byte[] wkb)
+        {
+            GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapCbuffer(Meos.CbufferFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+            }
+            finally
+            {
+                _wkb.Free();
+            }
+        }
 
         public static Cbuffer? In(string str)
             => MEOSFactory.WrapCbuffer(Meos.CbufferIn(str));

@@ -24,8 +24,42 @@ namespace MEOS.NET.Types
         public string AsEWKT(int maxdd)
             => Meos.PosechainAsEwkt(this.Ptr, maxdd);
 
+        public string AsHEXWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.PosechainAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public string AsText(int maxdd)
             => Meos.PosechainAsText(this.Ptr, maxdd);
+
+        public byte[]? AsWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.PosechainAsWkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
 
         public int Cmp(PoseChain pc2)
             => Meos.PosechainCmp(this.Ptr, pc2.Ptr);
@@ -119,6 +153,19 @@ namespace MEOS.NET.Types
 
         public static PoseChain? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapPoseChain(Meos.PosechainFromHexwkb(hexwkb));
+
+        public static PoseChain? FromWKB(byte[] wkb)
+        {
+            GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapPoseChain(Meos.PosechainFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+            }
+            finally
+            {
+                _wkb.Free();
+            }
+        }
 
         public static PoseChain? In(string str)
             => MEOSFactory.WrapPoseChain(Meos.PosechainIn(str));

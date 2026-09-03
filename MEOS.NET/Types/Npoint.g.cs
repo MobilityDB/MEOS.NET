@@ -21,8 +21,42 @@ namespace MEOS.NET.Types
         public string AsEWKT(int maxdd)
             => Meos.NpointAsEwkt(this.Ptr, maxdd);
 
+        public string AsHEXWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.NpointAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public string AsText(int maxdd)
             => Meos.NpointAsText(this.Ptr, maxdd);
+
+        public byte[]? AsWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.NpointAsWkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
 
         public int Cmp(Npoint np2)
             => Meos.NpointCmp(this.Ptr, np2.Ptr);
@@ -89,6 +123,19 @@ namespace MEOS.NET.Types
 
         public static Npoint? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapNpoint(Meos.NpointFromHexwkb(hexwkb));
+
+        public static Npoint? FromWKB(byte[] wkb)
+        {
+            GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapNpoint(Meos.NpointFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+            }
+            finally
+            {
+                _wkb.Free();
+            }
+        }
 
         public static Npoint? In(string str)
             => MEOSFactory.WrapNpoint(Meos.NpointIn(str));

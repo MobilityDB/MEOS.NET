@@ -18,6 +18,40 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public string AsHEXWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.RaquetAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public byte[]? AsWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.RaquetAsWkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public int Cmp(Raquet rq2)
             => Meos.RaquetCmp(this.Ptr, rq2.Ptr);
 
@@ -57,6 +91,27 @@ namespace MEOS.NET.Types
         public string Out()
             => Meos.RaquetOut(this.Ptr);
 
+        public byte[]? Pixels()
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.RaquetPixels(this.Ptr, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public string Pixtype()
             => Meos.RaquetPixtype(this.Ptr);
 
@@ -72,11 +127,37 @@ namespace MEOS.NET.Types
         public static Raquet? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapRaquet(Meos.RaquetFromHexwkb(hexwkb));
 
+        public static Raquet? FromWKB(byte[] wkb)
+        {
+            GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapRaquet(Meos.RaquetFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+            }
+            finally
+            {
+                _wkb.Free();
+            }
+        }
+
         public static Raquet? In(string str)
             => MEOSFactory.WrapRaquet(Meos.RaquetIn(str));
 
         public static Raquet? Read(string path, ulong quadbin)
             => MEOSFactory.WrapRaquet(Meos.RaquetRead(path, quadbin));
+
+        public static Raquet? ReadBytes(byte[] data, ulong quadbin)
+        {
+            GCHandle _data = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapRaquet(Meos.RaquetReadBytes(_data.AddrOfPinnedObject(), (ulong) data.Length, quadbin));
+            }
+            finally
+            {
+                _data.Free();
+            }
+        }
 
     }
 }

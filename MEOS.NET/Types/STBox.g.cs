@@ -21,6 +21,40 @@ namespace MEOS.NET.Types
         public double Area(bool spheroid)
             => Meos.StboxArea(this.Ptr, spheroid);
 
+        public string AsHEXWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.StboxAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public byte[]? AsWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.StboxAsWkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public int Cmp(STBox box2)
             => Meos.StboxCmp(this.Ptr, box2.Ptr);
 
@@ -352,6 +386,19 @@ namespace MEOS.NET.Types
 
         public static STBox? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapSTBox(Meos.StboxFromHexwkb(hexwkb));
+
+        public static STBox? FromWKB(byte[] wkb)
+        {
+            GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapSTBox(Meos.StboxFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+            }
+            finally
+            {
+                _wkb.Free();
+            }
+        }
 
         public static STBox? GetSpaceTile(Geo point, double xsize, double ysize, double zsize, Geo sorigin)
             => MEOSFactory.WrapSTBox(Meos.StboxGetSpaceTile(point.Ptr, xsize, ysize, zsize, sorigin.Ptr));
