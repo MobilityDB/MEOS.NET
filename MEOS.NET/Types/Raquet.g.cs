@@ -143,6 +143,25 @@ namespace MEOS.NET.Types
         public static Raquet? In(string str)
             => MEOSFactory.WrapRaquet(Meos.RaquetIn(str));
 
+        public static Raquet? Make(ulong quadbin, int width, int height, MeosPixType pixtype, double nodata, bool has_nodata, byte[] pixels)
+        {
+            GCHandle _pixels = GCHandle.Alloc(pixels, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapRaquet(Meos.RaquetMake(quadbin, width, height, (int) pixtype, nodata, has_nodata, _pixels.AddrOfPinnedObject(), (ulong) pixels.Length));
+            }
+            finally
+            {
+                _pixels.Free();
+            }
+        }
+
+        public static MeosPixType PixtypeFromString(string str)
+            => (MeosPixType) Meos.RaquetPixtypeFromString(str);
+
+        public static ulong PixtypeSize(MeosPixType pixtype)
+            => Meos.RaquetPixtypeSize((int) pixtype);
+
         public static Raquet? Read(string path, ulong quadbin)
             => MEOSFactory.WrapRaquet(Meos.RaquetRead(path, quadbin));
 

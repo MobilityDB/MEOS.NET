@@ -233,6 +233,12 @@ namespace MEOS.NET.Types
         public string ToCstring()
             => Meos.JsonbToCstring(this.Ptr);
 
+        public float ToFloat4()
+            => Meos.JsonbToFloat4(this.Ptr);
+
+        public double ToFloat8()
+            => Meos.JsonbToFloat8(this.Ptr);
+
         public short ToInt16()
             => Meos.JsonbToInt16(this.Ptr);
 

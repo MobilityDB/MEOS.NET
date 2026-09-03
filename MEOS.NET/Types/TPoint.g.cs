@@ -17,6 +17,9 @@ namespace MEOS.NET.Types
         public Temporal? AngularDifference()
             => MEOSFactory.WrapTemporal(Meos.TpointAngularDifference(this.Ptr));
 
+        public MvtGeom AsMvtgeom(STBox bounds, int extent, int buffer, bool clip_geom)
+            => Meos.TpointAsMvtgeom(this.Ptr, bounds.Ptr, extent, buffer, clip_geom);
+
         public Temporal? AtElevation(Span s)
             => MEOSFactory.WrapTemporal(Meos.TpointAtElevation(this.Ptr, s.Ptr));
 

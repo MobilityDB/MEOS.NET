@@ -18,6 +18,12 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public uint Hash(uint collid)
+            => Meos.TextHash(this.Ptr, collid);
+
+        public ulong HashExtended(ulong seed, uint collid)
+            => Meos.TextHashExtended(this.Ptr, seed, collid);
+
         public Text? Initcap()
             => MEOSFactory.WrapText(Meos.TextInitcap(this.Ptr));
 
