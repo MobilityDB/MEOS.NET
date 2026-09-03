@@ -263,7 +263,9 @@ class Method:
     def __init__(self, name: str, ret: str, params: list[tuple[str, str]],
                  body: str, static: bool, arrays: list[tuple[str, str]] | None = None,
                  out_param: tuple[str, int, str] | None = None,
-                 structs: list[tuple[str, str]] | None = None):
+                 structs: list[tuple[str, str]] | None = None,
+                 scalar_arrays: list[str] | None = None,
+                 length_out: str | None = None, byte_buffer: bool = False):
         self.name = name
         self.ret = ret
         self.params = params
@@ -275,6 +277,12 @@ class Method:
         self.out_param = out_param
         # (parameter name, struct type) for each struct argument passed by value.
         self.structs = structs or []
+        # The caller's own arrays of scalars, pinned across the call.
+        self.scalar_arrays = scalar_arrays or []
+        # The out-parameter MEOS states the answered buffer's length in, and
+        # whether that buffer is the answer itself.
+        self.length_out = length_out
+        self.byte_buffer = byte_buffer
 
 
 class Generator:
@@ -401,8 +409,13 @@ class Generator:
             nxt = declared[i + 1] if i + 1 < len(declared) else None
             if (i == 0 and receiver_first) or not clean(p["cType"]).endswith("*"):
                 continue
-            if (nxt and nxt["name"] == "count"
-                    and clean(nxt["cType"]) in ("int", "int32", "int32_t")):
+            # The length is named `count` beside an array of values and `size`
+            # beside a byte buffer, and both say the same thing: the pointer is
+            # the first element of an array the caller already holds whole.
+            if (nxt and ((nxt["name"] == "count"
+                          and clean(nxt["cType"]) in ("int", "int32", "int32_t"))
+                         or (nxt["name"] == "size"
+                             and clean(nxt["cType"]) == "size_t"))):
                 counted.add(codegen.csharp_param_name(p["name"]))
 
         params = list(wrapper_params)
@@ -413,9 +426,20 @@ class Generator:
             args.append("this.Ptr")
             params = params[1:]
 
+        # A `size_t *` out-parameter states the LENGTH of the buffer the call
+        # answers. It leaves the C# signature — a byte array and a string each
+        # carry their own length — and the buffer MEOS writes it into is
+        # allocated for the call.
+        out_params = (f.get("shape") or {}).get("outParams") or []
+        length_out = next(
+            (codegen.csharp_param_name(p["name"]) for p in f.get("params", [])
+             if p["name"] in out_params and clean(p["cType"]) == "size_t *"), None)
+        if length_out:
+            out_params = [o for o in out_params
+                          if codegen.csharp_param_name(o) != length_out]
+
         # A `bool` return with one value out-parameter is MEOS saying whether the
         # value exists: the method answers the value, or nothing.
-        out_params = (f.get("shape") or {}).get("outParams") or []
         result_out = None
         if clean(f["returnType"]["c"]) == "bool" and len(out_params) == 1:
             pointee = clean(next(
@@ -430,7 +454,10 @@ class Generator:
                     f"{pointee}, which has no reader")
                 return None
 
-        ret = self.map_return(f, wrapper_ret)
+        if length_out and clean(f["returnType"]["c"]) == "uint8_t *":
+            ret = ("byte[]?", "$")
+        else:
+            ret = self.map_return(f, wrapper_ret)
         if ret is None:
             self.deferred[cls].append(
                 f"{oo}: return {clean(f['returnType']['c'])} needs wrapping")
@@ -456,25 +483,39 @@ class Generator:
 
         sig: list[tuple[str, str]] = []
         arrays: list[tuple[str, str]] = []
+        scalar_arrays: list[str] = []
         structs: list[tuple[str, str]] = []
         for cs_type, pname in params:
             if result_out is not None and pname == result_out[0]:
                 args.append(f"_{pname}")
                 continue
+            if pname == length_out:
+                args.append(f"_{pname}")
+                continue
             if pname in count_of:
-                args.append(f"{count_of[pname]}.Length")
+                cast = "" if cs_type == "int" else f"({cs_type}) "
+                args.append(f"{cast}{count_of[pname]}.Length")
                 continue
             if pname in counted:
+                pointee = clean(c_by_name[pname])[:-1].strip()
                 element = self.m.class_for_ctype(clean(c_by_name[pname])[:-1])
-                if element is None:
-                    self.deferred[cls].append(
-                        f"{oo}: argument {pname} is an array of "
-                        f"{clean(c_by_name[pname])[:-1]}, which has no class")
-                    return None
-                sig.append((f"{element}[]", pname))
-                arrays.append((pname, element))
-                args.append(f"_{pname}.AddrOfPinnedObject()")
-                continue
+                if element is not None:
+                    sig.append((f"{element}[]", pname))
+                    arrays.append((pname, element))
+                    args.append(f"_{pname}.AddrOfPinnedObject()")
+                    continue
+                # A scalar element is the array itself: the values need no
+                # gathering, so what is pinned is the caller's own array.
+                scalar = codegen.SCALAR_MAP.get(pointee)
+                if scalar is not None:
+                    sig.append((f"{scalar}[]", pname))
+                    scalar_arrays.append(pname)
+                    args.append(f"_{pname}.AddrOfPinnedObject()")
+                    continue
+                self.deferred[cls].append(
+                    f"{oo}: argument {pname} is an array of "
+                    f"{pointee}, which has no class")
+                return None
             mapped = self.map_param(c_by_name.get(pname, ""), cs_type, pname)
             if mapped is None:
                 self.deferred[cls].append(
@@ -491,13 +532,19 @@ class Generator:
         if result_out is not None:
             name, (_, size, reader) = result_out
             out = (name, size, reader.format(f"_{name}"))
-        if structs and (arrays or out):
+        if structs and (arrays or out or scalar_arrays or length_out):
             self.deferred[cls].append(
                 f"{oo}: a struct argument beside a counted array or an "
                 "out-parameter needs one body doing both")
             return None
+        if length_out and (arrays or out):
+            self.deferred[cls].append(
+                f"{oo}: a length out-parameter beside a counted array or a "
+                "value out-parameter needs one body doing both")
+            return None
         return Method(pascal(oo), ret_type, sig, ret_expr.replace("$", call), static,
-                      arrays, out, structs)
+                      arrays, out, structs, scalar_arrays, length_out,
+                      ret_type == "byte[]?")
 
     def inherited_names(self, cls: str) -> set[tuple]:
         names: set[tuple] = set()
@@ -548,7 +595,9 @@ class Generator:
             lines.append(f"        public {new}{kind}{m.ret} {m.name}({args})")
             if m.out_param:
                 lines.extend(self.out_param_body(m))
-            elif m.arrays:
+            elif m.length_out:
+                lines.extend(self.buffer_body(m))
+            elif m.arrays or m.scalar_arrays:
                 lines.extend(self.array_body(m))
             elif m.structs:
                 lines.extend(self.struct_body(m))
@@ -610,6 +659,44 @@ class Generator:
         lines += ["            }", "        }"]
         return lines
 
+    def buffer_body(self, method: Method) -> list[str]:
+        """The body of a method whose call states a length through a pointer.
+
+        MEOS writes the length of what it answers into a buffer the caller
+        supplies. A string carries its own length, so there the buffer is
+        written and dropped; a byte array does not, so there it says how much of
+        what MEOS answered to copy."""
+        name = method.length_out
+        lines = [
+            "        {",
+            f"            IntPtr _{name} = Marshal.AllocHGlobal(sizeof(long));",
+            "            try",
+            "            {",
+        ]
+        if method.byte_buffer:
+            lines += [
+                f"                IntPtr _bytes = {method.body};",
+                "                if (_bytes == IntPtr.Zero)",
+                "                {",
+                "                    return null;",
+                "                }",
+                "",
+                f"                byte[] _wkb = new byte[Marshal.ReadInt64(_{name})];",
+                "                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);",
+                "                return _wkb;",
+            ]
+        else:
+            lines.append(f"                return {method.body};")
+        lines += [
+            "            }",
+            "            finally",
+            "            {",
+            f"                Marshal.FreeHGlobal(_{name});",
+            "            }",
+            "        }",
+        ]
+        return lines
+
     def array_body(self, method: Method) -> list[str]:
         """The body of a method taking a counted array.
 
@@ -618,6 +705,10 @@ class Generator:
         for the call.  MEOS copies what it keeps, so the pin lasts exactly as long
         as the call does."""
         lines = ["        {"]
+        for name in method.scalar_arrays:
+            lines.append(
+                f"            GCHandle _{name} = "
+                f"GCHandle.Alloc({ident(name)}, GCHandleType.Pinned);")
         for name, element in method.arrays:
             lines += [
                 f"            IntPtr[] _{name}Values = new IntPtr[{ident(name)}.Length];",
@@ -634,6 +725,8 @@ class Generator:
         lines.append("            }")
         lines.append("            finally")
         lines.append("            {")
+        for name in method.scalar_arrays:
+            lines.append(f"                _{name}.Free();")
         for name, _ in method.arrays:
             lines.append(f"                _{name}.Free();")
         lines += ["            }", "        }"]

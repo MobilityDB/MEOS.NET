@@ -78,5 +78,18 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static Pcpatch? MakeCoords(uint pcid, double[] values)
+        {
+            GCHandle _values = GCHandle.Alloc(values, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapPcpatch(Meos.PcpatchMakeCoords(pcid, _values.AddrOfPinnedObject(), values.Length));
+            }
+            finally
+            {
+                _values.Free();
+            }
+        }
+
     }
 }

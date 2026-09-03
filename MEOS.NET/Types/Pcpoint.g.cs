@@ -44,5 +44,18 @@ namespace MEOS.NET.Types
         public static Pcpoint? HexIn(string str)
             => MEOSFactory.WrapPcpoint(Meos.PcpointHexIn(str));
 
+        public static Pcpoint? Make(uint pcid, double[] values)
+        {
+            GCHandle _values = GCHandle.Alloc(values, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapPcpoint(Meos.PcpointMake(pcid, _values.AddrOfPinnedObject(), values.Length));
+            }
+            finally
+            {
+                _values.Free();
+            }
+        }
+
     }
 }

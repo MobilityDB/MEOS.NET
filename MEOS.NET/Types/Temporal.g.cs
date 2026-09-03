@@ -34,6 +34,19 @@ namespace MEOS.NET.Types
         public Temporal? AppendTsequence(Temporal seq, bool expand)
             => MEOSFactory.WrapTemporal(Meos.TemporalAppendTsequence(this.Ptr, seq.Ptr, expand));
 
+        public string AsHEXWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.TemporalAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public string AsMFJSON(bool with_bbox, int flags, int precision, string srs)
             => Meos.TemporalAsMfjson(this.Ptr, with_bbox, flags, precision, srs);
 
@@ -45,6 +58,27 @@ namespace MEOS.NET.Types
 
         public Temporal? AsTsequenceset(InterpType interp)
             => MEOSFactory.WrapTemporal(Meos.TemporalAsTsequenceset(this.Ptr, (int) interp));
+
+        public byte[]? AsWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.TemporalAsWkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
 
         public Temporal? AtMax()
             => MEOSFactory.WrapTemporal(Meos.TemporalAtMax(this.Ptr));
@@ -417,6 +451,19 @@ namespace MEOS.NET.Types
 
         public static Temporal? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapTemporal(Meos.TemporalFromHexwkb(hexwkb));
+
+        public static Temporal? FromWKB(byte[] wkb)
+        {
+            GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTemporal(Meos.TemporalFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+            }
+            finally
+            {
+                _wkb.Free();
+            }
+        }
 
         public static Temporal? MergeArray(Temporal[] temparr)
         {

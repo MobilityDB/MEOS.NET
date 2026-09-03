@@ -57,5 +57,18 @@ namespace MEOS.NET.Types
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.DatesetIn(str));
 
+        public static Set? Make(int[] values)
+        {
+            GCHandle _values = GCHandle.Alloc(values, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapSet(Meos.DatesetMake(_values.AddrOfPinnedObject(), values.Length));
+            }
+            finally
+            {
+                _values.Free();
+            }
+        }
+
     }
 }

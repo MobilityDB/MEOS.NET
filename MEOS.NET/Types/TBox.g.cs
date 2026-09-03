@@ -18,6 +18,40 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out(15);
 
+        public string AsHEXWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.TboxAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public byte[]? AsWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.TboxAsWkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public int Cmp(TBox box2)
             => Meos.TboxCmp(this.Ptr, box2.Ptr);
 
@@ -249,6 +283,19 @@ namespace MEOS.NET.Types
 
         public static TBox? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapTBox(Meos.TboxFromHexwkb(hexwkb));
+
+        public static TBox? FromWKB(byte[] wkb)
+        {
+            GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTBox(Meos.TboxFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+            }
+            finally
+            {
+                _wkb.Free();
+            }
+        }
 
         public static TBox? In(string str)
             => MEOSFactory.WrapTBox(Meos.TboxIn(str));
