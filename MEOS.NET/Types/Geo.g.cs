@@ -18,6 +18,27 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public byte[]? AsEWKB(string endian)
+        {
+            IntPtr _size = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.GeoAsEwkb(this.Ptr, endian, _size);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size);
+            }
+        }
+
         public string AsEWKT(int precision)
             => Meos.GeoAsEwkt(this.Ptr, precision);
 
