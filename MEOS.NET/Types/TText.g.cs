@@ -51,6 +51,42 @@ namespace MEOS.NET.Types
         public Temporal? Upper()
             => MEOSFactory.WrapTemporal(Meos.TtextUpper(this.Ptr));
 
+        public Text? ValueAtTimestamptz(DateTime t, bool strict)
+        {
+            IntPtr _value = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TtextValueAtTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict, _value))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapText(Marshal.ReadIntPtr(_value));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_value);
+            }
+        }
+
+        public Text? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TtextValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapText(Marshal.ReadIntPtr(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Text?[] Values()
             => MEOSFactory.WrapTextArray(Meos.TtextValues(this.Ptr));
 

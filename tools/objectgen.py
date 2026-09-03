@@ -322,6 +322,19 @@ class Generator:
             return (f"{struct}[]", f"MEOSConvert.ToStructArray<{struct}>($)")
         return None
 
+    def wrapped_out_reader(self, pointee: str) -> tuple[str, int, str] | None:
+        """The reader for a value MEOS writes through a pointer to a pointer.
+
+        The buffer holds the ADDRESS of the value rather than the value, so the
+        reader takes that address out of it and wraps it in the class the model
+        gives the type — the same wrap a return of that type gets."""
+        if not pointee.endswith("**"):
+            return None
+        cls = self.m.class_for_ctype(pointee[:-1].strip())
+        if cls is None:
+            return None
+        return (cls, 8, f"MEOSFactory.Wrap{cls}(Marshal.ReadIntPtr({{0}}))")
+
     def value_struct(self, c_type: str) -> str | None:
         """The struct a single pointer to a scalar-only struct carries.
 
@@ -408,7 +421,7 @@ class Generator:
             pointee = clean(next(
                 (p["cType"] for p in f.get("params", [])
                  if p["name"] == out_params[0]), ""))
-            reader = OUT_PARAM_READERS.get(pointee)
+            reader = OUT_PARAM_READERS.get(pointee) or self.wrapped_out_reader(pointee)
             if reader:
                 result_out = (codegen.csharp_param_name(out_params[0]), reader)
             else:

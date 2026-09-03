@@ -80,6 +80,24 @@ namespace MEOS.NET.Types
         public Temporal? Speed()
             => MEOSFactory.WrapTemporal(Meos.TpointSpeed(this.Ptr));
 
+        public Geo? TfloatToGeomeas(Temporal measure, bool segmentize)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TpointTfloatToGeomeas(this.Ptr, measure.Ptr, segmentize, _result))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapGeo(Marshal.ReadIntPtr(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Geo? Trajectory(bool unary_union)
             => MEOSFactory.WrapGeo(Meos.TpointTrajectory(this.Ptr, unary_union));
 

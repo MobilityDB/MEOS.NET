@@ -78,6 +78,42 @@ namespace MEOS.NET.Types
         public Geo? Twcentroid()
             => MEOSFactory.WrapGeo(Meos.TnpointTwcentroid(this.Ptr));
 
+        public Npoint? ValueAtTimestamptz(DateTime t, bool strict)
+        {
+            IntPtr _value = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TnpointValueAtTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict, _value))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapNpoint(Marshal.ReadIntPtr(_value));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_value);
+            }
+        }
+
+        public Npoint? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TnpointValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapNpoint(Marshal.ReadIntPtr(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Npoint?[] Values()
             => MEOSFactory.WrapNpointArray(Meos.TnpointValues(this.Ptr));
 

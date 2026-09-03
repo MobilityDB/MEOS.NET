@@ -27,6 +27,24 @@ namespace MEOS.NET.Types
         public Cbuffer? StartValue()
             => MEOSFactory.WrapCbuffer(Meos.CbuffersetStartValue(this.Ptr));
 
+        public Cbuffer? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.CbuffersetValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapCbuffer(Marshal.ReadIntPtr(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Cbuffer?[] Values()
             => MEOSFactory.WrapCbufferArray(Meos.CbuffersetValues(this.Ptr));
 

@@ -20,6 +20,24 @@ namespace MEOS.NET.Types
         public Geo? StartValue()
             => MEOSFactory.WrapGeo(Meos.GeosetStartValue(this.Ptr));
 
+        public Geo? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.GeosetValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapGeo(Marshal.ReadIntPtr(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Geo?[] Values()
             => MEOSFactory.WrapGeoArray(Meos.GeosetValues(this.Ptr));
 

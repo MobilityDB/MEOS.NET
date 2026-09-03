@@ -36,6 +36,24 @@ namespace MEOS.NET.Types
         public Set? Upper()
             => MEOSFactory.WrapSet(Meos.TextsetUpper(this.Ptr));
 
+        public Text? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TextsetValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapText(Marshal.ReadIntPtr(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Text?[] Values()
             => MEOSFactory.WrapTextArray(Meos.TextsetValues(this.Ptr));
 

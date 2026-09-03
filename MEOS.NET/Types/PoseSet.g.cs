@@ -27,6 +27,24 @@ namespace MEOS.NET.Types
         public Pose? StartValue()
             => MEOSFactory.WrapPose(Meos.PosesetStartValue(this.Ptr));
 
+        public Pose? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.PosesetValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapPose(Marshal.ReadIntPtr(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Pose?[] Values()
             => MEOSFactory.WrapPoseArray(Meos.PosesetValues(this.Ptr));
 

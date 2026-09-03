@@ -168,6 +168,42 @@ namespace MEOS.NET.Types
         public Temporal? ToTtext()
             => MEOSFactory.WrapTemporal(Meos.TjsonbToTtext(this.Ptr));
 
+        public Jsonb? ValueAtTimestamptz(DateTime t, bool strict)
+        {
+            IntPtr _value = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TjsonbValueAtTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict, _value))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapJsonb(Marshal.ReadIntPtr(_value));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_value);
+            }
+        }
+
+        public Jsonb? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TjsonbValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapJsonb(Marshal.ReadIntPtr(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Jsonb?[] Values()
             => MEOSFactory.WrapJsonbArray(Meos.TjsonbValues(this.Ptr));
 

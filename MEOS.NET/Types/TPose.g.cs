@@ -89,6 +89,42 @@ namespace MEOS.NET.Types
         public Geo? Trajectory()
             => MEOSFactory.WrapGeo(Meos.TposeTrajectory(this.Ptr));
 
+        public Pose? ValueAtTimestamptz(DateTime t, bool strict)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TposeValueAtTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict, _result))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapPose(Marshal.ReadIntPtr(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public Pose? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TposeValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapPose(Marshal.ReadIntPtr(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Pose?[] Values()
             => MEOSFactory.WrapPoseArray(Meos.TposeValues(this.Ptr));
 
