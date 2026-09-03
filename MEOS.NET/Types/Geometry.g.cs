@@ -89,6 +89,21 @@ namespace MEOS.NET.Types
         public double MaxDistance2d(Geo gs2)
             => Meos.GeomMaxDistance2d(this.Ptr, gs2.Ptr);
 
+        public (Geo?, double) MinBoundingRadius()
+        {
+            IntPtr _radius = Marshal.AllocHGlobal(8);
+            try
+            {
+                var _answered = Meos.GeomMinBoundingRadius(this.Ptr, _radius);
+
+                return (MEOSFactory.WrapGeo(_answered), Marshal.PtrToStructure<double>(_radius));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_radius);
+            }
+        }
+
         public Geo? OrientedEnvelope()
             => MEOSFactory.WrapGeo(Meos.GeomOrientedEnvelope(this.Ptr));
 

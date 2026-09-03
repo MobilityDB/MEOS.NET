@@ -275,7 +275,7 @@ class Method:
 
     def __init__(self, name: str, ret: str, params: list[tuple[str, str]],
                  body: str, static: bool, arrays: list[tuple[str, str]] | None = None,
-                 out_param: tuple[str, int, str] | None = None,
+                 out_params: list[tuple[str, int, str]] | None = None,
                  structs: list[tuple[str, str]] | None = None,
                  scalar_arrays: list[str] | None = None,
                  length_out: str | None = None, byte_buffer: bool = False):
@@ -286,8 +286,9 @@ class Method:
         self.static = static
         # (parameter name, element class) for each counted array the method takes.
         self.arrays = arrays or []
-        # (parameter name, bytes, reader expression) for a value out-parameter.
-        self.out_param = out_param
+        # (parameter name, bytes, reader expression) for each value MEOS states
+        # through an out-parameter.
+        self.out_params = out_params or []
         # (parameter name, struct type) for each struct argument passed by value.
         self.structs = structs or []
         # The caller's own arrays of scalars, pinned across the call.
@@ -300,7 +301,7 @@ class Method:
     def needs_a_body(self) -> bool:
         """Whether the call needs anything allocated, pinned or read around it."""
         return bool(self.structs or self.arrays or self.scalar_arrays
-                    or self.out_param or self.length_out
+                    or self.out_params or self.length_out
                     or (self.ret.startswith("(") and self.ret.endswith(")")))
 
 
@@ -508,21 +509,40 @@ class Generator:
             out_params = [o for o in out_params
                           if codegen.csharp_param_name(o) != length_out]
 
-        # A `bool` return with one value out-parameter is MEOS saying whether the
-        # value exists: the method answers the value, or nothing.
-        result_out = None
-        if clean(f["returnType"]["c"]) == "bool" and len(out_params) == 1:
+        # An out-parameter is a value MEOS answers, so every one of them is read
+        # back and none appears in the C# signature.  A `bool` return alongside
+        # them is MEOS saying whether the values exist rather than an answer of
+        # its own, so the method answers them or nothing; any other return is an
+        # answer and stands beside them.
+        # An out-parameter the flat wrapper already answers — the array it fills
+        # and that array's count — is gone from the wrapper's own signature, and
+        # what the wrapper answers is not the object layer's to read again.
+        taken = {pname for _t, pname in params}
+        out_params = [o for o in out_params
+                      if codegen.csharp_param_name(o) in taken]
+        # A by-pointer count says the call answers a NUMBER of things, so an
+        # out-parameter beside one holds as many as it states — `jsonb_each`
+        # fills its `Jsonb **values` with one pointer per member of the object.
+        # Reading such a parameter as a single value allocates room for one and
+        # takes what MEOS wrote first for the whole answer.
+        if any(p["name"] == "count" and clean(p["cType"]) == "int *"
+               for p in f.get("params", [])):
+            out_params = []
+
+        # And a pointer to a MEOS value is the value itself, handed over for the
+        # call to fill — `rtree_search(..., MeosArray *result)` takes the array
+        # it appends to.  What MEOS WRITES THROUGH the pointer is a scalar, or a
+        # value whose address it states (`T **`); those are its answers, and the
+        # rest stay ordinary arguments.
+        result_outs = []
+        for name in out_params:
             pointee = clean(next(
                 (p["cType"] for p in f.get("params", [])
-                 if p["name"] == out_params[0]), ""))
+                 if p["name"] == name), ""))
             reader = OUT_PARAM_READERS.get(pointee) or self.wrapped_out_reader(pointee)
             if reader:
-                result_out = (codegen.csharp_param_name(out_params[0]), reader)
-            else:
-                self.deferred[cls].append(
-                    f"{oo}: the value out-parameter {out_params[0]} is a "
-                    f"{pointee}, which has no reader")
-                return None
+                result_outs.append((codegen.csharp_param_name(name), reader))
+        answers_existence = clean(f["returnType"]["c"]) == "bool" and result_outs
 
         if length_out and clean(f["returnType"]["c"]) == "uint8_t *":
             ret = ("byte[]?", "$")
@@ -539,16 +559,24 @@ class Generator:
                     codegen.csharp_param_name(a["param"])
                     for a in input_arrays}
 
-        if result_out is not None:
-            ret_type = f"{result_out[1][0]}?"
+        if answers_existence:
+            # The `bool` is not an answer: what MEOS wrote is.
+            answered = ", ".join(r[0] for _n, r in result_outs)
+            ret_type = (f"{answered}?" if len(result_outs) == 1
+                        else f"({answered})?")
             ret_expr = "$"
+        elif result_outs:
+            # The return is an answer of its own and the out-parameters stand
+            # beside it, in the order MEOS declares them.
+            ret_type = ", ".join([ret_type] + [r[0] for _n, r in result_outs])
+            ret_type = f"({ret_type})"
 
         sig: list[tuple[str, str]] = []
         arrays: list[tuple[str, str]] = []
         scalar_arrays: list[str] = []
         structs: list[tuple[str, str]] = []
         for cs_type, pname in params:
-            if result_out is not None and pname == result_out[0]:
+            if any(pname == n for n, _r in result_outs):
                 args.append(scratch(pname))
                 continue
             if pname == length_out:
@@ -590,12 +618,17 @@ class Generator:
                 structs.append((pname, mapped[0]))
 
         call = f"Meos.{codegen.public_name(fname)}({', '.join(args)})"
-        out = None
-        if result_out is not None:
-            name, (_, size, reader) = result_out
-            out = (name, size, reader.format(scratch(name)))
-        return Method(pascal(oo), ret_type, sig, ret_expr.replace("$", call), static,
-                      arrays, out, structs, scalar_arrays, length_out,
+        outs = [(name, size, reader.format(scratch(name)))
+                for name, (_t, size, reader) in result_outs]
+        body = ret_expr.replace("$", call)
+        if result_outs and not answers_existence:
+            # The call is made once and its own answer read beside the values it
+            # wrote, so the template carries the two halves apart.
+            read = ", ".join([ret_expr.replace("$", "_answered")]
+                             + [reader for _n, _s, reader in outs])
+            body = f"{call}|>({read})"
+        return Method(pascal(oo), ret_type, sig, body, static,
+                      arrays, outs, structs, scalar_arrays, length_out,
                       ret_type == "byte[]?")
 
     def inherited_names(self, cls: str) -> set[tuple]:
@@ -693,8 +726,7 @@ class Generator:
             name = scratch(method.length_out)
             setup.append(f"            IntPtr {name} = Marshal.AllocHGlobal(sizeof(long));")
             teardown.append(f"                Marshal.FreeHGlobal({name});")
-        if method.out_param:
-            name, size, _reader = method.out_param
+        for name, size, _reader in method.out_params:
             setup.append(
                 f"            IntPtr {scratch(name)} = Marshal.AllocHGlobal({size});")
             teardown.append(f"                Marshal.FreeHGlobal({scratch(name)});")
@@ -712,17 +744,18 @@ class Generator:
 
     def answer(self, method: Method) -> list[str]:
         """What the body does with the call, once everything is in place."""
-        if method.out_param:
-            # MEOS answers `false` where the value does not exist and leaves the
-            # out-parameter untouched, so the method answers null there.
-            _name, _size, reader = method.out_param
+        if method.out_params and "|>" not in method.body:
+            # MEOS answers `false` where the values do not exist and leaves the
+            # out-parameters untouched, so the method answers null there.
+            read = ", ".join(reader for _n, _s, reader in method.out_params)
+            answered = read if len(method.out_params) == 1 else f"({read})"
             return [
                 f"            if (!{method.body})",
                 "            {",
                 "                return null;",
                 "            }",
                 "",
-                f"            return {reader};",
+                f"            return {answered};",
             ]
         if method.byte_buffer:
             # A byte array does not carry its own length, so what MEOS wrote

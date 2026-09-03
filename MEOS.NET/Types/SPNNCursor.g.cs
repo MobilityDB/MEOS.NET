@@ -17,6 +17,26 @@ namespace MEOS.NET.Types
         public void Close()
             => Meos.SptreeNnCursorClose(this.Ptr);
 
+        public (long, double)? Next()
+        {
+            IntPtr _id_out = Marshal.AllocHGlobal(8);
+            IntPtr _dist_out = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.SptreeNnCursorNext(this.Ptr, _id_out, _dist_out))
+                {
+                    return null;
+                }
+
+                return (Marshal.ReadInt64(_id_out), Marshal.PtrToStructure<double>(_dist_out));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_id_out);
+                Marshal.FreeHGlobal(_dist_out);
+            }
+        }
+
         public static SPNNCursor? Open(SPTree sptree, IntPtr query)
             => MEOSFactory.WrapSPNNCursor(Meos.SptreeNnCursorOpen(sptree.Ptr, query));
 
