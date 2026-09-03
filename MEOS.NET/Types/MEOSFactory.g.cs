@@ -65,6 +65,30 @@ namespace MEOS.NET.Types
             return wrapped;
         }
 
+        /// <summary>The value at <paramref name="ptr"/> as the JsonPath
+        /// class the model gives its runtime type.</summary>
+        public static JsonPath? WrapJsonPath(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new JsonPath(ptr);
+        }
+
+        /// <summary>Every element of a C array of JsonPath pointers, wrapped.</summary>
+        public static JsonPath?[] WrapJsonPathArray(IntPtr[] ptrs)
+        {
+            JsonPath?[] wrapped = new JsonPath?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapJsonPath(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
         /// <summary>The value at <paramref name="ptr"/> as the Jsonb
         /// class the model gives its runtime type.</summary>
         public static Jsonb? WrapJsonb(IntPtr ptr)
@@ -84,6 +108,30 @@ namespace MEOS.NET.Types
             for (int i = 0; i < ptrs.Length; i++)
             {
                 wrapped[i] = WrapJsonb(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the MeosArray
+        /// class the model gives its runtime type.</summary>
+        public static MeosArray? WrapMeosArray(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new MeosArray(ptr);
+        }
+
+        /// <summary>Every element of a C array of MeosArray pointers, wrapped.</summary>
+        public static MeosArray?[] WrapMeosArrayArray(IntPtr[] ptrs)
+        {
+            MeosArray?[] wrapped = new MeosArray?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapMeosArray(ptrs[i]);
             }
 
             return wrapped;
@@ -132,6 +180,30 @@ namespace MEOS.NET.Types
             for (int i = 0; i < ptrs.Length; i++)
             {
                 wrapped[i] = WrapNsegment(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the Pcschema
+        /// class the model gives its runtime type.</summary>
+        public static Pcschema? WrapPcschema(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new Pcschema(ptr);
+        }
+
+        /// <summary>Every element of a C array of Pcschema pointers, wrapped.</summary>
+        public static Pcschema?[] WrapPcschemaArray(IntPtr[] ptrs)
+        {
+            Pcschema?[] wrapped = new Pcschema?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapPcschema(ptrs[i]);
             }
 
             return wrapped;
@@ -233,6 +305,30 @@ namespace MEOS.NET.Types
             return wrapped;
         }
 
+        /// <summary>The value at <paramref name="ptr"/> as the RTree
+        /// class the model gives its runtime type.</summary>
+        public static RTree? WrapRTree(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new RTree(ptr);
+        }
+
+        /// <summary>Every element of a C array of RTree pointers, wrapped.</summary>
+        public static RTree?[] WrapRTreeArray(IntPtr[] ptrs)
+        {
+            RTree?[] wrapped = new RTree?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapRTree(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
         /// <summary>The value at <paramref name="ptr"/> as the Raquet
         /// class the model gives its runtime type.</summary>
         public static Raquet? WrapRaquet(IntPtr ptr)
@@ -252,6 +348,30 @@ namespace MEOS.NET.Types
             for (int i = 0; i < ptrs.Length; i++)
             {
                 wrapped[i] = WrapRaquet(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the SPTree
+        /// class the model gives its runtime type.</summary>
+        public static SPTree? WrapSPTree(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new SPTree(ptr);
+        }
+
+        /// <summary>Every element of a C array of SPTree pointers, wrapped.</summary>
+        public static SPTree?[] WrapSPTreeArray(IntPtr[] ptrs)
+        {
+            SPTree?[] wrapped = new SPTree?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapSPTree(ptrs[i]);
             }
 
             return wrapped;

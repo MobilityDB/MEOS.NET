@@ -23,8 +23,80 @@ namespace MEOS.NET.Types
         public Pcpoint? Copy()
             => MEOSFactory.WrapPcpoint(Meos.PcpointCopy(this.Ptr));
 
+        public double? GetDim(Pcschema schema, string name)
+        {
+            IntPtr _out = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.PcpointGetDim(this.Ptr, schema.Ptr, name, _out))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_out);
+            }
+        }
+
         public uint GetPcid()
             => Meos.PcpointGetPcid(this.Ptr);
+
+        public double? GetX(Pcschema schema)
+        {
+            IntPtr _out = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.PcpointGetX(this.Ptr, schema.Ptr, _out))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_out);
+            }
+        }
+
+        public double? GetY(Pcschema schema)
+        {
+            IntPtr _out = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.PcpointGetY(this.Ptr, schema.Ptr, _out))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_out);
+            }
+        }
+
+        public double? GetZ(Pcschema schema)
+        {
+            IntPtr _out = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.PcpointGetZ(this.Ptr, schema.Ptr, _out))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_out);
+            }
+        }
 
         public uint Hash()
             => Meos.PcpointHash(this.Ptr);
@@ -37,6 +109,9 @@ namespace MEOS.NET.Types
 
         public Set? ToSet()
             => MEOSFactory.WrapSet(Meos.PcpointToSet(this.Ptr));
+
+        public TPCBox? ToTpcbox(Pcschema schema)
+            => MEOSFactory.WrapTPCBox(Meos.PcpointToTpcbox(this.Ptr, schema.Ptr));
 
         public static Pcpoint? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapPcpoint(Meos.PcpointFromHexwkb(hexwkb));

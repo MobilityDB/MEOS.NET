@@ -9217,6 +9217,10 @@ namespace MEOS.NET.Functions
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool GeoIsPlanarLinear(IntPtr gs);
 
+            [LibraryImport(DllPath, EntryPoint = "geo_clip_subject", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool GeoClipSubject(IntPtr gs);
+
             [LibraryImport(DllPath, EntryPoint = "geo_is_point_set", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool GeoIsPointSet(IntPtr gs);

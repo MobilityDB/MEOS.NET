@@ -183,6 +183,21 @@ namespace MEOS.NET.Types
         public string Out()
             => Meos.JsonbOut(this.Ptr);
 
+        public int PathExists(JsonPath jp, Jsonb vars, bool silent, bool tz)
+            => Meos.JsonbPathExists(this.Ptr, jp.Ptr, vars.Ptr, silent, tz);
+
+        public bool PathMatch(JsonPath jp, Jsonb vars, bool silent, bool tz)
+            => Meos.JsonbPathMatch(this.Ptr, jp.Ptr, vars.Ptr, silent, tz);
+
+        public Jsonb?[] PathQueryAll(JsonPath jp, Jsonb vars, bool silent, bool tz)
+            => MEOSFactory.WrapJsonbArray(Meos.JsonbPathQueryAll(this.Ptr, jp.Ptr, vars.Ptr, silent, tz));
+
+        public Jsonb? PathQueryArray(JsonPath jp, Jsonb vars, bool silent, bool tz)
+            => MEOSFactory.WrapJsonb(Meos.JsonbPathQueryArray(this.Ptr, jp.Ptr, vars.Ptr, silent, tz));
+
+        public Jsonb? PathQueryFirst(JsonPath jp, Jsonb vars, bool silent, bool tz)
+            => MEOSFactory.WrapJsonb(Meos.JsonbPathQueryFirst(this.Ptr, jp.Ptr, vars.Ptr, silent, tz));
+
         public Text? Pretty()
             => MEOSFactory.WrapText(Meos.JsonbPretty(this.Ptr));
 
