@@ -49,6 +49,25 @@ namespace MEOS.NET.Types
         public Temporal? DeleteIndex(int idx)
             => MEOSFactory.WrapTemporal(Meos.TjsonbDeleteIndex(this.Ptr, idx));
 
+        public Temporal? DeletePath(Text[] path_elems)
+        {
+            IntPtr[] _path_elemsValues = new IntPtr[path_elems.Length];
+            for (int i = 0; i < path_elems.Length; i++)
+            {
+                _path_elemsValues[i] = path_elems[i].Ptr;
+            }
+
+            GCHandle _path_elems = GCHandle.Alloc(_path_elemsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTemporal(Meos.TjsonbDeletePath(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length));
+            }
+            finally
+            {
+                _path_elems.Free();
+            }
+        }
+
         public Jsonb? EndValue()
             => MEOSFactory.WrapJsonb(Meos.TjsonbEndValue(this.Ptr));
 

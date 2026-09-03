@@ -45,17 +45,131 @@ namespace MEOS.NET.Types
         public Jsonb? Delete(Text key)
             => MEOSFactory.WrapJsonb(Meos.JsonbDelete(this.Ptr, key.Ptr));
 
+        public Jsonb? DeleteArray(Text[] keys_elems)
+        {
+            IntPtr[] _keys_elemsValues = new IntPtr[keys_elems.Length];
+            for (int i = 0; i < keys_elems.Length; i++)
+            {
+                _keys_elemsValues[i] = keys_elems[i].Ptr;
+            }
+
+            GCHandle _keys_elems = GCHandle.Alloc(_keys_elemsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapJsonb(Meos.JsonbDeleteArray(this.Ptr, _keys_elems.AddrOfPinnedObject(), keys_elems.Length));
+            }
+            finally
+            {
+                _keys_elems.Free();
+            }
+        }
+
         public Jsonb? DeleteIndex(int idx)
             => MEOSFactory.WrapJsonb(Meos.JsonbDeleteIndex(this.Ptr, idx));
 
+        public Jsonb? DeletePath(Text[] path_elems)
+        {
+            IntPtr[] _path_elemsValues = new IntPtr[path_elems.Length];
+            for (int i = 0; i < path_elems.Length; i++)
+            {
+                _path_elemsValues[i] = path_elems[i].Ptr;
+            }
+
+            GCHandle _path_elems = GCHandle.Alloc(_path_elemsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapJsonb(Meos.JsonbDeletePath(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length));
+            }
+            finally
+            {
+                _path_elems.Free();
+            }
+        }
+
         public bool Exists(Text key)
             => Meos.JsonbExists(this.Ptr, key.Ptr);
+
+        public bool ExistsArray(Text[] keys_elems, bool any)
+        {
+            IntPtr[] _keys_elemsValues = new IntPtr[keys_elems.Length];
+            for (int i = 0; i < keys_elems.Length; i++)
+            {
+                _keys_elemsValues[i] = keys_elems[i].Ptr;
+            }
+
+            GCHandle _keys_elems = GCHandle.Alloc(_keys_elemsValues, GCHandleType.Pinned);
+            try
+            {
+                return Meos.JsonbExistsArray(this.Ptr, _keys_elems.AddrOfPinnedObject(), keys_elems.Length, any);
+            }
+            finally
+            {
+                _keys_elems.Free();
+            }
+        }
+
+        public Jsonb? ExtractPath(Text[] path_elems)
+        {
+            IntPtr[] _path_elemsValues = new IntPtr[path_elems.Length];
+            for (int i = 0; i < path_elems.Length; i++)
+            {
+                _path_elemsValues[i] = path_elems[i].Ptr;
+            }
+
+            GCHandle _path_elems = GCHandle.Alloc(_path_elemsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapJsonb(Meos.JsonbExtractPath(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length));
+            }
+            finally
+            {
+                _path_elems.Free();
+            }
+        }
+
+        public Text? ExtractPathText(Text[] path_elems)
+        {
+            IntPtr[] _path_elemsValues = new IntPtr[path_elems.Length];
+            for (int i = 0; i < path_elems.Length; i++)
+            {
+                _path_elemsValues[i] = path_elems[i].Ptr;
+            }
+
+            GCHandle _path_elems = GCHandle.Alloc(_path_elemsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapText(Meos.JsonbExtractPathText(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length));
+            }
+            finally
+            {
+                _path_elems.Free();
+            }
+        }
 
         public uint Hash()
             => Meos.JsonbHash(this.Ptr);
 
         public ulong HashExtended(ulong seed)
             => Meos.JsonbHashExtended(this.Ptr, seed);
+
+        public Jsonb? Insert(Text[] path_elems, Jsonb newjb, bool after)
+        {
+            IntPtr[] _path_elemsValues = new IntPtr[path_elems.Length];
+            for (int i = 0; i < path_elems.Length; i++)
+            {
+                _path_elemsValues[i] = path_elems[i].Ptr;
+            }
+
+            GCHandle _path_elems = GCHandle.Alloc(_path_elemsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapJsonb(Meos.JsonbInsert(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length, newjb.Ptr, after));
+            }
+            finally
+            {
+                _path_elems.Free();
+            }
+        }
 
         public Jsonb? ObjectField(Text key)
             => MEOSFactory.WrapJsonb(Meos.JsonbObjectField(this.Ptr, key.Ptr));
@@ -71,6 +185,44 @@ namespace MEOS.NET.Types
 
         public Text? Pretty()
             => MEOSFactory.WrapText(Meos.JsonbPretty(this.Ptr));
+
+        public Jsonb? Set(Text[] path_elems, Jsonb newjb, bool create)
+        {
+            IntPtr[] _path_elemsValues = new IntPtr[path_elems.Length];
+            for (int i = 0; i < path_elems.Length; i++)
+            {
+                _path_elemsValues[i] = path_elems[i].Ptr;
+            }
+
+            GCHandle _path_elems = GCHandle.Alloc(_path_elemsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapJsonb(Meos.JsonbSet(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length, newjb.Ptr, create));
+            }
+            finally
+            {
+                _path_elems.Free();
+            }
+        }
+
+        public Jsonb? SetLax(Text[] path_elems, Jsonb newjb, bool create, Text handle_null)
+        {
+            IntPtr[] _path_elemsValues = new IntPtr[path_elems.Length];
+            for (int i = 0; i < path_elems.Length; i++)
+            {
+                _path_elemsValues[i] = path_elems[i].Ptr;
+            }
+
+            GCHandle _path_elems = GCHandle.Alloc(_path_elemsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapJsonb(Meos.JsonbSetLax(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length, newjb.Ptr, create, handle_null.Ptr));
+            }
+            finally
+            {
+                _path_elems.Free();
+            }
+        }
 
         public Jsonb? StripNulls(bool strip_in_arrays)
             => MEOSFactory.WrapJsonb(Meos.JsonbStripNulls(this.Ptr, strip_in_arrays));

@@ -394,29 +394,15 @@ class Generator:
             for p in f.get("params", [])
         }
 
-        # `T *values, int count` is MEOS's counted-array convention: the pointer is
-        # the first element of an array, not one value, so wrapping it as one
-        # object would hand the callee a single element and a length that lies.
+        # An array ARGUMENT is one parameter to the caller and two to MEOS, the
+        # pointer and its length. Which parameters those are is the catalog's to
+        # say — `shape.inputArrays` names each array, the parameter its length
+        # comes from and its element type — so the layer reads it rather than
+        # matching a length by its name, which the surface spells eight ways.
+        input_arrays = (f.get("shape") or {}).get("inputArrays") or []
+        counted = {codegen.csharp_param_name(a["param"]): a["element"]["c"]
+                   for a in input_arrays}
         recv_ctype = self.m.ctype.get(cls)
-        declared = f.get("params", [])
-        receiver_first = (bool(declared)
-                          and clean(declared[0]["cType"]) == f"{recv_ctype} *")
-        # `T *values, int count` is MEOS's counted-array convention. The length is
-        # named `count`; a parameter named `n` is the INDEX of the `*_n`
-        # accessors, whose pointer is the receiver and no array at all.
-        counted = set()
-        for i, p in enumerate(declared):
-            nxt = declared[i + 1] if i + 1 < len(declared) else None
-            if (i == 0 and receiver_first) or not clean(p["cType"]).endswith("*"):
-                continue
-            # The length is named `count` beside an array of values and `size`
-            # beside a byte buffer, and both say the same thing: the pointer is
-            # the first element of an array the caller already holds whole.
-            if (nxt and ((nxt["name"] == "count"
-                          and clean(nxt["cType"]) in ("int", "int32", "int32_t"))
-                         or (nxt["name"] == "size"
-                             and clean(nxt["cType"]) == "size_t"))):
-                counted.add(codegen.csharp_param_name(p["name"]))
 
         params = list(wrapper_params)
         static = True
@@ -467,15 +453,10 @@ class Generator:
             self.deferred[cls].append(f"{oo}: neither a receiver nor a value to return")
             return None
 
-        # A counted array is one parameter to the caller and two to MEOS: the
-        # array and its length, which the array itself answers.
-        declared = f.get("params", [])
-        count_of = {}
-        for i, p in enumerate(declared):
-            if (codegen.csharp_param_name(p["name"]) in counted
-                    and i + 1 < len(declared)):
-                count_of[codegen.csharp_param_name(declared[i + 1]["name"])] = \
-                    codegen.csharp_param_name(p["name"])
+        # The length is the array's own, so it leaves the C# signature.
+        count_of = {codegen.csharp_param_name(a["lengthFrom"]["name"]):
+                    codegen.csharp_param_name(a["param"])
+                    for a in input_arrays}
 
         if result_out is not None:
             ret_type = f"{result_out[1][0]}?"
@@ -497,8 +478,8 @@ class Generator:
                 args.append(f"{cast}{count_of[pname]}.Length")
                 continue
             if pname in counted:
-                pointee = clean(c_by_name[pname])[:-1].strip()
-                element = self.m.class_for_ctype(clean(c_by_name[pname])[:-1])
+                pointee = clean(counted[pname])
+                element = self.m.class_for_ctype(pointee)
                 if element is not None:
                     sig.append((f"{element}[]", pname))
                     arrays.append((pname, element))

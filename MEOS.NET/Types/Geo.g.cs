@@ -111,6 +111,63 @@ namespace MEOS.NET.Types
         public STBox? TstzspanToStbox(Span s)
             => MEOSFactory.WrapSTBox(Meos.GeoTstzspanToStbox(this.Ptr, s.Ptr));
 
+        public static Geo?[] ClusterIntersecting(Geo[] geoms)
+        {
+            IntPtr[] _geomsValues = new IntPtr[geoms.Length];
+            for (int i = 0; i < geoms.Length; i++)
+            {
+                _geomsValues[i] = geoms[i].Ptr;
+            }
+
+            GCHandle _geoms = GCHandle.Alloc(_geomsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapGeoArray(Meos.GeoClusterIntersecting(_geoms.AddrOfPinnedObject(), (uint) geoms.Length));
+            }
+            finally
+            {
+                _geoms.Free();
+            }
+        }
+
+        public static int[] ClusterKmeans(Geo[] geoms, uint k)
+        {
+            IntPtr[] _geomsValues = new IntPtr[geoms.Length];
+            for (int i = 0; i < geoms.Length; i++)
+            {
+                _geomsValues[i] = geoms[i].Ptr;
+            }
+
+            GCHandle _geoms = GCHandle.Alloc(_geomsValues, GCHandleType.Pinned);
+            try
+            {
+                return Meos.GeoClusterKmeans(_geoms.AddrOfPinnedObject(), (uint) geoms.Length, k);
+            }
+            finally
+            {
+                _geoms.Free();
+            }
+        }
+
+        public static Geo?[] ClusterWithin(Geo[] geoms, double tolerance)
+        {
+            IntPtr[] _geomsValues = new IntPtr[geoms.Length];
+            for (int i = 0; i < geoms.Length; i++)
+            {
+                _geomsValues[i] = geoms[i].Ptr;
+            }
+
+            GCHandle _geoms = GCHandle.Alloc(_geomsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapGeoArray(Meos.GeoClusterWithin(_geoms.AddrOfPinnedObject(), (uint) geoms.Length, tolerance));
+            }
+            finally
+            {
+                _geoms.Free();
+            }
+        }
+
         public static Geo? CollectGarray(Geo[] gsarr)
         {
             IntPtr[] _gsarrValues = new IntPtr[gsarr.Length];
@@ -127,6 +184,19 @@ namespace MEOS.NET.Types
             finally
             {
                 _gsarr.Free();
+            }
+        }
+
+        public static Geo? FromEWKB(byte[] wkb, int srid)
+        {
+            GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapGeo(Meos.GeoFromEwkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length, srid));
+            }
+            finally
+            {
+                _wkb.Free();
             }
         }
 

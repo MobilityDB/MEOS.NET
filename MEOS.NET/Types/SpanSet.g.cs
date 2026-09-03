@@ -130,5 +130,8 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static SpanSet? Make(Span spans, int count)
+            => MEOSFactory.WrapSpanSet(Meos.SpansetMake(spans.Ptr, count));
+
     }
 }
