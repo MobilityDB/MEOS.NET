@@ -181,6 +181,18 @@ namespace MEOS.NET.Types
         public string Out()
             => Meos.TjsonbOut(this.Ptr);
 
+        public Temporal? PathExists(JsonPath jp, Jsonb vars, bool silent, bool tz)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbPathExists(this.Ptr, jp.Ptr, vars.Ptr, silent, tz));
+
+        public Temporal? PathMatch(JsonPath jp, Jsonb vars, bool silent, bool tz)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbPathMatch(this.Ptr, jp.Ptr, vars.Ptr, silent, tz));
+
+        public Temporal? PathQueryArray(JsonPath jp, Jsonb vars, bool silent, bool tz)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbPathQueryArray(this.Ptr, jp.Ptr, vars.Ptr, silent, tz));
+
+        public Temporal? PathQueryFirst(JsonPath jp, Jsonb vars, bool silent, bool tz)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbPathQueryFirst(this.Ptr, jp.Ptr, vars.Ptr, silent, tz));
+
         public Temporal? Pretty()
             => MEOSFactory.WrapTemporal(Meos.TjsonbPretty(this.Ptr));
 

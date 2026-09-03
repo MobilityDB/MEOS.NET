@@ -255,6 +255,9 @@ namespace MEOS.NET.Functions
         public static bool GeoIsPlanarLinear(IntPtr gs)
             => SafeExecution<bool>(() => Native.GeoIsPlanarLinear(gs));
 
+        public static bool GeoClipSubject(IntPtr gs)
+            => SafeExecution<bool>(() => Native.GeoClipSubject(gs));
+
         public static bool GeoIsPointSet(IntPtr gs)
             => SafeExecution<bool>(() => Native.GeoIsPointSet(gs));
 

@@ -110,6 +110,15 @@ def clean(c_type: str) -> str:
     return " ".join(c_type.replace("const ", "").split())
 
 
+def scratch(name: str) -> str:
+    """The name of a local the body derives from a parameter's.
+
+    A parameter whose name is a C# keyword is escaped to `@out`, and `_@out` is
+    no identifier at all — the escape belongs at the START of a name or nowhere,
+    so a derived name drops it."""
+    return "_" + name.lstrip("@")
+
+
 def pascal(oo_name: str) -> str:
     return oo_name[:1].upper() + oo_name[1:]
 
@@ -382,7 +391,7 @@ class Generator:
             return (cls, f"{name}.Ptr")
         struct = self.value_struct(c)
         if struct and cs_type == "IntPtr":
-            return (struct, f"_{name}")
+            return (struct, scratch(name))
         return None
 
     # -- emission ---------------------------------------------------------
@@ -478,10 +487,10 @@ class Generator:
         structs: list[tuple[str, str]] = []
         for cs_type, pname in params:
             if result_out is not None and pname == result_out[0]:
-                args.append(f"_{pname}")
+                args.append(scratch(pname))
                 continue
             if pname == length_out:
-                args.append(f"_{pname}")
+                args.append(scratch(pname))
                 continue
             if pname in count_of:
                 cast = "" if cs_type == "int" else f"({cs_type}) "
@@ -493,7 +502,7 @@ class Generator:
                 if element is not None:
                     sig.append((f"{element}[]", pname))
                     arrays.append((pname, element))
-                    args.append(f"_{pname}.AddrOfPinnedObject()")
+                    args.append(f"{scratch(pname)}.AddrOfPinnedObject()")
                     continue
                 # A scalar element is the array itself: the values need no
                 # gathering, so what is pinned is the caller's own array.
@@ -501,7 +510,7 @@ class Generator:
                 if scalar is not None:
                     sig.append((f"{scalar}[]", pname))
                     scalar_arrays.append(pname)
-                    args.append(f"_{pname}.AddrOfPinnedObject()")
+                    args.append(f"{scratch(pname)}.AddrOfPinnedObject()")
                     continue
                 self.deferred[cls].append(
                     f"{oo}: argument {pname} is an array of "
@@ -515,14 +524,14 @@ class Generator:
                 return None
             sig.append((mapped[0], pname))
             args.append(mapped[1])
-            if mapped[1] == f"_{pname}" and self.value_struct(c_by_name.get(pname, "")):
+            if mapped[1] == scratch(pname) and self.value_struct(c_by_name.get(pname, "")):
                 structs.append((pname, mapped[0]))
 
         call = f"Meos.{codegen.public_name(fname)}({', '.join(args)})"
         out = None
         if result_out is not None:
             name, (_, size, reader) = result_out
-            out = (name, size, reader.format(f"_{name}"))
+            out = (name, size, reader.format(scratch(name)))
         if structs and (arrays or out or scalar_arrays or length_out):
             self.deferred[cls].append(
                 f"{oo}: a struct argument beside a counted array or an "
@@ -607,7 +616,7 @@ class Generator:
         name, size, reader = method.out_param
         return [
             "        {",
-            f"            IntPtr _{name} = Marshal.AllocHGlobal({size});",
+            f"            IntPtr {scratch(name)} = Marshal.AllocHGlobal({size});",
             "            try",
             "            {",
             f"                if (!{method.body})",
@@ -619,7 +628,7 @@ class Generator:
             "            }",
             "            finally",
             "            {",
-            f"                Marshal.FreeHGlobal(_{name});",
+            f"                Marshal.FreeHGlobal({scratch(name)});",
             "            }",
             "        }",
         ]
@@ -634,19 +643,19 @@ class Generator:
         lines = ["        {"]
         for name, struct in method.structs:
             lines.append(
-                f"            IntPtr _{name} = "
+                f"            IntPtr {scratch(name)} = "
                 f"Marshal.AllocHGlobal(Marshal.SizeOf<{struct}>());")
         lines.append("            try")
         lines.append("            {")
         for name, _ in method.structs:
             lines.append(
-                f"                Marshal.StructureToPtr({ident(name)}, _{name}, false);")
+                f"                Marshal.StructureToPtr({ident(name)}, {scratch(name)}, false);")
         lines.append(f"                return {method.body};")
         lines.append("            }")
         lines.append("            finally")
         lines.append("            {")
         for name, _ in method.structs:
-            lines.append(f"                Marshal.FreeHGlobal(_{name});")
+            lines.append(f"                Marshal.FreeHGlobal({scratch(name)});")
         lines += ["            }", "        }"]
         return lines
 
@@ -660,7 +669,7 @@ class Generator:
         name = method.length_out
         lines = [
             "        {",
-            f"            IntPtr _{name} = Marshal.AllocHGlobal(sizeof(long));",
+            f"            IntPtr {scratch(name)} = Marshal.AllocHGlobal(sizeof(long));",
             "            try",
             "            {",
         ]
@@ -672,7 +681,7 @@ class Generator:
                 "                    return null;",
                 "                }",
                 "",
-                f"                byte[] _wkb = new byte[Marshal.ReadInt64(_{name})];",
+                f"                byte[] _wkb = new byte[Marshal.ReadInt64({scratch(name)})];",
                 "                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);",
                 "                return _wkb;",
             ]
@@ -682,7 +691,7 @@ class Generator:
             "            }",
             "            finally",
             "            {",
-            f"                Marshal.FreeHGlobal(_{name});",
+            f"                Marshal.FreeHGlobal({scratch(name)});",
             "            }",
             "        }",
         ]
@@ -698,17 +707,17 @@ class Generator:
         lines = ["        {"]
         for name in method.scalar_arrays:
             lines.append(
-                f"            GCHandle _{name} = "
+                f"            GCHandle {scratch(name)} = "
                 f"GCHandle.Alloc({ident(name)}, GCHandleType.Pinned);")
         for name, element in method.arrays:
             lines += [
-                f"            IntPtr[] _{name}Values = new IntPtr[{ident(name)}.Length];",
+                f"            IntPtr[] {scratch(name)}Values = new IntPtr[{ident(name)}.Length];",
                 f"            for (int i = 0; i < {ident(name)}.Length; i++)",
                 "            {",
-                f"                _{name}Values[i] = {ident(name)}[i].Ptr;",
+                f"                {scratch(name)}Values[i] = {ident(name)}[i].Ptr;",
                 "            }",
                 "",
-                f"            GCHandle _{name} = GCHandle.Alloc(_{name}Values, GCHandleType.Pinned);",
+                f"            GCHandle {scratch(name)} = GCHandle.Alloc({scratch(name)}Values, GCHandleType.Pinned);",
             ]
         lines.append("            try")
         lines.append("            {")
@@ -717,9 +726,9 @@ class Generator:
         lines.append("            finally")
         lines.append("            {")
         for name in method.scalar_arrays:
-            lines.append(f"                _{name}.Free();")
+            lines.append(f"                {scratch(name)}.Free();")
         for name, _ in method.arrays:
-            lines.append(f"                _{name}.Free();")
+            lines.append(f"                {scratch(name)}.Free();")
         lines += ["            }", "        }"]
         return lines
 
