@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 using MEOS.NET.Enums;
 using MEOS.NET.Functions;
+using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {

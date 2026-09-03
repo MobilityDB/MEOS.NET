@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 using MEOS.NET.Enums;
 using MEOS.NET.Functions;
+using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
@@ -16,6 +17,20 @@ namespace MEOS.NET.Types
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
             => this.Out();
+
+        public Span?[] Bins(Interval duration, DateOnly torigin)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSpanArray(Meos.DatespansetBins(this.Ptr, _duration, MEOSConvert.ToDateADT(torigin)));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
 
         public DateOnly? DateN(int n)
         {
@@ -37,6 +52,9 @@ namespace MEOS.NET.Types
 
         public Set? Dates()
             => MEOSFactory.WrapSet(Meos.DatespansetDates(this.Ptr));
+
+        public Interval? Duration(bool boundspan)
+            => MEOSConvert.ToStruct<Interval>(Meos.DatespansetDuration(this.Ptr, boundspan));
 
         public DateOnly EndDate()
             => MEOSConvert.ToDateOnly(Meos.DatespansetEndDate(this.Ptr));

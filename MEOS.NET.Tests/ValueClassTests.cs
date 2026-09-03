@@ -55,8 +55,9 @@ namespace MEOS.NET.Tests
             // The trip leaves the square at (2,2), halfway along, so what the
             // restriction answers ends there rather than at the trip's own end.
             Assert.IsNotNull(inside);
-            StringAssert.Contains(inside!.ToString(), "2024-12-07");
-            Assert.IsFalse(inside.ToString().Contains("2024-12-08"));
+            string text = inside!.ToString() ?? string.Empty;
+            StringAssert.Contains(text, "2024-12-07");
+            Assert.IsFalse(text.Contains("2024-12-08"));
         }
     }
 }

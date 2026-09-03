@@ -132,6 +132,24 @@ namespace MEOS.NET.Functions
         public static uint PcpatchNpoints(IntPtr pa)
             => SafeExecution<uint>(() => Native.PcpatchNpoints(pa));
 
+        public static IntPtr PcpatchPointN(IntPtr pa, int n)
+            => SafeExecution<IntPtr>(() => Native.PcpatchPointN(pa, n));
+
+        public static IntPtr[] PcpatchPoints(IntPtr pa)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.PcpatchPoints(pa, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
         public static uint PcpatchHash(IntPtr pa)
             => SafeExecution<uint>(() => Native.PcpatchHash(pa));
 

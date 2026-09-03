@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 using MEOS.NET.Enums;
 using MEOS.NET.Functions;
+using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
@@ -22,6 +23,20 @@ namespace MEOS.NET.Types
 
         public Temporal? AngularSpeed()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAngularSpeed(this.Ptr));
+
+        public new Temporal? AppendTinstant(Temporal inst, InterpType interp, double maxdist, Interval maxt, bool expand)
+        {
+            IntPtr _maxt = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(maxt, _maxt, false);
+                return MEOSFactory.WrapTemporal(Meos.TrgeometryAppendTinstant(this.Ptr, inst.Ptr, (int) interp, maxdist, _maxt, expand));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_maxt);
+            }
+        }
 
         public new Temporal? AppendTsequence(Temporal seq, bool expand)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAppendTsequence(this.Ptr, seq.Ptr, expand));
@@ -98,6 +113,9 @@ namespace MEOS.NET.Types
         public new double DyntimewarpDistance(Temporal temp2)
             => Meos.TrgeometryDyntimewarpDistance(this.Ptr, temp2.Ptr);
 
+        public new Match[] DyntimewarpPath(Temporal temp2)
+            => MEOSConvert.ToStructArray<Match>(Meos.TrgeometryDyntimewarpPath(this.Ptr, temp2.Ptr));
+
         public new Temporal? EndInstant()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryEndInstant(this.Ptr));
 
@@ -109,6 +127,9 @@ namespace MEOS.NET.Types
 
         public new double FrechetDistance(Temporal temp2)
             => Meos.TrgeometryFrechetDistance(this.Ptr, temp2.Ptr);
+
+        public new Match[] FrechetPath(Temporal temp2)
+            => MEOSConvert.ToStructArray<Match>(Meos.TrgeometryFrechetPath(this.Ptr, temp2.Ptr));
 
         public Geo? Geom()
             => MEOSFactory.WrapGeo(Meos.TrgeometryGeom(this.Ptr));
@@ -184,6 +205,20 @@ namespace MEOS.NET.Types
 
         public STBox?[] SpaceBoxes(double xsize, double ysize, double zsize, Geo sorigin, bool bitmatrix, bool border_inc)
             => MEOSFactory.WrapSTBoxArray(Meos.TrgeometrySpaceBoxes(this.Ptr, xsize, ysize, zsize, sorigin.Ptr, bitmatrix, border_inc));
+
+        public STBox?[] SpaceTimeBoxes(double xsize, double ysize, double zsize, Interval duration, Geo sorigin, DateTime torigin, bool bitmatrix, bool border_inc)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSTBoxArray(Meos.TrgeometrySpaceTimeBoxes(this.Ptr, xsize, ysize, zsize, _duration, sorigin.Ptr, MEOSConvert.ToTimestampTz(torigin), bitmatrix, border_inc));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
 
         public Temporal? Speed()
             => MEOSFactory.WrapTemporal(Meos.TrgeometrySpeed(this.Ptr));

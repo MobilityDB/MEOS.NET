@@ -10455,6 +10455,12 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "pcpatch_npoints", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial uint PcpatchNpoints(IntPtr pa);
 
+            [LibraryImport(DllPath, EntryPoint = "pcpatch_point_n", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr PcpatchPointN(IntPtr pa, int n);
+
+            [LibraryImport(DllPath, EntryPoint = "pcpatch_points", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr PcpatchPoints(IntPtr pa, IntPtr count);
+
             [LibraryImport(DllPath, EntryPoint = "pcpatch_hash", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial uint PcpatchHash(IntPtr pa);
 
