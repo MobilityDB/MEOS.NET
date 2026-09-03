@@ -111,6 +111,9 @@ namespace MEOS.NET.Functions
         public static bool GeomAzimuth(IntPtr gs1, IntPtr gs2, IntPtr result)
             => SafeExecution<bool>(() => Native.GeomAzimuth(gs1, gs2, result));
 
+        public static double GeomArea(IntPtr gs)
+            => SafeExecution<double>(() => Native.GeomArea(gs));
+
         public static double GeomLength(IntPtr gs)
             => SafeExecution<double>(() => Native.GeomLength(gs));
 

@@ -5109,6 +5109,9 @@ namespace MEOS.NET.Functions
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool GeomAzimuth(IntPtr gs1, IntPtr gs2, IntPtr result);
 
+            [LibraryImport(DllPath, EntryPoint = "geom_area", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial double GeomArea(IntPtr gs);
+
             [LibraryImport(DllPath, EntryPoint = "geom_length", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial double GeomLength(IntPtr gs);
 

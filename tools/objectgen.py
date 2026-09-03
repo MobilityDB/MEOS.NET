@@ -278,7 +278,8 @@ class Method:
                  out_params: list[tuple[str, int, str]] | None = None,
                  structs: list[tuple[str, str]] | None = None,
                  scalar_arrays: list[str] | None = None,
-                 length_out: str | None = None, byte_buffer: bool = False):
+                 length_out: str | None = None, byte_buffer: bool = False,
+                 parallel: list[list[str]] | None = None):
         self.name = name
         self.ret = ret
         self.params = params
@@ -297,11 +298,13 @@ class Method:
         # whether that buffer is the answer itself.
         self.length_out = length_out
         self.byte_buffer = byte_buffer
+        # Arrays the catalog counts once, so the method reads them in step.
+        self.parallel = parallel or []
 
     def needs_a_body(self) -> bool:
         """Whether the call needs anything allocated, pinned or read around it."""
         return bool(self.structs or self.arrays or self.scalar_arrays
-                    or self.out_params or self.length_out
+                    or self.out_params or self.length_out or self.parallel
                     or (self.ret.startswith("(") and self.ret.endswith(")")))
 
 
@@ -554,10 +557,16 @@ class Generator:
             return None
         ret_type, ret_expr = ret
 
-        # The length is the array's own, so it leaves the C# signature.
-        count_of = {codegen.csharp_param_name(a["lengthFrom"]["name"]):
-                    codegen.csharp_param_name(a["param"])
-                    for a in input_arrays}
+        # The length is the array's own, so it leaves the C# signature.  Arrays
+        # the catalog gives ONE length are read in parallel and counted once, so
+        # the method takes the length from the first of them and states that the
+        # rest agree — nothing in MEOS can see a shorter one, and it reads past
+        # the end of it.
+        count_of: dict[str, list[str]] = {}
+        for a in input_arrays:
+            count_of.setdefault(
+                codegen.csharp_param_name(a["lengthFrom"]["name"]), []).append(
+                    codegen.csharp_param_name(a["param"]))
 
         if answers_existence:
             # The `bool` is not an answer: what MEOS wrote is.
@@ -584,7 +593,7 @@ class Generator:
                 continue
             if pname in count_of:
                 cast = "" if cs_type == "int" else f"({cs_type}) "
-                args.append(f"{cast}{count_of[pname]}.Length")
+                args.append(f"{cast}{count_of[pname][0]}.Length")
                 continue
             if pname in counted:
                 pointee = clean(counted[pname])
@@ -629,7 +638,8 @@ class Generator:
             body = f"{call}|>({read})"
         return Method(pascal(oo), ret_type, sig, body, static,
                       arrays, outs, structs, scalar_arrays, length_out,
-                      ret_type == "byte[]?")
+                      ret_type == "byte[]?",
+                      [names for names in count_of.values() if len(names) > 1])
 
     def inherited_names(self, cls: str) -> set[tuple]:
         names: set[tuple] = set()
@@ -696,6 +706,23 @@ class Generator:
         read, and everything allocated is freed however the method leaves.
         """
         setup, before, teardown = [], [], []
+        for names in method.parallel:
+            # MEOS reads these arrays in step off one count, so a shorter one is
+            # read past the end of. Nothing on the MEOS side can see it.
+            first, rest = names[0], names[1:]
+            test = " || ".join(
+                f"{ident(first)}.Length != {ident(other)}.Length" for other in rest)
+            named = ident(names[0]) if len(names) == 1 else (
+                ", ".join(ident(n) for n in names[:-1]) + " and " + ident(names[-1]))
+            setup += [
+                f"            if ({test})",
+                "            {",
+                "                throw new ArgumentException(",
+                f'                    "{named} are read in step, so they hold '
+                'the same number of elements.");',
+                "            }",
+                "",
+            ]
         for name, struct in method.structs:
             setup.append(
                 f"            IntPtr {scratch(name)} = "
