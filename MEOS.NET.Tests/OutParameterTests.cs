@@ -49,5 +49,34 @@ namespace MEOS.NET.Tests
             Assert.IsNull(
                 temp.ValueAtTimestamptz(new DateTime(2024, 12, 9, 0, 0, 0, DateTimeKind.Utc), true));
         }
+
+        [TestMethod]
+        public void ANearestNeighbourStepAnswersTheEntryAndItsDistance()
+        {
+            RTree tree = RTree.CreateStbox()!;
+            STBox near = STBox.In("STBOX X((1,1),(2,2))")!;
+            STBox far = STBox.In("STBOX X((9,9),(10,10))")!;
+            Assert.IsTrue(tree.Insert(near.Ptr, 1));
+            Assert.IsTrue(tree.Insert(far.Ptr, 2));
+
+            STBox query = STBox.In("STBOX X((0,0),(0,0))")!;
+            RTreeNNCursor walk = RTreeNNCursor.Open(tree, query.Ptr)!;
+            try
+            {
+                (long Id, double Distance)? nearest = walk.Next();
+                (long Id, double Distance)? next = walk.Next();
+
+                Assert.IsNotNull(nearest);
+                Assert.IsNotNull(next);
+                Assert.AreEqual(1L, nearest!.Value.Id);
+                Assert.AreEqual(2L, next!.Value.Id);
+                Assert.IsTrue(next.Value.Distance > nearest.Value.Distance);
+                Assert.IsNull(walk.Next());
+            }
+            finally
+            {
+                walk.Close();
+            }
+        }
     }
 }
