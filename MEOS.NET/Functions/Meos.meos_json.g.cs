@@ -105,52 +105,34 @@ namespace MEOS.NET.Functions
         public static int JsonArrayLength(IntPtr js)
             => SafeExecution<int>(() => Native.JsonArrayLength(js));
 
-        public static (IntPtr[], IntPtr[]) JsonEach(IntPtr js)
+        public static IntPtr[] JsonEach(IntPtr js, IntPtr values)
         {
-            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
-            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.JsonEach(js, _out_values, _count_count));
-                int _n = Marshal.ReadInt32(_count_count);
-                IntPtr[] _resultArr = new IntPtr[_n];
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonEach(js, values, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
-                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
-                IntPtr[] __out_values_out = new IntPtr[_n];
-                for (int _i = 0; _i < _n; _i++)
-                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
-                return (_resultArr, __out_values_out);
+                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                return _out;
             }
-            finally
-            {
-            Marshal.FreeHGlobal(_out_values);
-            Marshal.FreeHGlobal(_count_count);
-            }
+            finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static (IntPtr[], IntPtr[]) JsonEachText(IntPtr js)
+        public static IntPtr[] JsonEachText(IntPtr js, IntPtr values)
         {
-            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
-            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.JsonEachText(js, _out_values, _count_count));
-                int _n = Marshal.ReadInt32(_count_count);
-                IntPtr[] _resultArr = new IntPtr[_n];
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonEachText(js, values, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
-                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
-                IntPtr[] __out_values_out = new IntPtr[_n];
-                for (int _i = 0; _i < _n; _i++)
-                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
-                return (_resultArr, __out_values_out);
+                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                return _out;
             }
-            finally
-            {
-            Marshal.FreeHGlobal(_out_values);
-            Marshal.FreeHGlobal(_count_count);
-            }
+            finally { Marshal.FreeHGlobal(_cnt); }
         }
 
         public static IntPtr JsonExtractPath(IntPtr js, IntPtr path_elems, int path_len)
@@ -228,52 +210,34 @@ namespace MEOS.NET.Functions
         public static bool JsonbContains(IntPtr jb1, IntPtr jb2)
             => SafeExecution<bool>(() => Native.JsonbContains(jb1, jb2));
 
-        public static (IntPtr[], IntPtr[]) JsonbEach(IntPtr jb)
+        public static IntPtr[] JsonbEach(IntPtr jb, IntPtr values)
         {
-            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
-            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.JsonbEach(jb, _out_values, _count_count));
-                int _n = Marshal.ReadInt32(_count_count);
-                IntPtr[] _resultArr = new IntPtr[_n];
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbEach(jb, values, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
-                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
-                IntPtr[] __out_values_out = new IntPtr[_n];
-                for (int _i = 0; _i < _n; _i++)
-                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
-                return (_resultArr, __out_values_out);
+                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                return _out;
             }
-            finally
-            {
-            Marshal.FreeHGlobal(_out_values);
-            Marshal.FreeHGlobal(_count_count);
-            }
+            finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static (IntPtr[], IntPtr[]) JsonbEachText(IntPtr jb)
+        public static IntPtr[] JsonbEachText(IntPtr jb, IntPtr values)
         {
-            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
-            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.JsonbEachText(jb, _out_values, _count_count));
-                int _n = Marshal.ReadInt32(_count_count);
-                IntPtr[] _resultArr = new IntPtr[_n];
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbEachText(jb, values, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
-                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
-                IntPtr[] __out_values_out = new IntPtr[_n];
-                for (int _i = 0; _i < _n; _i++)
-                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
-                return (_resultArr, __out_values_out);
+                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                return _out;
             }
-            finally
-            {
-            Marshal.FreeHGlobal(_out_values);
-            Marshal.FreeHGlobal(_count_count);
-            }
+            finally { Marshal.FreeHGlobal(_cnt); }
         }
 
         public static bool JsonbExists(IntPtr jb, IntPtr key)
