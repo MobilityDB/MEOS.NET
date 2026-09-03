@@ -534,52 +534,34 @@ namespace MEOS.NET.Functions
         public static int PgJsonArrayLength(IntPtr js)
             => SafeExecution<int>(() => Native.PgJsonArrayLength(js));
 
-        public static (IntPtr[], IntPtr[]) PgJsonEach(IntPtr js)
+        public static IntPtr[] PgJsonEach(IntPtr js, IntPtr values)
         {
-            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
-            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.PgJsonEach(js, _out_values, _count_count));
-                int _n = Marshal.ReadInt32(_count_count);
-                IntPtr[] _resultArr = new IntPtr[_n];
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.PgJsonEach(js, values, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
-                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
-                IntPtr[] __out_values_out = new IntPtr[_n];
-                for (int _i = 0; _i < _n; _i++)
-                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
-                return (_resultArr, __out_values_out);
+                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                return _out;
             }
-            finally
-            {
-            Marshal.FreeHGlobal(_out_values);
-            Marshal.FreeHGlobal(_count_count);
-            }
+            finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static (IntPtr[], IntPtr[]) PgJsonEachText(IntPtr js)
+        public static IntPtr[] PgJsonEachText(IntPtr js, IntPtr values)
         {
-            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
-            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.PgJsonEachText(js, _out_values, _count_count));
-                int _n = Marshal.ReadInt32(_count_count);
-                IntPtr[] _resultArr = new IntPtr[_n];
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.PgJsonEachText(js, values, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
-                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
-                IntPtr[] __out_values_out = new IntPtr[_n];
-                for (int _i = 0; _i < _n; _i++)
-                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
-                return (_resultArr, __out_values_out);
+                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                return _out;
             }
-            finally
-            {
-            Marshal.FreeHGlobal(_out_values);
-            Marshal.FreeHGlobal(_count_count);
-            }
+            finally { Marshal.FreeHGlobal(_cnt); }
         }
 
         public static IntPtr[] PgJsonObjectKeys(IntPtr js)
@@ -642,52 +624,34 @@ namespace MEOS.NET.Functions
         public static bool PgJsonbContains(IntPtr jb1, IntPtr jb2)
             => SafeExecution<bool>(() => Native.PgJsonbContains(jb1, jb2));
 
-        public static (IntPtr[], IntPtr[]) PgJsonbEach(IntPtr jb)
+        public static IntPtr[] PgJsonbEach(IntPtr jb, IntPtr values)
         {
-            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
-            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.PgJsonbEach(jb, _out_values, _count_count));
-                int _n = Marshal.ReadInt32(_count_count);
-                IntPtr[] _resultArr = new IntPtr[_n];
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.PgJsonbEach(jb, values, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
-                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
-                IntPtr[] __out_values_out = new IntPtr[_n];
-                for (int _i = 0; _i < _n; _i++)
-                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
-                return (_resultArr, __out_values_out);
+                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                return _out;
             }
-            finally
-            {
-            Marshal.FreeHGlobal(_out_values);
-            Marshal.FreeHGlobal(_count_count);
-            }
+            finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static (IntPtr[], IntPtr[]) PgJsonbEachText(IntPtr jb)
+        public static IntPtr[] PgJsonbEachText(IntPtr jb, IntPtr values)
         {
-            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
-            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.PgJsonbEachText(jb, _out_values, _count_count));
-                int _n = Marshal.ReadInt32(_count_count);
-                IntPtr[] _resultArr = new IntPtr[_n];
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.PgJsonbEachText(jb, values, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
-                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
-                IntPtr[] __out_values_out = new IntPtr[_n];
-                for (int _i = 0; _i < _n; _i++)
-                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
-                return (_resultArr, __out_values_out);
+                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                return _out;
             }
-            finally
-            {
-            Marshal.FreeHGlobal(_out_values);
-            Marshal.FreeHGlobal(_count_count);
-            }
+            finally { Marshal.FreeHGlobal(_cnt); }
         }
 
         public static bool PgJsonbEq(IntPtr jb1, IntPtr jb2)

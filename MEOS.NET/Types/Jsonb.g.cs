@@ -86,20 +86,6 @@ namespace MEOS.NET.Types
             }
         }
 
-        public (Text?[], Jsonb?[]) Each()
-        {
-            var _answered = Meos.JsonbEach(this.Ptr);
-
-            return (MEOSFactory.WrapTextArray(_answered.Item1), MEOSFactory.WrapJsonbArray(_answered.Item2));
-        }
-
-        public (Text?[], Text?[]) EachText()
-        {
-            var _answered = Meos.JsonbEachText(this.Ptr);
-
-            return (MEOSFactory.WrapTextArray(_answered.Item1), MEOSFactory.WrapTextArray(_answered.Item2));
-        }
-
         public bool Exists(Text key)
             => Meos.JsonbExists(this.Ptr, key.Ptr);
 
