@@ -147,16 +147,16 @@ namespace MEOS.NET.Functions
         public static IntPtr RasterTileValueArray(IntPtr traj, IntPtr rqarr, int count)
             => SafeExecution<IntPtr>(() => Native.RasterTileValueArray(traj, rqarr, count));
 
-        public static IntPtr[] TrajectoryQuadbins(IntPtr traj, uint zoom)
+        public static ulong[] TrajectoryQuadbins(IntPtr traj, uint zoom)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.TrajectoryQuadbins(traj, zoom, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                ulong[] _out = new ulong[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                { _out[_i] = (ulong) Marshal.ReadInt64(_p, _i * 8); }
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }

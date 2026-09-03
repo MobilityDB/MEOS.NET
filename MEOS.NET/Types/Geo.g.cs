@@ -114,6 +114,25 @@ namespace MEOS.NET.Types
         public STBox? TstzspanToStbox(Span s)
             => MEOSFactory.WrapSTBox(Meos.GeoTstzspanToStbox(this.Ptr, s.Ptr));
 
+        public static uint[] ClusterDbscan(Geo[] geoms, double tolerance, int minpoints)
+        {
+            IntPtr[] _geomsValues = new IntPtr[geoms.Length];
+            for (int i = 0; i < geoms.Length; i++)
+            {
+                _geomsValues[i] = geoms[i].Ptr;
+            }
+
+            GCHandle _geoms = GCHandle.Alloc(_geomsValues, GCHandleType.Pinned);
+            try
+            {
+                return Meos.GeoClusterDbscan(_geoms.AddrOfPinnedObject(), (uint) geoms.Length, tolerance, minpoints);
+            }
+            finally
+            {
+                _geoms.Free();
+            }
+        }
+
         public static Geo?[] ClusterIntersecting(Geo[] geoms)
         {
             IntPtr[] _geomsValues = new IntPtr[geoms.Length];
