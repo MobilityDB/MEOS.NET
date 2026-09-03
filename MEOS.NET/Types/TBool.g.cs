@@ -72,6 +72,9 @@ namespace MEOS.NET.Types
             }
         }
 
+        public bool[] Values()
+            => Meos.TboolValues(this.Ptr);
+
         public SpanSet? WhenTrue()
             => MEOSFactory.WrapSpanSet(Meos.TboolWhenTrue(this.Ptr));
 

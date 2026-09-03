@@ -1736,16 +1736,16 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] GeoClusterDbscan(IntPtr geoms, uint ngeoms, double tolerance, int minpoints)
+        public static uint[] GeoClusterDbscan(IntPtr geoms, uint ngeoms, double tolerance, int minpoints)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.GeoClusterDbscan(geoms, ngeoms, tolerance, minpoints, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                uint[] _out = new uint[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                { _out[_i] = (uint) Marshal.ReadInt32(_p, _i * 4); }
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }

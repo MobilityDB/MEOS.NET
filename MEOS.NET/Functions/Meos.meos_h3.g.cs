@@ -135,16 +135,16 @@ namespace MEOS.NET.Functions
         public static bool Th3indexValueN(IntPtr temp, int n, IntPtr result)
             => SafeExecution<bool>(() => Native.Th3indexValueN(temp, n, result));
 
-        public static IntPtr[] Th3indexValues(IntPtr temp)
+        public static ulong[] Th3indexValues(IntPtr temp)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.Th3indexValues(temp, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                ulong[] _out = new ulong[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                { _out[_i] = (ulong) Marshal.ReadInt64(_p, _i * 8); }
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }

@@ -57,16 +57,16 @@ namespace MEOS.NET.Functions
         public static ulong QuadbinCellToParent(ulong cell, uint parent_resolution)
             => SafeExecution<ulong>(() => Native.QuadbinCellToParent(cell, parent_resolution));
 
-        public static IntPtr[] QuadbinCellToChildren(ulong cell, uint children_resolution)
+        public static ulong[] QuadbinCellToChildren(ulong cell, uint children_resolution)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.QuadbinCellToChildren(cell, children_resolution, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                ulong[] _out = new ulong[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                { _out[_i] = (ulong) Marshal.ReadInt64(_p, _i * 8); }
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }
@@ -75,16 +75,16 @@ namespace MEOS.NET.Functions
         public static ulong QuadbinCellSibling(ulong cell, string direction)
             => SafeExecution<ulong>(() => Native.QuadbinCellSibling(cell, direction));
 
-        public static IntPtr[] QuadbinKRing(ulong cell, int k)
+        public static ulong[] QuadbinKRing(ulong cell, int k)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.QuadbinKRing(cell, k, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                ulong[] _out = new ulong[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                { _out[_i] = (ulong) Marshal.ReadInt64(_p, _i * 8); }
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }
@@ -162,16 +162,16 @@ namespace MEOS.NET.Functions
         public static bool TquadbinValueN(IntPtr temp, int n, IntPtr result)
             => SafeExecution<bool>(() => Native.TquadbinValueN(temp, n, result));
 
-        public static IntPtr[] TquadbinValues(IntPtr temp)
+        public static ulong[] TquadbinValues(IntPtr temp)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.TquadbinValues(temp, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                ulong[] _out = new ulong[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                { _out[_i] = (ulong) Marshal.ReadInt64(_p, _i * 8); }
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }

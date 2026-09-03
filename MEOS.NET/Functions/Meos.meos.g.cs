@@ -2905,16 +2905,16 @@ namespace MEOS.NET.Functions
         public static bool TboolValueN(IntPtr temp, int n, IntPtr result)
             => SafeExecution<bool>(() => Native.TboolValueN(temp, n, result));
 
-        public static IntPtr[] TboolValues(IntPtr temp)
+        public static bool[] TboolValues(IntPtr temp)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.TboolValues(temp, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                bool[] _out = new bool[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                { _out[_i] = Marshal.ReadByte(_p, _i) != 0; }
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }

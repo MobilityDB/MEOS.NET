@@ -336,7 +336,9 @@ class Generator:
             elem = self.m.class_for_ctype(c[:-1] if c.endswith(" **") else c)
             if elem:
                 return (f"{elem}?[]", f"MEOSFactory.Wrap{elem}Array($)")
-        if wrapper_ret in ("long[]", "int[]", "double[]", "byte[]"):
+        # An array of scalars is handed on as it stands, whichever scalar it is
+        # — the wrapper has already read it at the element's own width.
+        if wrapper_ret.endswith("[]") and is_scalar(wrapper_ret[:-2]):
             return (wrapper_ret, "$")
         if c == "void *" and wrapper_ret == "IntPtr":
             return ("IntPtr", "$")

@@ -433,6 +433,20 @@ _MARSHAL_ELEM: dict[str, str] = {
     "short":  "short",
 }
 
+# How to read one element of a scalar array `Marshal.Copy` has no overload for.
+# `{0}` is the array's base pointer and `{1}` the byte offset of the element.
+# Reading such an array as an array of POINTERS walks it at eight bytes a step,
+# which runs off the end of a `bool` array and answers addresses that are the
+# values' own bytes.
+_SCALAR_ELEM_READER: dict[str, tuple[int, str]] = {
+    "bool":   (1, "Marshal.ReadByte({0}, {1}) != 0"),
+    "sbyte":  (1, "(sbyte) Marshal.ReadByte({0}, {1})"),
+    "ushort": (2, "(ushort) Marshal.ReadInt16({0}, {1})"),
+    "uint":   (4, "(uint) Marshal.ReadInt32({0}, {1})"),
+    "ulong":  (8, "(ulong) Marshal.ReadInt64({0}, {1})"),
+    "float":  (4, "BitConverter.Int32BitsToSingle(Marshal.ReadInt32({0}, {1}))"),
+}
+
 
 def _strip_const_stars(c_type: str) -> tuple[str, int]:
     s = c_type.replace("const ", "").strip()
@@ -462,6 +476,8 @@ def _csharp_array_element(c_type: str, canonical: str) -> tuple[str, str]:
         return (elem, "Marshal.Copy")
     if base == "uint8_t":
         return ("byte", "ByteBuffer")
+    if elem in _SCALAR_ELEM_READER:
+        return (elem, f"ScalarArray:{elem}")
     if stars == 1 and base in STRUCTS:
         # A single pointer to a catalog struct is an array of struct VALUES, not
         # of pointers: element i sits at the struct's own stride, and reading it
@@ -567,6 +583,12 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
             stride = ret_strategy.split(":", 1)[1]
             lines.append("                for (int _i = 0; _i < _n; _i++)")
             lines.append(f"                {{ _resultArr[_i] = IntPtr.Add(_resultPtr, _i * {stride}); }}")
+        elif ret_strategy.startswith("ScalarArray:"):
+            size, reader = _SCALAR_ELEM_READER[ret_strategy.split(":", 1)[1]]
+            offset = "_i" if size == 1 else f"_i * {size}"
+            lines.append("                for (int _i = 0; _i < _n; _i++)")
+            lines.append(f"                {{ _resultArr[_i] = "
+                         f"{reader.format('_resultPtr', offset)}; }}")
         else:
             lines.append("                for (int _i = 0; _i < _n; _i++)")
             lines.append("                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }")
@@ -577,6 +599,12 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
             stride = strategy.split(":", 1)[1]
             lines.append(f"                for (int _i = 0; _i < _n; _i++)")
             lines.append(f"                {{ _{local}_out[_i] = IntPtr.Add(_{local}_arr, _i * {stride}); }}")
+        elif strategy.startswith("ScalarArray:"):
+            size, reader = _SCALAR_ELEM_READER[strategy.split(":", 1)[1]]
+            offset = "_i" if size == 1 else f"_i * {size}"
+            lines.append(f"                for (int _i = 0; _i < _n; _i++)")
+            lines.append(f"                {{ _{local}_out[_i] = "
+                         f"{reader.format(f'_{local}_arr', offset)}; }}")
         elif elem == "IntPtr":
             lines.append(f"                for (int _i = 0; _i < _n; _i++)")
             lines.append(f"                {{ _{local}_out[_i] = Marshal.ReadIntPtr(_{local}_arr, _i * IntPtr.Size); }}")
@@ -623,6 +651,11 @@ def _emit_array_return_wrapper(f: dict, ext_params: str, ext_args: str) -> list[
             stride = strategy.split(":", 1)[1]
             out.append(f"{indent}for (int _i = 0; _i < _n; _i++)")
             out.append(f"{indent}{{ _out[_i] = IntPtr.Add(_p, _i * {stride}); }}")
+        elif strategy.startswith("ScalarArray:"):
+            size, reader = _SCALAR_ELEM_READER[strategy.split(":", 1)[1]]
+            offset = "_i" if size == 1 else f"_i * {size}"
+            out.append(f"{indent}for (int _i = 0; _i < _n; _i++)")
+            out.append(f"{indent}{{ _out[_i] = {reader.format('_p', offset)}; }}")
         else:
             out.append(f"{indent}for (int _i = 0; _i < _n; _i++)")
             out.append(f"{indent}{{ _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }}")

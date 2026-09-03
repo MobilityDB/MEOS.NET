@@ -462,16 +462,16 @@ namespace MEOS.NET.Functions
         public static IntPtr JsonbsetDeleteArray(IntPtr set, IntPtr keys, int count)
             => SafeExecution<IntPtr>(() => Native.JsonbsetDeleteArray(set, keys, count));
 
-        public static IntPtr[] JsonbsetExists(IntPtr set, IntPtr key)
+        public static bool[] JsonbsetExists(IntPtr set, IntPtr key)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbsetExists(set, key, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                bool[] _out = new bool[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                { _out[_i] = Marshal.ReadByte(_p, _i) != 0; }
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }
@@ -513,31 +513,31 @@ namespace MEOS.NET.Functions
         public static IntPtr JsonbsetInsert(IntPtr set, IntPtr path_elems, int path_len, IntPtr newjb, bool after)
             => SafeExecution<IntPtr>(() => Native.JsonbsetInsert(set, path_elems, path_len, newjb, after));
 
-        public static IntPtr[] JsonbsetPathExists(IntPtr set, IntPtr jp, IntPtr vars, bool silent, bool tz)
+        public static bool[] JsonbsetPathExists(IntPtr set, IntPtr jp, IntPtr vars, bool silent, bool tz)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbsetPathExists(set, jp, vars, silent, tz, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                bool[] _out = new bool[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                { _out[_i] = Marshal.ReadByte(_p, _i) != 0; }
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] JsonbsetPathMatch(IntPtr set, IntPtr jp, IntPtr vars, bool silent, bool tz)
+        public static bool[] JsonbsetPathMatch(IntPtr set, IntPtr jp, IntPtr vars, bool silent, bool tz)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbsetPathMatch(set, jp, vars, silent, tz, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                bool[] _out = new bool[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                { _out[_i] = Marshal.ReadByte(_p, _i) != 0; }
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }
