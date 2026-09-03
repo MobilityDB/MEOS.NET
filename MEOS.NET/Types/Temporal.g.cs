@@ -391,6 +391,22 @@ namespace MEOS.NET.Types
             }
         }
 
+        public (Temporal?[], DateTime[]) TimeSplit(Interval duration, DateTime torigin)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                var _answered = Meos.TemporalTimeSplit(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin));
+
+                return (MEOSFactory.WrapTemporalArray(_answered.Item1), MEOSConvert.ToDateTimeArray(_answered.Item2));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
         public long[] Timestamps()
             => Meos.TemporalTimestamps(this.Ptr);
 
