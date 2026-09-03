@@ -30,6 +30,24 @@ namespace MEOS.NET.Types
         public Npoint? StartValue()
             => MEOSFactory.WrapNpoint(Meos.NpointsetStartValue(this.Ptr));
 
+        public Npoint? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.NpointsetValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapNpoint(Marshal.ReadIntPtr(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Npoint?[] Values()
             => MEOSFactory.WrapNpointArray(Meos.NpointsetValues(this.Ptr));
 
