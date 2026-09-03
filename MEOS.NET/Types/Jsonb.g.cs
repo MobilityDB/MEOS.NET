@@ -294,5 +294,38 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static Jsonb? MakeTwoArg(Text[] keys, Text[] values)
+        {
+            if (keys.Length != values.Length)
+            {
+                throw new ArgumentException(
+                    "keys and values are read in step, so they hold the same number of elements.");
+            }
+
+            IntPtr[] _keysValues = new IntPtr[keys.Length];
+            for (int i = 0; i < keys.Length; i++)
+            {
+                _keysValues[i] = keys[i].Ptr;
+            }
+
+            GCHandle _keys = GCHandle.Alloc(_keysValues, GCHandleType.Pinned);
+            IntPtr[] _valuesValues = new IntPtr[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                _valuesValues[i] = values[i].Ptr;
+            }
+
+            GCHandle _values = GCHandle.Alloc(_valuesValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapJsonb(Meos.JsonbMakeTwoArg(_keys.AddrOfPinnedObject(), _values.AddrOfPinnedObject(), keys.Length));
+            }
+            finally
+            {
+                _keys.Free();
+                _values.Free();
+            }
+        }
+
     }
 }

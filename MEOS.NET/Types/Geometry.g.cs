@@ -14,6 +14,9 @@ namespace MEOS.NET.Types
     {
         internal Geometry(IntPtr ptr) : base(ptr) { }
 
+        public double Area()
+            => Meos.GeomArea(this.Ptr);
+
         public double? Azimuth(Geo gs2)
         {
             IntPtr _result = Marshal.AllocHGlobal(8);
