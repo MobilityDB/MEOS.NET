@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 using MEOS.NET.Enums;
 using MEOS.NET.Functions;
+using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
@@ -36,6 +37,12 @@ namespace MEOS.NET.Types
 
         public uint Npoints()
             => Meos.PcpatchNpoints(this.Ptr);
+
+        public Pcpoint? PointN(int n)
+            => MEOSFactory.WrapPcpoint(Meos.PcpatchPointN(this.Ptr, n));
+
+        public Pcpoint?[] Points()
+            => MEOSFactory.WrapPcpointArray(Meos.PcpatchPoints(this.Ptr));
 
         public Geo? ToGeom()
             => MEOSFactory.WrapGeo(Meos.PcpatchToGeom(this.Ptr));

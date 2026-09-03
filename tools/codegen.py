@@ -47,6 +47,7 @@ SCALAR_MAP: dict[str, str] = {
     # MEOS / Postgres / vendored typedefs that libclang doesn't always reduce.
     "DateADT": "int",
     "TimeADT": "long",
+    "TimeOffset": "long",
     "TimestampTz": "long",
     "Timestamp": "long",
     "Datum": "long",
@@ -78,6 +79,12 @@ SCALAR_MAP: dict[str, str] = {
 # added enum from arriving as an opaque pointer the way a hand-list leaves it.
 ENUM_TYPES: set[str] = set()
 
+# The catalog's text I/O per C type, filled in by ``configure``: which function
+# reads a value and which writes it, and what the arguments beside the value
+# itself default to.
+TYPE_ENCODINGS: dict[str, dict] = {}
+
+
 # The catalog's structs by name, filled in by ``configure``.  An array of struct
 # values is walked at the struct's own stride, which the field layout the catalog
 # records is what gives.
@@ -90,12 +97,33 @@ def configure(idl: dict) -> None:
     ENUM_TYPES.update(e["name"] for e in idl.get("enums", []) if e.get("name"))
     STRUCTS.clear()
     STRUCTS.update({s["name"]: s for s in idl.get("structs", []) if s.get("fields")})
+    TYPE_ENCODINGS.clear()
+    TYPE_ENCODINGS.update(idl.get("typeEncodings", {}))
     BY_VALUE_STRUCTS.clear()
+    classed = {c["cType"] for c in
+               idl.get("objectModel", {}).get("classes", {}).values()
+               if c.get("cType")}
     for f in idl.get("functions", []):
+        if f.get("vendored"):
+            continue
         for spot in [f["returnType"]] + list(f.get("params", [])):
             canonical = spot["canonical"].replace("const ", "").strip()
             if "*" not in canonical and canonical in STRUCTS:
                 BY_VALUE_STRUCTS.add(canonical)
+                continue
+            # A struct MEOS hands over through a pointer is a VALUE too when
+            # its fields are all scalars and no class stands for it: nothing
+            # about it is opaque, so the binding carries the value rather than
+            # the address. A struct a class stands for is that class's, and
+            # giving it a second C# form would be two spellings of one type.
+            if (canonical.endswith("*") and canonical.count("*") == 1
+                    and canonical[:-1].strip() in STRUCTS):
+                base = canonical[:-1].strip()
+                if base in classed:
+                    continue
+                fields = STRUCTS[base]["fields"]
+                if all(fl["cType"] in _SCALAR_BYTES for fl in fields):
+                    BY_VALUE_STRUCTS.add(base)
 
 
 # Size and alignment in bytes of the scalar C types a struct field can have, on
@@ -107,13 +135,15 @@ _SCALAR_BYTES: dict[str, int] = {
     "float": 4, "Oid": 4, "DateADT": 4,
     "long": 8, "int64": 8, "int64_t": 8, "uint64": 8, "uint64_t": 8,
     "double": 8, "float8": 8, "Datum": 8, "Timestamp": 8, "TimestampTz": 8,
-    "TimeADT": 8, "size_t": 8, "uintptr_t": 8,
+    "TimeADT": 8, "TimeOffset": 8, "size_t": 8, "uintptr_t": 8,
 }
 
 
-# The catalog structs a function returns or takes BY VALUE, filled in by
-# ``configure``.  Those are the only ones the binding gives a C# type: every
-# other MEOS struct crosses the boundary as a pointer and stays opaque.
+# The catalog structs the binding gives a C# VALUE type, filled in by
+# ``configure``: the ones a function hands over by value, and the ones it hands
+# over through a pointer while stating their whole layout in scalars and giving
+# them no class.  Every other MEOS struct crosses the boundary as a pointer and
+# stays opaque.
 BY_VALUE_STRUCTS: set[str] = set()
 
 
@@ -130,16 +160,20 @@ def csharp_field_type(c_type: str) -> str:
 
 
 def gen_structs() -> str:
-    """The C# form of each struct a function hands back by value.
+    """The C# form of each struct the binding carries as a value.
 
     A struct return is not a pointer: the ABI passes it in registers or through a
     hidden pointer the caller supplies, so declaring it as an IntPtr reads an
-    address where there is none."""
+    address where there is none.  A struct MEOS reads through a pointer is a
+    value too when its layout is all scalars, and it is written and read as the
+    text MEOS publishes for it wherever the catalog names that pair."""
     lines = [
         "#nullable enable",
         "",
         "using System.CodeDom.Compiler;",
         "using System.Runtime.InteropServices;",
+        "",
+        f"using {NAMESPACE};",
         "",
         f"namespace {STRUCT_NAMESPACE}",
         "{",
@@ -156,9 +190,76 @@ def gen_structs() -> str:
         for field in struct["fields"]:
             lines.append(f"        public {csharp_field_type(field['cType'])} "
                          f"{csharp_param_name(field['name'])};")
+        lines += _struct_text_io(name, struct)
         lines += ["    }", ""]
     lines += ["}", ""]
     return "\n".join(lines)
+
+
+def _io_args(params: list, primary: str, aux: list | None) -> str | None:
+    """The call arguments of a text reader or writer, or None when one is
+    unanswerable.
+
+    The first argument is the value itself — the text to read, or the address of
+    the value to write — and the catalog names the rest with the default each
+    takes, which is where a `maxdd` gets its digits."""
+    defaults = {a["name"]: a.get("default") for a in (aux or [])}
+    args = [primary]
+    for _cs_type, pname in params[1:]:
+        if pname == "typmod":
+            args.append("-1")
+            continue
+        if pname in defaults and defaults[pname] is not None:
+            args.append(str(defaults[pname]))
+            continue
+        return None
+    return ", ".join(args)
+
+
+def _struct_text_io(name: str, struct: dict) -> list[str]:
+    """`In` and `ToString` for a value struct MEOS publishes text I/O for.
+
+    The catalog names the pair, so the value is read and written through MEOS's
+    own parser and printer rather than a format the binding would have to keep
+    in step with. The reader hands back a pointer MEOS owns, which is read as a
+    value the same way every other struct return is."""
+    io = struct.get("serialization") or {}
+    reader, writer = io.get("in"), io.get("out")
+    if not reader or not writer:
+        return []
+    read_fn, write_fn = SIGNATURES.get(reader), SIGNATURES.get(writer)
+    if not read_fn or not write_fn:
+        return []
+    encoding = TYPE_ENCODINGS.get(name, {})
+    read_args = _io_args(read_fn[1], "str", encoding.get("in_aux"))
+    write_args = _io_args(write_fn[1], "ptr", encoding.get("out_aux"))
+    if read_args is None or write_args is None:
+        return []
+    return [
+        "",
+        f"        /// <summary>The <c>{name}</c> MEOS reads from this text.</summary>",
+        f"        public static {name}? In(string str)",
+        f"        {{",
+        f"            IntPtr ptr = {CLASS}.{public_name(reader)}({read_args});",
+        f"            return ptr == IntPtr.Zero"
+        f" ? null : Marshal.PtrToStructure<{name}>(ptr);",
+        f"        }}",
+        "",
+        "        /// <summary>The text MEOS writes this value as.</summary>",
+        "        public override string ToString()",
+        f"        {{",
+        f"            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf<{name}>());",
+        "            try",
+        f"            {{",
+        "                Marshal.StructureToPtr(this, ptr, false);",
+        f"                return {CLASS}.{public_name(writer)}({write_args});",
+        f"            }}",
+        "            finally",
+        f"            {{",
+        "                Marshal.FreeHGlobal(ptr);",
+        f"            }}",
+        f"        }}",
+    ]
 
 
 def _type_layout(c_type: str) -> tuple[int, int]:
@@ -692,18 +793,20 @@ def main(idl_path: str, dll_path: str = DLL_PATH) -> None:
     if clashing:
         raise SystemExit(f"codegen: C names sharing one C# name: {clashing}")
 
+    (out_dir / "Meos.Native.g.cs").write_text(gen_external_functions(funcs))
+    grouped = by_header(funcs)
+    for header, group in sorted(grouped.items()):
+        stem = header.removesuffix(".h")
+        (out_dir / f"Meos.{stem}.g.cs").write_text(gen_exposed_functions(group, header))
+
+    # The structs come last: a value struct reads and writes itself through the
+    # wrappers above, so the signature registry has to hold them first.
     struct_dir = repo_root / "MEOS.NET" / "Structures"
     if struct_dir.exists():
         for stale in struct_dir.glob("*.g.cs"):
             stale.unlink()
     struct_dir.mkdir(parents=True, exist_ok=True)
     (struct_dir / "MeosStructs.g.cs").write_text(gen_structs())
-
-    (out_dir / "Meos.Native.g.cs").write_text(gen_external_functions(funcs))
-    grouped = by_header(funcs)
-    for header, group in sorted(grouped.items()):
-        stem = header.removesuffix(".h")
-        (out_dir / f"Meos.{stem}.g.cs").write_text(gen_exposed_functions(group, header))
     vendored = len(idl["functions"]) - len(funcs)
     print(f"Wrote {len(funcs)} functions across {len(grouped)} headers "
           f"to MEOS.NET/Functions/, {len(BY_VALUE_STRUCTS)} by-value structs, "

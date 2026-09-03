@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 using MEOS.NET.Enums;
 using MEOS.NET.Functions;
+using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
@@ -12,6 +13,20 @@ namespace MEOS.NET.Types
     public class TGeo : TSpatial
     {
         internal TGeo(IntPtr ptr) : base(ptr) { }
+
+        public Temporal? Affine(AFFINE a)
+        {
+            IntPtr _a = Marshal.AllocHGlobal(Marshal.SizeOf<AFFINE>());
+            try
+            {
+                Marshal.StructureToPtr(a, _a, false);
+                return MEOSFactory.WrapTemporal(Meos.TgeoAffine(this.Ptr, _a));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_a);
+            }
+        }
 
         public Temporal? AtGeom(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.TgeoAtGeom(this.Ptr, gs.Ptr));
@@ -45,6 +60,20 @@ namespace MEOS.NET.Types
 
         public STBox?[] SpaceBoxes(double xsize, double ysize, double zsize, Geo sorigin, bool bitmatrix, bool border_inc)
             => MEOSFactory.WrapSTBoxArray(Meos.TgeoSpaceBoxes(this.Ptr, xsize, ysize, zsize, sorigin.Ptr, bitmatrix, border_inc));
+
+        public STBox?[] SpaceTimeBoxes(double xsize, double ysize, double zsize, Interval duration, Geo sorigin, DateTime torigin, bool bitmatrix, bool border_inc)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSTBoxArray(Meos.TgeoSpaceTimeBoxes(this.Ptr, xsize, ysize, zsize, _duration, sorigin.Ptr, MEOSConvert.ToTimestampTz(torigin), bitmatrix, border_inc));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
 
         public STBox?[] SplitEachNStboxes(int elem_count)
             => MEOSFactory.WrapSTBoxArray(Meos.TgeoSplitEachNStboxes(this.Ptr, elem_count));

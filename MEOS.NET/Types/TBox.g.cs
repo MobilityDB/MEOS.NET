@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 using MEOS.NET.Enums;
 using MEOS.NET.Functions;
+using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
@@ -25,6 +26,20 @@ namespace MEOS.NET.Types
 
         public bool Eq(TBox box2)
             => Meos.TboxEq(this.Ptr, box2.Ptr);
+
+        public TBox? ExpandTime(Interval interv)
+        {
+            IntPtr _interv = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(interv, _interv, false);
+                return MEOSFactory.WrapTBox(Meos.TboxExpandTime(this.Ptr, _interv));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_interv);
+            }
+        }
 
         public bool Ge(TBox box2)
             => Meos.TboxGe(this.Ptr, box2.Ptr);
@@ -58,6 +73,23 @@ namespace MEOS.NET.Types
 
         public TBox? Round(int maxdd)
             => MEOSFactory.WrapTBox(Meos.TboxRound(this.Ptr, maxdd));
+
+        public TBox? ShiftScaleTime(Interval shift, Interval duration)
+        {
+            IntPtr _shift = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(shift, _shift, false);
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapTBox(Meos.TboxShiftScaleTime(this.Ptr, _shift, _duration));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_shift);
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
 
         public DateTime? Tmax()
         {

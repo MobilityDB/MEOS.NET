@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 using MEOS.NET.Enums;
 using MEOS.NET.Functions;
+using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
@@ -77,6 +78,20 @@ namespace MEOS.NET.Types
         public Temporal? Tan()
             => MEOSFactory.WrapTemporal(Meos.TfloatTan(this.Ptr));
 
+        public TBox?[] TimeBoxes(Interval duration, DateTime torigin)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapTBoxArray(Meos.TfloatTimeBoxes(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin)));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
         public Temporal? ToTbigint()
             => MEOSFactory.WrapTemporal(Meos.TfloatToTbigint(this.Ptr));
 
@@ -122,6 +137,20 @@ namespace MEOS.NET.Types
             finally
             {
                 Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public TBox?[] ValueTimeBoxes(double vsize, Interval duration, double vorigin, DateTime torigin)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapTBoxArray(Meos.TfloatValueTimeBoxes(this.Ptr, vsize, _duration, vorigin, MEOSConvert.ToTimestampTz(torigin)));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
             }
         }
 

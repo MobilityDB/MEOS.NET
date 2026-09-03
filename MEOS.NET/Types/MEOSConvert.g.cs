@@ -1,6 +1,7 @@
 #nullable enable
 
 using System.Globalization;
+using System.Runtime.InteropServices;
 
 using MEOS.NET.Functions;
 
@@ -31,5 +32,23 @@ namespace MEOS.NET.Types
         internal static int ToDateADT(DateOnly day)
             => Meos.DateIn(
                 day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+
+        /// <summary>The struct MEOS answers through a pointer, as a value. The
+        /// memory behind the pointer stays MEOS's, as it does for every other
+        /// value the layer reads back.</summary>
+        internal static T? ToStruct<T>(IntPtr ptr) where T : struct
+            => ptr == IntPtr.Zero ? null : Marshal.PtrToStructure<T>(ptr);
+
+        /// <summary>Each struct of an array MEOS answers, as a value.</summary>
+        internal static T[] ToStructArray<T>(IntPtr[] ptrs) where T : struct
+        {
+            T[] values = new T[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                values[i] = Marshal.PtrToStructure<T>(ptrs[i]);
+            }
+
+            return values;
+        }
     }
 }

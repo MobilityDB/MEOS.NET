@@ -262,7 +262,8 @@ class Method:
 
     def __init__(self, name: str, ret: str, params: list[tuple[str, str]],
                  body: str, static: bool, arrays: list[tuple[str, str]] | None = None,
-                 out_param: tuple[str, int, str] | None = None):
+                 out_param: tuple[str, int, str] | None = None,
+                 structs: list[tuple[str, str]] | None = None):
         self.name = name
         self.ret = ret
         self.params = params
@@ -272,6 +273,8 @@ class Method:
         self.arrays = arrays or []
         # (parameter name, bytes, reader expression) for a value out-parameter.
         self.out_param = out_param
+        # (parameter name, struct type) for each struct argument passed by value.
+        self.structs = structs or []
 
 
 class Generator:
@@ -312,7 +315,23 @@ class Generator:
                 return (f"{elem}?[]", f"MEOSFactory.Wrap{elem}Array($)")
         if wrapper_ret in ("long[]", "int[]", "double[]", "byte[]"):
             return (wrapper_ret, "$")
+        struct = self.value_struct(c)
+        if struct and wrapper_ret == "IntPtr":
+            return (f"{struct}?", f"MEOSConvert.ToStruct<{struct}>($)")
+        if struct and wrapper_ret == "IntPtr[]":
+            return (f"{struct}[]", f"MEOSConvert.ToStructArray<{struct}>($)")
         return None
+
+    def value_struct(self, c_type: str) -> str | None:
+        """The struct a single pointer to a scalar-only struct carries.
+
+        MEOS hands such a value over through a pointer, but nothing about it is
+        opaque: the catalog states its whole layout and no class stands for it,
+        so the layer carries the value rather than the address."""
+        base = clean(c_type)
+        base = base[:-1].strip() if base.endswith("*") else base
+        base = base[:-1].strip() if base.endswith("*") else base
+        return base if base in codegen.BY_VALUE_STRUCTS else None
 
     def map_param(self, c_type: str, cs_type: str, name: str) -> tuple[str, str] | None:
         """``(csharp_type, argument expression)`` for one parameter, or None."""
@@ -330,6 +349,9 @@ class Generator:
         cls = self.m.class_for_ctype(c)
         if cls and cs_type == "IntPtr":
             return (cls, f"{name}.Ptr")
+        struct = self.value_struct(c)
+        if struct and cs_type == "IntPtr":
+            return (struct, f"_{name}")
         return None
 
     # -- emission ---------------------------------------------------------
@@ -421,6 +443,7 @@ class Generator:
 
         sig: list[tuple[str, str]] = []
         arrays: list[tuple[str, str]] = []
+        structs: list[tuple[str, str]] = []
         for cs_type, pname in params:
             if result_out is not None and pname == result_out[0]:
                 args.append(f"_{pname}")
@@ -447,14 +470,21 @@ class Generator:
                 return None
             sig.append((mapped[0], pname))
             args.append(mapped[1])
+            if mapped[1] == f"_{pname}" and self.value_struct(c_by_name.get(pname, "")):
+                structs.append((pname, mapped[0]))
 
         call = f"Meos.{codegen.public_name(fname)}({', '.join(args)})"
         out = None
         if result_out is not None:
             name, (_, size, reader) = result_out
             out = (name, size, reader.format(f"_{name}"))
+        if structs and (arrays or out):
+            self.deferred[cls].append(
+                f"{oo}: a struct argument beside a counted array or an "
+                "out-parameter needs one body doing both")
+            return None
         return Method(pascal(oo), ret_type, sig, ret_expr.replace("$", call), static,
-                      arrays, out)
+                      arrays, out, structs)
 
     def inherited_names(self, cls: str) -> set[tuple]:
         names: set[tuple] = set()
@@ -486,6 +516,7 @@ class Generator:
             "",
             "using MEOS.NET.Enums;",
             "using MEOS.NET.Functions;",
+            "using MEOS.NET.Structures;",
             "",
             f"namespace {NAMESPACE}",
             "{",
@@ -506,6 +537,8 @@ class Generator:
                 lines.extend(self.out_param_body(m))
             elif m.arrays:
                 lines.extend(self.array_body(m))
+            elif m.structs:
+                lines.extend(self.struct_body(m))
             else:
                 lines.append(f"            => {m.body};")
             lines.append("")
@@ -537,6 +570,32 @@ class Generator:
             "            }",
             "        }",
         ]
+
+    def struct_body(self, method: Method) -> list[str]:
+        """The body of a method taking a struct MEOS reads through a pointer.
+
+        The caller hands over a value, so the call gets the address of a copy
+        that lives exactly as long as it does. MEOS reads what it needs before
+        returning — the values it keeps it copies — so nothing outlives the
+        frame."""
+        lines = ["        {"]
+        for name, struct in method.structs:
+            lines.append(
+                f"            IntPtr _{name} = "
+                f"Marshal.AllocHGlobal(Marshal.SizeOf<{struct}>());")
+        lines.append("            try")
+        lines.append("            {")
+        for name, _ in method.structs:
+            lines.append(
+                f"                Marshal.StructureToPtr({ident(name)}, _{name}, false);")
+        lines.append(f"                return {method.body};")
+        lines.append("            }")
+        lines.append("            finally")
+        lines.append("            {")
+        for name, _ in method.structs:
+            lines.append(f"                Marshal.FreeHGlobal(_{name});")
+        lines += ["            }", "        }"]
+        return lines
 
     def array_body(self, method: Method) -> list[str]:
         """The body of a method taking a counted array.
@@ -637,6 +696,7 @@ namespace {NAMESPACE}
         return f'''#nullable enable
 
 using System.Globalization;
+using System.Runtime.InteropServices;
 
 using MEOS.NET.Functions;
 
@@ -667,6 +727,24 @@ namespace {NAMESPACE}
         internal static int ToDateADT(DateOnly day)
             => Meos.DateIn(
                 day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+
+        /// <summary>The struct MEOS answers through a pointer, as a value. The
+        /// memory behind the pointer stays MEOS's, as it does for every other
+        /// value the layer reads back.</summary>
+        internal static T? ToStruct<T>(IntPtr ptr) where T : struct
+            => ptr == IntPtr.Zero ? null : Marshal.PtrToStructure<T>(ptr);
+
+        /// <summary>Each struct of an array MEOS answers, as a value.</summary>
+        internal static T[] ToStructArray<T>(IntPtr[] ptrs) where T : struct
+        {{
+            T[] values = new T[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {{
+                values[i] = Marshal.PtrToStructure<T>(ptrs[i]);
+            }}
+
+            return values;
+        }}
     }}
 }}
 '''

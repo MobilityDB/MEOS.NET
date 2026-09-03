@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 using MEOS.NET.Enums;
 using MEOS.NET.Functions;
+using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
@@ -31,6 +32,20 @@ namespace MEOS.NET.Types
 
         public STBox? ExpandSpace(double d)
             => MEOSFactory.WrapSTBox(Meos.StboxExpandSpace(this.Ptr, d));
+
+        public STBox? ExpandTime(Interval interv)
+        {
+            IntPtr _interv = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(interv, _interv, false);
+                return MEOSFactory.WrapSTBox(Meos.StboxExpandTime(this.Ptr, _interv));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_interv);
+            }
+        }
 
         public bool Ge(STBox box2)
             => Meos.StboxGe(this.Ptr, box2.Ptr);
@@ -86,11 +101,56 @@ namespace MEOS.NET.Types
         public STBox? SetSRID(int srid)
             => MEOSFactory.WrapSTBox(Meos.StboxSetSrid(this.Ptr, srid));
 
+        public STBox? ShiftScaleTime(Interval shift, Interval duration)
+        {
+            IntPtr _shift = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(shift, _shift, false);
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSTBox(Meos.StboxShiftScaleTime(this.Ptr, _shift, _duration));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_shift);
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
         public STBox?[] SpaceTiles(double xsize, double ysize, double zsize, Geo sorigin, bool border_inc)
             => MEOSFactory.WrapSTBoxArray(Meos.StboxSpaceTiles(this.Ptr, xsize, ysize, zsize, sorigin.Ptr, border_inc));
 
+        public STBox?[] SpaceTimeTiles(double xsize, double ysize, double zsize, Interval duration, Geo sorigin, DateTime torigin, bool border_inc)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSTBoxArray(Meos.StboxSpaceTimeTiles(this.Ptr, xsize, ysize, zsize, _duration, sorigin.Ptr, MEOSConvert.ToTimestampTz(torigin), border_inc));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
         public double SpatialDistance(STBox box2)
             => Meos.StboxSpatialDistance(this.Ptr, box2.Ptr);
+
+        public STBox?[] TimeTiles(Interval duration, DateTime torigin, bool border_inc)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSTBoxArray(Meos.StboxTimeTiles(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), border_inc));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
 
         public DateTime? Tmax()
         {
@@ -163,6 +223,9 @@ namespace MEOS.NET.Types
                 Marshal.FreeHGlobal(_result);
             }
         }
+
+        public BOX3D? ToBox3d()
+            => MEOSConvert.ToStruct<BOX3D>(Meos.StboxToBox3d(this.Ptr));
 
         public Geo? ToGeo()
             => MEOSFactory.WrapGeo(Meos.StboxToGeo(this.Ptr));
@@ -292,6 +355,34 @@ namespace MEOS.NET.Types
 
         public static STBox? GetSpaceTile(Geo point, double xsize, double ysize, double zsize, Geo sorigin)
             => MEOSFactory.WrapSTBox(Meos.StboxGetSpaceTile(point.Ptr, xsize, ysize, zsize, sorigin.Ptr));
+
+        public static STBox? GetSpaceTimeTile(Geo point, DateTime t, double xsize, double ysize, double zsize, Interval duration, Geo sorigin, DateTime torigin)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSTBox(Meos.StboxGetSpaceTimeTile(point.Ptr, MEOSConvert.ToTimestampTz(t), xsize, ysize, zsize, _duration, sorigin.Ptr, MEOSConvert.ToTimestampTz(torigin)));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public static STBox? GetTimeTile(DateTime t, Interval duration, DateTime torigin)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSTBox(Meos.StboxGetTimeTile(MEOSConvert.ToTimestampTz(t), _duration, MEOSConvert.ToTimestampTz(torigin)));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
 
         public static STBox? In(string str)
             => MEOSFactory.WrapSTBox(Meos.StboxIn(str));

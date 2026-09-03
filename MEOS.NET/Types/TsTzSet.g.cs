@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 using MEOS.NET.Enums;
 using MEOS.NET.Functions;
+using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
@@ -23,6 +24,23 @@ namespace MEOS.NET.Types
         public string Out()
             => Meos.TstzsetOut(this.Ptr);
 
+        public Set? ShiftScale(Interval shift, Interval duration)
+        {
+            IntPtr _shift = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(shift, _shift, false);
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSet(Meos.TstzsetShiftScale(this.Ptr, _shift, _duration));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_shift);
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
         public DateTime StartValue()
             => MEOSConvert.ToDateTime(Meos.TstzsetStartValue(this.Ptr));
 
@@ -31,6 +49,20 @@ namespace MEOS.NET.Types
 
         public STBox? ToStbox()
             => MEOSFactory.WrapSTBox(Meos.TstzsetToStbox(this.Ptr));
+
+        public Set? Tprecision(Interval duration, DateTime torigin)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSet(Meos.TstzsetTprecision(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin)));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
 
         public DateTime? ValueN(int n)
         {
