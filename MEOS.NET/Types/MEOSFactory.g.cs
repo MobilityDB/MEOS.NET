@@ -329,6 +329,30 @@ namespace MEOS.NET.Types
             return wrapped;
         }
 
+        /// <summary>The value at <paramref name="ptr"/> as the RTreeNNCursor
+        /// class the model gives its runtime type.</summary>
+        public static RTreeNNCursor? WrapRTreeNNCursor(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new RTreeNNCursor(ptr);
+        }
+
+        /// <summary>Every element of a C array of RTreeNNCursor pointers, wrapped.</summary>
+        public static RTreeNNCursor?[] WrapRTreeNNCursorArray(IntPtr[] ptrs)
+        {
+            RTreeNNCursor?[] wrapped = new RTreeNNCursor?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapRTreeNNCursor(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
         /// <summary>The value at <paramref name="ptr"/> as the Raquet
         /// class the model gives its runtime type.</summary>
         public static Raquet? WrapRaquet(IntPtr ptr)
@@ -348,6 +372,30 @@ namespace MEOS.NET.Types
             for (int i = 0; i < ptrs.Length; i++)
             {
                 wrapped[i] = WrapRaquet(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the SPNNCursor
+        /// class the model gives its runtime type.</summary>
+        public static SPNNCursor? WrapSPNNCursor(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new SPNNCursor(ptr);
+        }
+
+        /// <summary>Every element of a C array of SPNNCursor pointers, wrapped.</summary>
+        public static SPNNCursor?[] WrapSPNNCursorArray(IntPtr[] ptrs)
+        {
+            SPNNCursor?[] wrapped = new SPNNCursor?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapSPNNCursor(ptrs[i]);
             }
 
             return wrapped;

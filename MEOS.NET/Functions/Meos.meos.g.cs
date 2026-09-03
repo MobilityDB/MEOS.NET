@@ -3136,8 +3136,19 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr TbigintValues(IntPtr temp, IntPtr count)
-            => SafeExecution<IntPtr>(() => Native.TbigintValues(temp, count));
+        public static long[] TbigintValues(IntPtr temp)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TbigintValues(temp, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                long[] _out = new long[_n];
+                Marshal.Copy(_p, _out, 0, _n);
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
 
         public static double TnumberAvgValue(IntPtr temp)
             => SafeExecution<double>(() => Native.TnumberAvgValue(temp));

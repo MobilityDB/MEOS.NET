@@ -93,6 +93,9 @@ namespace MEOS.NET.Types
             }
         }
 
+        public long[] Values()
+            => Meos.TbigintValues(this.Ptr);
+
         public static Temporal? FromBaseTemp(long i, Temporal temp)
             => MEOSFactory.WrapTemporal(Meos.TbigintFromBaseTemp(i, temp.Ptr));
 
