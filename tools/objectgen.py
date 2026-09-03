@@ -297,6 +297,12 @@ class Method:
         self.length_out = length_out
         self.byte_buffer = byte_buffer
 
+    def needs_a_body(self) -> bool:
+        """Whether the call needs anything allocated, pinned or read around it."""
+        return bool(self.structs or self.arrays or self.scalar_arrays
+                    or self.out_param or self.length_out
+                    or (self.ret.startswith("(") and self.ret.endswith(")")))
+
 
 class Generator:
     def __init__(self, model: Model):
@@ -328,6 +334,8 @@ class Generator:
         cls = self.m.class_for_ctype(c)
         if cls and wrapper_ret == "IntPtr":
             return (f"{cls}?", f"MEOSFactory.Wrap{cls}($)")
+        if wrapper_ret.startswith("(") and wrapper_ret.endswith(")"):
+            return self.map_tuple_return(f, wrapper_ret)
         if wrapper_ret == "IntPtr[]":
             # An array of MEOS values reaches the wrapper as an array of pointers,
             # whether MEOS returns pointers (`T **`) or the values themselves
@@ -361,6 +369,52 @@ class Generator:
         if cls is None:
             return None
         return (cls, 8, f"MEOSFactory.Wrap{cls}(Marshal.ReadIntPtr({{0}}))")
+
+    def map_tuple_return(self, f: dict, wrapper_ret: str) -> tuple[str, str] | None:
+        """The C# type and per-item readers for a call answering SEVERAL arrays.
+
+        MEOS answers the primary array through the return and each parallel one
+        through a pointer it fills, and the wrapper already hands them over as
+        one tuple. Each item is then read the way a return of its own type is:
+        an array of MEOS values wraps element by element, an array of instants
+        reads as instants, and an array of plain scalars is handed on."""
+        shape = f.get("shape") or {}
+        element = ((shape.get("arrayReturn") or {}).get("element") or {}).get("c")
+        params = {p["name"]: p["cType"] for p in f.get("params", [])}
+        # `TYPE **bins` is an out-ARRAY of `TYPE`, so two stars come off: one
+        # for the handle MEOS writes through, one for the array itself.
+        c_types = [element] + [
+            clean(params.get(a["param"], "")).rstrip("* ").strip()
+            for a in shape.get("outputArrays") or []]
+        pieces = [p.strip() for p in wrapper_ret[1:-1].split(",")]
+        if len(pieces) != len(c_types) or not all(c_types):
+            return None
+        types, readers = [], []
+        for i, (piece, c_type) in enumerate(zip(pieces, c_types)):
+            mapped = self.map_array_item(piece, clean(c_type), f"$.Item{i + 1}")
+            if mapped is None:
+                return None
+            types.append(mapped[0])
+            readers.append(mapped[1])
+        # The body evaluates the call once and reads each item off it, so the
+        # template carries the two halves apart: the call, then the reads.
+        reads = ", ".join(r.replace("$", "_answered") for r in readers)
+        return (f"({', '.join(types)})", f"$|>({reads})")
+
+    def map_array_item(self, piece: str, c_type: str,
+                       item: str) -> tuple[str, str] | None:
+        """One item of an answered tuple: its C# type and how it is read."""
+        if piece == "IntPtr[]":
+            cls = (self.m.class_for_ctype(c_type)
+                   or self.m.class_for_ctype(f"{c_type} *"))
+            return (f"{cls}?[]", f"MEOSFactory.Wrap{cls}Array({item})") if cls else None
+        if c_type in ("TimestampTz", "Timestamp") and piece == "long[]":
+            return ("DateTime[]", f"MEOSConvert.ToDateTimeArray({item})")
+        if c_type == "DateADT" and piece == "int[]":
+            return ("DateOnly[]", f"MEOSConvert.ToDateOnlyArray({item})")
+        if piece.endswith("[]") and is_scalar(piece[:-2]):
+            return (piece, item)
+        return None
 
     def value_struct(self, c_type: str) -> str | None:
         """The struct a single pointer to a scalar-only struct carries.
@@ -540,16 +594,6 @@ class Generator:
         if result_out is not None:
             name, (_, size, reader) = result_out
             out = (name, size, reader.format(scratch(name)))
-        if structs and (arrays or out or scalar_arrays or length_out):
-            self.deferred[cls].append(
-                f"{oo}: a struct argument beside a counted array or an "
-                "out-parameter needs one body doing both")
-            return None
-        if length_out and (arrays or out):
-            self.deferred[cls].append(
-                f"{oo}: a length out-parameter beside a counted array or a "
-                "value out-parameter needs one body doing both")
-            return None
         return Method(pascal(oo), ret_type, sig, ret_expr.replace("$", call), static,
                       arrays, out, structs, scalar_arrays, length_out,
                       ret_type == "byte[]?")
@@ -601,144 +645,107 @@ class Generator:
             new = "new " if (m.name, tuple(t for t, _ in m.params)) in inherited else ""
             kind = "static " if m.static else ""
             lines.append(f"        public {new}{kind}{m.ret} {m.name}({args})")
-            if m.out_param:
-                lines.extend(self.out_param_body(m))
-            elif m.length_out:
-                lines.extend(self.buffer_body(m))
-            elif m.arrays or m.scalar_arrays:
-                lines.extend(self.array_body(m))
-            elif m.structs:
-                lines.extend(self.struct_body(m))
+            if m.needs_a_body():
+                lines.extend(self.call_body(m))
             else:
                 lines.append(f"            => {m.body};")
             lines.append("")
         lines += ["    }", "}", ""]
         return "\n".join(lines)
 
-    def out_param_body(self, method: Method) -> list[str]:
-        """The body of a method whose value MEOS writes through an out-parameter.
+    def call_body(self, method: Method) -> list[str]:
+        """The body of a method whose call needs something around it.
 
-        MEOS answers `false` when the value does not exist and leaves the
-        out-parameter untouched, so the method answers null there and the value
-        otherwise."""
-        name, size, reader = method.out_param
-        return [
-            "        {",
-            f"            IntPtr {scratch(name)} = Marshal.AllocHGlobal({size});",
-            "            try",
-            "            {",
-            f"                if (!{method.body})",
-            "                {",
-            "                    return null;",
-            "                }",
-            "",
-            f"                return {reader};",
-            "            }",
-            "            finally",
-            "            {",
-            f"                Marshal.FreeHGlobal({scratch(name)});",
-            "            }",
-            "        }",
-        ]
-
-    def struct_body(self, method: Method) -> list[str]:
-        """The body of a method taking a struct MEOS reads through a pointer.
-
-        The caller hands over a value, so the call gets the address of a copy
-        that lives exactly as long as it does. MEOS reads what it needs before
-        returning — the values it keeps it copies — so nothing outlives the
-        frame."""
-        lines = ["        {"]
+        One call can need several of these at once — a struct argument beside a
+        counted array, an array beside the length MEOS states through a pointer
+        — so the body is composed rather than chosen: everything the call needs
+        is allocated or pinned first, the call is made ONCE, what it answers is
+        read, and everything allocated is freed however the method leaves.
+        """
+        setup, before, teardown = [], [], []
         for name, struct in method.structs:
-            lines.append(
+            setup.append(
                 f"            IntPtr {scratch(name)} = "
                 f"Marshal.AllocHGlobal(Marshal.SizeOf<{struct}>());")
-        lines.append("            try")
-        lines.append("            {")
-        for name, _ in method.structs:
-            lines.append(
-                f"                Marshal.StructureToPtr({ident(name)}, {scratch(name)}, false);")
-        lines.append(f"                return {method.body};")
-        lines.append("            }")
-        lines.append("            finally")
-        lines.append("            {")
-        for name, _ in method.structs:
-            lines.append(f"                Marshal.FreeHGlobal({scratch(name)});")
-        lines += ["            }", "        }"]
-        return lines
-
-    def buffer_body(self, method: Method) -> list[str]:
-        """The body of a method whose call states a length through a pointer.
-
-        MEOS writes the length of what it answers into a buffer the caller
-        supplies. A string carries its own length, so there the buffer is
-        written and dropped; a byte array does not, so there it says how much of
-        what MEOS answered to copy."""
-        name = method.length_out
-        lines = [
-            "        {",
-            f"            IntPtr {scratch(name)} = Marshal.AllocHGlobal(sizeof(long));",
-            "            try",
-            "            {",
-        ]
-        if method.byte_buffer:
-            lines += [
-                f"                IntPtr _bytes = {method.body};",
-                "                if (_bytes == IntPtr.Zero)",
-                "                {",
-                "                    return null;",
-                "                }",
-                "",
-                f"                byte[] _wkb = new byte[Marshal.ReadInt64({scratch(name)})];",
-                "                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);",
-                "                return _wkb;",
-            ]
-        else:
-            lines.append(f"                return {method.body};")
-        lines += [
-            "            }",
-            "            finally",
-            "            {",
-            f"                Marshal.FreeHGlobal({scratch(name)});",
-            "            }",
-            "        }",
-        ]
-        return lines
-
-    def array_body(self, method: Method) -> list[str]:
-        """The body of a method taking a counted array.
-
-        MEOS reads an array of its own values through a pointer to the first
-        element, so the wrappers' pointers are gathered into one array and pinned
-        for the call.  MEOS copies what it keeps, so the pin lasts exactly as long
-        as the call does."""
-        lines = ["        {"]
+            before.append(
+                f"                Marshal.StructureToPtr({ident(name)}, "
+                f"{scratch(name)}, false);")
+            teardown.append(f"                Marshal.FreeHGlobal({scratch(name)});")
         for name in method.scalar_arrays:
-            lines.append(
+            setup.append(
                 f"            GCHandle {scratch(name)} = "
                 f"GCHandle.Alloc({ident(name)}, GCHandleType.Pinned);")
-        for name, element in method.arrays:
-            lines += [
-                f"            IntPtr[] {scratch(name)}Values = new IntPtr[{ident(name)}.Length];",
+            teardown.append(f"                {scratch(name)}.Free();")
+        for name, _element in method.arrays:
+            setup += [
+                f"            IntPtr[] {scratch(name)}Values = "
+                f"new IntPtr[{ident(name)}.Length];",
                 f"            for (int i = 0; i < {ident(name)}.Length; i++)",
                 "            {",
                 f"                {scratch(name)}Values[i] = {ident(name)}[i].Ptr;",
                 "            }",
                 "",
-                f"            GCHandle {scratch(name)} = GCHandle.Alloc({scratch(name)}Values, GCHandleType.Pinned);",
+                f"            GCHandle {scratch(name)} = "
+                f"GCHandle.Alloc({scratch(name)}Values, GCHandleType.Pinned);",
             ]
-        lines.append("            try")
-        lines.append("            {")
-        lines.append(f"                return {method.body};")
-        lines.append("            }")
-        lines.append("            finally")
-        lines.append("            {")
-        for name in method.scalar_arrays:
-            lines.append(f"                {scratch(name)}.Free();")
-        for name, _ in method.arrays:
-            lines.append(f"                {scratch(name)}.Free();")
-        lines += ["            }", "        }"]
+            teardown.append(f"                {scratch(name)}.Free();")
+        if method.length_out:
+            name = scratch(method.length_out)
+            setup.append(f"            IntPtr {name} = Marshal.AllocHGlobal(sizeof(long));")
+            teardown.append(f"                Marshal.FreeHGlobal({name});")
+        if method.out_param:
+            name, size, _reader = method.out_param
+            setup.append(
+                f"            IntPtr {scratch(name)} = Marshal.AllocHGlobal({size});")
+            teardown.append(f"                Marshal.FreeHGlobal({scratch(name)});")
+
+        answer = self.answer(method)
+        if not teardown:
+            # Nothing was allocated, so there is nothing to free and no frame to
+            # free it in: the answer alone is the body.
+            return ["        {"] + answer + ["        }"]
+        lines = ["        {"] + setup + ["            try", "            {"] + before
+        lines += [f"    {line}" if line else "" for line in answer]
+        lines += ["            }", "            finally", "            {"]
+        lines += teardown + ["            }", "        }"]
         return lines
+
+    def answer(self, method: Method) -> list[str]:
+        """What the body does with the call, once everything is in place."""
+        if method.out_param:
+            # MEOS answers `false` where the value does not exist and leaves the
+            # out-parameter untouched, so the method answers null there.
+            _name, _size, reader = method.out_param
+            return [
+                f"            if (!{method.body})",
+                "            {",
+                "                return null;",
+                "            }",
+                "",
+                f"            return {reader};",
+            ]
+        if method.byte_buffer:
+            # A byte array does not carry its own length, so what MEOS wrote
+            # into the length buffer says how much of it to copy.
+            length = scratch(method.length_out)
+            return [
+                f"            IntPtr _bytes = {method.body};",
+                "            if (_bytes == IntPtr.Zero)",
+                "            {",
+                "                return null;",
+                "            }",
+                "",
+                f"            byte[] _wkb = new byte[Marshal.ReadInt64({length})];",
+                "            Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);",
+                "            return _wkb;",
+            ]
+        if "|>" in method.body:
+            # Several values answered together: the call is made once and each
+            # item read off what it answered.
+            answered, reads = method.body.split("|>", 1)
+            return [f"            var _answered = {answered};", "",
+                    f"            return {reads};"]
+        return [f"            return {method.body};"]
 
     def to_string(self, cls: str, methods: list) -> list[str]:
         """`ToString` over the class's own text output, where MEOS publishes one.
@@ -841,6 +848,30 @@ namespace {NAMESPACE}
         internal static int ToDateADT(DateOnly day)
             => Meos.DateIn(
                 day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+
+        /// <summary>Each MEOS TimestampTz of an array, as a DateTime.</summary>
+        internal static DateTime[] ToDateTimeArray(long[] moments)
+        {{
+            DateTime[] values = new DateTime[moments.Length];
+            for (int i = 0; i < moments.Length; i++)
+            {{
+                values[i] = ToDateTime(moments[i]);
+            }}
+
+            return values;
+        }}
+
+        /// <summary>Each MEOS DateADT of an array, as a DateOnly.</summary>
+        internal static DateOnly[] ToDateOnlyArray(int[] days)
+        {{
+            DateOnly[] values = new DateOnly[days.Length];
+            for (int i = 0; i < days.Length; i++)
+            {{
+                values[i] = ToDateOnly(days[i]);
+            }}
+
+            return values;
+        }}
 
         /// <summary>The struct MEOS answers through a pointer, as a value. The
         /// memory behind the pointer stays MEOS's, as it does for every other

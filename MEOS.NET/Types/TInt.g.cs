@@ -110,6 +110,13 @@ namespace MEOS.NET.Types
             }
         }
 
+        public (Temporal?[], int[]) ValueSplit(int vsize, int vorigin)
+        {
+            var _answered = Meos.TintValueSplit(this.Ptr, vsize, vorigin);
+
+            return (MEOSFactory.WrapTemporalArray(_answered.Item1), _answered.Item2);
+        }
+
         public TBox?[] ValueTimeBoxes(int vsize, Interval duration, int vorigin, DateTime torigin)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
@@ -117,6 +124,22 @@ namespace MEOS.NET.Types
             {
                 Marshal.StructureToPtr(duration, _duration, false);
                 return MEOSFactory.WrapTBoxArray(Meos.TintValueTimeBoxes(this.Ptr, vsize, _duration, vorigin, MEOSConvert.ToTimestampTz(torigin)));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public (Temporal?[], int[], DateTime[]) ValueTimeSplit(int size, Interval duration, int vorigin, DateTime torigin)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                var _answered = Meos.TintValueTimeSplit(this.Ptr, size, _duration, vorigin, MEOSConvert.ToTimestampTz(torigin));
+
+                return (MEOSFactory.WrapTemporalArray(_answered.Item1), _answered.Item2, MEOSConvert.ToDateTimeArray(_answered.Item3));
             }
             finally
             {

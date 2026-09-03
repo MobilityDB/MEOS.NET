@@ -33,6 +33,30 @@ namespace MEOS.NET.Types
             => Meos.DateIn(
                 day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
 
+        /// <summary>Each MEOS TimestampTz of an array, as a DateTime.</summary>
+        internal static DateTime[] ToDateTimeArray(long[] moments)
+        {
+            DateTime[] values = new DateTime[moments.Length];
+            for (int i = 0; i < moments.Length; i++)
+            {
+                values[i] = ToDateTime(moments[i]);
+            }
+
+            return values;
+        }
+
+        /// <summary>Each MEOS DateADT of an array, as a DateOnly.</summary>
+        internal static DateOnly[] ToDateOnlyArray(int[] days)
+        {
+            DateOnly[] values = new DateOnly[days.Length];
+            for (int i = 0; i < days.Length; i++)
+            {
+                values[i] = ToDateOnly(days[i]);
+            }
+
+            return values;
+        }
+
         /// <summary>The struct MEOS answers through a pointer, as a value. The
         /// memory behind the pointer stays MEOS's, as it does for every other
         /// value the layer reads back.</summary>
