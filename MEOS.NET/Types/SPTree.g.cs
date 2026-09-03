@@ -20,6 +20,9 @@ namespace MEOS.NET.Types
         public int Height()
             => Meos.SptreeHeight(this.Ptr);
 
+        public bool Insert(IntPtr box, long id)
+            => Meos.SptreeInsert(this.Ptr, box, id);
+
         public bool InsertTemporal(Temporal temp, long id)
             => Meos.SptreeInsertTemporal(this.Ptr, temp.Ptr, id);
 
@@ -29,11 +32,27 @@ namespace MEOS.NET.Types
         public int Join(SPTree sptree2, IndexSearchOp op, MeosArray result)
             => Meos.SptreeJoin(this.Ptr, sptree2.Ptr, (int) op, result.Ptr);
 
+        public bool Load(IntPtr boxes, long[] ids)
+        {
+            GCHandle _ids = GCHandle.Alloc(ids, GCHandleType.Pinned);
+            try
+            {
+                return Meos.SptreeLoad(this.Ptr, boxes, _ids.AddrOfPinnedObject(), ids.Length);
+            }
+            finally
+            {
+                _ids.Free();
+            }
+        }
+
         public long MemSize()
             => Meos.SptreeMemSize(this.Ptr);
 
         public int NumEntries()
             => Meos.SptreeNumEntries(this.Ptr);
+
+        public int Search(IndexSearchOp op, IntPtr query, MeosArray result)
+            => Meos.SptreeSearch(this.Ptr, (int) op, query, result.Ptr);
 
         public int SearchTemporal(IndexSearchOp op, Temporal temp, MeosArray result)
             => Meos.SptreeSearchTemporal(this.Ptr, (int) op, temp.Ptr, result.Ptr);

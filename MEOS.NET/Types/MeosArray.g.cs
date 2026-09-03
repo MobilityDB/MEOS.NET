@@ -14,6 +14,9 @@ namespace MEOS.NET.Types
     {
         internal MeosArray(IntPtr ptr) : base(ptr) { }
 
+        public void Add(IntPtr value)
+            => Meos.MeosArrayAdd(this.Ptr, value);
+
         public int Count()
             => Meos.MeosArrayCount(this.Ptr);
 
@@ -22,6 +25,9 @@ namespace MEOS.NET.Types
 
         public void DestroyFree()
             => Meos.MeosArrayDestroyFree(this.Ptr);
+
+        public IntPtr Get(int n)
+            => Meos.MeosArrayGet(this.Ptr, n);
 
         public void Reset()
             => Meos.MeosArrayReset(this.Ptr);

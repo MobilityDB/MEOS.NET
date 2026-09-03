@@ -20,6 +20,9 @@ namespace MEOS.NET.Types
         public int Height()
             => Meos.RtreeHeight(this.Ptr);
 
+        public bool Insert(IntPtr box, long id)
+            => Meos.RtreeInsert(this.Ptr, box, id);
+
         public bool InsertTemporal(Temporal temp, long id)
             => Meos.RtreeInsertTemporal(this.Ptr, temp.Ptr, id);
 
@@ -29,11 +32,27 @@ namespace MEOS.NET.Types
         public int Join(RTree rtree2, IndexSearchOp op, MeosArray result)
             => Meos.RtreeJoin(this.Ptr, rtree2.Ptr, (int) op, result.Ptr);
 
+        public bool Load(IntPtr boxes, long[] ids)
+        {
+            GCHandle _ids = GCHandle.Alloc(ids, GCHandleType.Pinned);
+            try
+            {
+                return Meos.RtreeLoad(this.Ptr, boxes, _ids.AddrOfPinnedObject(), ids.Length);
+            }
+            finally
+            {
+                _ids.Free();
+            }
+        }
+
         public long MemSize()
             => Meos.RtreeMemSize(this.Ptr);
 
         public int NumEntries()
             => Meos.RtreeNumEntries(this.Ptr);
+
+        public int Search(IndexSearchOp op, IntPtr query, MeosArray result)
+            => Meos.RtreeSearch(this.Ptr, (int) op, query, result.Ptr);
 
         public int SearchTemporal(IndexSearchOp op, Temporal temp, MeosArray result)
             => Meos.RtreeSearchTemporal(this.Ptr, (int) op, temp.Ptr, result.Ptr);
