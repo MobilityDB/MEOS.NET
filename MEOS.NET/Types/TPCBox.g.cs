@@ -7,97 +7,73 @@ using MEOS.NET.Functions;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>Space x time box (bbox of TSpatial).</summary>
+    /// <summary>Point-cloud x time box (bbox of TPcpoint and TPcpatch).</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class STBox : Box
+    public class TPCBox : Box
     {
-        internal STBox(IntPtr ptr) : base(ptr) { }
+        internal TPCBox(IntPtr ptr) : base(ptr) { }
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
             => this.Out(15);
 
-        public double Area(bool spheroid)
-            => Meos.StboxArea(this.Ptr, spheroid);
+        public int Cmp(TPCBox box2)
+            => Meos.TpcboxCmp(this.Ptr, box2.Ptr);
 
-        public int Cmp(STBox box2)
-            => Meos.StboxCmp(this.Ptr, box2.Ptr);
+        public TPCBox? Copy()
+            => MEOSFactory.WrapTPCBox(Meos.TpcboxCopy(this.Ptr));
 
-        public STBox? Copy()
-            => MEOSFactory.WrapSTBox(Meos.StboxCopy(this.Ptr));
+        public bool Eq(TPCBox box2)
+            => Meos.TpcboxEq(this.Ptr, box2.Ptr);
 
-        public bool Eq(STBox box2)
-            => Meos.StboxEq(this.Ptr, box2.Ptr);
+        public bool Ge(TPCBox box2)
+            => Meos.TpcboxGe(this.Ptr, box2.Ptr);
 
-        public STBox? ExpandSpace(double d)
-            => MEOSFactory.WrapSTBox(Meos.StboxExpandSpace(this.Ptr, d));
+        public bool Geodetic()
+            => Meos.TpcboxGeodetic(this.Ptr);
 
-        public bool Ge(STBox box2)
-            => Meos.StboxGe(this.Ptr, box2.Ptr);
-
-        public STBox? GetSpace()
-            => MEOSFactory.WrapSTBox(Meos.StboxGetSpace(this.Ptr));
-
-        public bool Gt(STBox box2)
-            => Meos.StboxGt(this.Ptr, box2.Ptr);
-
-        public uint Hash()
-            => Meos.StboxHash(this.Ptr);
-
-        public ulong HashExtended(ulong seed)
-            => Meos.StboxHashExtended(this.Ptr, seed);
+        public bool Gt(TPCBox box2)
+            => Meos.TpcboxGt(this.Ptr, box2.Ptr);
 
         public bool Hast()
-            => Meos.StboxHast(this.Ptr);
+            => Meos.TpcboxHast(this.Ptr);
 
         public bool Hasx()
-            => Meos.StboxHasx(this.Ptr);
+            => Meos.TpcboxHasx(this.Ptr);
 
         public bool Hasz()
-            => Meos.StboxHasz(this.Ptr);
+            => Meos.TpcboxHasz(this.Ptr);
 
-        public bool Isgeodetic()
-            => Meos.StboxIsgeodetic(this.Ptr);
+        public bool Le(TPCBox box2)
+            => Meos.TpcboxLe(this.Ptr, box2.Ptr);
 
-        public bool Le(STBox box2)
-            => Meos.StboxLe(this.Ptr, box2.Ptr);
+        public bool Lt(TPCBox box2)
+            => Meos.TpcboxLt(this.Ptr, box2.Ptr);
 
-        public bool Lt(STBox box2)
-            => Meos.StboxLt(this.Ptr, box2.Ptr);
-
-        public bool Ne(STBox box2)
-            => Meos.StboxNe(this.Ptr, box2.Ptr);
+        public bool Ne(TPCBox box2)
+            => Meos.TpcboxNe(this.Ptr, box2.Ptr);
 
         public string Out(int maxdd)
-            => Meos.StboxOut(this.Ptr, maxdd);
+            => Meos.TpcboxOut(this.Ptr, maxdd);
 
-        public double Perimeter(bool spheroid)
-            => Meos.StboxPerimeter(this.Ptr, spheroid);
+        public uint Pcid()
+            => Meos.TpcboxPcid(this.Ptr);
 
-        public STBox?[] QuadSplit()
-            => MEOSFactory.WrapSTBoxArray(Meos.StboxQuadSplit(this.Ptr));
-
-        public STBox? Round(int maxdd)
-            => MEOSFactory.WrapSTBox(Meos.StboxRound(this.Ptr, maxdd));
+        public TPCBox? Round(int maxdd)
+            => MEOSFactory.WrapTPCBox(Meos.TpcboxRound(this.Ptr, maxdd));
 
         public int SRID()
-            => Meos.StboxSrid(this.Ptr);
+            => Meos.TpcboxSrid(this.Ptr);
 
-        public STBox? SetSRID(int srid)
-            => MEOSFactory.WrapSTBox(Meos.StboxSetSrid(this.Ptr, srid));
-
-        public STBox?[] SpaceTiles(double xsize, double ysize, double zsize, Geo sorigin, bool border_inc)
-            => MEOSFactory.WrapSTBoxArray(Meos.StboxSpaceTiles(this.Ptr, xsize, ysize, zsize, sorigin.Ptr, border_inc));
-
-        public double SpatialDistance(STBox box2)
-            => Meos.StboxSpatialDistance(this.Ptr, box2.Ptr);
+        public TPCBox? SetSRID(int srid)
+            => MEOSFactory.WrapTPCBox(Meos.TpcboxSetSrid(this.Ptr, srid));
 
         public DateTime? Tmax()
         {
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
             {
-                if (!Meos.StboxTmax(this.Ptr, _result))
+                if (!Meos.TpcboxTmax(this.Ptr, _result))
                 {
                     return null;
                 }
@@ -115,7 +91,7 @@ namespace MEOS.NET.Types
             IntPtr _result = Marshal.AllocHGlobal(1);
             try
             {
-                if (!Meos.StboxTmaxInc(this.Ptr, _result))
+                if (!Meos.TpcboxTmaxInc(this.Ptr, _result))
                 {
                     return null;
                 }
@@ -133,7 +109,7 @@ namespace MEOS.NET.Types
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
             {
-                if (!Meos.StboxTmin(this.Ptr, _result))
+                if (!Meos.TpcboxTmin(this.Ptr, _result))
                 {
                     return null;
                 }
@@ -151,7 +127,7 @@ namespace MEOS.NET.Types
             IntPtr _result = Marshal.AllocHGlobal(1);
             try
             {
-                if (!Meos.StboxTminInc(this.Ptr, _result))
+                if (!Meos.TpcboxTminInc(this.Ptr, _result))
                 {
                     return null;
                 }
@@ -164,27 +140,15 @@ namespace MEOS.NET.Types
             }
         }
 
-        public Geo? ToGeo()
-            => MEOSFactory.WrapGeo(Meos.StboxToGeo(this.Ptr));
-
-        public Span? ToTstzspan()
-            => MEOSFactory.WrapSpan(Meos.StboxToTstzspan(this.Ptr));
-
-        public STBox? Transform(int srid)
-            => MEOSFactory.WrapSTBox(Meos.StboxTransform(this.Ptr, srid));
-
-        public STBox? TransformPipeline(string pipelinestr, int srid, bool is_forward)
-            => MEOSFactory.WrapSTBox(Meos.StboxTransformPipeline(this.Ptr, pipelinestr, srid, is_forward));
-
-        public double Volume()
-            => Meos.StboxVolume(this.Ptr);
+        public STBox? ToStbox()
+            => MEOSFactory.WrapSTBox(Meos.TpcboxToStbox(this.Ptr));
 
         public double? Xmax()
         {
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
             {
-                if (!Meos.StboxXmax(this.Ptr, _result))
+                if (!Meos.TpcboxXmax(this.Ptr, _result))
                 {
                     return null;
                 }
@@ -202,7 +166,7 @@ namespace MEOS.NET.Types
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
             {
-                if (!Meos.StboxXmin(this.Ptr, _result))
+                if (!Meos.TpcboxXmin(this.Ptr, _result))
                 {
                     return null;
                 }
@@ -220,7 +184,7 @@ namespace MEOS.NET.Types
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
             {
-                if (!Meos.StboxYmax(this.Ptr, _result))
+                if (!Meos.TpcboxYmax(this.Ptr, _result))
                 {
                     return null;
                 }
@@ -238,7 +202,7 @@ namespace MEOS.NET.Types
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
             {
-                if (!Meos.StboxYmin(this.Ptr, _result))
+                if (!Meos.TpcboxYmin(this.Ptr, _result))
                 {
                     return null;
                 }
@@ -256,7 +220,7 @@ namespace MEOS.NET.Types
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
             {
-                if (!Meos.StboxZmax(this.Ptr, _result))
+                if (!Meos.TpcboxZmax(this.Ptr, _result))
                 {
                     return null;
                 }
@@ -274,7 +238,7 @@ namespace MEOS.NET.Types
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
             {
-                if (!Meos.StboxZmin(this.Ptr, _result))
+                if (!Meos.TpcboxZmin(this.Ptr, _result))
                 {
                     return null;
                 }
@@ -287,17 +251,11 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static STBox? FromHEXWKB(string hexwkb)
-            => MEOSFactory.WrapSTBox(Meos.StboxFromHexwkb(hexwkb));
+        public static TPCBox? In(string str)
+            => MEOSFactory.WrapTPCBox(Meos.TpcboxIn(str));
 
-        public static STBox? GetSpaceTile(Geo point, double xsize, double ysize, double zsize, Geo sorigin)
-            => MEOSFactory.WrapSTBox(Meos.StboxGetSpaceTile(point.Ptr, xsize, ysize, zsize, sorigin.Ptr));
-
-        public static STBox? In(string str)
-            => MEOSFactory.WrapSTBox(Meos.StboxIn(str));
-
-        public static STBox? Make(bool hasx, bool hasz, bool geodetic, int srid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, Span s)
-            => MEOSFactory.WrapSTBox(Meos.StboxMake(hasx, hasz, geodetic, srid, xmin, xmax, ymin, ymax, zmin, zmax, s.Ptr));
+        public static TPCBox? Make(bool hasx, bool hasz, bool hast, bool geodetic, int srid, uint pcid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, Span period)
+            => MEOSFactory.WrapTPCBox(Meos.TpcboxMake(hasx, hasz, hast, geodetic, srid, pcid, xmin, xmax, ymin, ymax, zmin, zmax, period.Ptr));
 
     }
 }

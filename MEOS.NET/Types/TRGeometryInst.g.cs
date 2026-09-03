@@ -13,5 +13,8 @@ namespace MEOS.NET.Types
     {
         internal TRGeometryInst(IntPtr ptr) : base(ptr) { }
 
+        public static Temporal? Make(Geo geom, Pose pose, DateTime t)
+            => MEOSFactory.WrapTemporal(Meos.TrgeometryinstMake(geom.Ptr, pose.Ptr, MEOSConvert.ToTimestampTz(t)));
+
     }
 }

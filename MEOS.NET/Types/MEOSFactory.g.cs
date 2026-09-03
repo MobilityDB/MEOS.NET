@@ -17,6 +17,423 @@ namespace MEOS.NET.Types
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
     public static class MEOSFactory
     {
+        /// <summary>The value at <paramref name="ptr"/> as the Cbuffer
+        /// class the model gives its runtime type.</summary>
+        public static Cbuffer? WrapCbuffer(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new Cbuffer(ptr);
+        }
+
+        /// <summary>Every element of a C array of Cbuffer pointers, wrapped.</summary>
+        public static Cbuffer?[] WrapCbufferArray(IntPtr[] ptrs)
+        {
+            Cbuffer?[] wrapped = new Cbuffer?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapCbuffer(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the Geo
+        /// class the model gives its runtime type.</summary>
+        public static Geo? WrapGeo(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new Geo(ptr);
+        }
+
+        /// <summary>Every element of a C array of Geo pointers, wrapped.</summary>
+        public static Geo?[] WrapGeoArray(IntPtr[] ptrs)
+        {
+            Geo?[] wrapped = new Geo?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapGeo(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the Jsonb
+        /// class the model gives its runtime type.</summary>
+        public static Jsonb? WrapJsonb(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new Jsonb(ptr);
+        }
+
+        /// <summary>Every element of a C array of Jsonb pointers, wrapped.</summary>
+        public static Jsonb?[] WrapJsonbArray(IntPtr[] ptrs)
+        {
+            Jsonb?[] wrapped = new Jsonb?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapJsonb(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the Npoint
+        /// class the model gives its runtime type.</summary>
+        public static Npoint? WrapNpoint(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new Npoint(ptr);
+        }
+
+        /// <summary>Every element of a C array of Npoint pointers, wrapped.</summary>
+        public static Npoint?[] WrapNpointArray(IntPtr[] ptrs)
+        {
+            Npoint?[] wrapped = new Npoint?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapNpoint(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the Nsegment
+        /// class the model gives its runtime type.</summary>
+        public static Nsegment? WrapNsegment(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new Nsegment(ptr);
+        }
+
+        /// <summary>Every element of a C array of Nsegment pointers, wrapped.</summary>
+        public static Nsegment?[] WrapNsegmentArray(IntPtr[] ptrs)
+        {
+            Nsegment?[] wrapped = new Nsegment?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapNsegment(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the Pcpatch
+        /// class the model gives its runtime type.</summary>
+        public static Pcpatch? WrapPcpatch(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new Pcpatch(ptr);
+        }
+
+        /// <summary>Every element of a C array of Pcpatch pointers, wrapped.</summary>
+        public static Pcpatch?[] WrapPcpatchArray(IntPtr[] ptrs)
+        {
+            Pcpatch?[] wrapped = new Pcpatch?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapPcpatch(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the Pcpoint
+        /// class the model gives its runtime type.</summary>
+        public static Pcpoint? WrapPcpoint(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new Pcpoint(ptr);
+        }
+
+        /// <summary>Every element of a C array of Pcpoint pointers, wrapped.</summary>
+        public static Pcpoint?[] WrapPcpointArray(IntPtr[] ptrs)
+        {
+            Pcpoint?[] wrapped = new Pcpoint?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapPcpoint(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the Pose
+        /// class the model gives its runtime type.</summary>
+        public static Pose? WrapPose(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new Pose(ptr);
+        }
+
+        /// <summary>Every element of a C array of Pose pointers, wrapped.</summary>
+        public static Pose?[] WrapPoseArray(IntPtr[] ptrs)
+        {
+            Pose?[] wrapped = new Pose?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapPose(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the PoseChain
+        /// class the model gives its runtime type.</summary>
+        public static PoseChain? WrapPoseChain(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new PoseChain(ptr);
+        }
+
+        /// <summary>Every element of a C array of PoseChain pointers, wrapped.</summary>
+        public static PoseChain?[] WrapPoseChainArray(IntPtr[] ptrs)
+        {
+            PoseChain?[] wrapped = new PoseChain?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapPoseChain(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the Raquet
+        /// class the model gives its runtime type.</summary>
+        public static Raquet? WrapRaquet(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new Raquet(ptr);
+        }
+
+        /// <summary>Every element of a C array of Raquet pointers, wrapped.</summary>
+        public static Raquet?[] WrapRaquetArray(IntPtr[] ptrs)
+        {
+            Raquet?[] wrapped = new Raquet?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapRaquet(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the STBox
+        /// class the model gives its runtime type.</summary>
+        public static STBox? WrapSTBox(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new STBox(ptr);
+        }
+
+        /// <summary>Every element of a C array of STBox pointers, wrapped.</summary>
+        public static STBox?[] WrapSTBoxArray(IntPtr[] ptrs)
+        {
+            STBox?[] wrapped = new STBox?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapSTBox(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the Set
+        /// class the model gives its runtime type.</summary>
+        public static Set? WrapSet(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            // Set.settype, at byte 4
+            return Marshal.ReadByte(ptr, 4) switch
+            {
+                5 => new DateSet(ptr),  // T_DATESET
+                12 => new FloatSet(ptr),  // T_FLOATSET
+                18 => new IntSet(ptr),  // T_INTSET
+                22 => new BigIntSet(ptr),  // T_BIGINTSET
+                32 => new TextSet(ptr),  // T_TEXTSET
+                38 => new TsTzSet(ptr),  // T_TSTZSET
+                43 => new GeomSet(ptr),  // T_GEOMSET
+                45 => new GeogSet(ptr),  // T_GEOGSET
+                49 => new NpointSet(ptr),  // T_NPOINTSET
+                55 => new PoseSet(ptr),  // T_POSESET
+                58 => new CbufferSet(ptr),  // T_CBUFFERSET
+                _ => new Set(ptr),
+            };
+        }
+
+        /// <summary>Every element of a C array of Set pointers, wrapped.</summary>
+        public static Set?[] WrapSetArray(IntPtr[] ptrs)
+        {
+            Set?[] wrapped = new Set?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapSet(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the Span
+        /// class the model gives its runtime type.</summary>
+        public static Span? WrapSpan(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            // Span.spantype, at byte 0
+            return Marshal.ReadByte(ptr, 0) switch
+            {
+                6 => new DateSpan(ptr),  // T_DATESPAN
+                13 => new FloatSpan(ptr),  // T_FLOATSPAN
+                19 => new IntSpan(ptr),  // T_INTSPAN
+                23 => new BigIntSpan(ptr),  // T_BIGINTSPAN
+                39 => new TsTzSpan(ptr),  // T_TSTZSPAN
+                _ => new Span(ptr),
+            };
+        }
+
+        /// <summary>Every element of a C array of Span pointers, wrapped.</summary>
+        public static Span?[] WrapSpanArray(IntPtr[] ptrs)
+        {
+            Span?[] wrapped = new Span?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapSpan(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the SpanSet
+        /// class the model gives its runtime type.</summary>
+        public static SpanSet? WrapSpanSet(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            // SpanSet.spansettype, at byte 4
+            return Marshal.ReadByte(ptr, 4) switch
+            {
+                7 => new DateSpanSet(ptr),  // T_DATESPANSET
+                14 => new FloatSpanSet(ptr),  // T_FLOATSPANSET
+                20 => new IntSpanSet(ptr),  // T_INTSPANSET
+                24 => new BigIntSpanSet(ptr),  // T_BIGINTSPANSET
+                40 => new TsTzSpanSet(ptr),  // T_TSTZSPANSET
+                _ => new SpanSet(ptr),
+            };
+        }
+
+        /// <summary>Every element of a C array of SpanSet pointers, wrapped.</summary>
+        public static SpanSet?[] WrapSpanSetArray(IntPtr[] ptrs)
+        {
+            SpanSet?[] wrapped = new SpanSet?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapSpanSet(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the TBox
+        /// class the model gives its runtime type.</summary>
+        public static TBox? WrapTBox(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new TBox(ptr);
+        }
+
+        /// <summary>Every element of a C array of TBox pointers, wrapped.</summary>
+        public static TBox?[] WrapTBoxArray(IntPtr[] ptrs)
+        {
+            TBox?[] wrapped = new TBox?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapTBox(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the TPCBox
+        /// class the model gives its runtime type.</summary>
+        public static TPCBox? WrapTPCBox(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new TPCBox(ptr);
+        }
+
+        /// <summary>Every element of a C array of TPCBox pointers, wrapped.</summary>
+        public static TPCBox?[] WrapTPCBoxArray(IntPtr[] ptrs)
+        {
+            TPCBox?[] wrapped = new TPCBox?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapTPCBox(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
         /// <summary>The value at <paramref name="ptr"/> as the Temporal
         /// class the model gives its runtime type.</summary>
         public static Temporal? WrapTemporal(IntPtr ptr)
@@ -213,154 +630,25 @@ namespace MEOS.NET.Types
                 _ => new TText(ptr),
             };
 
-        /// <summary>The value at <paramref name="ptr"/> as the Set
+        /// <summary>The value at <paramref name="ptr"/> as the Text
         /// class the model gives its runtime type.</summary>
-        public static Set? WrapSet(IntPtr ptr)
+        public static Text? WrapText(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
             {
                 return null;
             }
 
-            // Set.settype, at byte 4
-            return Marshal.ReadByte(ptr, 4) switch
-            {
-                5 => new DateSet(ptr),  // T_DATESET
-                12 => new FloatSet(ptr),  // T_FLOATSET
-                18 => new IntSet(ptr),  // T_INTSET
-                22 => new BigIntSet(ptr),  // T_BIGINTSET
-                32 => new TextSet(ptr),  // T_TEXTSET
-                38 => new TsTzSet(ptr),  // T_TSTZSET
-                43 => new GeomSet(ptr),  // T_GEOMSET
-                45 => new GeogSet(ptr),  // T_GEOGSET
-                49 => new NpointSet(ptr),  // T_NPOINTSET
-                55 => new PoseSet(ptr),  // T_POSESET
-                58 => new CbufferSet(ptr),  // T_CBUFFERSET
-                _ => new Set(ptr),
-            };
+            return new Text(ptr);
         }
 
-        /// <summary>Every element of a C array of Set pointers, wrapped.</summary>
-        public static Set?[] WrapSetArray(IntPtr[] ptrs)
+        /// <summary>Every element of a C array of Text pointers, wrapped.</summary>
+        public static Text?[] WrapTextArray(IntPtr[] ptrs)
         {
-            Set?[] wrapped = new Set?[ptrs.Length];
+            Text?[] wrapped = new Text?[ptrs.Length];
             for (int i = 0; i < ptrs.Length; i++)
             {
-                wrapped[i] = WrapSet(ptrs[i]);
-            }
-
-            return wrapped;
-        }
-
-        /// <summary>The value at <paramref name="ptr"/> as the Span
-        /// class the model gives its runtime type.</summary>
-        public static Span? WrapSpan(IntPtr ptr)
-        {
-            if (ptr == IntPtr.Zero)
-            {
-                return null;
-            }
-
-            // Span.spantype, at byte 0
-            return Marshal.ReadByte(ptr, 0) switch
-            {
-                6 => new DateSpan(ptr),  // T_DATESPAN
-                13 => new FloatSpan(ptr),  // T_FLOATSPAN
-                19 => new IntSpan(ptr),  // T_INTSPAN
-                23 => new BigIntSpan(ptr),  // T_BIGINTSPAN
-                39 => new TsTzSpan(ptr),  // T_TSTZSPAN
-                _ => new Span(ptr),
-            };
-        }
-
-        /// <summary>Every element of a C array of Span pointers, wrapped.</summary>
-        public static Span?[] WrapSpanArray(IntPtr[] ptrs)
-        {
-            Span?[] wrapped = new Span?[ptrs.Length];
-            for (int i = 0; i < ptrs.Length; i++)
-            {
-                wrapped[i] = WrapSpan(ptrs[i]);
-            }
-
-            return wrapped;
-        }
-
-        /// <summary>The value at <paramref name="ptr"/> as the SpanSet
-        /// class the model gives its runtime type.</summary>
-        public static SpanSet? WrapSpanSet(IntPtr ptr)
-        {
-            if (ptr == IntPtr.Zero)
-            {
-                return null;
-            }
-
-            // SpanSet.spansettype, at byte 4
-            return Marshal.ReadByte(ptr, 4) switch
-            {
-                7 => new DateSpanSet(ptr),  // T_DATESPANSET
-                14 => new FloatSpanSet(ptr),  // T_FLOATSPANSET
-                20 => new IntSpanSet(ptr),  // T_INTSPANSET
-                24 => new BigIntSpanSet(ptr),  // T_BIGINTSPANSET
-                40 => new TsTzSpanSet(ptr),  // T_TSTZSPANSET
-                _ => new SpanSet(ptr),
-            };
-        }
-
-        /// <summary>Every element of a C array of SpanSet pointers, wrapped.</summary>
-        public static SpanSet?[] WrapSpanSetArray(IntPtr[] ptrs)
-        {
-            SpanSet?[] wrapped = new SpanSet?[ptrs.Length];
-            for (int i = 0; i < ptrs.Length; i++)
-            {
-                wrapped[i] = WrapSpanSet(ptrs[i]);
-            }
-
-            return wrapped;
-        }
-
-        /// <summary>The value at <paramref name="ptr"/> as the TBox
-        /// class the model gives its runtime type.</summary>
-        public static TBox? WrapTBox(IntPtr ptr)
-        {
-            if (ptr == IntPtr.Zero)
-            {
-                return null;
-            }
-
-            return new TBox(ptr);
-        }
-
-        /// <summary>Every element of a C array of TBox pointers, wrapped.</summary>
-        public static TBox?[] WrapTBoxArray(IntPtr[] ptrs)
-        {
-            TBox?[] wrapped = new TBox?[ptrs.Length];
-            for (int i = 0; i < ptrs.Length; i++)
-            {
-                wrapped[i] = WrapTBox(ptrs[i]);
-            }
-
-            return wrapped;
-        }
-
-        /// <summary>The value at <paramref name="ptr"/> as the STBox
-        /// class the model gives its runtime type.</summary>
-        public static STBox? WrapSTBox(IntPtr ptr)
-        {
-            if (ptr == IntPtr.Zero)
-            {
-                return null;
-            }
-
-            return new STBox(ptr);
-        }
-
-        /// <summary>Every element of a C array of STBox pointers, wrapped.</summary>
-        public static STBox?[] WrapSTBoxArray(IntPtr[] ptrs)
-        {
-            STBox?[] wrapped = new STBox?[ptrs.Length];
-            for (int i = 0; i < ptrs.Length; i++)
-            {
-                wrapped[i] = WrapSTBox(ptrs[i]);
+                wrapped[i] = WrapText(ptrs[i]);
             }
 
             return wrapped;

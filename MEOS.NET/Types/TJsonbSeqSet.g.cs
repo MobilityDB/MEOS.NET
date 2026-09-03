@@ -13,5 +13,8 @@ namespace MEOS.NET.Types
     {
         internal TJsonbSeqSet(IntPtr ptr) : base(ptr) { }
 
+        public static Temporal? FromBaseTstzspanset(Jsonb jsonb, SpanSet ss)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbseqsetFromBaseTstzspanset(jsonb.Ptr, ss.Ptr));
+
     }
 }

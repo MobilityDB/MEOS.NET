@@ -13,5 +13,8 @@ namespace MEOS.NET.Types
     {
         internal TNpointInst(IntPtr ptr) : base(ptr) { }
 
+        public static Temporal? Make(Npoint np, DateTime t)
+            => MEOSFactory.WrapTemporal(Meos.TnpointinstMake(np.Ptr, MEOSConvert.ToTimestampTz(t)));
+
     }
 }

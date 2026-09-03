@@ -17,6 +17,12 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out(15);
 
+        public Temporal? AtGeom(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TnpointAtGeom(this.Ptr, gs.Ptr));
+
+        public Temporal? AtNpoint(Npoint np)
+            => MEOSFactory.WrapTemporal(Meos.TnpointAtNpoint(this.Ptr, np.Ptr));
+
         public Temporal? AtNpointset(Set s)
             => MEOSFactory.WrapTemporal(Meos.TnpointAtNpointset(this.Ptr, s.Ptr));
 
@@ -26,8 +32,17 @@ namespace MEOS.NET.Types
         public Temporal? CumulativeLength()
             => MEOSFactory.WrapTemporal(Meos.TnpointCumulativeLength(this.Ptr));
 
+        public Npoint? EndValue()
+            => MEOSFactory.WrapNpoint(Meos.TnpointEndValue(this.Ptr));
+
         public double Length()
             => Meos.TnpointLength(this.Ptr);
+
+        public Temporal? MinusGeom(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TnpointMinusGeom(this.Ptr, gs.Ptr));
+
+        public Temporal? MinusNpoint(Npoint np)
+            => MEOSFactory.WrapTemporal(Meos.TnpointMinusNpoint(this.Ptr, np.Ptr));
 
         public Temporal? MinusNpointset(Set s)
             => MEOSFactory.WrapTemporal(Meos.TnpointMinusNpointset(this.Ptr, s.Ptr));
@@ -38,6 +53,9 @@ namespace MEOS.NET.Types
         public new string Out(int maxdd)
             => Meos.TnpointOut(this.Ptr, maxdd);
 
+        public Nsegment?[] Positions()
+            => MEOSFactory.WrapNsegmentArray(Meos.TnpointPositions(this.Ptr));
+
         public long Route()
             => Meos.TnpointRoute(this.Ptr);
 
@@ -47,8 +65,23 @@ namespace MEOS.NET.Types
         public Temporal? Speed()
             => MEOSFactory.WrapTemporal(Meos.TnpointSpeed(this.Ptr));
 
+        public Npoint? StartValue()
+            => MEOSFactory.WrapNpoint(Meos.TnpointStartValue(this.Ptr));
+
         public Temporal? ToTgeompoint()
             => MEOSFactory.WrapTemporal(Meos.TnpointToTgeompoint(this.Ptr));
+
+        public Geo? Trajectory()
+            => MEOSFactory.WrapGeo(Meos.TnpointTrajectory(this.Ptr));
+
+        public Geo? Twcentroid()
+            => MEOSFactory.WrapGeo(Meos.TnpointTwcentroid(this.Ptr));
+
+        public Npoint?[] Values()
+            => MEOSFactory.WrapNpointArray(Meos.TnpointValues(this.Ptr));
+
+        public static Temporal? FromBaseTemp(Npoint np, Temporal temp)
+            => MEOSFactory.WrapTemporal(Meos.TnpointFromBaseTemp(np.Ptr, temp.Ptr));
 
         public static Temporal? FromMFJSON(string mfjson)
             => MEOSFactory.WrapTemporal(Meos.TnpointFromMfjson(mfjson));

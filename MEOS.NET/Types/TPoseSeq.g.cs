@@ -13,5 +13,11 @@ namespace MEOS.NET.Types
     {
         internal TPoseSeq(IntPtr ptr) : base(ptr) { }
 
+        public static Temporal? FromBaseTstzset(Pose pose, Set s)
+            => MEOSFactory.WrapTemporal(Meos.TposeseqFromBaseTstzset(pose.Ptr, s.Ptr));
+
+        public static Temporal? FromBaseTstzspan(Pose pose, Span s, InterpType interp)
+            => MEOSFactory.WrapTemporal(Meos.TposeseqFromBaseTstzspan(pose.Ptr, s.Ptr, (int) interp));
+
     }
 }

@@ -19,6 +19,12 @@ namespace MEOS.NET.Types
         public Temporal? AtElevation(Span s)
             => MEOSFactory.WrapTemporal(Meos.TpointAtElevation(this.Ptr, s.Ptr));
 
+        public new Temporal? AtGeom(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TpointAtGeom(this.Ptr, gs.Ptr));
+
+        public new Temporal? AtValue(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TpointAtValue(this.Ptr, gs.Ptr));
+
         public Temporal? Azimuth()
             => MEOSFactory.WrapTemporal(Meos.TpointAzimuth(this.Ptr));
 
@@ -64,8 +70,23 @@ namespace MEOS.NET.Types
         public Temporal? MinusElevation(Span s)
             => MEOSFactory.WrapTemporal(Meos.TpointMinusElevation(this.Ptr, s.Ptr));
 
+        public new Temporal? MinusGeom(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TpointMinusGeom(this.Ptr, gs.Ptr));
+
+        public new Temporal? MinusValue(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TpointMinusValue(this.Ptr, gs.Ptr));
+
         public Temporal? Speed()
             => MEOSFactory.WrapTemporal(Meos.TpointSpeed(this.Ptr));
+
+        public Geo? Trajectory(bool unary_union)
+            => MEOSFactory.WrapGeo(Meos.TpointTrajectory(this.Ptr, unary_union));
+
+        public Geo? Twcentroid()
+            => MEOSFactory.WrapGeo(Meos.TpointTwcentroid(this.Ptr));
+
+        public new static Temporal? FromBaseTemp(Geo gs, Temporal temp)
+            => MEOSFactory.WrapTemporal(Meos.TpointFromBaseTemp(gs.Ptr, temp.Ptr));
 
     }
 }

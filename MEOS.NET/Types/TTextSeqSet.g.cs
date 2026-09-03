@@ -13,5 +13,8 @@ namespace MEOS.NET.Types
     {
         internal TTextSeqSet(IntPtr ptr) : base(ptr) { }
 
+        public static Temporal? FromBaseTstzspanset(Text txt, SpanSet ss)
+            => MEOSFactory.WrapTemporal(Meos.TtextseqsetFromBaseTstzspanset(txt.Ptr, ss.Ptr));
+
     }
 }
