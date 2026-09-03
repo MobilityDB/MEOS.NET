@@ -338,6 +338,8 @@ class Generator:
                 return (f"{elem}?[]", f"MEOSFactory.Wrap{elem}Array($)")
         if wrapper_ret in ("long[]", "int[]", "double[]", "byte[]"):
             return (wrapper_ret, "$")
+        if c == "void *" and wrapper_ret == "IntPtr":
+            return ("IntPtr", "$")
         struct = self.value_struct(c)
         if struct and wrapper_ret == "IntPtr":
             return (f"{struct}?", f"MEOSConvert.ToStruct<{struct}>($)")
@@ -389,6 +391,13 @@ class Generator:
         cls = self.m.class_for_ctype(c)
         if cls and cs_type == "IntPtr":
             return (cls, f"{name}.Ptr")
+        # An UNTYPED pointer stays untyped: MEOS states nothing about what it
+        # points at, so the layer states nothing either and the caller hands
+        # over the pointer of the value it means — the `Ptr` every wrapped
+        # instance publishes. GoMEOS answers the same shape with
+        # `unsafe.Pointer`.
+        if c == "void *" and cs_type == "IntPtr":
+            return ("IntPtr", name)
         struct = self.value_struct(c)
         if struct and cs_type == "IntPtr":
             return (struct, scratch(name))
@@ -468,9 +477,6 @@ class Generator:
                 f"{oo}: return {clean(f['returnType']['c'])} needs wrapping")
             return None
         ret_type, ret_expr = ret
-        if static and ret_type == "void":
-            self.deferred[cls].append(f"{oo}: neither a receiver nor a value to return")
-            return None
 
         # The length is the array's own, so it leaves the C# signature.
         count_of = {codegen.csharp_param_name(a["lengthFrom"]["name"]):

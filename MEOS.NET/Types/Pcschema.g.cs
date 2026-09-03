@@ -14,6 +14,9 @@ namespace MEOS.NET.Types
     {
         internal Pcschema(IntPtr ptr) : base(ptr) { }
 
+        public static void Clear()
+            => Meos.MeosPcSchemaClear();
+
         public static string? Compression(uint pcid)
             => Meos.MeosPcSchemaCompression(pcid);
 
@@ -22,6 +25,12 @@ namespace MEOS.NET.Types
 
         public static int Ndims(uint pcid)
             => Meos.MeosPcSchemaNdims(pcid);
+
+        public static void Register(uint pcid, Pcschema schema)
+            => Meos.MeosPcSchemaRegister(pcid, schema.Ptr);
+
+        public static void RegisterXml(uint pcid, Pcschema schema, string xml_text)
+            => Meos.MeosPcSchemaRegisterXml(pcid, schema.Ptr, xml_text);
 
         public static int SRID(uint pcid)
             => Meos.MeosPcSchemaSrid(pcid);
