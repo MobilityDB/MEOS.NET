@@ -10,7 +10,7 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `d64dcffecee20e939ab227a4dbf8943b551030f4` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `79a66f4576902b933481883443334c67edccf607` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
@@ -911,7 +911,7 @@ and `tools/objectgen.py`.  Do not edit.
 | geo_is_point_set | gs |
 | geo_is_unitary | gs |
 | geo_makeline_garray | gsarr |
-| geo_meos_supported | gs |
+| geo_meos_coverage | gs |
 | geo_num_geos | gs |
 | geo_num_points | gs |
 | geo_out | gs |
@@ -977,7 +977,7 @@ and `tools/objectgen.py`.  Do not edit.
 | geom_is_simple | gs |
 | geom_length | gs |
 | geom_max_distance2d | gs1, gs2 |
-| geom_meos_supported | geom |
+| geom_meos_coverage | geom |
 | geom_min_bounding_radius | geom, radius |
 | geom_oriented_envelope | gs |
 | geom_perimeter | gs |

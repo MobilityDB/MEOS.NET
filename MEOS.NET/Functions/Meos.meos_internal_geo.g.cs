@@ -267,8 +267,8 @@ namespace MEOS.NET.Functions
         public static bool GeoIsPointSet(IntPtr gs)
             => SafeExecution<bool>(() => Native.GeoIsPointSet(gs));
 
-        public static bool GeoMeosSupported(IntPtr gs)
-            => SafeExecution<bool>(() => Native.GeoMeosSupported(gs));
+        public static int GeoMeosCoverage(IntPtr gs)
+            => SafeExecution<int>(() => Native.GeoMeosCoverage(gs));
 
         public static IntPtr GeoPointsCovered(IntPtr pts, IntPtr gs, bool covered)
             => SafeExecution<IntPtr>(() => Native.GeoPointsCovered(pts, gs, covered));
@@ -306,8 +306,8 @@ namespace MEOS.NET.Functions
         public static IntPtr TpointLinearRestrictGeom(IntPtr temp, IntPtr gs, bool atfunc)
             => SafeExecution<IntPtr>(() => Native.TpointLinearRestrictGeom(temp, gs, atfunc));
 
-        public static bool GeomMeosSupported(IntPtr geom)
-            => SafeExecution<bool>(() => Native.GeomMeosSupported(geom));
+        public static int GeomMeosCoverage(IntPtr geom)
+            => SafeExecution<int>(() => Native.GeomMeosCoverage(geom));
 
         public static double StboxNad(IntPtr box1, IntPtr box2)
             => SafeExecution<double>(() => Native.StboxNad(box1, box2));
