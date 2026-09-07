@@ -1650,9 +1650,6 @@ namespace MEOS.NET.Functions
         public static IntPtr ShortestlineTgeoTgeo(IntPtr temp1, IntPtr temp2)
             => SafeExecution<IntPtr>(() => Native.ShortestlineTgeoTgeo(temp1, temp2));
 
-        public static double MindistanceTgeoTgeo(IntPtr temp1, IntPtr temp2, double threshold)
-            => SafeExecution<double>(() => Native.MindistanceTgeoTgeo(temp1, temp2, threshold));
-
         public static double MindistanceTgeoarrTgeoarr(IntPtr arr1, int count1, IntPtr arr2, int count2)
             => SafeExecution<double>(() => Native.MindistanceTgeoarrTgeoarr(arr1, count1, arr2, count2));
 

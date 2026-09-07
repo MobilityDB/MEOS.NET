@@ -258,6 +258,12 @@ namespace MEOS.NET.Functions
         public static bool GeoClipSubject(IntPtr gs)
             => SafeExecution<bool>(() => Native.GeoClipSubject(gs));
 
+        public static bool GeoIsPlanarAreal(IntPtr gs)
+            => SafeExecution<bool>(() => Native.GeoIsPlanarAreal(gs));
+
+        public static bool GeoEveryPartBoundsArea(IntPtr gs)
+            => SafeExecution<bool>(() => Native.GeoEveryPartBoundsArea(gs));
+
         public static bool GeoIsPointSet(IntPtr gs)
             => SafeExecution<bool>(() => Native.GeoIsPointSet(gs));
 
@@ -302,6 +308,9 @@ namespace MEOS.NET.Functions
 
         public static bool GeomMeosSupported(IntPtr geom)
             => SafeExecution<bool>(() => Native.GeomMeosSupported(geom));
+
+        public static double StboxNad(IntPtr box1, IntPtr box2)
+            => SafeExecution<double>(() => Native.StboxNad(box1, box2));
 
         public static int SpatialSrid(long d, int basetype)
             => SafeExecution<int>(() => Native.SpatialSrid(d, basetype));

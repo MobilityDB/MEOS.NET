@@ -6452,9 +6452,6 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "shortestline_tgeo_tgeo", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr ShortestlineTgeoTgeo(IntPtr temp1, IntPtr temp2);
 
-            [LibraryImport(DllPath, EntryPoint = "mindistance_tgeo_tgeo", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial double MindistanceTgeoTgeo(IntPtr temp1, IntPtr temp2, double threshold);
-
             [LibraryImport(DllPath, EntryPoint = "mindistance_tgeoarr_tgeoarr", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial double MindistanceTgeoarrTgeoarr(IntPtr arr1, int count1, IntPtr arr2, int count2);
 
@@ -9224,6 +9221,14 @@ namespace MEOS.NET.Functions
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool GeoClipSubject(IntPtr gs);
 
+            [LibraryImport(DllPath, EntryPoint = "geo_is_planar_areal", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool GeoIsPlanarAreal(IntPtr gs);
+
+            [LibraryImport(DllPath, EntryPoint = "geo_every_part_bounds_area", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool GeoEveryPartBoundsArea(IntPtr gs);
+
             [LibraryImport(DllPath, EntryPoint = "geo_is_point_set", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool GeoIsPointSet(IntPtr gs);
@@ -9274,6 +9279,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "geom_meos_supported", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool GeomMeosSupported(IntPtr geom);
+
+            [LibraryImport(DllPath, EntryPoint = "stbox_nad", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial double StboxNad(IntPtr box1, IntPtr box2);
 
             [LibraryImport(DllPath, EntryPoint = "spatial_srid", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int SpatialSrid(long d, int basetype);
@@ -12075,19 +12083,19 @@ namespace MEOS.NET.Functions
             internal static partial bool RaquetGt(IntPtr rq1, IntPtr rq2);
 
             [LibraryImport(DllPath, EntryPoint = "raster_value", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr RasterValue(IntPtr traj, IntPtr box, IntPtr sample, IntPtr ctx);
+            internal static partial IntPtr RasterValue(IntPtr traj, IntPtr rast, int band);
 
             [LibraryImport(DllPath, EntryPoint = "raster_at_value", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr RasterAtValue(IntPtr traj, IntPtr box, IntPtr sample, IntPtr ctx, IntPtr vspan);
+            internal static partial IntPtr RasterAtValue(IntPtr traj, IntPtr rast, int band, IntPtr vspan);
 
             [LibraryImport(DllPath, EntryPoint = "raster_minus_value", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr RasterMinusValue(IntPtr traj, IntPtr box, IntPtr sample, IntPtr ctx, IntPtr vspan);
+            internal static partial IntPtr RasterMinusValue(IntPtr traj, IntPtr rast, int band, IntPtr vspan);
 
             [LibraryImport(DllPath, EntryPoint = "eraster_value", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int ErasterValue(IntPtr traj, IntPtr box, IntPtr sample, IntPtr ctx, IntPtr vspan);
+            internal static partial int ErasterValue(IntPtr traj, IntPtr rast, int band, IntPtr vspan);
 
             [LibraryImport(DllPath, EntryPoint = "araster_value", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int ArasterValue(IntPtr traj, IntPtr box, IntPtr sample, IntPtr ctx, IntPtr vspan);
+            internal static partial int ArasterValue(IntPtr traj, IntPtr rast, int band, IntPtr vspan);
 
             [LibraryImport(DllPath, EntryPoint = "raster_value_gdal", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr RasterValueGdal(IntPtr traj, string path, int band);

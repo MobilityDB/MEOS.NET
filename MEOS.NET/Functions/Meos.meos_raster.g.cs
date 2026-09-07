@@ -108,20 +108,20 @@ namespace MEOS.NET.Functions
         public static bool RaquetGt(IntPtr rq1, IntPtr rq2)
             => SafeExecution<bool>(() => Native.RaquetGt(rq1, rq2));
 
-        public static IntPtr RasterValue(IntPtr traj, IntPtr box, IntPtr sample, IntPtr ctx)
-            => SafeExecution<IntPtr>(() => Native.RasterValue(traj, box, sample, ctx));
+        public static IntPtr RasterValue(IntPtr traj, IntPtr rast, int band)
+            => SafeExecution<IntPtr>(() => Native.RasterValue(traj, rast, band));
 
-        public static IntPtr RasterAtValue(IntPtr traj, IntPtr box, IntPtr sample, IntPtr ctx, IntPtr vspan)
-            => SafeExecution<IntPtr>(() => Native.RasterAtValue(traj, box, sample, ctx, vspan));
+        public static IntPtr RasterAtValue(IntPtr traj, IntPtr rast, int band, IntPtr vspan)
+            => SafeExecution<IntPtr>(() => Native.RasterAtValue(traj, rast, band, vspan));
 
-        public static IntPtr RasterMinusValue(IntPtr traj, IntPtr box, IntPtr sample, IntPtr ctx, IntPtr vspan)
-            => SafeExecution<IntPtr>(() => Native.RasterMinusValue(traj, box, sample, ctx, vspan));
+        public static IntPtr RasterMinusValue(IntPtr traj, IntPtr rast, int band, IntPtr vspan)
+            => SafeExecution<IntPtr>(() => Native.RasterMinusValue(traj, rast, band, vspan));
 
-        public static int ErasterValue(IntPtr traj, IntPtr box, IntPtr sample, IntPtr ctx, IntPtr vspan)
-            => SafeExecution<int>(() => Native.ErasterValue(traj, box, sample, ctx, vspan));
+        public static int ErasterValue(IntPtr traj, IntPtr rast, int band, IntPtr vspan)
+            => SafeExecution<int>(() => Native.ErasterValue(traj, rast, band, vspan));
 
-        public static int ArasterValue(IntPtr traj, IntPtr box, IntPtr sample, IntPtr ctx, IntPtr vspan)
-            => SafeExecution<int>(() => Native.ArasterValue(traj, box, sample, ctx, vspan));
+        public static int ArasterValue(IntPtr traj, IntPtr rast, int band, IntPtr vspan)
+            => SafeExecution<int>(() => Native.ArasterValue(traj, rast, band, vspan));
 
         public static IntPtr RasterValueGdal(IntPtr traj, string path, int band)
             => SafeExecution<IntPtr>(() => Native.RasterValueGdal(traj, path, band));
