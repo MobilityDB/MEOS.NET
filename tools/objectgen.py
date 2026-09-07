@@ -32,6 +32,26 @@ from collections import defaultdict
 from pathlib import Path
 
 import codegen
+import gapledger
+
+# Every way a member the model assigns can fail to reach the layer, with the
+# contract each one is missing.  A kind is declared whether or not it fires, so
+# that an empty class in the ledger reads as a measurement.
+DEFERRAL_KINDS: dict[str, str] = {
+    "function absent from the catalog":
+        "The model assigns a method to a function the catalog's own function "
+        "list does not carry, so there is nothing to call.",
+    "no emitted wrapper":
+        "The flat surface emits no wrapper for the function, so the layer has "
+        "no signature to build a method on. The reason sits in the flat "
+        "surface's own section.",
+    "return needs a class":
+        "The function answers a type no class stands for and no scalar, value "
+        "struct or array rule reads, so there is nothing to hand back.",
+    "argument needs a class":
+        "The function takes a type no class stands for and no marshalling rule "
+        "reads, so there is nothing for a caller to pass.",
+}
 
 GENERATOR_VERSION = "0.1.0"
 NAMESPACE = "MEOS.NET.Types"
@@ -314,6 +334,19 @@ class Generator:
         self.deferred: dict[str, list[str]] = defaultdict(list)
         self.class_member_names: dict[str, set[str]] = {}
         self.emitted = 0
+        self.ledger = gapledger.Ledger(
+            "object layer", "The object layer — `tools/objectgen.py`")
+        for kind, missing in DEFERRAL_KINDS.items():
+            self.ledger.kind(kind, missing, ("class", "member", "what is missing"))
+
+    def defer(self, cls: str, oo: str, kind: str, detail: str) -> None:
+        """Record a member the layer cannot emit, in both accounts at once.
+
+        ``--report`` reads the per-class list and ``GAP-LEDGER.md`` the ledger,
+        and a member reaching one and not the other is the silence this pair
+        exists to prevent, so one call feeds both."""
+        self.deferred[cls].append(f"{oo}: {detail}")
+        self.ledger.record(kind, cls, oo, detail)
 
     # -- marshalling ------------------------------------------------------
 
@@ -470,11 +503,13 @@ class Generator:
         fname = entry["function"]
         f = self.m.functions.get(fname)
         if f is None:
-            self.deferred[cls].append(f"{oo}: no catalog function {fname}")
+            self.defer(cls, oo, "function absent from the catalog",
+                       f"no catalog function {fname}")
             return None
         signature = codegen.SIGNATURES.get(fname)
         if signature is None:
-            self.deferred[cls].append(f"{oo}: {fname} has no emitted wrapper")
+            self.defer(cls, oo, "no emitted wrapper",
+                       f"{fname} has no emitted wrapper")
             return None
         wrapper_ret, wrapper_params = signature
         c_by_name = {
@@ -552,8 +587,8 @@ class Generator:
         else:
             ret = self.map_return(f, wrapper_ret)
         if ret is None:
-            self.deferred[cls].append(
-                f"{oo}: return {clean(f['returnType']['c'])} needs wrapping")
+            self.defer(cls, oo, "return needs a class",
+                       f"return {clean(f['returnType']['c'])} needs wrapping")
             return None
         ret_type, ret_expr = ret
 
@@ -611,15 +646,15 @@ class Generator:
                     scalar_arrays.append(pname)
                     args.append(f"{scratch(pname)}.AddrOfPinnedObject()")
                     continue
-                self.deferred[cls].append(
-                    f"{oo}: argument {pname} is an array of "
-                    f"{pointee}, which has no class")
+                self.defer(cls, oo, "argument needs a class",
+                           f"argument {pname} is an array of "
+                           f"{pointee}, which has no class")
                 return None
             mapped = self.map_param(c_by_name.get(pname, ""), cs_type, pname)
             if mapped is None:
-                self.deferred[cls].append(
-                    f"{oo}: argument {pname} of type "
-                    f"{clean(c_by_name.get(pname, cs_type))} needs marshalling")
+                self.defer(cls, oo, "argument needs a class",
+                           f"argument {pname} of type "
+                           f"{clean(c_by_name.get(pname, cs_type))} needs marshalling")
                 return None
             sig.append((mapped[0], pname))
             args.append(mapped[1])
@@ -1309,9 +1344,11 @@ def main() -> int:
     enums = gen.run_enums(repo_root / "MEOS.NET" / "Enums")
 
     classes = model.classes()
+    ledger_path = gen.ledger.write(repo_root, idl.get("sourceCommit", "unknown"))
     total_deferred = sum(len(v) for v in gen.deferred.values())
     print(f"objectgen: {len(classes)} classes, {gen.emitted} methods emitted, "
-          f"{total_deferred} deferred, {enums} enums", file=sys.stderr)
+          f"{total_deferred} deferred to {ledger_path.name}, {enums} enums",
+          file=sys.stderr)
     if args.report:
         for cls in classes:
             reasons = gen.deferred.get(cls, [])
