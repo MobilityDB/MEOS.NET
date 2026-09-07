@@ -9233,9 +9233,8 @@ namespace MEOS.NET.Functions
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool GeoIsPointSet(IntPtr gs);
 
-            [LibraryImport(DllPath, EntryPoint = "geo_meos_supported", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool GeoMeosSupported(IntPtr gs);
+            [LibraryImport(DllPath, EntryPoint = "geo_meos_coverage", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int GeoMeosCoverage(IntPtr gs);
 
             [LibraryImport(DllPath, EntryPoint = "geo_points_covered", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GeoPointsCovered(IntPtr pts, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool covered);
@@ -9276,9 +9275,8 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "tpoint_linear_restrict_geom", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TpointLinearRestrictGeom(IntPtr temp, IntPtr gs, [MarshalAs(UnmanagedType.U1)] bool atfunc);
 
-            [LibraryImport(DllPath, EntryPoint = "geom_meos_supported", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool GeomMeosSupported(IntPtr geom);
+            [LibraryImport(DllPath, EntryPoint = "geom_meos_coverage", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int GeomMeosCoverage(IntPtr geom);
 
             [LibraryImport(DllPath, EntryPoint = "stbox_nad", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial double StboxNad(IntPtr box1, IntPtr box2);
