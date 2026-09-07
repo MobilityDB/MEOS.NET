@@ -1,0 +1,14 @@
+; Every way MSTest lets a test stop asserting while the run still reports success.
+; BannedApiAnalyzers resolves each entry to a symbol and RS0030 is an ERROR here, so a
+; skip does not reach a reviewer, a CI log or a floor — it fails to compile.
+;
+; A skipped test asserts nothing and reads as a pass in the conclusion, which is the
+; whole reason the construct is banned rather than merely counted. Deleting a test is
+; then the only remaining way to stop running it, and that moves the total, which the
+; floor in the workflow refuses.
+;
+; Format: <documentation-comment ID>;<message shown at the error>.
+T:Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute;A test that does not run asserts nothing. Fix or delete the test — the suite carries no skips.
+M:Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Inconclusive;Inconclusive reports as skipped and reads as a pass. Assert the real outcome, or delete the test.
+M:Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Inconclusive(System.String);Inconclusive reports as skipped and reads as a pass. Assert the real outcome, or delete the test.
+M:Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Inconclusive(System.String,System.Object[]);Inconclusive reports as skipped and reads as a pass. Assert the real outcome, or delete the test.

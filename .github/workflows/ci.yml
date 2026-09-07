@@ -53,10 +53,24 @@ jobs:
       - name: Build solution
         run: dotnet build MEOS.NET.sln -c Release
 
+      # No --filter here: this run is the one the floor below is read from, so it
+      # collects the whole suite. The snapshot step above narrows deliberately and
+      # its result is not what any count is taken from.
       - name: Run tests
-        run: dotnet test MEOS.NET.sln -c Release --no-build
+        run: dotnet test MEOS.NET.sln -c Release --no-build 2>&1 | tee test.log
         env:
           LD_LIBRARY_PATH: ${{ steps.provision.outputs.libmeos-prefix }}/lib
+
+      # A skip is already impossible to WRITE — MEOS.NET.Tests/BannedSymbols.txt
+      # makes [Ignore] and Assert.Inconclusive compile errors. Deleting a test is
+      # the remaining way to stop running it, and that leaves no skip behind, so
+      # the total carries a floor. Raise it when the suite grows; lowering it is a
+      # deliberate act belonging to the commit that removes the tests.
+      - name: Refuse a skipped test and a shrinking suite
+        uses: MobilityDB/MEOS-API/.github/actions/check-test-outcome@master
+        with:
+          log: test.log
+          min-tests: "67"
 
       - name: Smoke-test the FFI
         run: dotnet run --project ExampleApp/ExampleApp.csproj -c Release --no-build
