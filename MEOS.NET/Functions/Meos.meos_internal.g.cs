@@ -356,20 +356,9 @@ namespace MEOS.NET.Functions
         public static bool EnsureIndexJoinOp(int op)
             => SafeExecution<bool>(() => Native.EnsureIndexJoinOp(op));
 
-        public static IntPtr[] BboxTemporalSplitBoxes(int bboxtype, ulong boxsize, IntPtr temp, int maxboxes)
-        {
-            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
-            try
-            {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.BboxTemporalSplitBoxes(bboxtype, boxsize, temp, maxboxes, _cnt));
-                int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
-                for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
-                return _out;
-            }
-            finally { Marshal.FreeHGlobal(_cnt); }
-        }
+        // GAP bbox_temporal_split_boxes: the catalog states this answers an array and
+        //     states no element type for it — `void *` names neither the type to read an
+        //     element as nor the width to step by
 
         public static bool SpanContains(IntPtr s1, IntPtr s2)
             => SafeExecution<bool>(() => Native.SpanContains(s1, s2));

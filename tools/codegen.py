@@ -18,6 +18,19 @@ import json
 import sys
 from pathlib import Path
 
+import gapledger
+
+# What this run could not read out of the catalog, or None when the surface is
+# generated for its signatures alone — objectgen.py does that, and keeps its own
+# account.  A fall-through below records into it rather than quietly emitting
+# the weaker form.
+LEDGER: gapledger.Ledger | None = None
+
+
+def _gap(kind: str, *row: str) -> None:
+    if LEDGER is not None:
+        LEDGER.record(kind, *row)
+
 # Default lets the OS loader resolve via LD_LIBRARY_PATH / DYLD_LIBRARY_PATH /
 # PATH; override with --dll-path to embed a specific library name or path.
 DLL_PATH = "meos"
@@ -226,14 +239,21 @@ def _struct_text_io(name: str, struct: dict) -> list[str]:
     io = struct.get("serialization") or {}
     reader, writer = io.get("in"), io.get("out")
     if not reader or not writer:
+        _gap("value text I/O", name,
+             f"serialization names in={reader!r} out={writer!r}")
         return []
     read_fn, write_fn = SIGNATURES.get(reader), SIGNATURES.get(writer)
     if not read_fn or not write_fn:
+        _gap("value text I/O", name,
+             f"{reader if not read_fn else writer} reaches no emitted wrapper")
         return []
     encoding = TYPE_ENCODINGS.get(name, {})
     read_args = _io_args(read_fn[1], "str", encoding.get("in_aux"))
     write_args = _io_args(write_fn[1], "ptr", encoding.get("out_aux"))
     if read_args is None or write_args is None:
+        _gap("value text I/O", name,
+             f"typeEncodings gives no default for an argument of "
+             f"{reader if read_args is None else writer}")
         return []
     return [
         "",
@@ -504,7 +524,10 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
     elif output_params and "lengthFrom" in output_params[0]:
         count_param = output_params[0]["lengthFrom"]["name"]
     else:
-        # No identifiable length source; fall back.
+        _gap("output array length", name,
+             "outputArrays names no lengthFrom and there is no arrayReturn to "
+             "take one from",
+             "the raw pointers, for the caller to size and read")
         return []
 
     # Build the wrapper-side parameter list, dropping output params and the
@@ -548,7 +571,10 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
     for _, _oa, elem, _strategy in output_locals:
         ret_pieces.append(f"{elem}[]")
     if not ret_pieces:
-        return []  # nothing to type; fall back.
+        _gap("output array length", name,
+             "outputArrays names no parameter this run could type",
+             "the raw pointers, for the caller to size and read")
+        return []
     if len(ret_pieces) == 1:
         ret_type = ret_pieces[0]
     else:
@@ -727,6 +753,21 @@ def _emit_simple_passthrough(f: dict, ext_params: str, ext_args: str, default_rt
     ]
 
 
+def _unstated_element(f: dict) -> str | None:
+    """Why the array this function answers cannot be read, or None.
+
+    ``void *`` names no element: it gives neither a type to read one as nor a
+    width to step by, and the catalog carries no other statement of either."""
+    if "arrayReturn" not in (f.get("shape") or {}):
+        return None
+    base, _stars = _strip_const_stars(f["returnType"]["canonical"])
+    if base != "void":
+        return None
+    return (f"the catalog states this answers an array and states no element "
+            f"type for it — `{f['returnType']['c']}` names neither the type to "
+            f"read an element as nor the width to step by")
+
+
 def gen_exposed_functions(funcs: list[dict], header: str | None = None) -> str:
     """Generate the public wrappers, for one MEOS header or for all of them.
 
@@ -757,11 +798,26 @@ def gen_exposed_functions(funcs: list[dict], header: str | None = None) -> str:
         ext_params, ext_args = _format_params(f)
         shape = f.get("shape", {})
 
+        unstated = _unstated_element(f)
+        if unstated:
+            # No wrapper, and no signature for the object layer to build on: a
+            # wrapper here would walk the array at a stride the catalog never
+            # states, which answers the values' own bytes as addresses.
+            _gap("array element type", f["name"], f["returnType"]["c"], unstated)
+            lines.extend(gapledger.stub_comment(f["name"], unstated))
+            lines.append("")
+            continue
+
         emitted: list[str] = []
         if "outputArrays" in shape:
             emitted = _emit_outputs_wrapper(f)
-        if not emitted and "arrayReturn" in shape and shape["arrayReturn"]["lengthFrom"]["kind"] in ("accessor", "param"):
-            emitted = _emit_array_return_wrapper(f, ext_params, ext_args)
+        if not emitted and "arrayReturn" in shape:
+            kind = shape["arrayReturn"]["lengthFrom"]["kind"]
+            if kind in ("accessor", "param"):
+                emitted = _emit_array_return_wrapper(f, ext_params, ext_args)
+            else:
+                _gap("array return length", f["name"], kind,
+                     "the pointer itself, with no length to read it by")
         if not emitted:
             emitted = _emit_simple_passthrough(f, ext_params, ext_args)
         lines.extend(emitted)
@@ -800,12 +856,125 @@ def _format_params(f: dict) -> tuple[str, str]:
     return ", ".join(params), ", ".join(arg_names)
 
 
+def _declare_kinds(ledger: gapledger.Ledger) -> None:
+    """Every class of gap this generator can reach, declared before it runs.
+
+    A class prints whether or not it fires, so an empty one reads as a site that
+    was watched rather than one nobody looked at."""
+    ledger.kind(
+        "parameter nullability",
+        "`shape.nullable` names the parameters a function accepts NULL for, and "
+        "the catalog carries no field saying a parameter is required. A pointer "
+        "parameter named in neither reaches the surface with its contract "
+        "unstated: the wrapper takes it, and nothing says whether zero is an "
+        "argument or a fault.",
+        ("function", "parameters whose nullability is unstated"))
+    ledger.kind(
+        "unreadable return",
+        "A pointer answer whose pointed-to type no emitted function accepts. The "
+        "caller receives an address and the catalog names nothing this binding "
+        "reaches that renders it, operates on it or takes it back.",
+        ("function", "api", "pointed-to type"))
+    ledger.kind(
+        "unmapped C type",
+        "A type crossing the boundary by value that the C# mapping does not "
+        "name. It reaches the surface as an opaque pointer, which reads an "
+        "address where the ABI passes a value.",
+        ("function", "site", "type"))
+    ledger.kind(
+        "struct field width",
+        "A struct the emitted surface names, holding a field whose type the "
+        "catalog gives no scalar width and no layout of its own, so the struct "
+        "cannot be laid out and stays an opaque pointer. A struct no emitted "
+        "function names is left out: this binding lays out no such struct, so "
+        "its width is a contract nothing here needs.",
+        ("struct", "field", "type"))
+    ledger.kind(
+        "array element type",
+        "A function the catalog states answers an array without stating what "
+        "the elements are. Emitted as a stub: a wrapper would walk the array at "
+        "a stride the catalog never states.",
+        ("function", "return", "what is missing"))
+    ledger.kind(
+        "array return length",
+        "An `arrayReturn` whose length the catalog states in a way this "
+        "generator reads no length out of.",
+        ("function", "lengthFrom kind", "emitted instead"))
+    ledger.kind(
+        "output array length",
+        "An `outputArrays` parameter with no length source, so the count of "
+        "what the callee wrote is unstated.",
+        ("function", "what is missing", "emitted instead"))
+    ledger.kind(
+        "value text I/O",
+        "A struct the binding carries as a value and the catalog names no "
+        "complete text reader and writer for, so the value states itself in no "
+        "form a caller can read or write.",
+        ("struct", "what is missing"))
+
+
+def survey(funcs: list[dict], idl: dict) -> None:
+    """Record the contracts the emitted surface is missing rather than wrong.
+
+    These are not fall-throughs — every function below reaches the surface — so
+    nothing in the emission path passes through them. They are read off the
+    catalog directly, which also makes each row's absence checkable against it."""
+    classed = {c.get("cType") for c in
+               idl.get("objectModel", {}).get("classes", {}).values()}
+    # Every emitted function is a route back into MEOS, internal ones included:
+    # the flat surface wraps the whole non-vendored catalog, so a type one of
+    # them takes is a type a caller of this binding can hand back.
+    accepted: set[str] = set()
+    named: set[str] = set()
+    for f in funcs:
+        for spot in [f["returnType"]] + list(f.get("params", [])):
+            base = _strip_const_stars(spot["canonical"])[0]
+            named.add(base)
+            named.add(_strip_const_stars(spot.get("c") or spot["cType"])[0])
+        for p in f.get("params", []):
+            accepted.add(_strip_const_stars(p["canonical"])[0])
+
+    for f in funcs:
+        stated = set((f.get("shape") or {}).get("nullable") or [])
+        unstated = [p["name"] for p in f.get("params", [])
+                    if "*" in p["canonical"] and p["name"] not in stated]
+        if unstated:
+            _gap("parameter nullability", f["name"], ", ".join(unstated))
+
+        for spot, site in ([(f["returnType"], "return")]
+                           + [(p, f"parameter {p['name']}") for p in f.get("params", [])]):
+            canonical = spot["canonical"].replace("const ", "").strip()
+            if ("*" in canonical or canonical.endswith("[]")
+                    or canonical in ENUM_TYPES or canonical in BY_VALUE_STRUCTS
+                    or canonical in SCALAR_MAP):
+                continue
+            _gap("unmapped C type", f["name"], site, canonical)
+
+        base, stars = _strip_const_stars(f["returnType"]["canonical"])
+        if (stars and base not in ("char", "void", "uint8_t") and base not in SCALAR_MAP
+                and base not in ENUM_TYPES and base not in BY_VALUE_STRUCTS
+                and base not in classed and base not in accepted):
+            _gap("unreadable return", f["name"], f.get("api", "?"), base)
+
+    for struct in idl.get("structs", []):
+        if struct["name"] not in named:
+            continue
+        for field in struct.get("fields") or []:
+            t = field["cType"].replace("const ", "").strip().split("[")[0].strip()
+            if (t.endswith("*") or t in _SCALAR_BYTES or t in STRUCTS
+                    or t in ENUM_TYPES):
+                continue
+            _gap("struct field width", struct["name"], field["name"], t)
+
+
 def main(idl_path: str, dll_path: str = DLL_PATH) -> None:
-    global DLL_PATH
+    global DLL_PATH, LEDGER
     DLL_PATH = dll_path
     with open(idl_path) as fh:
         idl = json.load(fh)
     configure(idl)
+    LEDGER = gapledger.Ledger("flat surface", "The flat surface — `tools/codegen.py`")
+    _declare_kinds(LEDGER)
     # A binding projects MEOS's own surface. The catalog marks the declarations
     # that reach it from a project MEOS vendors — pgPointCloud's `pc_api.h` and
     # `hashtable.h`, PostgreSQL's `pg_numeric.h` — and those are that project's
@@ -840,10 +1009,17 @@ def main(idl_path: str, dll_path: str = DLL_PATH) -> None:
             stale.unlink()
     struct_dir.mkdir(parents=True, exist_ok=True)
     (struct_dir / "MeosStructs.g.cs").write_text(gen_structs())
+
+    # The ledger comes last: it takes the emission's own fall-throughs, which
+    # are only known once every wrapper and every struct has been written.
+    survey(funcs, idl)
+    ledger_path = LEDGER.write(repo_root, idl.get("sourceCommit", "unknown"))
+
     vendored = len(idl["functions"]) - len(funcs)
     print(f"Wrote {len(funcs)} functions across {len(grouped)} headers "
           f"to MEOS.NET/Functions/, {len(BY_VALUE_STRUCTS)} by-value structs, "
-          f"{vendored} vendored declarations left to their own project",
+          f"{vendored} vendored declarations left to their own project, "
+          f"{LEDGER.total} gaps to {ledger_path.name}",
           file=sys.stderr)
 
 
