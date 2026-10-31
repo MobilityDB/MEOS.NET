@@ -702,10 +702,27 @@ def _emit_array_return_wrapper(f: dict, ext_params: str, ext_args: str) -> list[
         lines.append("        }")
         return lines
 
+    count_name = csharp_param_name(length_meta["name"])
+    count_param = next(p for p in f["params"] if csharp_param_name(p["name"]) == count_name)
+    if "*" not in count_param["cType"]:
+        # kind == "param" with a by-value ``int count``: the returned array has
+        # the length the caller passes (``STBox *stboxarr_round(const STBox
+        # *boxarr, int count, int maxdd)``), so the parameter stays in the public
+        # signature, as GoMEOS keeps it, and is the length the copy reads.
+        SIGNATURES[name] = (ret_type, _typed_params(f))
+        lines = [
+            f"        public static {ret_type} {public_name(name)}({ext_params})",
+            "        {",
+            f"            IntPtr _p = SafeExecution<IntPtr>(() => Native.{public_name(name)}({ext_args}));",
+            f"            int _n = {count_name};",
+        ]
+        lines += _copy("            ")
+        lines.append("        }")
+        return lines
+
     # kind == "param": the length is written back through the function's own
     # ``int *count`` output.  Allocate it, hide it from the public signature,
     # and read the count back after the call.
-    count_name = csharp_param_name(length_meta["name"])
     pub = ", ".join(
         f"{csharp_param_type(p['cType'], p['canonical'])} {csharp_param_name(p['name'])}"
         for p in f["params"] if csharp_param_name(p["name"]) != count_name)
