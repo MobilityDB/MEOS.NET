@@ -29,6 +29,9 @@ namespace MEOS.NET.Types
         public string AsGeoposeStreamElement(Temporal inst, int precision)
             => Meos.TposeAsGeoposeStreamElement(this.Ptr, inst.Ptr, precision);
 
+        public string AsGeoposeStreamHeader(int precision)
+            => Meos.TposeAsGeoposeStreamHeader(this.Ptr, precision);
+
         public Temporal? AtElevation(Span s)
             => MEOSFactory.WrapTemporal(Meos.TposeAtElevation(this.Ptr, s.Ptr));
 
@@ -77,6 +80,18 @@ namespace MEOS.NET.Types
         public Temporal? Roll()
             => MEOSFactory.WrapTemporal(Meos.TposeRoll(this.Ptr));
 
+        public Temporal? Rotate(double angle, double x0, double y0)
+            => MEOSFactory.WrapTemporal(Meos.TposeRotate(this.Ptr, angle, x0, y0));
+
+        public Temporal? RotateX(double angle)
+            => MEOSFactory.WrapTemporal(Meos.TposeRotateX(this.Ptr, angle));
+
+        public Temporal? RotateY(double angle)
+            => MEOSFactory.WrapTemporal(Meos.TposeRotateY(this.Ptr, angle));
+
+        public Temporal? RotateZ(double angle)
+            => MEOSFactory.WrapTemporal(Meos.TposeRotateZ(this.Ptr, angle));
+
         public Temporal? Speed()
             => MEOSFactory.WrapTemporal(Meos.TposeSpeed(this.Ptr));
 
@@ -88,6 +103,19 @@ namespace MEOS.NET.Types
 
         public Geo? Trajectory()
             => MEOSFactory.WrapGeo(Meos.TposeTrajectory(this.Ptr));
+
+        public Temporal? Translate(double deltax, double deltay, double deltaz)
+            => MEOSFactory.WrapTemporal(Meos.TposeTranslate(this.Ptr, deltax, deltay, deltaz));
+
+        public (SpanSet?[], Pose?[]) Unnest()
+        {
+            var _answered = Meos.TposeUnnest(this.Ptr);
+
+            return (MEOSFactory.WrapSpanSetArray(_answered.Item1), MEOSFactory.WrapPoseArray(_answered.Item2));
+        }
+
+        public Pose? Value()
+            => MEOSFactory.WrapPose(Meos.TposeValue(this.Ptr));
 
         public Pose? ValueAtTimestamptz(DateTime t, bool strict)
         {

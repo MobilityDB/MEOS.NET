@@ -21,12 +21,46 @@ namespace MEOS.NET.Types
         public double Area(bool spheroid)
             => Meos.StboxArea(this.Ptr, spheroid);
 
+        public byte[]? AsEWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.StboxAsEwkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public string AsHEXWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
             {
                 return Meos.StboxAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public string AsHexewkb(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.StboxAsHexewkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -149,6 +183,27 @@ namespace MEOS.NET.Types
             {
                 Marshal.FreeHGlobal(_shift);
                 Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public byte[]? Sortkey()
+        {
+            IntPtr _size = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.StboxSortkey(this.Ptr, _size);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size);
             }
         }
 

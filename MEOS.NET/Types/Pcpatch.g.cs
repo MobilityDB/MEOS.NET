@@ -23,8 +23,17 @@ namespace MEOS.NET.Types
         public Pcpatch? Copy()
             => MEOSFactory.WrapPcpatch(Meos.PcpatchCopy(this.Ptr));
 
+        public bool Eq(Pcpatch pa2)
+            => Meos.PcpatchEq(this.Ptr, pa2.Ptr);
+
+        public bool Ge(Pcpatch pa2)
+            => Meos.PcpatchGe(this.Ptr, pa2.Ptr);
+
         public uint GetPcid()
             => Meos.PcpatchGetPcid(this.Ptr);
+
+        public bool Gt(Pcpatch pa2)
+            => Meos.PcpatchGt(this.Ptr, pa2.Ptr);
 
         public uint Hash()
             => Meos.PcpatchHash(this.Ptr);
@@ -34,6 +43,18 @@ namespace MEOS.NET.Types
 
         public string HexOut(int maxdd)
             => Meos.PcpatchHexOut(this.Ptr, maxdd);
+
+        public bool Le(Pcpatch pa2)
+            => Meos.PcpatchLe(this.Ptr, pa2.Ptr);
+
+        public bool Lt(Pcpatch pa2)
+            => Meos.PcpatchLt(this.Ptr, pa2.Ptr);
+
+        public int MemSize()
+            => Meos.PcpatchMemSize(this.Ptr);
+
+        public bool Ne(Pcpatch pa2)
+            => Meos.PcpatchNe(this.Ptr, pa2.Ptr);
 
         public uint Npoints()
             => Meos.PcpatchNpoints(this.Ptr);
@@ -50,8 +71,8 @@ namespace MEOS.NET.Types
         public Set? ToSet()
             => MEOSFactory.WrapSet(Meos.PcpatchToSet(this.Ptr));
 
-        public TPCBox? ToTpcbox(int srid)
-            => MEOSFactory.WrapTPCBox(Meos.PcpatchToTpcbox(this.Ptr, srid));
+        public TPCBox? ToTpcbox()
+            => MEOSFactory.WrapTPCBox(Meos.PcpatchToTpcbox(this.Ptr));
 
         public static Pcpatch? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapPcpatch(Meos.PcpatchFromHexwkb(hexwkb));

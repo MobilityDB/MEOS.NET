@@ -47,8 +47,8 @@ namespace MEOS.NET.Types
             }
         }
 
-        public string AsMFJSON(bool with_bbox, int flags, int precision, string srs)
-            => Meos.TemporalAsMfjson(this.Ptr, with_bbox, flags, precision, srs);
+        public string AsMFJSON(int option, int flags, int precision, string srs)
+            => Meos.TemporalAsMfjson(this.Ptr, option, flags, precision, srs);
 
         public Temporal? AsTinstant()
             => MEOSFactory.WrapTemporal(Meos.TemporalAsTinstant(this.Ptr));
@@ -101,8 +101,8 @@ namespace MEOS.NET.Types
         public Temporal? AtValues(Set set)
             => MEOSFactory.WrapTemporal(Meos.TemporalAtValues(this.Ptr, set.Ptr));
 
-        public double AverageHausdorffDistance(Temporal temp2)
-            => Meos.TemporalAverageHausdorffDistance(this.Ptr, temp2.Ptr);
+        public double AverageHausdorffDistance(Temporal temp2, bool spheroid)
+            => Meos.TemporalAverageHausdorffDistance(this.Ptr, temp2.Ptr, spheroid);
 
         public string? BasetypeName()
             => Meos.TemporalBasetypeName(this.Ptr);
@@ -134,11 +134,11 @@ namespace MEOS.NET.Types
         public Interval? Duration(bool boundspan)
             => MEOSConvert.ToStruct<Interval>(Meos.TemporalDuration(this.Ptr, boundspan));
 
-        public double DyntimewarpDistance(Temporal temp2)
-            => Meos.TemporalDyntimewarpDistance(this.Ptr, temp2.Ptr);
+        public double DyntimewarpDistance(Temporal temp2, bool spheroid)
+            => Meos.TemporalDyntimewarpDistance(this.Ptr, temp2.Ptr, spheroid);
 
-        public Match[] DyntimewarpPath(Temporal temp2)
-            => MEOSConvert.ToStructArray<Match>(Meos.TemporalDyntimewarpPath(this.Ptr, temp2.Ptr));
+        public Match[] DyntimewarpPath(Temporal temp2, bool spheroid)
+            => MEOSConvert.ToStructArray<Match>(Meos.TemporalDyntimewarpPath(this.Ptr, temp2.Ptr, spheroid));
 
         public Temporal? EndInstant()
             => MEOSFactory.WrapTemporal(Meos.TemporalEndInstant(this.Ptr));
@@ -155,11 +155,11 @@ namespace MEOS.NET.Types
         public Temporal? ExtKalmanFilter(double gate, double q, double variance, bool to_drop)
             => MEOSFactory.WrapTemporal(Meos.TemporalExtKalmanFilter(this.Ptr, gate, q, variance, to_drop));
 
-        public double FrechetDistance(Temporal temp2)
-            => Meos.TemporalFrechetDistance(this.Ptr, temp2.Ptr);
+        public double FrechetDistance(Temporal temp2, bool spheroid)
+            => Meos.TemporalFrechetDistance(this.Ptr, temp2.Ptr, spheroid);
 
-        public Match[] FrechetPath(Temporal temp2)
-            => MEOSConvert.ToStructArray<Match>(Meos.TemporalFrechetPath(this.Ptr, temp2.Ptr));
+        public Match[] FrechetPath(Temporal temp2, bool spheroid)
+            => MEOSConvert.ToStructArray<Match>(Meos.TemporalFrechetPath(this.Ptr, temp2.Ptr, spheroid));
 
         public bool Ge(Temporal temp2)
             => Meos.TemporalGe(this.Ptr, temp2.Ptr);
@@ -173,8 +173,8 @@ namespace MEOS.NET.Types
         public ulong HashExtended(ulong seed)
             => Meos.TemporalHashExtended(this.Ptr, seed);
 
-        public double HausdorffDistance(Temporal temp2)
-            => Meos.TemporalHausdorffDistance(this.Ptr, temp2.Ptr);
+        public double HausdorffDistance(Temporal temp2, bool spheroid)
+            => Meos.TemporalHausdorffDistance(this.Ptr, temp2.Ptr, spheroid);
 
         public Temporal? Insert(Temporal temp2, bool connect)
             => MEOSFactory.WrapTemporal(Meos.TemporalInsert(this.Ptr, temp2.Ptr, connect));
@@ -188,8 +188,8 @@ namespace MEOS.NET.Types
         public string? Interp()
             => Meos.TemporalInterp(this.Ptr);
 
-        public double LcssDistance(Temporal temp2, double epsilon)
-            => Meos.TemporalLcssDistance(this.Ptr, temp2.Ptr, epsilon);
+        public double LcssDistance(Temporal temp2, double epsilon, bool spheroid)
+            => Meos.TemporalLcssDistance(this.Ptr, temp2.Ptr, epsilon, spheroid);
 
         public bool Le(Temporal temp2)
             => Meos.TemporalLe(this.Ptr, temp2.Ptr);
@@ -202,6 +202,9 @@ namespace MEOS.NET.Types
 
         public Temporal? MaxInstant()
             => MEOSFactory.WrapTemporal(Meos.TemporalMaxInstant(this.Ptr));
+
+        public int MemSize()
+            => Meos.TemporalMemSize(this.Ptr);
 
         public Temporal? Merge(Temporal temp2)
             => MEOSFactory.WrapTemporal(Meos.TemporalMerge(this.Ptr, temp2.Ptr));
@@ -339,6 +342,27 @@ namespace MEOS.NET.Types
             }
         }
 
+        public byte[]? Sortkey()
+        {
+            IntPtr _size = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.TemporalSortkey(this.Ptr, _size);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size);
+            }
+        }
+
         public Span?[] Spans()
             => MEOSFactory.WrapSpanArray(Meos.TemporalSpans(this.Ptr));
 
@@ -377,13 +401,13 @@ namespace MEOS.NET.Types
         public SpanSet? Time()
             => MEOSFactory.WrapSpanSet(Meos.TemporalTime(this.Ptr));
 
-        public Span?[] TimeBins(Interval duration, DateTime origin)
+        public Span?[] TimeBins(Interval duration, DateTime torigin, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
             {
                 Marshal.StructureToPtr(duration, _duration, false);
-                return MEOSFactory.WrapSpanArray(Meos.TemporalTimeBins(this.Ptr, _duration, MEOSConvert.ToTimestampTz(origin)));
+                return MEOSFactory.WrapSpanArray(Meos.TemporalTimeBins(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), border_inc));
             }
             finally
             {
@@ -391,13 +415,13 @@ namespace MEOS.NET.Types
             }
         }
 
-        public (Temporal?[], DateTime[]) TimeSplit(Interval duration, DateTime torigin)
+        public (Temporal?[], DateTime[]) TimeSplit(Interval duration, DateTime torigin, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
             {
                 Marshal.StructureToPtr(duration, _duration, false);
-                var _answered = Meos.TemporalTimeSplit(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin));
+                var _answered = Meos.TemporalTimeSplit(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), border_inc);
 
                 return (MEOSFactory.WrapTemporalArray(_answered.Item1), MEOSConvert.ToDateTimeArray(_answered.Item2));
             }
@@ -431,13 +455,13 @@ namespace MEOS.NET.Types
         public Span? ToTstzspan()
             => MEOSFactory.WrapSpan(Meos.TemporalToTstzspan(this.Ptr));
 
-        public Temporal? Tprecision(Interval duration, DateTime origin)
+        public Temporal? Tprecision(Interval duration, DateTime torigin)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
             {
                 Marshal.StructureToPtr(duration, _duration, false);
-                return MEOSFactory.WrapTemporal(Meos.TemporalTprecision(this.Ptr, _duration, MEOSConvert.ToTimestampTz(origin)));
+                return MEOSFactory.WrapTemporal(Meos.TemporalTprecision(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin)));
             }
             finally
             {
@@ -445,13 +469,13 @@ namespace MEOS.NET.Types
             }
         }
 
-        public Temporal? Tsample(Interval duration, DateTime origin, InterpType interp)
+        public Temporal? Tsample(Interval duration, DateTime torigin, InterpType interp)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
             {
                 Marshal.StructureToPtr(duration, _duration, false);
-                return MEOSFactory.WrapTemporal(Meos.TemporalTsample(this.Ptr, _duration, MEOSConvert.ToTimestampTz(origin), (int) interp));
+                return MEOSFactory.WrapTemporal(Meos.TemporalTsample(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), (int) interp));
             }
             finally
             {
@@ -464,6 +488,9 @@ namespace MEOS.NET.Types
 
         public bool UpperInc()
             => Meos.TemporalUpperInc(this.Ptr);
+
+        public Set? Valueset()
+            => MEOSFactory.WrapSet(Meos.TemporalValueset(this.Ptr));
 
         public static Temporal? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapTemporal(Meos.TemporalFromHexwkb(hexwkb));

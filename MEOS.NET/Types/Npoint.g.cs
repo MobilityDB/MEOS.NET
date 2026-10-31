@@ -18,6 +18,27 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out(15);
 
+        public byte[]? AsEWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.NpointAsEwkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public string AsEWKT(int maxdd)
             => Meos.NpointAsEwkt(this.Ptr, maxdd);
 
@@ -27,6 +48,19 @@ namespace MEOS.NET.Types
             try
             {
                 return Meos.NpointAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public string AsHexewkb(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.NpointAsHexewkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -60,6 +94,9 @@ namespace MEOS.NET.Types
 
         public int Cmp(Npoint np2)
             => Meos.NpointCmp(this.Ptr, np2.Ptr);
+
+        public Npoint? Copy()
+            => MEOSFactory.WrapNpoint(Meos.NpointCopy(this.Ptr));
 
         public bool Eq(Npoint np2)
             => Meos.NpointEq(this.Ptr, np2.Ptr);
@@ -99,9 +136,6 @@ namespace MEOS.NET.Types
 
         public int SRID()
             => Meos.NpointSrid(this.Ptr);
-
-        public bool Same(Npoint np2)
-            => Meos.NpointSame(this.Ptr, np2.Ptr);
 
         public STBox? TimestamptzToStbox(DateTime t)
             => MEOSFactory.WrapSTBox(Meos.NpointTimestamptzToStbox(this.Ptr, MEOSConvert.ToTimestampTz(t)));

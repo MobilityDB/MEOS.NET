@@ -125,6 +125,41 @@ namespace MEOS.NET.Types
             }
         }
 
+        public byte[]? Sortkey()
+        {
+            IntPtr _size = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.TboxSortkey(this.Ptr, _size);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size);
+            }
+        }
+
+        public TBox?[] TimeTiles(Interval duration, DateTime torigin, bool border_inc)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapTBoxArray(Meos.TboxTimeTiles(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), border_inc));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
         public DateTime? Tmax()
         {
             IntPtr _result = Marshal.AllocHGlobal(8);
@@ -294,6 +329,37 @@ namespace MEOS.NET.Types
             finally
             {
                 _wkb.Free();
+            }
+        }
+
+        public static TBox? GetTimeTile(DateTime t, Interval duration, DateTime torigin)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapTBox(Meos.TboxGetTimeTile(MEOSConvert.ToTimestampTz(t), _duration, MEOSConvert.ToTimestampTz(torigin)));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public static TBox? GetValueTile(double value, double vsize, double vorigin)
+            => MEOSFactory.WrapTBox(Meos.TboxGetValueTile(value, vsize, vorigin));
+
+        public static TBox? GetValueTimeTile(double value, DateTime t, double vsize, Interval duration, double vorigin, DateTime torigin)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapTBox(Meos.TboxGetValueTimeTile(value, MEOSConvert.ToTimestampTz(t), vsize, _duration, vorigin, MEOSConvert.ToTimestampTz(torigin)));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
             }
         }
 

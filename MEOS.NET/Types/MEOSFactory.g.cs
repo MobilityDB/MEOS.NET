@@ -377,6 +377,30 @@ namespace MEOS.NET.Types
             return wrapped;
         }
 
+        /// <summary>The value at <paramref name="ptr"/> as the Raster
+        /// class the model gives its runtime type.</summary>
+        public static Raster? WrapRaster(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new Raster(ptr);
+        }
+
+        /// <summary>Every element of a C array of Raster pointers, wrapped.</summary>
+        public static Raster?[] WrapRasterArray(IntPtr[] ptrs)
+        {
+            Raster?[] wrapped = new Raster?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapRaster(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
         /// <summary>The value at <paramref name="ptr"/> as the SPNNCursor
         /// class the model gives its runtime type.</summary>
         public static SPNNCursor? WrapSPNNCursor(IntPtr ptr)

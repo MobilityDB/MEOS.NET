@@ -12,9 +12,6 @@ namespace MEOS.NET.Functions
         public static IntPtr MeosProjGetContext()
             => SafeExecution<IntPtr>(() => Native.MeosProjGetContext());
 
-        public static IntPtr GeosGetContext()
-            => SafeExecution<IntPtr>(() => Native.GeosGetContext());
-
         public static long DatumGeoRound(long value, long size)
             => SafeExecution<long>(() => Native.DatumGeoRound(value, size));
 
@@ -39,11 +36,11 @@ namespace MEOS.NET.Functions
         public static void SpatialsetSetStbox(IntPtr set, IntPtr result)
             => SafeExecution(() => Native.SpatialsetSetStbox(set, result));
 
-        public static long DistanceSpatialsetValue(IntPtr s, long value)
-            => SafeExecution<long>(() => Native.DistanceSpatialsetValue(s, value));
+        public static long DistanceSpatialsetValue(IntPtr s, long value, bool spheroid)
+            => SafeExecution<long>(() => Native.DistanceSpatialsetValue(s, value, spheroid));
 
-        public static long DistanceSpatialsetSpatialset(IntPtr s1, IntPtr s2)
-            => SafeExecution<long>(() => Native.DistanceSpatialsetSpatialset(s1, s2));
+        public static long DistanceSpatialsetSpatialset(IntPtr s1, IntPtr s2, bool spheroid)
+            => SafeExecution<long>(() => Native.DistanceSpatialsetSpatialset(s1, s2, spheroid));
 
         public static void StboxSetBox3d(IntPtr box, IntPtr result)
             => SafeExecution(() => Native.StboxSetBox3d(box, result));
@@ -138,6 +135,9 @@ namespace MEOS.NET.Functions
         public static IntPtr StboxGeo(IntPtr box)
             => SafeExecution<IntPtr>(() => Native.StboxGeo(box));
 
+        public static IntPtr StboxSortkeyIntl(IntPtr box, IntPtr size)
+            => SafeExecution<IntPtr>(() => Native.StboxSortkeyIntl(box, size));
+
         public static IntPtr TgeogpointinstFromMfjson(IntPtr mfjson, int srid)
             => SafeExecution<IntPtr>(() => Native.TgeogpointinstFromMfjson(mfjson, srid));
 
@@ -225,6 +225,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TgeoRestrictElevation(IntPtr temp, IntPtr s, bool atfunc)
             => SafeExecution<IntPtr>(() => Native.TgeoRestrictElevation(temp, s, atfunc));
 
+        public static IntPtr TgeoRestrictElevationIntl(IntPtr temp, IntPtr s, bool atfunc)
+            => SafeExecution<IntPtr>(() => Native.TgeoRestrictElevationIntl(temp, s, atfunc));
+
         public static IntPtr TgeoRestrictGeom(IntPtr temp, IntPtr gs, bool atfunc)
             => SafeExecution<IntPtr>(() => Native.TgeoRestrictGeom(temp, gs, atfunc));
 
@@ -309,8 +312,8 @@ namespace MEOS.NET.Functions
         public static int GeomMeosCoverage(IntPtr geom)
             => SafeExecution<int>(() => Native.GeomMeosCoverage(geom));
 
-        public static double StboxNad(IntPtr box1, IntPtr box2)
-            => SafeExecution<double>(() => Native.StboxNad(box1, box2));
+        public static double StboxNad(IntPtr box1, IntPtr box2, bool spheroid)
+            => SafeExecution<double>(() => Native.StboxNad(box1, box2, spheroid));
 
         public static int SpatialSrid(long d, int basetype)
             => SafeExecution<int>(() => Native.SpatialSrid(d, basetype));
@@ -324,14 +327,14 @@ namespace MEOS.NET.Functions
         public static IntPtr TpointseqAzimuth(IntPtr seq)
             => SafeExecution<IntPtr>(() => Native.TpointseqAzimuth(seq));
 
-        public static IntPtr TpointseqCumulativeLength(IntPtr seq, double prevlength)
-            => SafeExecution<IntPtr>(() => Native.TpointseqCumulativeLength(seq, prevlength));
+        public static IntPtr TpointseqCumulativeLength(IntPtr seq, double prevlength, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.TpointseqCumulativeLength(seq, prevlength, spheroid));
 
         public static bool TpointseqIsSimple(IntPtr seq)
             => SafeExecution<bool>(() => Native.TpointseqIsSimple(seq));
 
-        public static double TpointseqLength(IntPtr seq)
-            => SafeExecution<double>(() => Native.TpointseqLength(seq));
+        public static double TpointseqLength(IntPtr seq, bool spheroid)
+            => SafeExecution<double>(() => Native.TpointseqLength(seq, spheroid));
 
         public static IntPtr TpointseqLinearTrajectory(IntPtr seq, bool unary_union)
             => SafeExecution<IntPtr>(() => Native.TpointseqLinearTrajectory(seq, unary_union));
@@ -369,14 +372,14 @@ namespace MEOS.NET.Functions
         public static IntPtr TpointseqsetAzimuth(IntPtr ss)
             => SafeExecution<IntPtr>(() => Native.TpointseqsetAzimuth(ss));
 
-        public static IntPtr TpointseqsetCumulativeLength(IntPtr ss)
-            => SafeExecution<IntPtr>(() => Native.TpointseqsetCumulativeLength(ss));
+        public static IntPtr TpointseqsetCumulativeLength(IntPtr ss, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.TpointseqsetCumulativeLength(ss, spheroid));
 
         public static bool TpointseqsetIsSimple(IntPtr ss)
             => SafeExecution<bool>(() => Native.TpointseqsetIsSimple(ss));
 
-        public static double TpointseqsetLength(IntPtr ss)
-            => SafeExecution<double>(() => Native.TpointseqsetLength(ss));
+        public static double TpointseqsetLength(IntPtr ss, bool spheroid)
+            => SafeExecution<double>(() => Native.TpointseqsetLength(ss, spheroid));
 
         public static IntPtr[] TgeoseqsetStboxes(IntPtr ss)
         {

@@ -75,6 +75,9 @@ namespace MEOS.NET.Types
         public bool Lt(Set s2)
             => Meos.SetLt(this.Ptr, s2.Ptr);
 
+        public int MemSize()
+            => Meos.SetMemSize(this.Ptr);
+
         public bool Ne(Set s2)
             => Meos.SetNe(this.Ptr, s2.Ptr);
 
@@ -83,6 +86,27 @@ namespace MEOS.NET.Types
 
         public Set? Round(int maxdd)
             => MEOSFactory.WrapSet(Meos.SetRound(this.Ptr, maxdd));
+
+        public byte[]? Sortkey()
+        {
+            IntPtr _size = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.SetSortkey(this.Ptr, _size);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size);
+            }
+        }
 
         public Span?[] Spans()
             => MEOSFactory.WrapSpanArray(Meos.SetSpans(this.Ptr));

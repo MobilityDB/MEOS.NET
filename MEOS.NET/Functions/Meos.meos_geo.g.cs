@@ -54,14 +54,14 @@ namespace MEOS.NET.Functions
         public static string GeoOut(IntPtr gs)
             => SafeExecution<string>(() => Native.GeoOut(gs));
 
-        public static IntPtr GeogFromHexewkb(string wkt)
-            => SafeExecution<IntPtr>(() => Native.GeogFromHexewkb(wkt));
+        public static IntPtr GeogFromHexewkb(string hexwkb)
+            => SafeExecution<IntPtr>(() => Native.GeogFromHexewkb(hexwkb));
 
         public static IntPtr GeogIn(string str, int typmod)
             => SafeExecution<IntPtr>(() => Native.GeogIn(str, typmod));
 
-        public static IntPtr GeomFromHexewkb(string wkt)
-            => SafeExecution<IntPtr>(() => Native.GeomFromHexewkb(wkt));
+        public static IntPtr GeomFromHexewkb(string hexwkb)
+            => SafeExecution<IntPtr>(() => Native.GeomFromHexewkb(hexwkb));
 
         public static IntPtr GeomIn(string str, int typmod)
             => SafeExecution<IntPtr>(() => Native.GeomIn(str, typmod));
@@ -92,6 +92,21 @@ namespace MEOS.NET.Functions
 
         public static bool GeoIsUnitary(IntPtr gs)
             => SafeExecution<bool>(() => Native.GeoIsUnitary(gs));
+
+        public static int GeoMemSize(IntPtr gs)
+            => SafeExecution<int>(() => Native.GeoMemSize(gs));
+
+        public static double GeoArea(IntPtr gs, bool spheroid)
+            => SafeExecution<double>(() => Native.GeoArea(gs, spheroid));
+
+        public static IntPtr GeoCentroid(IntPtr gs, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.GeoCentroid(gs, spheroid));
+
+        public static double GeoLength(IntPtr gs, bool spheroid)
+            => SafeExecution<double>(() => Native.GeoLength(gs, spheroid));
+
+        public static double GeoPerimeter(IntPtr gs, bool spheroid)
+            => SafeExecution<double>(() => Native.GeoPerimeter(gs, spheroid));
 
         public static string? GeoTypename(int type)
             => Marshal.PtrToStringUTF8(SafeExecution<IntPtr>(() => Native.GeoTypename(type)));
@@ -126,11 +141,44 @@ namespace MEOS.NET.Functions
         public static IntPtr LinePointN(IntPtr geom, int n)
             => SafeExecution<IntPtr>(() => Native.LinePointN(geom, n));
 
+        public static IntPtr GeoAffine(IntPtr gs, double a, double b, double c, double d, double e, double f, double g, double h, double i, double xoff, double yoff, double zoff)
+            => SafeExecution<IntPtr>(() => Native.GeoAffine(gs, a, b, c, d, e, f, g, h, i, xoff, yoff, zoff));
+
         public static IntPtr GeoReverse(IntPtr gs)
             => SafeExecution<IntPtr>(() => Native.GeoReverse(gs));
 
+        public static IntPtr GeoRotate(IntPtr gs, double angle, double x0, double y0)
+            => SafeExecution<IntPtr>(() => Native.GeoRotate(gs, angle, x0, y0));
+
+        public static IntPtr GeoRotateGeo(IntPtr gs, double angle, IntPtr origin)
+            => SafeExecution<IntPtr>(() => Native.GeoRotateGeo(gs, angle, origin));
+
+        public static IntPtr GeoRotateX(IntPtr gs, double angle)
+            => SafeExecution<IntPtr>(() => Native.GeoRotateX(gs, angle));
+
+        public static IntPtr GeoRotateY(IntPtr gs, double angle)
+            => SafeExecution<IntPtr>(() => Native.GeoRotateY(gs, angle));
+
+        public static IntPtr GeoRotateZ(IntPtr gs, double angle)
+            => SafeExecution<IntPtr>(() => Native.GeoRotateZ(gs, angle));
+
         public static IntPtr GeoRound(IntPtr gs, int maxdd)
             => SafeExecution<IntPtr>(() => Native.GeoRound(gs, maxdd));
+
+        public static IntPtr GeoScale(IntPtr gs, double xfactor, double yfactor, double zfactor)
+            => SafeExecution<IntPtr>(() => Native.GeoScale(gs, xfactor, yfactor, zfactor));
+
+        public static IntPtr GeoScaleGeo(IntPtr gs, IntPtr scale, IntPtr sorigin)
+            => SafeExecution<IntPtr>(() => Native.GeoScaleGeo(gs, scale, sorigin));
+
+        public static IntPtr GeoSegmentize(IntPtr gs, double max_seg_length)
+            => SafeExecution<IntPtr>(() => Native.GeoSegmentize(gs, max_seg_length));
+
+        public static IntPtr GeoTranslate(IntPtr gs, double deltax, double deltay, double deltaz)
+            => SafeExecution<IntPtr>(() => Native.GeoTranslate(gs, deltax, deltay, deltaz));
+
+        public static IntPtr GeoTransscale(IntPtr gs, double deltax, double deltay, double xfactor, double yfactor)
+            => SafeExecution<IntPtr>(() => Native.GeoTransscale(gs, deltax, deltay, xfactor, yfactor));
 
         public static IntPtr GeoSetSrid(IntPtr gs, int srid)
             => SafeExecution<IntPtr>(() => Native.GeoSetSrid(gs, srid));
@@ -141,8 +189,8 @@ namespace MEOS.NET.Functions
         public static IntPtr GeoTransform(IntPtr geom, int srid_to)
             => SafeExecution<IntPtr>(() => Native.GeoTransform(geom, srid_to));
 
-        public static IntPtr GeoTransformPipeline(IntPtr gs, string pipeline, int srid_to, bool is_forward)
-            => SafeExecution<IntPtr>(() => Native.GeoTransformPipeline(gs, pipeline, srid_to, is_forward));
+        public static IntPtr GeoTransformPipeline(IntPtr gs, string pipelinestr, int srid, bool is_forward)
+            => SafeExecution<IntPtr>(() => Native.GeoTransformPipeline(gs, pipelinestr, srid, is_forward));
 
         public static IntPtr GeoCollectGarray(IntPtr gsarr, int count)
             => SafeExecution<IntPtr>(() => Native.GeoCollectGarray(gsarr, count));
@@ -207,11 +255,14 @@ namespace MEOS.NET.Functions
         public static IntPtr GeomIntersection2dColl(IntPtr gs1, IntPtr gs2)
             => SafeExecution<IntPtr>(() => Native.GeomIntersection2dColl(gs1, gs2));
 
-        public static IntPtr GeomMinBoundingRadius(IntPtr geom, IntPtr radius)
-            => SafeExecution<IntPtr>(() => Native.GeomMinBoundingRadius(geom, radius));
+        public static IntPtr GeomMinimumBoundingRadius(IntPtr geom, IntPtr radius)
+            => SafeExecution<IntPtr>(() => Native.GeomMinimumBoundingRadius(geom, radius));
 
         public static IntPtr GeomOrientedEnvelope(IntPtr gs)
             => SafeExecution<IntPtr>(() => Native.GeomOrientedEnvelope(gs));
+
+        public static IntPtr GeomShortestline(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<IntPtr>(() => Native.GeomShortestline(gs1, gs2));
 
         public static IntPtr GeomShortestline2d(IntPtr gs1, IntPtr gs2)
             => SafeExecution<IntPtr>(() => Native.GeomShortestline2d(gs1, gs2));
@@ -219,8 +270,14 @@ namespace MEOS.NET.Functions
         public static IntPtr GeomShortestline3d(IntPtr gs1, IntPtr gs2)
             => SafeExecution<IntPtr>(() => Native.GeomShortestline3d(gs1, gs2));
 
-        public static IntPtr GeomUnaryUnion(IntPtr gs, double prec)
-            => SafeExecution<IntPtr>(() => Native.GeomUnaryUnion(gs, prec));
+        public static IntPtr GeomSymdifference2d(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<IntPtr>(() => Native.GeomSymdifference2d(gs1, gs2));
+
+        public static IntPtr GeomUnaryUnion(IntPtr gs)
+            => SafeExecution<IntPtr>(() => Native.GeomUnaryUnion(gs));
+
+        public static IntPtr GeomUnion2d(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<IntPtr>(() => Native.GeomUnion2d(gs1, gs2));
 
         public static IntPtr LineInterpolatePoint(IntPtr gs, double distance_fraction, bool repeat)
             => SafeExecution<IntPtr>(() => Native.LineInterpolatePoint(gs, distance_fraction, repeat));
@@ -234,6 +291,9 @@ namespace MEOS.NET.Functions
         public static bool GeogDwithin(IntPtr g1, IntPtr g2, double tolerance, bool use_spheroid)
             => SafeExecution<bool>(() => Native.GeogDwithin(g1, g2, tolerance, use_spheroid));
 
+        public static bool GeogDisjoint(IntPtr gs1, IntPtr gs2, bool use_spheroid)
+            => SafeExecution<bool>(() => Native.GeogDisjoint(gs1, gs2, use_spheroid));
+
         public static bool GeogIntersects(IntPtr gs1, IntPtr gs2, bool use_spheroid)
             => SafeExecution<bool>(() => Native.GeogIntersects(gs1, gs2, use_spheroid));
 
@@ -242,6 +302,9 @@ namespace MEOS.NET.Functions
 
         public static bool GeomCovers(IntPtr gs1, IntPtr gs2)
             => SafeExecution<bool>(() => Native.GeomCovers(gs1, gs2));
+
+        public static bool GeomDisjoint(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<bool>(() => Native.GeomDisjoint(gs1, gs2));
 
         public static bool GeomDisjoint2d(IntPtr gs1, IntPtr gs2)
             => SafeExecution<bool>(() => Native.GeomDisjoint2d(gs1, gs2));
@@ -318,14 +381,32 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static double GeogDistance(IntPtr g1, IntPtr g2)
-            => SafeExecution<double>(() => Native.GeogDistance(g1, g2));
+        public static double GeoDistance(IntPtr gs1, IntPtr gs2, bool spheroid)
+            => SafeExecution<double>(() => Native.GeoDistance(gs1, gs2, spheroid));
+
+        public static IntPtr GeoShortestline(IntPtr gs1, IntPtr gs2, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.GeoShortestline(gs1, gs2, spheroid));
+
+        public static double GeogDistance(IntPtr g1, IntPtr g2, bool use_spheroid)
+            => SafeExecution<double>(() => Native.GeogDistance(g1, g2, use_spheroid));
+
+        public static IntPtr GeogShortestline(IntPtr gs1, IntPtr gs2, bool use_spheroid)
+            => SafeExecution<IntPtr>(() => Native.GeogShortestline(gs1, gs2, use_spheroid));
+
+        public static double GeomDistance(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<double>(() => Native.GeomDistance(gs1, gs2));
 
         public static double GeomDistance2d(IntPtr gs1, IntPtr gs2)
             => SafeExecution<double>(() => Native.GeomDistance2d(gs1, gs2));
 
+        public static double GeomMaxDistance(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<double>(() => Native.GeomMaxDistance(gs1, gs2));
+
         public static double GeomMaxDistance2d(IntPtr gs1, IntPtr gs2)
             => SafeExecution<double>(() => Native.GeomMaxDistance2d(gs1, gs2));
+
+        public static double GeomMaxDistance3d(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<double>(() => Native.GeomMaxDistance3d(gs1, gs2));
 
         public static double GeomDistance3d(IntPtr gs1, IntPtr gs2)
             => SafeExecution<double>(() => Native.GeomDistance3d(gs1, gs2));
@@ -348,14 +429,23 @@ namespace MEOS.NET.Functions
         public static string SpatialsetAsText(IntPtr set, int maxdd)
             => SafeExecution<string>(() => Native.SpatialsetAsText(set, maxdd));
 
+        public static IntPtr SpatialsetAsEwkb(IntPtr s, byte variant, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.SpatialsetAsEwkb(s, variant, size_out));
+
         public static string SpatialsetAsEwkt(IntPtr set, int maxdd)
             => SafeExecution<string>(() => Native.SpatialsetAsEwkt(set, maxdd));
+
+        public static string SpatialsetAsHexewkb(IntPtr s, byte variant, IntPtr size_out)
+            => SafeExecution<string>(() => Native.SpatialsetAsHexewkb(s, variant, size_out));
 
         public static IntPtr GeosetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.GeosetMake(values, count));
 
         public static IntPtr GeoToSet(IntPtr gs)
             => SafeExecution<IntPtr>(() => Native.GeoToSet(gs));
+
+        public static IntPtr GeosetToGeo(IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.GeosetToGeo(s));
 
         public static IntPtr GeosetEndValue(IntPtr s)
             => SafeExecution<IntPtr>(() => Native.GeosetEndValue(s));
@@ -408,6 +498,12 @@ namespace MEOS.NET.Functions
         public static IntPtr UnionSetGeo(IntPtr s, IntPtr gs)
             => SafeExecution<IntPtr>(() => Native.UnionSetGeo(s, gs));
 
+        public static double DistanceGeosetGeoset(IntPtr s1, IntPtr s2, bool spheroid)
+            => SafeExecution<double>(() => Native.DistanceGeosetGeoset(s1, s2, spheroid));
+
+        public static double DistanceSetGeo(IntPtr s, IntPtr gs, bool spheroid)
+            => SafeExecution<double>(() => Native.DistanceSetGeo(s, gs, spheroid));
+
         public static IntPtr SpatialsetSetSrid(IntPtr s, int srid)
             => SafeExecution<IntPtr>(() => Native.SpatialsetSetSrid(s, srid));
 
@@ -419,6 +515,12 @@ namespace MEOS.NET.Functions
 
         public static IntPtr SpatialsetTransformPipeline(IntPtr s, string pipelinestr, int srid, bool is_forward)
             => SafeExecution<IntPtr>(() => Native.SpatialsetTransformPipeline(s, pipelinestr, srid, is_forward));
+
+        public static IntPtr StboxAsEwkb(IntPtr box, byte variant, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.StboxAsEwkb(box, variant, size_out));
+
+        public static string StboxAsHexewkb(IntPtr box, byte variant, IntPtr size_out)
+            => SafeExecution<string>(() => Native.StboxAsHexewkb(box, variant, size_out));
 
         public static string StboxAsHexwkb(IntPtr box, byte variant, IntPtr size_out)
             => SafeExecution<string>(() => Native.StboxAsHexwkb(box, variant, size_out));
@@ -567,8 +669,15 @@ namespace MEOS.NET.Functions
         public static IntPtr StboxShiftScaleTime(IntPtr box, IntPtr shift, IntPtr duration)
             => SafeExecution<IntPtr>(() => Native.StboxShiftScaleTime(box, shift, duration));
 
-        public static IntPtr StboxarrRound(IntPtr boxarr, int count, int maxdd)
-            => SafeExecution<IntPtr>(() => Native.StboxarrRound(boxarr, count, maxdd));
+        public static IntPtr[] StboxarrRound(IntPtr boxarr, int count, int maxdd)
+        {
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.StboxarrRound(boxarr, count, maxdd));
+            int _n = count;
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = IntPtr.Add(_p, _i * 80); }
+            return _out;
+        }
 
         public static IntPtr StboxSetSrid(IntPtr box, int srid)
             => SafeExecution<IntPtr>(() => Native.StboxSetSrid(box, srid));
@@ -672,6 +781,9 @@ namespace MEOS.NET.Functions
         public static bool StboxNe(IntPtr box1, IntPtr box2)
             => SafeExecution<bool>(() => Native.StboxNe(box1, box2));
 
+        public static IntPtr StboxSortkey(IntPtr box, IntPtr size)
+            => SafeExecution<IntPtr>(() => Native.StboxSortkey(box, size));
+
         public static string TspatialOut(IntPtr temp, int maxdd)
             => SafeExecution<string>(() => Native.TspatialOut(temp, maxdd));
 
@@ -699,8 +811,14 @@ namespace MEOS.NET.Functions
         public static IntPtr TgeompointIn(string str)
             => SafeExecution<IntPtr>(() => Native.TgeompointIn(str));
 
+        public static IntPtr TspatialAsEwkb(IntPtr temp, byte variant, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.TspatialAsEwkb(temp, variant, size_out));
+
         public static string TspatialAsEwkt(IntPtr temp, int maxdd)
             => SafeExecution<string>(() => Native.TspatialAsEwkt(temp, maxdd));
+
+        public static string TspatialAsHexewkb(IntPtr temp, byte variant, IntPtr size_out)
+            => SafeExecution<string>(() => Native.TspatialAsHexewkb(temp, variant, size_out));
 
         public static string TspatialAsText(IntPtr temp, int maxdd)
             => SafeExecution<string>(() => Native.TspatialAsText(temp, maxdd));
@@ -759,14 +877,20 @@ namespace MEOS.NET.Functions
         public static IntPtr TgeometryToTgeography(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TgeometryToTgeography(temp));
 
+        public static IntPtr TgeogpointToTgeompoint(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TgeogpointToTgeompoint(temp));
+
+        public static IntPtr TgeompointToTgeogpoint(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TgeompointToTgeogpoint(temp));
+
         public static IntPtr TgeometryToTgeompoint(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TgeometryToTgeompoint(temp));
 
         public static IntPtr TgeompointToTgeometry(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TgeompointToTgeometry(temp));
 
-        public static MvtGeom TpointAsMvtgeom(IntPtr temp, IntPtr bounds, int extent, int buffer, bool clip_geom)
-            => SafeExecution<MvtGeom>(() => Native.TpointAsMvtgeom(temp, bounds, extent, buffer, clip_geom));
+        public static bool TpointAsMvtgeom(IntPtr temp, IntPtr bounds, int extent, int buffer, bool clip_geom, IntPtr gsarr, IntPtr timesarr, IntPtr count)
+            => SafeExecution<bool>(() => Native.TpointAsMvtgeom(temp, bounds, extent, buffer, clip_geom, gsarr, timesarr, count));
 
         public static bool TpointTfloatToGeomeas(IntPtr tpoint, IntPtr measure, bool segmentize, IntPtr result)
             => SafeExecution<bool>(() => Native.TpointTfloatToGeomeas(tpoint, measure, segmentize, result));
@@ -783,8 +907,8 @@ namespace MEOS.NET.Functions
         public static IntPtr BearingTpointTpoint(IntPtr temp1, IntPtr temp2)
             => SafeExecution<IntPtr>(() => Native.BearingTpointTpoint(temp1, temp2));
 
-        public static IntPtr TgeoCentroid(IntPtr temp)
-            => SafeExecution<IntPtr>(() => Native.TgeoCentroid(temp));
+        public static IntPtr TgeoCentroid(IntPtr temp, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.TgeoCentroid(temp, spheroid));
 
         public static IntPtr TgeoConvexHull(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TgeoConvexHull(temp));
@@ -797,6 +921,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TgeoTraversedArea(IntPtr temp, bool unary_union)
             => SafeExecution<IntPtr>(() => Native.TgeoTraversedArea(temp, unary_union));
+
+        public static IntPtr TgeoValue(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TgeoValue(temp));
 
         public static bool TgeoValueAtTimestamptz(IntPtr temp, long t, bool strict, IntPtr result)
             => SafeExecution<bool>(() => Native.TgeoValueAtTimestamptz(temp, t, strict, result));
@@ -819,14 +946,38 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
+        public static (IntPtr[], IntPtr[]) TgeoUnnest(IntPtr temp)
+        {
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TgeoUnnest(temp, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                IntPtr[] __out_values_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
+                return (_resultArr, __out_values_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
+
         public static IntPtr TpointAngularDifference(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TpointAngularDifference(temp));
 
         public static IntPtr TpointAzimuth(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TpointAzimuth(temp));
 
-        public static IntPtr TpointCumulativeLength(IntPtr temp)
-            => SafeExecution<IntPtr>(() => Native.TpointCumulativeLength(temp));
+        public static IntPtr TpointCumulativeLength(IntPtr temp, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.TpointCumulativeLength(temp, spheroid));
 
         public static bool TpointDirection(IntPtr temp, IntPtr result)
             => SafeExecution<bool>(() => Native.TpointDirection(temp, result));
@@ -843,11 +994,11 @@ namespace MEOS.NET.Functions
         public static bool TpointIsSimple(IntPtr temp)
             => SafeExecution<bool>(() => Native.TpointIsSimple(temp));
 
-        public static double TpointLength(IntPtr temp)
-            => SafeExecution<double>(() => Native.TpointLength(temp));
+        public static double TpointLength(IntPtr temp, bool spheroid)
+            => SafeExecution<double>(() => Native.TpointLength(temp, spheroid));
 
-        public static IntPtr TpointSpeed(IntPtr temp)
-            => SafeExecution<IntPtr>(() => Native.TpointSpeed(temp));
+        public static IntPtr TpointSpeed(IntPtr temp, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.TpointSpeed(temp, spheroid));
 
         public static IntPtr TpointTrajectory(IntPtr temp, bool unary_union)
             => SafeExecution<IntPtr>(() => Native.TpointTrajectory(temp, unary_union));
@@ -855,11 +1006,35 @@ namespace MEOS.NET.Functions
         public static IntPtr TpointTwcentroid(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TpointTwcentroid(temp));
 
-        public static IntPtr TgeoAffine(IntPtr temp, IntPtr a)
-            => SafeExecution<IntPtr>(() => Native.TgeoAffine(temp, a));
+        public static IntPtr TgeoAffine(IntPtr temp, double a, double b, double c, double d, double e, double f, double g, double h, double i, double xoff, double yoff, double zoff)
+            => SafeExecution<IntPtr>(() => Native.TgeoAffine(temp, a, b, c, d, e, f, g, h, i, xoff, yoff, zoff));
 
-        public static IntPtr TgeoScale(IntPtr temp, IntPtr scale, IntPtr sorigin)
-            => SafeExecution<IntPtr>(() => Native.TgeoScale(temp, scale, sorigin));
+        public static IntPtr TgeoRotate(IntPtr temp, double angle, double x0, double y0)
+            => SafeExecution<IntPtr>(() => Native.TgeoRotate(temp, angle, x0, y0));
+
+        public static IntPtr TgeoRotateGeo(IntPtr temp, double angle, IntPtr origin)
+            => SafeExecution<IntPtr>(() => Native.TgeoRotateGeo(temp, angle, origin));
+
+        public static IntPtr TgeoRotateX(IntPtr temp, double angle)
+            => SafeExecution<IntPtr>(() => Native.TgeoRotateX(temp, angle));
+
+        public static IntPtr TgeoRotateY(IntPtr temp, double angle)
+            => SafeExecution<IntPtr>(() => Native.TgeoRotateY(temp, angle));
+
+        public static IntPtr TgeoRotateZ(IntPtr temp, double angle)
+            => SafeExecution<IntPtr>(() => Native.TgeoRotateZ(temp, angle));
+
+        public static IntPtr TgeoScale(IntPtr temp, double xfactor, double yfactor, double zfactor)
+            => SafeExecution<IntPtr>(() => Native.TgeoScale(temp, xfactor, yfactor, zfactor));
+
+        public static IntPtr TgeoScaleGeo(IntPtr temp, IntPtr scale, IntPtr sorigin)
+            => SafeExecution<IntPtr>(() => Native.TgeoScaleGeo(temp, scale, sorigin));
+
+        public static IntPtr TgeoTranslate(IntPtr temp, double deltax, double deltay, double deltaz)
+            => SafeExecution<IntPtr>(() => Native.TgeoTranslate(temp, deltax, deltay, deltaz));
+
+        public static IntPtr TgeoTransscale(IntPtr temp, double deltax, double deltay, double xfactor, double yfactor)
+            => SafeExecution<IntPtr>(() => Native.TgeoTransscale(temp, deltax, deltay, xfactor, yfactor));
 
         public static IntPtr[] TpointMakeSimple(IntPtr temp)
         {
@@ -993,6 +1168,21 @@ namespace MEOS.NET.Functions
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoSpaceBoxes(temp, xsize, ysize, zsize, sorigin, bitmatrix, border_inc, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 80); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TgeoTimeBoxes(IntPtr temp, IntPtr duration, long torigin, bool bitmatrix, bool border_inc)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoTimeBoxes(temp, duration, torigin, bitmatrix, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -1263,14 +1453,14 @@ namespace MEOS.NET.Functions
         public static int AdisjointTgeoTgeo(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.AdisjointTgeoTgeo(temp1, temp2));
 
-        public static int AdwithinGeoTgeo(IntPtr gs, IntPtr temp, double dist)
-            => SafeExecution<int>(() => Native.AdwithinGeoTgeo(gs, temp, dist));
+        public static int AdwithinGeoTgeo(IntPtr gs, IntPtr temp, double dist, bool spheroid)
+            => SafeExecution<int>(() => Native.AdwithinGeoTgeo(gs, temp, dist, spheroid));
 
-        public static int AdwithinTgeoGeo(IntPtr temp, IntPtr gs, double dist)
-            => SafeExecution<int>(() => Native.AdwithinTgeoGeo(temp, gs, dist));
+        public static int AdwithinTgeoGeo(IntPtr temp, IntPtr gs, double dist, bool spheroid)
+            => SafeExecution<int>(() => Native.AdwithinTgeoGeo(temp, gs, dist, spheroid));
 
-        public static int AdwithinTgeoTgeo(IntPtr temp1, IntPtr temp2, double dist)
-            => SafeExecution<int>(() => Native.AdwithinTgeoTgeo(temp1, temp2, dist));
+        public static int AdwithinTgeoTgeo(IntPtr temp1, IntPtr temp2, double dist, bool spheroid)
+            => SafeExecution<int>(() => Native.AdwithinTgeoTgeo(temp1, temp2, dist, spheroid));
 
         public static int AintersectsGeoTgeo(IntPtr gs, IntPtr temp)
             => SafeExecution<int>(() => Native.AintersectsGeoTgeo(gs, temp));
@@ -1323,14 +1513,14 @@ namespace MEOS.NET.Functions
         public static int EdisjointTgeoTgeo(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.EdisjointTgeoTgeo(temp1, temp2));
 
-        public static int EdwithinGeoTgeo(IntPtr gs, IntPtr temp, double dist)
-            => SafeExecution<int>(() => Native.EdwithinGeoTgeo(gs, temp, dist));
+        public static int EdwithinGeoTgeo(IntPtr gs, IntPtr temp, double dist, bool spheroid)
+            => SafeExecution<int>(() => Native.EdwithinGeoTgeo(gs, temp, dist, spheroid));
 
-        public static int EdwithinTgeoGeo(IntPtr temp, IntPtr gs, double dist)
-            => SafeExecution<int>(() => Native.EdwithinTgeoGeo(temp, gs, dist));
+        public static int EdwithinTgeoGeo(IntPtr temp, IntPtr gs, double dist, bool spheroid)
+            => SafeExecution<int>(() => Native.EdwithinTgeoGeo(temp, gs, dist, spheroid));
 
-        public static int EdwithinTgeoTgeo(IntPtr temp1, IntPtr temp2, double dist)
-            => SafeExecution<int>(() => Native.EdwithinTgeoTgeo(temp1, temp2, dist));
+        public static int EdwithinTgeoTgeo(IntPtr temp1, IntPtr temp2, double dist, bool spheroid)
+            => SafeExecution<int>(() => Native.EdwithinTgeoTgeo(temp1, temp2, dist, spheroid));
 
         public static int EintersectsGeoTgeo(IntPtr gs, IntPtr temp)
             => SafeExecution<int>(() => Native.EintersectsGeoTgeo(gs, temp));
@@ -1383,14 +1573,14 @@ namespace MEOS.NET.Functions
         public static IntPtr TdisjointTgeoTgeo(IntPtr temp1, IntPtr temp2)
             => SafeExecution<IntPtr>(() => Native.TdisjointTgeoTgeo(temp1, temp2));
 
-        public static IntPtr TdwithinGeoTgeo(IntPtr gs, IntPtr temp, double dist)
-            => SafeExecution<IntPtr>(() => Native.TdwithinGeoTgeo(gs, temp, dist));
+        public static IntPtr TdwithinGeoTgeo(IntPtr gs, IntPtr temp, double dist, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.TdwithinGeoTgeo(gs, temp, dist, spheroid));
 
-        public static IntPtr TdwithinTgeoGeo(IntPtr temp, IntPtr gs, double dist)
-            => SafeExecution<IntPtr>(() => Native.TdwithinTgeoGeo(temp, gs, dist));
+        public static IntPtr TdwithinTgeoGeo(IntPtr temp, IntPtr gs, double dist, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.TdwithinTgeoGeo(temp, gs, dist, spheroid));
 
-        public static IntPtr TdwithinTgeoTgeo(IntPtr temp1, IntPtr temp2, double dist)
-            => SafeExecution<IntPtr>(() => Native.TdwithinTgeoTgeo(temp1, temp2, dist));
+        public static IntPtr TdwithinTgeoTgeo(IntPtr temp1, IntPtr temp2, double dist, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.TdwithinTgeoTgeo(temp1, temp2, dist, spheroid));
 
         public static IntPtr TintersectsGeoTgeo(IntPtr gs, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TintersectsGeoTgeo(gs, temp));
@@ -1410,12 +1600,12 @@ namespace MEOS.NET.Functions
         public static IntPtr TtouchesTgeoTgeo(IntPtr temp1, IntPtr temp2)
             => SafeExecution<IntPtr>(() => Native.TtouchesTgeoTgeo(temp1, temp2));
 
-        public static int[] EdwithinTgeoarrTgeoarr(IntPtr arr1, int count1, IntPtr arr2, int count2, double dist)
+        public static int[] EdwithinTgeoarrTgeoarr(IntPtr arr1, int count1, IntPtr arr2, int count2, double dist, bool spheroid)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.EdwithinTgeoarrTgeoarr(arr1, count1, arr2, count2, dist, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.EdwithinTgeoarrTgeoarr(arr1, count1, arr2, count2, dist, spheroid, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 int[] _out = new int[_n];
                 Marshal.Copy(_p, _out, 0, _n);
@@ -1424,12 +1614,12 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static int[] AdwithinTgeoarrTgeoarr(IntPtr arr1, int count1, IntPtr arr2, int count2, double dist)
+        public static int[] AdwithinTgeoarrTgeoarr(IntPtr arr1, int count1, IntPtr arr2, int count2, double dist, bool spheroid)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.AdwithinTgeoarrTgeoarr(arr1, count1, arr2, count2, dist, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.AdwithinTgeoarrTgeoarr(arr1, count1, arr2, count2, dist, spheroid, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 int[] _out = new int[_n];
                 Marshal.Copy(_p, _out, 0, _n);
@@ -1522,13 +1712,13 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static (int[], IntPtr[]) TdwithinTgeoarrTgeoarr(IntPtr arr1, int count1, IntPtr arr2, int count2, double dist)
+        public static (int[], IntPtr[]) TdwithinTgeoarrTgeoarr(IntPtr arr1, int count1, IntPtr arr2, int count2, double dist, bool spheroid)
         {
             IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
             IntPtr _out_periods = Marshal.AllocHGlobal(IntPtr.Size);
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TdwithinTgeoarrTgeoarr(arr1, count1, arr2, count2, dist, _count_count, _out_periods));
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TdwithinTgeoarrTgeoarr(arr1, count1, arr2, count2, dist, spheroid, _count_count, _out_periods));
                 int _n = Marshal.ReadInt32(_count_count);
                 int[] _resultArr = new int[_n];
                 Marshal.Copy(_resultPtr, _resultArr, 0, _n);
@@ -1614,44 +1804,47 @@ namespace MEOS.NET.Functions
             }
         }
 
-        public static IntPtr TdistanceTgeoGeo(IntPtr temp, IntPtr gs)
-            => SafeExecution<IntPtr>(() => Native.TdistanceTgeoGeo(temp, gs));
+        public static IntPtr TdistanceTgeoGeo(IntPtr temp, IntPtr gs, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.TdistanceTgeoGeo(temp, gs, spheroid));
 
-        public static IntPtr TdistanceTgeoTgeo(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<IntPtr>(() => Native.TdistanceTgeoTgeo(temp1, temp2));
+        public static IntPtr TdistanceTgeoTgeo(IntPtr temp1, IntPtr temp2, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.TdistanceTgeoTgeo(temp1, temp2, spheroid));
 
-        public static double NadStboxGeo(IntPtr box, IntPtr gs)
-            => SafeExecution<double>(() => Native.NadStboxGeo(box, gs));
+        public static double NadStboxGeo(IntPtr box, IntPtr gs, bool spheroid)
+            => SafeExecution<double>(() => Native.NadStboxGeo(box, gs, spheroid));
 
-        public static double NadStboxStbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<double>(() => Native.NadStboxStbox(box1, box2));
+        public static double NadStboxStbox(IntPtr box1, IntPtr box2, bool spheroid)
+            => SafeExecution<double>(() => Native.NadStboxStbox(box1, box2, spheroid));
 
         public static double StboxSpatialDistance(IntPtr box1, IntPtr box2)
             => SafeExecution<double>(() => Native.StboxSpatialDistance(box1, box2));
 
-        public static double NadTgeoGeo(IntPtr temp, IntPtr gs)
-            => SafeExecution<double>(() => Native.NadTgeoGeo(temp, gs));
+        public static double NadTgeoGeo(IntPtr temp, IntPtr gs, bool spheroid)
+            => SafeExecution<double>(() => Native.NadTgeoGeo(temp, gs, spheroid));
 
-        public static double NadTgeoStbox(IntPtr temp, IntPtr box)
-            => SafeExecution<double>(() => Native.NadTgeoStbox(temp, box));
+        public static double NadTgeoStbox(IntPtr temp, IntPtr box, bool spheroid)
+            => SafeExecution<double>(() => Native.NadTgeoStbox(temp, box, spheroid));
 
-        public static double NadTgeoTgeo(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<double>(() => Native.NadTgeoTgeo(temp1, temp2));
+        public static double NadTgeoTgeo(IntPtr temp1, IntPtr temp2, bool spheroid)
+            => SafeExecution<double>(() => Native.NadTgeoTgeo(temp1, temp2, spheroid));
 
-        public static IntPtr NaiTgeoGeo(IntPtr temp, IntPtr gs)
-            => SafeExecution<IntPtr>(() => Native.NaiTgeoGeo(temp, gs));
+        public static IntPtr NaiTgeoGeo(IntPtr temp, IntPtr gs, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.NaiTgeoGeo(temp, gs, spheroid));
 
-        public static IntPtr NaiTgeoTgeo(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<IntPtr>(() => Native.NaiTgeoTgeo(temp1, temp2));
+        public static IntPtr NaiTgeoTgeo(IntPtr temp1, IntPtr temp2, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.NaiTgeoTgeo(temp1, temp2, spheroid));
 
-        public static IntPtr ShortestlineTgeoGeo(IntPtr temp, IntPtr gs)
-            => SafeExecution<IntPtr>(() => Native.ShortestlineTgeoGeo(temp, gs));
+        public static IntPtr ShortestlineTgeoGeo(IntPtr temp, IntPtr gs, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.ShortestlineTgeoGeo(temp, gs, spheroid));
 
-        public static IntPtr ShortestlineTgeoTgeo(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<IntPtr>(() => Native.ShortestlineTgeoTgeo(temp1, temp2));
+        public static IntPtr ShortestlineTgeoTgeo(IntPtr temp1, IntPtr temp2, bool spheroid)
+            => SafeExecution<IntPtr>(() => Native.ShortestlineTgeoTgeo(temp1, temp2, spheroid));
 
-        public static double MindistanceTgeoarrTgeoarr(IntPtr arr1, int count1, IntPtr arr2, int count2)
-            => SafeExecution<double>(() => Native.MindistanceTgeoarrTgeoarr(arr1, count1, arr2, count2));
+        public static double MindistanceTgeoarrTgeoarr(IntPtr arr1, int count1, IntPtr arr2, int count2, bool spheroid)
+            => SafeExecution<double>(() => Native.MindistanceTgeoarrTgeoarr(arr1, count1, arr2, count2, spheroid));
+
+        public static IntPtr TpointTcentroidCombinefn(IntPtr state1, IntPtr state2)
+            => SafeExecution<IntPtr>(() => Native.TpointTcentroidCombinefn(state1, state2));
 
         public static IntPtr TpointTcentroidFinalfn(IntPtr state)
             => SafeExecution<IntPtr>(() => Native.TpointTcentroidFinalfn(state));
@@ -1659,8 +1852,11 @@ namespace MEOS.NET.Functions
         public static IntPtr TpointTcentroidTransfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TpointTcentroidTransfn(state, temp));
 
-        public static IntPtr TspatialExtentTransfn(IntPtr box, IntPtr temp)
-            => SafeExecution<IntPtr>(() => Native.TspatialExtentTransfn(box, temp));
+        public static IntPtr StboxExtentTransfn(IntPtr state, IntPtr box)
+            => SafeExecution<IntPtr>(() => Native.StboxExtentTransfn(state, box));
+
+        public static IntPtr TspatialExtentTransfn(IntPtr state, IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TspatialExtentTransfn(state, temp));
 
         public static IntPtr StboxGetSpaceTile(IntPtr point, double xsize, double ysize, double zsize, IntPtr sorigin)
             => SafeExecution<IntPtr>(() => Native.StboxGetSpaceTile(point, xsize, ysize, zsize, sorigin));
@@ -1716,11 +1912,58 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static SpaceSplit TgeoSpaceSplit(IntPtr temp, double xsize, double ysize, double zsize, IntPtr sorigin, bool bitmatrix, bool border_inc)
-            => SafeExecution<SpaceSplit>(() => Native.TgeoSpaceSplit(temp, xsize, ysize, zsize, sorigin, bitmatrix, border_inc));
+        public static (IntPtr[], IntPtr[]) TgeoSpaceSplit(IntPtr temp, double xsize, double ysize, double zsize, IntPtr sorigin, bool bitmatrix, bool border_inc)
+        {
+            IntPtr _out_space_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TgeoSpaceSplit(temp, xsize, ysize, zsize, sorigin, bitmatrix, border_inc, _out_space_bins, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_space_bins_arr = Marshal.ReadIntPtr(_out_space_bins);
+                IntPtr[] __out_space_bins_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_space_bins_out[_i] = Marshal.ReadIntPtr(__out_space_bins_arr, _i * IntPtr.Size); }
+                return (_resultArr, __out_space_bins_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_space_bins);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
 
-        public static SpaceTimeSplit TgeoSpaceTimeSplit(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, bool bitmatrix, bool border_inc)
-            => SafeExecution<SpaceTimeSplit>(() => Native.TgeoSpaceTimeSplit(temp, xsize, ysize, zsize, duration, sorigin, torigin, bitmatrix, border_inc));
+        public static (IntPtr[], IntPtr[], long[]) TgeoSpaceTimeSplit(IntPtr temp, double xsize, double ysize, double zsize, IntPtr duration, IntPtr sorigin, long torigin, bool bitmatrix, bool border_inc)
+        {
+            IntPtr _out_space_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _out_time_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TgeoSpaceTimeSplit(temp, xsize, ysize, zsize, duration, sorigin, torigin, bitmatrix, border_inc, _out_space_bins, _out_time_bins, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_space_bins_arr = Marshal.ReadIntPtr(_out_space_bins);
+                IntPtr[] __out_space_bins_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_space_bins_out[_i] = Marshal.ReadIntPtr(__out_space_bins_arr, _i * IntPtr.Size); }
+                IntPtr __out_time_bins_arr = Marshal.ReadIntPtr(_out_time_bins);
+                long[] __out_time_bins_out = new long[_n];
+                Marshal.Copy(__out_time_bins_arr, __out_time_bins_out, 0, _n);
+                return (_resultArr, __out_space_bins_out, __out_time_bins_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_space_bins);
+            Marshal.FreeHGlobal(_out_time_bins);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
 
         public static int[] GeoClusterKmeans(IntPtr geoms, uint ngeoms, uint k)
         {

@@ -9,8 +9,14 @@ namespace MEOS.NET.Functions
     /// <summary>The MEOS functions <c>meos_cbuffer.h</c> declares.</summary>
     public static partial class Meos
     {
+        public static IntPtr CbufferAsEwkb(IntPtr cb, byte variant, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.CbufferAsEwkb(cb, variant, size_out));
+
         public static string CbufferAsEwkt(IntPtr cb, int maxdd)
             => SafeExecution<string>(() => Native.CbufferAsEwkt(cb, maxdd));
+
+        public static string CbufferAsHexewkb(IntPtr cb, byte variant, IntPtr size_out)
+            => SafeExecution<string>(() => Native.CbufferAsHexewkb(cb, variant, size_out));
 
         public static string CbufferAsHexwkb(IntPtr cb, byte variant, IntPtr size_out)
             => SafeExecution<string>(() => Native.CbufferAsHexwkb(cb, variant, size_out));
@@ -57,6 +63,9 @@ namespace MEOS.NET.Functions
         public static ulong CbufferHashExtended(IntPtr cb, ulong seed)
             => SafeExecution<ulong>(() => Native.CbufferHashExtended(cb, seed));
 
+        public static int CbufferMemSize(IntPtr cb)
+            => SafeExecution<int>(() => Native.CbufferMemSize(cb));
+
         public static IntPtr CbufferPoint(IntPtr cb)
             => SafeExecution<IntPtr>(() => Native.CbufferPoint(cb));
 
@@ -66,8 +75,15 @@ namespace MEOS.NET.Functions
         public static IntPtr CbufferRound(IntPtr cb, int maxdd)
             => SafeExecution<IntPtr>(() => Native.CbufferRound(cb, maxdd));
 
-        public static IntPtr CbufferarrRound(IntPtr cbarr, int count, int maxdd)
-            => SafeExecution<IntPtr>(() => Native.CbufferarrRound(cbarr, count, maxdd));
+        public static IntPtr[] CbufferarrRound(IntPtr cbarr, int count, int maxdd)
+        {
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.CbufferarrRound(cbarr, count, maxdd));
+            int _n = count;
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+            return _out;
+        }
 
         public static IntPtr CbufferSetSrid(IntPtr cb, int srid)
             => SafeExecution<IntPtr>(() => Native.CbufferSetSrid(cb, srid));
@@ -138,12 +154,6 @@ namespace MEOS.NET.Functions
         public static bool CbufferNe(IntPtr cb1, IntPtr cb2)
             => SafeExecution<bool>(() => Native.CbufferNe(cb1, cb2));
 
-        public static bool CbufferNsame(IntPtr cb1, IntPtr cb2)
-            => SafeExecution<bool>(() => Native.CbufferNsame(cb1, cb2));
-
-        public static bool CbufferSame(IntPtr cb1, IntPtr cb2)
-            => SafeExecution<bool>(() => Native.CbufferSame(cb1, cb2));
-
         public static IntPtr CbuffersetIn(string str)
             => SafeExecution<IntPtr>(() => Native.CbuffersetIn(str));
 
@@ -207,6 +217,9 @@ namespace MEOS.NET.Functions
         public static IntPtr UnionSetCbuffer(IntPtr s, IntPtr cb)
             => SafeExecution<IntPtr>(() => Native.UnionSetCbuffer(s, cb));
 
+        public static double DistanceCbuffersetCbufferset(IntPtr s1, IntPtr s2)
+            => SafeExecution<double>(() => Native.DistanceCbuffersetCbufferset(s1, s2));
+
         public static IntPtr TcbufferIn(string str)
             => SafeExecution<IntPtr>(() => Native.TcbufferIn(str));
 
@@ -249,6 +262,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TcbufferStartValue(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TcbufferStartValue(temp));
 
+        public static IntPtr TcbufferValue(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TcbufferValue(temp));
+
         public static bool TcbufferValueAtTimestamptz(IntPtr temp, long t, bool strict, IntPtr value)
             => SafeExecution<bool>(() => Native.TcbufferValueAtTimestamptz(temp, t, strict, value));
 
@@ -270,6 +286,30 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
+        public static (IntPtr[], IntPtr[]) TcbufferUnnest(IntPtr temp)
+        {
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TcbufferUnnest(temp, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                IntPtr[] __out_values_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
+                return (_resultArr, __out_values_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
+
         public static IntPtr TcbufferToTfloat(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TcbufferToTfloat(temp));
 
@@ -281,6 +321,15 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TcbufferExpand(IntPtr temp, double dist)
             => SafeExecution<IntPtr>(() => Native.TcbufferExpand(temp, dist));
+
+        public static IntPtr TcbufferRotate(IntPtr temp, double angle, double x0, double y0)
+            => SafeExecution<IntPtr>(() => Native.TcbufferRotate(temp, angle, x0, y0));
+
+        public static IntPtr TcbufferRotateZ(IntPtr temp, double angle)
+            => SafeExecution<IntPtr>(() => Native.TcbufferRotateZ(temp, angle));
+
+        public static IntPtr TcbufferTranslate(IntPtr temp, double deltax, double deltay)
+            => SafeExecution<IntPtr>(() => Native.TcbufferTranslate(temp, deltax, deltay));
 
         public static IntPtr TcbufferAtCbuffer(IntPtr temp, IntPtr cb)
             => SafeExecution<IntPtr>(() => Native.TcbufferAtCbuffer(temp, cb));
@@ -323,6 +372,9 @@ namespace MEOS.NET.Functions
 
         public static double MindistanceTcbufferTcbuffer(IntPtr temp1, IntPtr temp2, double threshold)
             => SafeExecution<double>(() => Native.MindistanceTcbufferTcbuffer(temp1, temp2, threshold));
+
+        public static double MindistanceTcbufferarrTcbufferarr(IntPtr arr1, int count1, IntPtr arr2, int count2)
+            => SafeExecution<double>(() => Native.MindistanceTcbufferarrTcbufferarr(arr1, count1, arr2, count2));
 
         public static IntPtr NaiTcbufferCbuffer(IntPtr temp, IntPtr cb)
             => SafeExecution<IntPtr>(() => Native.NaiTcbufferCbuffer(temp, cb));
@@ -420,6 +472,12 @@ namespace MEOS.NET.Functions
         public static int AcoversTcbufferTcbuffer(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.AcoversTcbufferTcbuffer(temp1, temp2));
 
+        public static int AdisjointCbufferTcbuffer(IntPtr cb, IntPtr temp)
+            => SafeExecution<int>(() => Native.AdisjointCbufferTcbuffer(cb, temp));
+
+        public static int AdisjointGeoTcbuffer(IntPtr gs, IntPtr temp)
+            => SafeExecution<int>(() => Native.AdisjointGeoTcbuffer(gs, temp));
+
         public static int AdisjointTcbufferGeo(IntPtr temp, IntPtr gs)
             => SafeExecution<int>(() => Native.AdisjointTcbufferGeo(temp, gs));
 
@@ -428,6 +486,12 @@ namespace MEOS.NET.Functions
 
         public static int AdisjointTcbufferTcbuffer(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.AdisjointTcbufferTcbuffer(temp1, temp2));
+
+        public static int AdwithinCbufferTcbuffer(IntPtr cb, IntPtr temp, double dist)
+            => SafeExecution<int>(() => Native.AdwithinCbufferTcbuffer(cb, temp, dist));
+
+        public static int AdwithinGeoTcbuffer(IntPtr gs, IntPtr temp, double dist)
+            => SafeExecution<int>(() => Native.AdwithinGeoTcbuffer(gs, temp, dist));
 
         public static int AdwithinTcbufferGeo(IntPtr temp, IntPtr gs, double dist)
             => SafeExecution<int>(() => Native.AdwithinTcbufferGeo(temp, gs, dist));
@@ -438,6 +502,12 @@ namespace MEOS.NET.Functions
         public static int AdwithinTcbufferTcbuffer(IntPtr temp1, IntPtr temp2, double dist)
             => SafeExecution<int>(() => Native.AdwithinTcbufferTcbuffer(temp1, temp2, dist));
 
+        public static int AintersectsCbufferTcbuffer(IntPtr cb, IntPtr temp)
+            => SafeExecution<int>(() => Native.AintersectsCbufferTcbuffer(cb, temp));
+
+        public static int AintersectsGeoTcbuffer(IntPtr gs, IntPtr temp)
+            => SafeExecution<int>(() => Native.AintersectsGeoTcbuffer(gs, temp));
+
         public static int AintersectsTcbufferGeo(IntPtr temp, IntPtr gs)
             => SafeExecution<int>(() => Native.AintersectsTcbufferGeo(temp, gs));
 
@@ -446,6 +516,12 @@ namespace MEOS.NET.Functions
 
         public static int AintersectsTcbufferTcbuffer(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.AintersectsTcbufferTcbuffer(temp1, temp2));
+
+        public static int AtouchesCbufferTcbuffer(IntPtr cb, IntPtr temp)
+            => SafeExecution<int>(() => Native.AtouchesCbufferTcbuffer(cb, temp));
+
+        public static int AtouchesGeoTcbuffer(IntPtr gs, IntPtr temp)
+            => SafeExecution<int>(() => Native.AtouchesGeoTcbuffer(gs, temp));
 
         public static int AtouchesTcbufferGeo(IntPtr temp, IntPtr gs)
             => SafeExecution<int>(() => Native.AtouchesTcbufferGeo(temp, gs));
@@ -458,6 +534,9 @@ namespace MEOS.NET.Functions
 
         public static int EcontainsCbufferTcbuffer(IntPtr cb, IntPtr temp)
             => SafeExecution<int>(() => Native.EcontainsCbufferTcbuffer(cb, temp));
+
+        public static int EcontainsGeoTcbuffer(IntPtr gs, IntPtr temp)
+            => SafeExecution<int>(() => Native.EcontainsGeoTcbuffer(gs, temp));
 
         public static int EcontainsTcbufferCbuffer(IntPtr temp, IntPtr cb)
             => SafeExecution<int>(() => Native.EcontainsTcbufferCbuffer(temp, cb));
@@ -483,11 +562,26 @@ namespace MEOS.NET.Functions
         public static int EcoversTcbufferTcbuffer(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.EcoversTcbufferTcbuffer(temp1, temp2));
 
+        public static int EdisjointCbufferTcbuffer(IntPtr cb, IntPtr temp)
+            => SafeExecution<int>(() => Native.EdisjointCbufferTcbuffer(cb, temp));
+
+        public static int EdisjointGeoTcbuffer(IntPtr gs, IntPtr temp)
+            => SafeExecution<int>(() => Native.EdisjointGeoTcbuffer(gs, temp));
+
         public static int EdisjointTcbufferGeo(IntPtr temp, IntPtr gs)
             => SafeExecution<int>(() => Native.EdisjointTcbufferGeo(temp, gs));
 
         public static int EdisjointTcbufferCbuffer(IntPtr temp, IntPtr cb)
             => SafeExecution<int>(() => Native.EdisjointTcbufferCbuffer(temp, cb));
+
+        public static int EdisjointTcbufferTcbuffer(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<int>(() => Native.EdisjointTcbufferTcbuffer(temp1, temp2));
+
+        public static int EdwithinCbufferTcbuffer(IntPtr cb, IntPtr temp, double dist)
+            => SafeExecution<int>(() => Native.EdwithinCbufferTcbuffer(cb, temp, dist));
+
+        public static int EdwithinGeoTcbuffer(IntPtr gs, IntPtr temp, double dist)
+            => SafeExecution<int>(() => Native.EdwithinGeoTcbuffer(gs, temp, dist));
 
         public static int EdwithinTcbufferGeo(IntPtr temp, IntPtr gs, double dist)
             => SafeExecution<int>(() => Native.EdwithinTcbufferGeo(temp, gs, dist));
@@ -498,6 +592,12 @@ namespace MEOS.NET.Functions
         public static int EdwithinTcbufferTcbuffer(IntPtr temp1, IntPtr temp2, double dist)
             => SafeExecution<int>(() => Native.EdwithinTcbufferTcbuffer(temp1, temp2, dist));
 
+        public static int EintersectsCbufferTcbuffer(IntPtr cb, IntPtr temp)
+            => SafeExecution<int>(() => Native.EintersectsCbufferTcbuffer(cb, temp));
+
+        public static int EintersectsGeoTcbuffer(IntPtr gs, IntPtr temp)
+            => SafeExecution<int>(() => Native.EintersectsGeoTcbuffer(gs, temp));
+
         public static int EintersectsTcbufferGeo(IntPtr temp, IntPtr gs)
             => SafeExecution<int>(() => Native.EintersectsTcbufferGeo(temp, gs));
 
@@ -506,6 +606,12 @@ namespace MEOS.NET.Functions
 
         public static int EintersectsTcbufferTcbuffer(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.EintersectsTcbufferTcbuffer(temp1, temp2));
+
+        public static int EtouchesCbufferTcbuffer(IntPtr cb, IntPtr temp)
+            => SafeExecution<int>(() => Native.EtouchesCbufferTcbuffer(cb, temp));
+
+        public static int EtouchesGeoTcbuffer(IntPtr gs, IntPtr temp)
+            => SafeExecution<int>(() => Native.EtouchesGeoTcbuffer(gs, temp));
 
         public static int EtouchesTcbufferGeo(IntPtr temp, IntPtr gs)
             => SafeExecution<int>(() => Native.EtouchesTcbufferGeo(temp, gs));
@@ -545,6 +651,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TcoversTcbufferTcbuffer(IntPtr temp1, IntPtr temp2)
             => SafeExecution<IntPtr>(() => Native.TcoversTcbufferTcbuffer(temp1, temp2));
+
+        public static IntPtr TdwithinCbufferTcbuffer(IntPtr cb, IntPtr temp, double dist)
+            => SafeExecution<IntPtr>(() => Native.TdwithinCbufferTcbuffer(cb, temp, dist));
 
         public static IntPtr TdwithinGeoTcbuffer(IntPtr gs, IntPtr temp, double dist)
             => SafeExecution<IntPtr>(() => Native.TdwithinGeoTcbuffer(gs, temp, dist));

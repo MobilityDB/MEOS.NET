@@ -23,12 +23,18 @@ namespace MEOS.NET.Types
         public Pcpoint? Copy()
             => MEOSFactory.WrapPcpoint(Meos.PcpointCopy(this.Ptr));
 
-        public double? GetDim(Pcschema schema, string name)
+        public bool Eq(Pcpoint pt2)
+            => Meos.PcpointEq(this.Ptr, pt2.Ptr);
+
+        public bool Ge(Pcpoint pt2)
+            => Meos.PcpointGe(this.Ptr, pt2.Ptr);
+
+        public double? GetDim(string name)
         {
             IntPtr _out = Marshal.AllocHGlobal(8);
             try
             {
-                if (!Meos.PcpointGetDim(this.Ptr, schema.Ptr, name, _out))
+                if (!Meos.PcpointGetDim(this.Ptr, name, _out))
                 {
                     return null;
                 }
@@ -44,12 +50,12 @@ namespace MEOS.NET.Types
         public uint GetPcid()
             => Meos.PcpointGetPcid(this.Ptr);
 
-        public double? GetX(Pcschema schema)
+        public double? GetX()
         {
             IntPtr _out = Marshal.AllocHGlobal(8);
             try
             {
-                if (!Meos.PcpointGetX(this.Ptr, schema.Ptr, _out))
+                if (!Meos.PcpointGetX(this.Ptr, _out))
                 {
                     return null;
                 }
@@ -62,12 +68,12 @@ namespace MEOS.NET.Types
             }
         }
 
-        public double? GetY(Pcschema schema)
+        public double? GetY()
         {
             IntPtr _out = Marshal.AllocHGlobal(8);
             try
             {
-                if (!Meos.PcpointGetY(this.Ptr, schema.Ptr, _out))
+                if (!Meos.PcpointGetY(this.Ptr, _out))
                 {
                     return null;
                 }
@@ -80,12 +86,12 @@ namespace MEOS.NET.Types
             }
         }
 
-        public double? GetZ(Pcschema schema)
+        public double? GetZ()
         {
             IntPtr _out = Marshal.AllocHGlobal(8);
             try
             {
-                if (!Meos.PcpointGetZ(this.Ptr, schema.Ptr, _out))
+                if (!Meos.PcpointGetZ(this.Ptr, _out))
                 {
                     return null;
                 }
@@ -97,6 +103,9 @@ namespace MEOS.NET.Types
                 Marshal.FreeHGlobal(_out);
             }
         }
+
+        public bool Gt(Pcpoint pt2)
+            => Meos.PcpointGt(this.Ptr, pt2.Ptr);
 
         public uint Hash()
             => Meos.PcpointHash(this.Ptr);
@@ -107,11 +116,23 @@ namespace MEOS.NET.Types
         public string HexOut(int maxdd)
             => Meos.PcpointHexOut(this.Ptr, maxdd);
 
+        public bool Le(Pcpoint pt2)
+            => Meos.PcpointLe(this.Ptr, pt2.Ptr);
+
+        public bool Lt(Pcpoint pt2)
+            => Meos.PcpointLt(this.Ptr, pt2.Ptr);
+
+        public int MemSize()
+            => Meos.PcpointMemSize(this.Ptr);
+
+        public bool Ne(Pcpoint pt2)
+            => Meos.PcpointNe(this.Ptr, pt2.Ptr);
+
         public Set? ToSet()
             => MEOSFactory.WrapSet(Meos.PcpointToSet(this.Ptr));
 
-        public TPCBox? ToTpcbox(Pcschema schema)
-            => MEOSFactory.WrapTPCBox(Meos.PcpointToTpcbox(this.Ptr, schema.Ptr));
+        public TPCBox? ToTpcbox()
+            => MEOSFactory.WrapTPCBox(Meos.PcpointToTpcbox(this.Ptr));
 
         public static Pcpoint? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapPcpoint(Meos.PcpointFromHexwkb(hexwkb));

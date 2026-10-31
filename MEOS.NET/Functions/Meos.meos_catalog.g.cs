@@ -30,14 +30,14 @@ namespace MEOS.NET.Functions
         public static string? InterptypeName(int interp)
             => Marshal.PtrToStringUTF8(SafeExecution<IntPtr>(() => Native.InterptypeName(interp)));
 
-        public static int InterptypeFromString(string interp_str)
-            => SafeExecution<int>(() => Native.InterptypeFromString(interp_str));
-
         public static int MeosTypeofHexwkb(string hexwkb)
             => SafeExecution<int>(() => Native.MeosTypeofHexwkb(hexwkb));
 
         public static string? MeostypeName(int type)
             => Marshal.PtrToStringUTF8(SafeExecution<IntPtr>(() => Native.MeostypeName(type)));
+
+        public static int MeostypeFromString(string name)
+            => SafeExecution<int>(() => Native.MeostypeFromString(name));
 
         public static int TemptypeBasetype(int type)
             => SafeExecution<int>(() => Native.TemptypeBasetype(type));
@@ -71,6 +71,9 @@ namespace MEOS.NET.Functions
 
         public static bool AlphanumBasetype(int type)
             => SafeExecution<bool>(() => Native.AlphanumBasetype(type));
+
+        public static bool EnsureAlphanumBasetype(int type)
+            => SafeExecution<bool>(() => Native.EnsureAlphanumBasetype(type));
 
         public static bool AlphanumTemptype(int type)
             => SafeExecution<bool>(() => Native.AlphanumTemptype(type));
@@ -164,6 +167,12 @@ namespace MEOS.NET.Functions
 
         public static bool SpansetType(int type)
             => SafeExecution<bool>(() => Native.SpansetType(type));
+
+        public static bool NumspansetType(int type)
+            => SafeExecution<bool>(() => Native.NumspansetType(type));
+
+        public static bool EnsureNumspansetType(int type)
+            => SafeExecution<bool>(() => Native.EnsureNumspansetType(type));
 
         public static bool TimespansetType(int type)
             => SafeExecution<bool>(() => Native.TimespansetType(type));

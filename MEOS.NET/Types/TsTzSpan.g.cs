@@ -18,13 +18,13 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
-        public Span?[] Bins(Interval duration, DateTime origin)
+        public Span?[] Bins(Interval duration, DateTime torigin, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
             {
                 Marshal.StructureToPtr(duration, _duration, false);
-                return MEOSFactory.WrapSpanArray(Meos.TstzspanBins(this.Ptr, _duration, MEOSConvert.ToTimestampTz(origin)));
+                return MEOSFactory.WrapSpanArray(Meos.TstzspanBins(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), border_inc));
             }
             finally
             {
@@ -94,6 +94,20 @@ namespace MEOS.NET.Types
 
         public DateTime Upper()
             => MEOSConvert.ToDateTime(Meos.TstzspanUpper(this.Ptr));
+
+        public static Span? GetBin(DateTime t, Interval duration, DateTime torigin)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSpan(Meos.TstzspanGetBin(MEOSConvert.ToTimestampTz(t), _duration, MEOSConvert.ToTimestampTz(torigin)));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
 
         public static Span? In(string str)
             => MEOSFactory.WrapSpan(Meos.TstzspanIn(str));

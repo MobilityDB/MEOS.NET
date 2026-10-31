@@ -81,6 +81,27 @@ namespace MEOS.NET.Types
         public bool Ne(Span s2)
             => Meos.SpanNe(this.Ptr, s2.Ptr);
 
+        public byte[]? Sortkey()
+        {
+            IntPtr _size = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.SpanSortkey(this.Ptr, _size);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size);
+            }
+        }
+
         public SpanSet? ToSpanset()
             => MEOSFactory.WrapSpanSet(Meos.SpanToSpanset(this.Ptr));
 

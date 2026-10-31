@@ -33,6 +33,9 @@ namespace MEOS.NET.Types
         public Text? StartValue()
             => MEOSFactory.WrapText(Meos.TextsetStartValue(this.Ptr));
 
+        public Set? ToJsonbset()
+            => MEOSFactory.WrapSet(Meos.TextsetToJsonbset(this.Ptr));
+
         public Set? Upper()
             => MEOSFactory.WrapSet(Meos.TextsetUpper(this.Ptr));
 

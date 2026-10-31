@@ -14,5 +14,8 @@ namespace MEOS.NET.Types
     {
         internal TInstant(IntPtr ptr) : base(ptr) { }
 
+        public DateTime Timestamptz()
+            => MEOSConvert.ToDateTime(Meos.TinstantTimestamptz(this.Ptr));
+
     }
 }

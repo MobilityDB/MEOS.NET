@@ -105,34 +105,52 @@ namespace MEOS.NET.Functions
         public static int JsonArrayLength(IntPtr js)
             => SafeExecution<int>(() => Native.JsonArrayLength(js));
 
-        public static IntPtr[] JsonEach(IntPtr js, IntPtr values)
+        public static (IntPtr[], IntPtr[]) JsonEach(IntPtr js)
         {
-            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonEach(js, values, _cnt));
-                int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.JsonEach(js, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
-                return _out;
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                IntPtr[] __out_values_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
+                return (_resultArr, __out_values_out);
             }
-            finally { Marshal.FreeHGlobal(_cnt); }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
         }
 
-        public static IntPtr[] JsonEachText(IntPtr js, IntPtr values)
+        public static (IntPtr[], IntPtr[]) JsonEachText(IntPtr js)
         {
-            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonEachText(js, values, _cnt));
-                int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.JsonEachText(js, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
-                return _out;
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                IntPtr[] __out_values_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
+                return (_resultArr, __out_values_out);
             }
-            finally { Marshal.FreeHGlobal(_cnt); }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
         }
 
         public static IntPtr JsonExtractPath(IntPtr js, IntPtr path_elems, int path_len)
@@ -210,34 +228,52 @@ namespace MEOS.NET.Functions
         public static bool JsonbContains(IntPtr jb1, IntPtr jb2)
             => SafeExecution<bool>(() => Native.JsonbContains(jb1, jb2));
 
-        public static IntPtr[] JsonbEach(IntPtr jb, IntPtr values)
+        public static (IntPtr[], IntPtr[]) JsonbEach(IntPtr jb)
         {
-            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbEach(jb, values, _cnt));
-                int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.JsonbEach(jb, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
-                return _out;
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                IntPtr[] __out_values_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
+                return (_resultArr, __out_values_out);
             }
-            finally { Marshal.FreeHGlobal(_cnt); }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
         }
 
-        public static IntPtr[] JsonbEachText(IntPtr jb, IntPtr values)
+        public static (IntPtr[], IntPtr[]) JsonbEachText(IntPtr jb)
         {
-            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbEachText(jb, values, _cnt));
-                int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.JsonbEachText(jb, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
-                return _out;
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                IntPtr[] __out_values_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
+                return (_resultArr, __out_values_out);
             }
-            finally { Marshal.FreeHGlobal(_cnt); }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
         }
 
         public static bool JsonbExists(IntPtr jb, IntPtr key)
@@ -257,6 +293,9 @@ namespace MEOS.NET.Functions
 
         public static ulong JsonbHashExtended(IntPtr jb, ulong seed)
             => SafeExecution<ulong>(() => Native.JsonbHashExtended(jb, seed));
+
+        public static int JsonbMemSize(IntPtr jb)
+            => SafeExecution<int>(() => Native.JsonbMemSize(jb));
 
         public static IntPtr JsonbObjectField(IntPtr jb, IntPtr key)
             => SafeExecution<IntPtr>(() => Native.JsonbObjectField(jb, key));
@@ -366,20 +405,29 @@ namespace MEOS.NET.Functions
         public static IntPtr JsonpathCopy(IntPtr jp)
             => SafeExecution<IntPtr>(() => Native.JsonpathCopy(jp));
 
+        public static int JsonpathMemSize(IntPtr jp)
+            => SafeExecution<int>(() => Native.JsonpathMemSize(jp));
+
         public static string JsonpathOut(IntPtr jp)
             => SafeExecution<string>(() => Native.JsonpathOut(jp));
 
         public static IntPtr JsonbsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.JsonbsetIn(str));
 
-        public static string JsonbsetOut(IntPtr s, int maxdd)
-            => SafeExecution<string>(() => Native.JsonbsetOut(s, maxdd));
+        public static string JsonbsetOut(IntPtr s)
+            => SafeExecution<string>(() => Native.JsonbsetOut(s));
 
         public static IntPtr JsonbsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.JsonbsetMake(values, count));
 
         public static IntPtr JsonbToSet(IntPtr jb)
             => SafeExecution<IntPtr>(() => Native.JsonbToSet(jb));
+
+        public static IntPtr JsonbsetToTextset(IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.JsonbsetToTextset(s));
+
+        public static IntPtr TextsetToJsonbset(IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.TextsetToJsonbset(s));
 
         public static IntPtr JsonbsetEndValue(IntPtr s)
             => SafeExecution<IntPtr>(() => Native.JsonbsetEndValue(s));
@@ -411,11 +459,17 @@ namespace MEOS.NET.Functions
         public static IntPtr JsonbsetArrayLength(IntPtr set)
             => SafeExecution<IntPtr>(() => Native.JsonbsetArrayLength(set));
 
-        public static IntPtr JsonbsetObjectField(IntPtr set, IntPtr key, bool astext, int null_handle)
-            => SafeExecution<IntPtr>(() => Native.JsonbsetObjectField(set, key, astext, null_handle));
+        public static IntPtr JsonbsetObjectField(IntPtr set, IntPtr key, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.JsonbsetObjectField(set, key, null_handle));
 
-        public static IntPtr JsonbsetArrayElement(IntPtr set, int idx, bool astext, int null_handle)
-            => SafeExecution<IntPtr>(() => Native.JsonbsetArrayElement(set, idx, astext, null_handle));
+        public static IntPtr JsonbsetObjectFieldText(IntPtr set, IntPtr key, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.JsonbsetObjectFieldText(set, key, null_handle));
+
+        public static IntPtr JsonbsetArrayElement(IntPtr set, int idx, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.JsonbsetArrayElement(set, idx, null_handle));
+
+        public static IntPtr JsonbsetArrayElementText(IntPtr set, int idx, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.JsonbsetArrayElementText(set, idx, null_handle));
 
         public static IntPtr JsonbsetDeleteIndex(IntPtr set, int idx)
             => SafeExecution<IntPtr>(() => Native.JsonbsetDeleteIndex(set, idx));
@@ -471,8 +525,11 @@ namespace MEOS.NET.Functions
         public static IntPtr JsonbsetDeletePath(IntPtr set, IntPtr path_elems, int path_len)
             => SafeExecution<IntPtr>(() => Native.JsonbsetDeletePath(set, path_elems, path_len));
 
-        public static IntPtr JsonbsetExtractPath(IntPtr set, IntPtr path_elems, int path_len, bool astext, int null_handle)
-            => SafeExecution<IntPtr>(() => Native.JsonbsetExtractPath(set, path_elems, path_len, astext, null_handle));
+        public static IntPtr JsonbsetExtractPath(IntPtr set, IntPtr path_elems, int path_len, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.JsonbsetExtractPath(set, path_elems, path_len, null_handle));
+
+        public static IntPtr JsonbsetExtractPathText(IntPtr set, IntPtr path_elems, int path_len, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.JsonbsetExtractPathText(set, path_elems, path_len, null_handle));
 
         public static IntPtr JsonbsetInsert(IntPtr set, IntPtr path_elems, int path_len, IntPtr newjb, bool after)
             => SafeExecution<IntPtr>(() => Native.JsonbsetInsert(set, path_elems, path_len, newjb, after));
@@ -512,6 +569,15 @@ namespace MEOS.NET.Functions
 
         public static IntPtr JsonbsetPathQueryFirst(IntPtr set, IntPtr jp, IntPtr vars, bool silent, bool tz)
             => SafeExecution<IntPtr>(() => Native.JsonbsetPathQueryFirst(set, jp, vars, silent, tz));
+
+        public static IntPtr JsonbsetArrayElementCommon(IntPtr set, int idx, bool astext, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.JsonbsetArrayElementCommon(set, idx, astext, null_handle));
+
+        public static IntPtr JsonbsetExtractPathCommon(IntPtr set, IntPtr path_elems, int path_len, bool astext, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.JsonbsetExtractPathCommon(set, path_elems, path_len, astext, null_handle));
+
+        public static IntPtr JsonbsetObjectFieldCommon(IntPtr set, IntPtr key, bool astext, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.JsonbsetObjectFieldCommon(set, key, astext, null_handle));
 
         public static bool ContainedJsonbSet(IntPtr jb, IntPtr s)
             => SafeExecution<bool>(() => Native.ContainedJsonbSet(jb, s));
@@ -585,6 +651,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TjsonbStartValue(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TjsonbStartValue(temp));
 
+        public static IntPtr TjsonbValue(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TjsonbValue(temp));
+
         public static bool TjsonbValueAtTimestamptz(IntPtr temp, long t, bool strict, IntPtr value)
             => SafeExecution<bool>(() => Native.TjsonbValueAtTimestamptz(temp, t, strict, value));
 
@@ -604,6 +673,30 @@ namespace MEOS.NET.Functions
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static (IntPtr[], IntPtr[]) TjsonbUnnest(IntPtr temp)
+        {
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TjsonbUnnest(temp, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                IntPtr[] __out_values_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
+                return (_resultArr, __out_values_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
         }
 
         public static IntPtr ConcatTjsonbJsonb(IntPtr temp, IntPtr jb, bool invert)
@@ -630,14 +723,17 @@ namespace MEOS.NET.Functions
         public static IntPtr TjsonExtractPath(IntPtr temp, IntPtr path_elems, int path_len, int null_handle)
             => SafeExecution<IntPtr>(() => Native.TjsonExtractPath(temp, path_elems, path_len, null_handle));
 
-        public static IntPtr TjsonObjectField(IntPtr temp, IntPtr key, bool astext, int null_handle)
-            => SafeExecution<IntPtr>(() => Native.TjsonObjectField(temp, key, astext, null_handle));
+        public static IntPtr TjsonObjectField(IntPtr temp, IntPtr key, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonObjectField(temp, key, null_handle));
 
         public static IntPtr TjsonStripNulls(IntPtr temp, bool strip_in_arrays)
             => SafeExecution<IntPtr>(() => Native.TjsonStripNulls(temp, strip_in_arrays));
 
-        public static IntPtr TjsonbArrayElement(IntPtr temp, int idx, bool astext, int null_handle)
-            => SafeExecution<IntPtr>(() => Native.TjsonbArrayElement(temp, idx, astext, null_handle));
+        public static IntPtr TjsonbArrayElement(IntPtr temp, int idx, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbArrayElement(temp, idx, null_handle));
+
+        public static IntPtr TjsonbArrayElementText(IntPtr temp, int idx, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbArrayElementText(temp, idx, null_handle));
 
         public static IntPtr TjsonbArrayLength(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TjsonbArrayLength(temp));
@@ -666,14 +762,20 @@ namespace MEOS.NET.Functions
         public static IntPtr TjsonbExistsArray(IntPtr temp, IntPtr keys, int count, bool any)
             => SafeExecution<IntPtr>(() => Native.TjsonbExistsArray(temp, keys, count, any));
 
-        public static IntPtr TjsonbExtractPath(IntPtr temp, IntPtr path_elems, int path_len, bool astext, int null_handle)
-            => SafeExecution<IntPtr>(() => Native.TjsonbExtractPath(temp, path_elems, path_len, astext, null_handle));
+        public static IntPtr TjsonbExtractPath(IntPtr temp, IntPtr path_elems, int path_len, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbExtractPath(temp, path_elems, path_len, null_handle));
+
+        public static IntPtr TjsonbExtractPathText(IntPtr temp, IntPtr path_elems, int path_len, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbExtractPathText(temp, path_elems, path_len, null_handle));
 
         public static IntPtr TjsonbInsert(IntPtr temp, IntPtr keys, int count, IntPtr newjb, bool after)
             => SafeExecution<IntPtr>(() => Native.TjsonbInsert(temp, keys, count, newjb, after));
 
-        public static IntPtr TjsonbObjectField(IntPtr temp, IntPtr key, bool astext, int null_handle)
-            => SafeExecution<IntPtr>(() => Native.TjsonbObjectField(temp, key, astext, null_handle));
+        public static IntPtr TjsonbObjectField(IntPtr temp, IntPtr key, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbObjectField(temp, key, null_handle));
+
+        public static IntPtr TjsonbObjectFieldText(IntPtr temp, IntPtr key, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbObjectFieldText(temp, key, null_handle));
 
         public static IntPtr TjsonbPathExists(IntPtr temp, IntPtr jp, IntPtr vars, bool silent, bool tz)
             => SafeExecution<IntPtr>(() => Native.TjsonbPathExists(temp, jp, vars, silent, tz));
@@ -696,17 +798,44 @@ namespace MEOS.NET.Functions
         public static IntPtr TjsonbStripNulls(IntPtr temp, bool strip_in_arrays)
             => SafeExecution<IntPtr>(() => Native.TjsonbStripNulls(temp, strip_in_arrays));
 
+        public static IntPtr TjsonbToTbigint(IntPtr temp, string key, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbToTbigint(temp, key, null_handle));
+
         public static IntPtr TjsonbToTbool(IntPtr temp, string key, int null_handle)
             => SafeExecution<IntPtr>(() => Native.TjsonbToTbool(temp, key, null_handle));
 
         public static IntPtr TjsonbToTfloat(IntPtr temp, string key, int interp, int null_handle)
             => SafeExecution<IntPtr>(() => Native.TjsonbToTfloat(temp, key, interp, null_handle));
 
+        public static IntPtr TjsonbToTgeogpoint(IntPtr temp, string key, int interp, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbToTgeogpoint(temp, key, interp, null_handle));
+
+        public static IntPtr TjsonbToTgeography(IntPtr temp, string key, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbToTgeography(temp, key, null_handle));
+
+        public static IntPtr TjsonbToTgeometry(IntPtr temp, string key, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbToTgeometry(temp, key, null_handle));
+
+        public static IntPtr TjsonbToTgeompoint(IntPtr temp, string key, int interp, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbToTgeompoint(temp, key, interp, null_handle));
+
         public static IntPtr TjsonbToTint(IntPtr temp, string key, int null_handle)
             => SafeExecution<IntPtr>(() => Native.TjsonbToTint(temp, key, null_handle));
 
         public static IntPtr TjsonbToTtextKey(IntPtr temp, string key, int null_handle)
             => SafeExecution<IntPtr>(() => Native.TjsonbToTtextKey(temp, key, null_handle));
+
+        public static IntPtr TjsonObjectFieldCommon(IntPtr temp, IntPtr key, bool astext, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonObjectFieldCommon(temp, key, astext, null_handle));
+
+        public static IntPtr TjsonbArrayElementCommon(IntPtr temp, int idx, bool astext, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbArrayElementCommon(temp, idx, astext, null_handle));
+
+        public static IntPtr TjsonbExtractPathCommon(IntPtr temp, IntPtr path_elems, int path_len, bool astext, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbExtractPathCommon(temp, path_elems, path_len, astext, null_handle));
+
+        public static IntPtr TjsonbObjectFieldCommon(IntPtr temp, IntPtr key, bool astext, int null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbObjectFieldCommon(temp, key, astext, null_handle));
 
         public static IntPtr TjsonbAtValue(IntPtr temp, IntPtr jsb)
             => SafeExecution<IntPtr>(() => Native.TjsonbAtValue(temp, jsb));

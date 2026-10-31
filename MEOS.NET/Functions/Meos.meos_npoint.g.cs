@@ -9,8 +9,14 @@ namespace MEOS.NET.Functions
     /// <summary>The MEOS functions <c>meos_npoint.h</c> declares.</summary>
     public static partial class Meos
     {
+        public static IntPtr NpointAsEwkb(IntPtr np, byte variant, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.NpointAsEwkb(np, variant, size_out));
+
         public static string NpointAsEwkt(IntPtr np, int maxdd)
             => SafeExecution<string>(() => Native.NpointAsEwkt(np, maxdd));
+
+        public static string NpointAsHexewkb(IntPtr np, byte variant, IntPtr size_out)
+            => SafeExecution<string>(() => Native.NpointAsHexewkb(np, variant, size_out));
 
         public static string NpointAsHexwkb(IntPtr np, byte variant, IntPtr size_out)
             => SafeExecution<string>(() => Native.NpointAsHexwkb(np, variant, size_out));
@@ -33,14 +39,44 @@ namespace MEOS.NET.Functions
         public static string NpointOut(IntPtr np, int maxdd)
             => SafeExecution<string>(() => Native.NpointOut(np, maxdd));
 
+        public static string NsegmentAsHexewkb(IntPtr ns, byte variant, IntPtr size_out)
+            => SafeExecution<string>(() => Native.NsegmentAsHexewkb(ns, variant, size_out));
+
+        public static string NsegmentAsHexwkb(IntPtr ns, byte variant, IntPtr size_out)
+            => SafeExecution<string>(() => Native.NsegmentAsHexwkb(ns, variant, size_out));
+
+        public static IntPtr NsegmentAsWkb(IntPtr ns, byte variant, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.NsegmentAsWkb(ns, variant, size_out));
+
+        public static IntPtr NsegmentFromHexwkb(string hexwkb)
+            => SafeExecution<IntPtr>(() => Native.NsegmentFromHexwkb(hexwkb));
+
+        public static IntPtr NsegmentFromWkb(IntPtr wkb, ulong size)
+            => SafeExecution<IntPtr>(() => Native.NsegmentFromWkb(wkb, size));
+
         public static IntPtr NsegmentIn(string str)
             => SafeExecution<IntPtr>(() => Native.NsegmentIn(str));
 
         public static string NsegmentOut(IntPtr ns, int maxdd)
             => SafeExecution<string>(() => Native.NsegmentOut(ns, maxdd));
 
+        public static IntPtr NsegmentAsEwkb(IntPtr ns, byte variant, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.NsegmentAsEwkb(ns, variant, size_out));
+
+        public static string NsegmentAsEwkt(IntPtr ns, int maxdd)
+            => SafeExecution<string>(() => Native.NsegmentAsEwkt(ns, maxdd));
+
+        public static string NsegmentAsText(IntPtr ns, int maxdd)
+            => SafeExecution<string>(() => Native.NsegmentAsText(ns, maxdd));
+
+        public static IntPtr NpointCopy(IntPtr np)
+            => SafeExecution<IntPtr>(() => Native.NpointCopy(np));
+
         public static IntPtr NpointMake(long rid, double pos)
             => SafeExecution<IntPtr>(() => Native.NpointMake(rid, pos));
+
+        public static IntPtr NsegmentCopy(IntPtr ns)
+            => SafeExecution<IntPtr>(() => Native.NsegmentCopy(ns));
 
         public static IntPtr NsegmentMake(long rid, double pos1, double pos2)
             => SafeExecution<IntPtr>(() => Native.NsegmentMake(rid, pos1, pos2));
@@ -138,9 +174,6 @@ namespace MEOS.NET.Functions
         public static bool NpointNe(IntPtr np1, IntPtr np2)
             => SafeExecution<bool>(() => Native.NpointNe(np1, np2));
 
-        public static bool NpointSame(IntPtr np1, IntPtr np2)
-            => SafeExecution<bool>(() => Native.NpointSame(np1, np2));
-
         public static int NsegmentCmp(IntPtr ns1, IntPtr ns2)
             => SafeExecution<int>(() => Native.NsegmentCmp(ns1, ns2));
 
@@ -228,6 +261,9 @@ namespace MEOS.NET.Functions
         public static IntPtr UnionSetNpoint(IntPtr s, IntPtr np)
             => SafeExecution<IntPtr>(() => Native.UnionSetNpoint(s, np));
 
+        public static double DistanceNpointsetNpointset(IntPtr s1, IntPtr s2)
+            => SafeExecution<double>(() => Native.DistanceNpointsetNpointset(s1, s2));
+
         public static IntPtr TnpointIn(string str)
             => SafeExecution<IntPtr>(() => Native.TnpointIn(str));
 
@@ -297,6 +333,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TnpointTrajectory(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TnpointTrajectory(temp));
 
+        public static IntPtr TnpointValue(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TnpointValue(temp));
+
         public static bool TnpointValueAtTimestamptz(IntPtr temp, long t, bool strict, IntPtr value)
             => SafeExecution<bool>(() => Native.TnpointValueAtTimestamptz(temp, t, strict, value));
 
@@ -316,6 +355,30 @@ namespace MEOS.NET.Functions
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static (IntPtr[], IntPtr[]) TnpointUnnest(IntPtr temp)
+        {
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TnpointUnnest(temp, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                IntPtr[] __out_values_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
+                return (_resultArr, __out_values_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
         }
 
         public static IntPtr TnpointTwcentroid(IntPtr temp)
@@ -428,6 +491,66 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TneTnpointNpoint(IntPtr temp, IntPtr np)
             => SafeExecution<IntPtr>(() => Native.TneTnpointNpoint(temp, np));
+
+        public static bool ContainedRidBigintTnpoint(long rid, IntPtr temp)
+            => SafeExecution<bool>(() => Native.ContainedRidBigintTnpoint(rid, temp));
+
+        public static bool ContainedRidBigintsetTnpoint(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => Native.ContainedRidBigintsetTnpoint(s, temp));
+
+        public static bool ContainedRidNpointTnpoint(IntPtr np, IntPtr temp)
+            => SafeExecution<bool>(() => Native.ContainedRidNpointTnpoint(np, temp));
+
+        public static bool ContainedRidTnpointBigintset(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => Native.ContainedRidTnpointBigintset(temp, s));
+
+        public static bool ContainedRidTnpointTnpoint(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => Native.ContainedRidTnpointTnpoint(temp1, temp2));
+
+        public static bool ContainsRidBigintsetTnpoint(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => Native.ContainsRidBigintsetTnpoint(s, temp));
+
+        public static bool ContainsRidTnpointBigint(IntPtr temp, long rid)
+            => SafeExecution<bool>(() => Native.ContainsRidTnpointBigint(temp, rid));
+
+        public static bool ContainsRidTnpointBigintset(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => Native.ContainsRidTnpointBigintset(temp, s));
+
+        public static bool ContainsRidTnpointNpoint(IntPtr temp, IntPtr np)
+            => SafeExecution<bool>(() => Native.ContainsRidTnpointNpoint(temp, np));
+
+        public static bool ContainsRidTnpointTnpoint(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => Native.ContainsRidTnpointTnpoint(temp1, temp2));
+
+        public static bool OverlapsRidBigintsetTnpoint(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => Native.OverlapsRidBigintsetTnpoint(s, temp));
+
+        public static bool OverlapsRidTnpointBigintset(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => Native.OverlapsRidTnpointBigintset(temp, s));
+
+        public static bool OverlapsRidTnpointTnpoint(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => Native.OverlapsRidTnpointTnpoint(temp1, temp2));
+
+        public static bool SameRidBigintTnpoint(long rid, IntPtr temp)
+            => SafeExecution<bool>(() => Native.SameRidBigintTnpoint(rid, temp));
+
+        public static bool SameRidBigintsetTnpoint(IntPtr s, IntPtr temp)
+            => SafeExecution<bool>(() => Native.SameRidBigintsetTnpoint(s, temp));
+
+        public static bool SameRidNpointTnpoint(IntPtr np, IntPtr temp)
+            => SafeExecution<bool>(() => Native.SameRidNpointTnpoint(np, temp));
+
+        public static bool SameRidTnpointBigint(IntPtr temp, long rid)
+            => SafeExecution<bool>(() => Native.SameRidTnpointBigint(temp, rid));
+
+        public static bool SameRidTnpointBigintset(IntPtr temp, IntPtr s)
+            => SafeExecution<bool>(() => Native.SameRidTnpointBigintset(temp, s));
+
+        public static bool SameRidTnpointNpoint(IntPtr temp, IntPtr np)
+            => SafeExecution<bool>(() => Native.SameRidTnpointNpoint(temp, np));
+
+        public static bool SameRidTnpointTnpoint(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<bool>(() => Native.SameRidTnpointTnpoint(temp1, temp2));
 
     }
 }

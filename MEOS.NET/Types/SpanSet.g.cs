@@ -81,11 +81,35 @@ namespace MEOS.NET.Types
         public bool Lt(SpanSet ss2)
             => Meos.SpansetLt(this.Ptr, ss2.Ptr);
 
+        public int MemSize()
+            => Meos.SpansetMemSize(this.Ptr);
+
         public bool Ne(SpanSet ss2)
             => Meos.SpansetNe(this.Ptr, ss2.Ptr);
 
         public int NumSpans()
             => Meos.SpansetNumSpans(this.Ptr);
+
+        public byte[]? Sortkey()
+        {
+            IntPtr _size = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.SpansetSortkey(this.Ptr, _size);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size);
+            }
+        }
 
         public Span? Span()
             => MEOSFactory.WrapSpan(Meos.SpansetSpan(this.Ptr));
@@ -129,9 +153,6 @@ namespace MEOS.NET.Types
                 _wkb.Free();
             }
         }
-
-        public static SpanSet? Make(Span spans, int count)
-            => MEOSFactory.WrapSpanSet(Meos.SpansetMake(spans.Ptr, count));
 
     }
 }

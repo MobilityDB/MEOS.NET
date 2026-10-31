@@ -21,6 +21,27 @@ namespace MEOS.NET.Types
         public PoseChain? Append(Pose pose)
             => MEOSFactory.WrapPoseChain(Meos.PosechainAppend(this.Ptr, pose.Ptr));
 
+        public byte[]? AsEWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.PosechainAsEwkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public string AsEWKT(int maxdd)
             => Meos.PosechainAsEwkt(this.Ptr, maxdd);
 
@@ -30,6 +51,19 @@ namespace MEOS.NET.Types
             try
             {
                 return Meos.PosechainAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public string AsHexewkb(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.PosechainAsHexewkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -91,11 +125,11 @@ namespace MEOS.NET.Types
         public bool Lt(PoseChain pc2)
             => Meos.PosechainLt(this.Ptr, pc2.Ptr);
 
+        public int MemSize()
+            => Meos.PosechainMemSize(this.Ptr);
+
         public bool Ne(PoseChain pc2)
             => Meos.PosechainNe(this.Ptr, pc2.Ptr);
-
-        public bool Nsame(PoseChain pc2)
-            => Meos.PosechainNsame(this.Ptr, pc2.Ptr);
 
         public int NumPoses()
             => Meos.PosechainNumPoses(this.Ptr);
@@ -117,9 +151,6 @@ namespace MEOS.NET.Types
 
         public int SRID()
             => Meos.PosechainSrid(this.Ptr);
-
-        public bool Same(PoseChain pc2)
-            => Meos.PosechainSame(this.Ptr, pc2.Ptr);
 
         public PoseChain? SetSRID(int srid)
             => MEOSFactory.WrapPoseChain(Meos.PosechainSetSrid(this.Ptr, srid));
@@ -145,8 +176,8 @@ namespace MEOS.NET.Types
         public PoseChain? Transform(int srid_to)
             => MEOSFactory.WrapPoseChain(Meos.PosechainTransform(this.Ptr, srid_to));
 
-        public PoseChain? TransformPipeline(string pipeline, int srid_to, bool is_forward)
-            => MEOSFactory.WrapPoseChain(Meos.PosechainTransformPipeline(this.Ptr, pipeline, srid_to, is_forward));
+        public PoseChain? TransformPipeline(string pipelinestr, int srid, bool is_forward)
+            => MEOSFactory.WrapPoseChain(Meos.PosechainTransformPipeline(this.Ptr, pipelinestr, srid, is_forward));
 
         public STBox? TstzspanToStbox(Span s)
             => MEOSFactory.WrapSTBox(Meos.PosechainTstzspanToStbox(this.Ptr, s.Ptr));

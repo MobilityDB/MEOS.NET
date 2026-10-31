@@ -78,13 +78,13 @@ namespace MEOS.NET.Types
         public Temporal? Tan()
             => MEOSFactory.WrapTemporal(Meos.TfloatTan(this.Ptr));
 
-        public TBox?[] TimeBoxes(Interval duration, DateTime torigin)
+        public TBox?[] TimeBoxes(Interval duration, DateTime torigin, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
             {
                 Marshal.StructureToPtr(duration, _duration, false);
-                return MEOSFactory.WrapTBoxArray(Meos.TfloatTimeBoxes(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin)));
+                return MEOSFactory.WrapTBoxArray(Meos.TfloatTimeBoxes(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), border_inc));
             }
             finally
             {
@@ -97,6 +97,16 @@ namespace MEOS.NET.Types
 
         public Temporal? ToTint()
             => MEOSFactory.WrapTemporal(Meos.TfloatToTint(this.Ptr));
+
+        public (SpanSet?[], double[]) Unnest()
+        {
+            var _answered = Meos.TfloatUnnest(this.Ptr);
+
+            return (MEOSFactory.WrapSpanSetArray(_answered.Item1), _answered.Item2);
+        }
+
+        public double Value()
+            => Meos.TfloatValue(this.Ptr);
 
         public double? ValueAtTimestamptz(DateTime t, bool strict)
         {
@@ -116,11 +126,11 @@ namespace MEOS.NET.Types
             }
         }
 
-        public Span?[] ValueBins(double vsize, double vorigin)
-            => MEOSFactory.WrapSpanArray(Meos.TfloatValueBins(this.Ptr, vsize, vorigin));
+        public Span?[] ValueBins(double vsize, double vorigin, bool border_inc)
+            => MEOSFactory.WrapSpanArray(Meos.TfloatValueBins(this.Ptr, vsize, vorigin, border_inc));
 
-        public TBox?[] ValueBoxes(double vsize, double vorigin)
-            => MEOSFactory.WrapTBoxArray(Meos.TfloatValueBoxes(this.Ptr, vsize, vorigin));
+        public TBox?[] ValueBoxes(double vsize, double vorigin, bool border_inc)
+            => MEOSFactory.WrapTBoxArray(Meos.TfloatValueBoxes(this.Ptr, vsize, vorigin, border_inc));
 
         public double? ValueN(int n)
         {
@@ -140,20 +150,20 @@ namespace MEOS.NET.Types
             }
         }
 
-        public (Temporal?[], double[]) ValueSplit(double size, double origin)
+        public (Temporal?[], double[]) ValueSplit(double vsize, double vorigin, bool border_inc)
         {
-            var _answered = Meos.TfloatValueSplit(this.Ptr, size, origin);
+            var _answered = Meos.TfloatValueSplit(this.Ptr, vsize, vorigin, border_inc);
 
             return (MEOSFactory.WrapTemporalArray(_answered.Item1), _answered.Item2);
         }
 
-        public TBox?[] ValueTimeBoxes(double vsize, Interval duration, double vorigin, DateTime torigin)
+        public TBox?[] ValueTimeBoxes(double vsize, Interval duration, double vorigin, DateTime torigin, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
             {
                 Marshal.StructureToPtr(duration, _duration, false);
-                return MEOSFactory.WrapTBoxArray(Meos.TfloatValueTimeBoxes(this.Ptr, vsize, _duration, vorigin, MEOSConvert.ToTimestampTz(torigin)));
+                return MEOSFactory.WrapTBoxArray(Meos.TfloatValueTimeBoxes(this.Ptr, vsize, _duration, vorigin, MEOSConvert.ToTimestampTz(torigin), border_inc));
             }
             finally
             {
@@ -161,13 +171,13 @@ namespace MEOS.NET.Types
             }
         }
 
-        public (Temporal?[], double[], DateTime[]) ValueTimeSplit(double vsize, Interval duration, double vorigin, DateTime torigin)
+        public (Temporal?[], double[], DateTime[]) ValueTimeSplit(double vsize, Interval duration, double vorigin, DateTime torigin, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
             {
                 Marshal.StructureToPtr(duration, _duration, false);
-                var _answered = Meos.TfloatValueTimeSplit(this.Ptr, vsize, _duration, vorigin, MEOSConvert.ToTimestampTz(torigin));
+                var _answered = Meos.TfloatValueTimeSplit(this.Ptr, vsize, _duration, vorigin, MEOSConvert.ToTimestampTz(torigin), border_inc);
 
                 return (MEOSFactory.WrapTemporalArray(_answered.Item1), _answered.Item2, MEOSConvert.ToDateTimeArray(_answered.Item3));
             }

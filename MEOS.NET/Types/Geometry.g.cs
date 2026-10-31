@@ -44,6 +44,9 @@ namespace MEOS.NET.Types
         public Geo? Centroid()
             => MEOSFactory.WrapGeo(Meos.GeomCentroid(this.Ptr));
 
+        public bool Contains(Geo gs2)
+            => Meos.GeomContains(this.Ptr, gs2.Ptr);
+
         public Geo? ConvexHull()
             => MEOSFactory.WrapGeo(Meos.GeomConvexHull(this.Ptr));
 
@@ -53,8 +56,14 @@ namespace MEOS.NET.Types
         public Geo? Difference2d(Geo gs2)
             => MEOSFactory.WrapGeo(Meos.GeomDifference2d(this.Ptr, gs2.Ptr));
 
+        public bool Disjoint(Geo gs2)
+            => Meos.GeomDisjoint(this.Ptr, gs2.Ptr);
+
         public bool Disjoint2d(Geo gs2)
             => Meos.GeomDisjoint2d(this.Ptr, gs2.Ptr);
+
+        public double Distance(Geo gs2)
+            => Meos.GeomDistance(this.Ptr, gs2.Ptr);
 
         public double Distance2d(Geo gs2)
             => Meos.GeomDistance2d(this.Ptr, gs2.Ptr);
@@ -77,6 +86,9 @@ namespace MEOS.NET.Types
         public Geo? Intersection2dColl(Geo gs2)
             => MEOSFactory.WrapGeo(Meos.GeomIntersection2dColl(this.Ptr, gs2.Ptr));
 
+        public bool Intersects(Geo gs2)
+            => Meos.GeomIntersects(this.Ptr, gs2.Ptr);
+
         public bool Intersects2d(Geo gs2)
             => Meos.GeomIntersects2d(this.Ptr, gs2.Ptr);
 
@@ -89,15 +101,21 @@ namespace MEOS.NET.Types
         public double Length()
             => Meos.GeomLength(this.Ptr);
 
+        public double MaxDistance(Geo gs2)
+            => Meos.GeomMaxDistance(this.Ptr, gs2.Ptr);
+
         public double MaxDistance2d(Geo gs2)
             => Meos.GeomMaxDistance2d(this.Ptr, gs2.Ptr);
 
-        public (Geo?, double) MinBoundingRadius()
+        public double MaxDistance3d(Geo gs2)
+            => Meos.GeomMaxDistance3d(this.Ptr, gs2.Ptr);
+
+        public (Geo?, double) MinimumBoundingRadius()
         {
             IntPtr _radius = Marshal.AllocHGlobal(8);
             try
             {
-                var _answered = Meos.GeomMinBoundingRadius(this.Ptr, _radius);
+                var _answered = Meos.GeomMinimumBoundingRadius(this.Ptr, _radius);
 
                 return (MEOSFactory.WrapGeo(_answered), Marshal.PtrToStructure<double>(_radius));
             }
@@ -119,11 +137,17 @@ namespace MEOS.NET.Types
         public bool RelatePattern(Geo gs2, string patt)
             => Meos.GeomRelatePattern(this.Ptr, gs2.Ptr, patt);
 
+        public Geo? Shortestline(Geo gs2)
+            => MEOSFactory.WrapGeo(Meos.GeomShortestline(this.Ptr, gs2.Ptr));
+
         public Geo? Shortestline2d(Geo gs2)
             => MEOSFactory.WrapGeo(Meos.GeomShortestline2d(this.Ptr, gs2.Ptr));
 
         public Geo? Shortestline3d(Geo gs2)
             => MEOSFactory.WrapGeo(Meos.GeomShortestline3d(this.Ptr, gs2.Ptr));
+
+        public Geo? Symdifference2d(Geo gs2)
+            => MEOSFactory.WrapGeo(Meos.GeomSymdifference2d(this.Ptr, gs2.Ptr));
 
         public Cbuffer? ToCbuffer()
             => MEOSFactory.WrapCbuffer(Meos.GeomToCbuffer(this.Ptr));
@@ -140,8 +164,11 @@ namespace MEOS.NET.Types
         public Temporal? TposeToTrgeometry(Temporal temp)
             => MEOSFactory.WrapTemporal(Meos.GeometryTposeToTrgeometry(this.Ptr, temp.Ptr));
 
-        public Geo? UnaryUnion(double prec)
-            => MEOSFactory.WrapGeo(Meos.GeomUnaryUnion(this.Ptr, prec));
+        public Geo? UnaryUnion()
+            => MEOSFactory.WrapGeo(Meos.GeomUnaryUnion(this.Ptr));
+
+        public Geo? Union2d(Geo gs2)
+            => MEOSFactory.WrapGeo(Meos.GeomUnion2d(this.Ptr, gs2.Ptr));
 
         public static Geo? ArrayUnion(Geo[] gsarr)
         {
@@ -162,8 +189,8 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static Geo? FromHexewkb(string wkt)
-            => MEOSFactory.WrapGeo(Meos.GeomFromHexewkb(wkt));
+        public static Geo? FromHexewkb(string hexwkb)
+            => MEOSFactory.WrapGeo(Meos.GeomFromHexewkb(hexwkb));
 
         public static Geo? In(string str, int typmod)
             => MEOSFactory.WrapGeo(Meos.GeomIn(str, typmod));

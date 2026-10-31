@@ -57,6 +57,9 @@ namespace MEOS.NET.Types
         public int SearchTemporal(IndexSearchOp op, Temporal temp, MeosArray result)
             => Meos.RtreeSearchTemporal(this.Ptr, (int) op, temp.Ptr, result.Ptr);
 
+        public int SearchTemporalDedup(IndexSearchOp op, Temporal temp, int maxboxes, MeosArray result)
+            => Meos.RtreeSearchTemporalDedup(this.Ptr, (int) op, temp.Ptr, maxboxes, result.Ptr);
+
         public static RTree? CreateBigintspan()
             => MEOSFactory.WrapRTree(Meos.RtreeCreateBigintspan());
 

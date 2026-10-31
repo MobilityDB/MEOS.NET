@@ -48,8 +48,18 @@ namespace MEOS.NET.Types
         public Temporal? ToTjsonb()
             => MEOSFactory.WrapTemporal(Meos.TtextToTjsonb(this.Ptr));
 
+        public (SpanSet?[], Text?[]) Unnest()
+        {
+            var _answered = Meos.TtextUnnest(this.Ptr);
+
+            return (MEOSFactory.WrapSpanSetArray(_answered.Item1), MEOSFactory.WrapTextArray(_answered.Item2));
+        }
+
         public Temporal? Upper()
             => MEOSFactory.WrapTemporal(Meos.TtextUpper(this.Ptr));
+
+        public Text? Value()
+            => MEOSFactory.WrapText(Meos.TtextValue(this.Ptr));
 
         public Text? ValueAtTimestamptz(DateTime t, bool strict)
         {

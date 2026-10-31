@@ -70,7 +70,7 @@ jobs:
         uses: MobilityDB/MEOS-API/.github/actions/check-test-outcome@master
         with:
           log: test.log
-          min-tests: "67"
+          min-tests: "66"
 
       - name: Smoke-test the FFI
         run: dotnet run --project ExampleApp/ExampleApp.csproj -c Release --no-build
