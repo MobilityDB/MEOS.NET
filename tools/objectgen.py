@@ -856,7 +856,18 @@ class Generator:
             return []
         ctype = self.m.ctype.get(cls)
         encoding = self.m.idl.get("typeEncodings", {}).get(ctype, {})
-        aux = {a["name"]: a["default"] for a in encoding.get("out_aux", [])}
+        # The digits are the text encoding's own default where the catalog
+        # states a text encoder for the type (stbox_out), else MEOS's default
+        # precision, OUT_DEFAULT_DECIMAL_DIGITS, which the typed outputs of a
+        # type with no generic text encoder (floatspan_out, tfloat_out) take.
+        aux = {a["name"]: a["default"]
+               for a in encoding.get("encoderAux", {}).get("text", [])
+               or encoding.get("out_aux", [])}
+        if "maxdd" not in aux:
+            digits = next((m.get("value") for m in self.m.idl.get("macros", [])
+                           if m.get("name") == "OUT_DEFAULT_DECIMAL_DIGITS"), None)
+            if digits is not None:
+                aux["maxdd"] = digits
         argument = str(aux.get("maxdd", "")) if out.params else ""
         if out.params and not argument:
             return []
