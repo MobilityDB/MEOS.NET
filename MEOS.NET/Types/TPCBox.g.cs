@@ -18,6 +18,74 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out(15);
 
+        public byte[]? AsEWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.TpcboxAsEwkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public string AsHEXWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.TpcboxAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public string AsHexewkb(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.TpcboxAsHexewkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public byte[]? AsWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.TpcboxAsWkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public int Cmp(TPCBox box2)
             => Meos.TpcboxCmp(this.Ptr, box2.Ptr);
 
@@ -68,6 +136,27 @@ namespace MEOS.NET.Types
 
         public TPCBox? SetSRID(int srid)
             => MEOSFactory.WrapTPCBox(Meos.TpcboxSetSrid(this.Ptr, srid));
+
+        public byte[]? Sortkey()
+        {
+            IntPtr _size = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.TpcboxSortkey(this.Ptr, _size);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size);
+            }
+        }
 
         public DateTime? Tmax()
         {
@@ -252,11 +341,27 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static TPCBox? FromHEXWKB(string hexwkb)
+            => MEOSFactory.WrapTPCBox(Meos.TpcboxFromHexwkb(hexwkb));
+
+        public static TPCBox? FromWKB(byte[] wkb)
+        {
+            GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTPCBox(Meos.TpcboxFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+            }
+            finally
+            {
+                _wkb.Free();
+            }
+        }
+
         public static TPCBox? In(string str)
             => MEOSFactory.WrapTPCBox(Meos.TpcboxIn(str));
 
-        public static TPCBox? Make(bool hasx, bool hasz, bool hast, bool geodetic, int srid, uint pcid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, Span period)
-            => MEOSFactory.WrapTPCBox(Meos.TpcboxMake(hasx, hasz, hast, geodetic, srid, pcid, xmin, xmax, ymin, ymax, zmin, zmax, period.Ptr));
+        public static TPCBox? Make(bool hasx, bool hasz, bool hast, bool geodetic, uint pcid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, Span period)
+            => MEOSFactory.WrapTPCBox(Meos.TpcboxMake(hasx, hasz, hast, geodetic, pcid, xmin, xmax, ymin, ymax, zmin, zmax, period.Ptr));
 
     }
 }

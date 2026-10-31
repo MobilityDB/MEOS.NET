@@ -18,8 +18,11 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
-        public Temporal? ArrayElement(int idx, bool astext, NullHandleType null_handle)
-            => MEOSFactory.WrapTemporal(Meos.TjsonbArrayElement(this.Ptr, idx, astext, (int) null_handle));
+        public Temporal? ArrayElement(int idx, NullHandleType null_handle)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbArrayElement(this.Ptr, idx, (int) null_handle));
+
+        public Temporal? ArrayElementText(int idx, NullHandleType null_handle)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbArrayElementText(this.Ptr, idx, (int) null_handle));
 
         public Temporal? ArrayLength()
             => MEOSFactory.WrapTemporal(Meos.TjsonbArrayLength(this.Ptr));
@@ -134,7 +137,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public Temporal? ExtractPath(Text[] path_elems, bool astext, NullHandleType null_handle)
+        public Temporal? ExtractPath(Text[] path_elems, NullHandleType null_handle)
         {
             IntPtr[] _path_elemsValues = new IntPtr[path_elems.Length];
             for (int i = 0; i < path_elems.Length; i++)
@@ -145,7 +148,26 @@ namespace MEOS.NET.Types
             GCHandle _path_elems = GCHandle.Alloc(_path_elemsValues, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapTemporal(Meos.TjsonbExtractPath(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length, astext, (int) null_handle));
+                return MEOSFactory.WrapTemporal(Meos.TjsonbExtractPath(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length, (int) null_handle));
+            }
+            finally
+            {
+                _path_elems.Free();
+            }
+        }
+
+        public Temporal? ExtractPathText(Text[] path_elems, NullHandleType null_handle)
+        {
+            IntPtr[] _path_elemsValues = new IntPtr[path_elems.Length];
+            for (int i = 0; i < path_elems.Length; i++)
+            {
+                _path_elemsValues[i] = path_elems[i].Ptr;
+            }
+
+            GCHandle _path_elems = GCHandle.Alloc(_path_elemsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTemporal(Meos.TjsonbExtractPathText(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length, (int) null_handle));
             }
             finally
             {
@@ -175,8 +197,11 @@ namespace MEOS.NET.Types
         public Temporal? MinusValue(Jsonb jsb)
             => MEOSFactory.WrapTemporal(Meos.TjsonbMinusValue(this.Ptr, jsb.Ptr));
 
-        public Temporal? ObjectField(Text key, bool astext, NullHandleType null_handle)
-            => MEOSFactory.WrapTemporal(Meos.TjsonbObjectField(this.Ptr, key.Ptr, astext, (int) null_handle));
+        public Temporal? ObjectField(Text key, NullHandleType null_handle)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbObjectField(this.Ptr, key.Ptr, (int) null_handle));
+
+        public Temporal? ObjectFieldText(Text key, NullHandleType null_handle)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbObjectFieldText(this.Ptr, key.Ptr, (int) null_handle));
 
         public string Out()
             => Meos.TjsonbOut(this.Ptr);
@@ -221,11 +246,26 @@ namespace MEOS.NET.Types
         public Temporal? StripNulls(bool strip_in_arrays)
             => MEOSFactory.WrapTemporal(Meos.TjsonbStripNulls(this.Ptr, strip_in_arrays));
 
+        public Temporal? ToTbigint(string key, NullHandleType null_handle)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbToTbigint(this.Ptr, key, (int) null_handle));
+
         public Temporal? ToTbool(string key, NullHandleType null_handle)
             => MEOSFactory.WrapTemporal(Meos.TjsonbToTbool(this.Ptr, key, (int) null_handle));
 
         public Temporal? ToTfloat(string key, InterpType interp, NullHandleType null_handle)
             => MEOSFactory.WrapTemporal(Meos.TjsonbToTfloat(this.Ptr, key, (int) interp, (int) null_handle));
+
+        public Temporal? ToTgeogpoint(string key, InterpType interp, NullHandleType null_handle)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbToTgeogpoint(this.Ptr, key, (int) interp, (int) null_handle));
+
+        public Temporal? ToTgeography(string key, NullHandleType null_handle)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbToTgeography(this.Ptr, key, (int) null_handle));
+
+        public Temporal? ToTgeometry(string key, NullHandleType null_handle)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbToTgeometry(this.Ptr, key, (int) null_handle));
+
+        public Temporal? ToTgeompoint(string key, InterpType interp, NullHandleType null_handle)
+            => MEOSFactory.WrapTemporal(Meos.TjsonbToTgeompoint(this.Ptr, key, (int) interp, (int) null_handle));
 
         public Temporal? ToTint(string key, NullHandleType null_handle)
             => MEOSFactory.WrapTemporal(Meos.TjsonbToTint(this.Ptr, key, (int) null_handle));
@@ -235,6 +275,16 @@ namespace MEOS.NET.Types
 
         public Temporal? ToTtextKey(string key, NullHandleType null_handle)
             => MEOSFactory.WrapTemporal(Meos.TjsonbToTtextKey(this.Ptr, key, (int) null_handle));
+
+        public (SpanSet?[], Jsonb?[]) Unnest()
+        {
+            var _answered = Meos.TjsonbUnnest(this.Ptr);
+
+            return (MEOSFactory.WrapSpanSetArray(_answered.Item1), MEOSFactory.WrapJsonbArray(_answered.Item2));
+        }
+
+        public Jsonb? Value()
+            => MEOSFactory.WrapJsonb(Meos.TjsonbValue(this.Ptr));
 
         public Jsonb? ValueAtTimestamptz(DateTime t, bool strict)
         {

@@ -18,6 +18,12 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public Geo? Affine(double a, double b, double c, double d, double e, double f, double g, double h, double i, double xoff, double yoff, double zoff)
+            => MEOSFactory.WrapGeo(Meos.GeoAffine(this.Ptr, a, b, c, d, e, f, g, h, i, xoff, yoff, zoff));
+
+        public double Area(bool spheroid)
+            => Meos.GeoArea(this.Ptr, spheroid);
+
         public byte[]? AsEWKB(string endian)
         {
             IntPtr _size = Marshal.AllocHGlobal(sizeof(long));
@@ -51,8 +57,14 @@ namespace MEOS.NET.Types
         public string AsText(int precision)
             => Meos.GeoAsText(this.Ptr, precision);
 
+        public Geo? Centroid(bool spheroid)
+            => MEOSFactory.WrapGeo(Meos.GeoCentroid(this.Ptr, spheroid));
+
         public Geo? Copy()
             => MEOSFactory.WrapGeo(Meos.GeoCopy(this.Ptr));
+
+        public double Distance(Geo gs2, bool spheroid)
+            => Meos.GeoDistance(this.Ptr, gs2.Ptr, spheroid);
 
         public int Equals(Geo gs2)
             => Meos.GeoEquals(this.Ptr, gs2.Ptr);
@@ -66,6 +78,12 @@ namespace MEOS.NET.Types
         public bool IsUnitary()
             => Meos.GeoIsUnitary(this.Ptr);
 
+        public double Length(bool spheroid)
+            => Meos.GeoLength(this.Ptr, spheroid);
+
+        public int MemSize()
+            => Meos.GeoMemSize(this.Ptr);
+
         public int NumGeos()
             => Meos.GeoNumGeos(this.Ptr);
 
@@ -74,6 +92,9 @@ namespace MEOS.NET.Types
 
         public string Out()
             => Meos.GeoOut(this.Ptr);
+
+        public double Perimeter(bool spheroid)
+            => Meos.GeoPerimeter(this.Ptr, spheroid);
 
         public Geo?[] Pointarr()
             => MEOSFactory.WrapGeoArray(Meos.GeoPointarr(this.Ptr));
@@ -84,6 +105,21 @@ namespace MEOS.NET.Types
         public Geo? Reverse()
             => MEOSFactory.WrapGeo(Meos.GeoReverse(this.Ptr));
 
+        public Geo? Rotate(double angle, double x0, double y0)
+            => MEOSFactory.WrapGeo(Meos.GeoRotate(this.Ptr, angle, x0, y0));
+
+        public Geo? RotateGeo(double angle, Geo origin)
+            => MEOSFactory.WrapGeo(Meos.GeoRotateGeo(this.Ptr, angle, origin.Ptr));
+
+        public Geo? RotateX(double angle)
+            => MEOSFactory.WrapGeo(Meos.GeoRotateX(this.Ptr, angle));
+
+        public Geo? RotateY(double angle)
+            => MEOSFactory.WrapGeo(Meos.GeoRotateY(this.Ptr, angle));
+
+        public Geo? RotateZ(double angle)
+            => MEOSFactory.WrapGeo(Meos.GeoRotateZ(this.Ptr, angle));
+
         public Geo? Round(int maxdd)
             => MEOSFactory.WrapGeo(Meos.GeoRound(this.Ptr, maxdd));
 
@@ -93,8 +129,20 @@ namespace MEOS.NET.Types
         public bool Same(Geo gs2)
             => Meos.GeoSame(this.Ptr, gs2.Ptr);
 
+        public Geo? Scale(double xfactor, double yfactor, double zfactor)
+            => MEOSFactory.WrapGeo(Meos.GeoScale(this.Ptr, xfactor, yfactor, zfactor));
+
+        public Geo? ScaleGeo(Geo scale, Geo sorigin)
+            => MEOSFactory.WrapGeo(Meos.GeoScaleGeo(this.Ptr, scale.Ptr, sorigin.Ptr));
+
+        public Geo? Segmentize(double max_seg_length)
+            => MEOSFactory.WrapGeo(Meos.GeoSegmentize(this.Ptr, max_seg_length));
+
         public Geo? SetSRID(int srid)
             => MEOSFactory.WrapGeo(Meos.GeoSetSrid(this.Ptr, srid));
+
+        public Geo? Shortestline(Geo gs2, bool spheroid)
+            => MEOSFactory.WrapGeo(Meos.GeoShortestline(this.Ptr, gs2.Ptr, spheroid));
 
         public STBox?[] SplitEachNStboxes(int elem_count)
             => MEOSFactory.WrapSTBoxArray(Meos.GeoSplitEachNStboxes(this.Ptr, elem_count));
@@ -117,8 +165,14 @@ namespace MEOS.NET.Types
         public ulong ToQuadbinCell(int resolution)
             => Meos.GeoToQuadbinCell(this.Ptr, resolution);
 
+        public Set? ToQuadbinSet(int resolution)
+            => MEOSFactory.WrapSet(Meos.GeoToQuadbinSet(this.Ptr, resolution));
+
         public ulong ToS2cellCell(int level)
             => Meos.GeoToS2cellCell(this.Ptr, level);
+
+        public Set? ToS2cellSet(int level)
+            => MEOSFactory.WrapSet(Meos.GeoToS2cellSet(this.Ptr, level));
 
         public Set? ToSet()
             => MEOSFactory.WrapSet(Meos.GeoToSet(this.Ptr));
@@ -129,8 +183,14 @@ namespace MEOS.NET.Types
         public Geo? Transform(int srid_to)
             => MEOSFactory.WrapGeo(Meos.GeoTransform(this.Ptr, srid_to));
 
-        public Geo? TransformPipeline(string pipeline, int srid_to, bool is_forward)
-            => MEOSFactory.WrapGeo(Meos.GeoTransformPipeline(this.Ptr, pipeline, srid_to, is_forward));
+        public Geo? TransformPipeline(string pipelinestr, int srid, bool is_forward)
+            => MEOSFactory.WrapGeo(Meos.GeoTransformPipeline(this.Ptr, pipelinestr, srid, is_forward));
+
+        public Geo? Translate(double deltax, double deltay, double deltaz)
+            => MEOSFactory.WrapGeo(Meos.GeoTranslate(this.Ptr, deltax, deltay, deltaz));
+
+        public Geo? Transscale(double deltax, double deltay, double xfactor, double yfactor)
+            => MEOSFactory.WrapGeo(Meos.GeoTransscale(this.Ptr, deltax, deltay, xfactor, yfactor));
 
         public STBox? TstzspanToStbox(Span s)
             => MEOSFactory.WrapSTBox(Meos.GeoTstzspanToStbox(this.Ptr, s.Ptr));

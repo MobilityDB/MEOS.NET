@@ -168,8 +168,8 @@ namespace MEOS.NET.Functions
         public static IntPtr TimestamptzExtract(long tstz, IntPtr units)
             => SafeExecution<IntPtr>(() => Native.TimestamptzExtract(tstz, units));
 
-        public static int TimestamptzHash(long tstz)
-            => SafeExecution<int>(() => Native.TimestamptzHash(tstz));
+        public static uint TimestamptzHash(long tstz)
+            => SafeExecution<uint>(() => Native.TimestamptzHash(tstz));
 
         public static ulong TimestamptzHashExtended(long tstz, ulong seed)
             => SafeExecution<ulong>(() => Native.TimestamptzHashExtended(tstz, seed));

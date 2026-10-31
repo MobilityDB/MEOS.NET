@@ -7,25 +7,6 @@ using MEOS.NET.Functions;
 
 namespace MEOS.NET.Structures
 {
-    /// <summary>The MEOS <c>AFFINE</c> struct, as MEOS returns it.</summary>
-    [GeneratedCode("MEOS.NET.Codegen", "0.1.0")]
-    [StructLayout(LayoutKind.Sequential)]
-    public struct AFFINE
-    {
-        public double afac;
-        public double bfac;
-        public double cfac;
-        public double dfac;
-        public double efac;
-        public double ffac;
-        public double gfac;
-        public double hfac;
-        public double ifac;
-        public double xoff;
-        public double yoff;
-        public double zoff;
-    }
-
     /// <summary>The MEOS <c>BOX3D</c> struct, as MEOS returns it.</summary>
     [GeneratedCode("MEOS.NET.Codegen", "0.1.0")]
     [StructLayout(LayoutKind.Sequential)]
@@ -60,6 +41,19 @@ namespace MEOS.NET.Structures
                 Marshal.FreeHGlobal(ptr);
             }
         }
+    }
+
+    /// <summary>The MEOS <c>BandStats</c> struct, as MEOS returns it.</summary>
+    [GeneratedCode("MEOS.NET.Codegen", "0.1.0")]
+    [StructLayout(LayoutKind.Sequential)]
+    public struct BandStats
+    {
+        public uint count;
+        public double sum;
+        public double mean;
+        public double stddev;
+        public double min;
+        public double max;
     }
 
     /// <summary>The MEOS <c>Interval</c> struct, as MEOS returns it.</summary>
@@ -103,35 +97,19 @@ namespace MEOS.NET.Structures
         public int j;
     }
 
-    /// <summary>The MEOS <c>MvtGeom</c> struct, as MEOS returns it.</summary>
+    /// <summary>The MEOS <c>RasterStatsState</c> struct, as MEOS returns it.</summary>
     [GeneratedCode("MEOS.NET.Codegen", "0.1.0")]
     [StructLayout(LayoutKind.Sequential)]
-    public struct MvtGeom
+    public struct RasterStatsState
     {
-        public IntPtr geom;
-        public IntPtr times;
-        public int count;
-    }
-
-    /// <summary>The MEOS <c>SpaceSplit</c> struct, as MEOS returns it.</summary>
-    [GeneratedCode("MEOS.NET.Codegen", "0.1.0")]
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SpaceSplit
-    {
-        public IntPtr fragments;
-        public IntPtr bins;
-        public int count;
-    }
-
-    /// <summary>The MEOS <c>SpaceTimeSplit</c> struct, as MEOS returns it.</summary>
-    [GeneratedCode("MEOS.NET.Codegen", "0.1.0")]
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SpaceTimeSplit
-    {
-        public IntPtr fragments;
-        public IntPtr space_bins;
-        public IntPtr time_bins;
-        public int count;
+        public int band;
+        public bool exclude_nodata;
+        public ulong count;
+        public double sum;
+        public double min;
+        public double max;
+        public double mean;
+        public double q;
     }
 
     /// <summary>The MEOS <c>TimeTzADT</c> struct, as MEOS returns it.</summary>
@@ -145,7 +123,7 @@ namespace MEOS.NET.Structures
         /// <summary>The <c>TimeTzADT</c> MEOS reads from this text.</summary>
         public static TimeTzADT? In(string str)
         {
-            IntPtr ptr = Meos.PgTimetzIn(str, -1);
+            IntPtr ptr = Meos.TimetzIn(str, -1);
             return ptr == IntPtr.Zero ? null : Marshal.PtrToStructure<TimeTzADT>(ptr);
         }
 
@@ -156,13 +134,23 @@ namespace MEOS.NET.Structures
             try
             {
                 Marshal.StructureToPtr(this, ptr, false);
-                return Meos.PgTimetzOut(ptr);
+                return Meos.TimetzOut(ptr);
             }
             finally
             {
                 Marshal.FreeHGlobal(ptr);
             }
         }
+    }
+
+    /// <summary>The MEOS <c>ValueCount</c> struct, as MEOS returns it.</summary>
+    [GeneratedCode("MEOS.NET.Codegen", "0.1.0")]
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ValueCount
+    {
+        public double value;
+        public uint count;
+        public double percent;
     }
 
 }

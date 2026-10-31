@@ -12,7 +12,7 @@ try
     Console.WriteLine($"  class            : {tfi.GetType().Name}");
     Console.WriteLine($"  text             : {tfi}");
     Console.WriteLine($"  start timestamp  : {tfi.StartTimestamptz():u}");
-    Console.WriteLine($"  MF-JSON          : {tfi.AsMFJSON(false, 0, 6, string.Empty)}");
+    Console.WriteLine($"  MF-JSON          : {tfi.AsMFJSON(0, 0, 6, string.Empty)}");
     Console.WriteLine($"  always 25.0?     : {Meos.AlwaysEqTfloatFloat(tfi.Ptr, 25.0) == 1}\n");
 
     Console.WriteLine("Making one from a value and a moment");

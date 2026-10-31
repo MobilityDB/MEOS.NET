@@ -52,6 +52,30 @@ namespace MEOS.NET.Types
             }
         }
 
+        public bool BandHasNodataValue()
+            => Meos.RaquetBandHasNodataValue(this.Ptr);
+
+        public double? BandNodataValue()
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.RaquetBandNodataValue(this.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public string BandPixelType()
+            => Meos.RaquetBandPixelType(this.Ptr);
+
         public int Cmp(Raquet rq2)
             => Meos.RaquetCmp(this.Ptr, rq2.Ptr);
 
@@ -82,11 +106,11 @@ namespace MEOS.NET.Types
         public bool Lt(Raquet rq2)
             => Meos.RaquetLt(this.Ptr, rq2.Ptr);
 
+        public int MemSize()
+            => Meos.RaquetMemSize(this.Ptr);
+
         public bool Ne(Raquet rq2)
             => Meos.RaquetNe(this.Ptr, rq2.Ptr);
-
-        public double Nodata()
-            => Meos.RaquetNodata(this.Ptr);
 
         public string Out()
             => Meos.RaquetOut(this.Ptr);
@@ -111,9 +135,6 @@ namespace MEOS.NET.Types
                 Marshal.FreeHGlobal(_size_out);
             }
         }
-
-        public string Pixtype()
-            => Meos.RaquetPixtype(this.Ptr);
 
         public ulong Quadbin()
             => Meos.RaquetQuadbin(this.Ptr);

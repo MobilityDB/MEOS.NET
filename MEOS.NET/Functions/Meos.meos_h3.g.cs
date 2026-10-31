@@ -12,6 +12,9 @@ namespace MEOS.NET.Functions
         public static ulong H3indexIn(string str)
             => SafeExecution<ulong>(() => Native.H3indexIn(str));
 
+        public static ulong BigintToH3index(long i)
+            => SafeExecution<ulong>(() => Native.BigintToH3index(i));
+
         public static string H3indexOut(ulong cell)
             => SafeExecution<string>(() => Native.H3indexOut(cell));
 
@@ -47,6 +50,9 @@ namespace MEOS.NET.Functions
 
         public static uint H3indexHash(ulong cell)
             => SafeExecution<uint>(() => Native.H3indexHash(cell));
+
+        public static ulong H3indexHashExtended(ulong cell, ulong seed)
+            => SafeExecution<ulong>(() => Native.H3indexHashExtended(cell, seed));
 
         public static IntPtr H3GridDisk(ulong origin, int k)
             => SafeExecution<IntPtr>(() => Native.H3GridDisk(origin, k));
@@ -114,11 +120,29 @@ namespace MEOS.NET.Functions
         public static IntPtr Th3indexseqsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.Th3indexseqsetIn(str));
 
+        public static string Th3indexOut(IntPtr temp)
+            => SafeExecution<string>(() => Native.Th3indexOut(temp));
+
+        public static IntPtr Th3indexFromMfjson(string mfjson)
+            => SafeExecution<IntPtr>(() => Native.Th3indexFromMfjson(mfjson));
+
         public static IntPtr Th3indexMake(ulong value, long t)
             => SafeExecution<IntPtr>(() => Native.Th3indexMake(value, t));
 
         public static IntPtr Th3indexinstMake(ulong value, long t)
             => SafeExecution<IntPtr>(() => Native.Th3indexinstMake(value, t));
+
+        public static IntPtr Th3indexFromBaseTemp(ulong value, IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.Th3indexFromBaseTemp(value, temp));
+
+        public static IntPtr Th3indexseqFromBaseTstzset(ulong value, IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.Th3indexseqFromBaseTstzset(value, s));
+
+        public static IntPtr Th3indexseqFromBaseTstzspan(ulong value, IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.Th3indexseqFromBaseTstzspan(value, s));
+
+        public static IntPtr Th3indexseqsetFromBaseTstzspanset(ulong value, IntPtr ss)
+            => SafeExecution<IntPtr>(() => Native.Th3indexseqsetFromBaseTstzspanset(value, ss));
 
         public static IntPtr Th3indexseqMake(IntPtr values, IntPtr times, int count, bool lower_inc, bool upper_inc)
             => SafeExecution<IntPtr>(() => Native.Th3indexseqMake(values, times, count, lower_inc, upper_inc));
@@ -131,6 +155,9 @@ namespace MEOS.NET.Functions
 
         public static ulong Th3indexEndValue(IntPtr temp)
             => SafeExecution<ulong>(() => Native.Th3indexEndValue(temp));
+
+        public static ulong Th3indexValue(IntPtr temp)
+            => SafeExecution<ulong>(() => Native.Th3indexValue(temp));
 
         public static bool Th3indexValueN(IntPtr temp, int n, IntPtr result)
             => SafeExecution<bool>(() => Native.Th3indexValueN(temp, n, result));
@@ -150,6 +177,30 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
+        public static (IntPtr[], ulong[]) Th3indexUnnest(IntPtr temp)
+        {
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.Th3indexUnnest(temp, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                ulong[] __out_values_out = new ulong[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_values_out[_i] = (ulong) Marshal.ReadInt64(__out_values_arr, _i * 8); }
+                return (_resultArr, __out_values_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
+
         public static bool Th3indexValueAtTimestamptz(IntPtr temp, long t, bool strict, IntPtr result)
             => SafeExecution<bool>(() => Native.Th3indexValueAtTimestamptz(temp, t, strict, result));
 
@@ -158,6 +209,12 @@ namespace MEOS.NET.Functions
 
         public static IntPtr Th3indexToTbigint(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.Th3indexToTbigint(temp));
+
+        public static IntPtr Th3indexAtValue(IntPtr temp, ulong cell)
+            => SafeExecution<IntPtr>(() => Native.Th3indexAtValue(temp, cell));
+
+        public static IntPtr Th3indexMinusValue(IntPtr temp, ulong cell)
+            => SafeExecution<IntPtr>(() => Native.Th3indexMinusValue(temp, cell));
 
         public static int EverEqH3indexTh3index(ulong cell, IntPtr temp)
             => SafeExecution<int>(() => Native.EverEqH3indexTh3index(cell, temp));
@@ -237,11 +294,59 @@ namespace MEOS.NET.Functions
         public static IntPtr Th3indexChildPosToCell(IntPtr child_pos, IntPtr parent, int child_res)
             => SafeExecution<IntPtr>(() => Native.Th3indexChildPosToCell(child_pos, parent, child_res));
 
-        public static IntPtr TgeogpointToTh3index(IntPtr temp, int resolution)
-            => SafeExecution<IntPtr>(() => Native.TgeogpointToTh3index(temp, resolution));
+        public static IntPtr TgeogpointToTh3index(IntPtr temp, int resolution, bool border_inc)
+            => SafeExecution<IntPtr>(() => Native.TgeogpointToTh3index(temp, resolution, border_inc));
 
-        public static IntPtr TgeompointToTh3index(IntPtr temp, int resolution)
-            => SafeExecution<IntPtr>(() => Native.TgeompointToTh3index(temp, resolution));
+        public static IntPtr TgeompointToTh3index(IntPtr temp, int resolution, bool border_inc)
+            => SafeExecution<IntPtr>(() => Native.TgeompointToTh3index(temp, resolution, border_inc));
+
+        public static (IntPtr[], ulong[]) TgeogpointH3indexSplit(IntPtr temp, int resolution, bool border_inc)
+        {
+            IntPtr _out_cells = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TgeogpointH3indexSplit(temp, resolution, border_inc, _out_cells, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_cells_arr = Marshal.ReadIntPtr(_out_cells);
+                ulong[] __out_cells_out = new ulong[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_cells_out[_i] = (ulong) Marshal.ReadInt64(__out_cells_arr, _i * 8); }
+                return (_resultArr, __out_cells_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_cells);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
+
+        public static (IntPtr[], ulong[]) TgeompointH3indexSplit(IntPtr temp, int resolution, bool border_inc)
+        {
+            IntPtr _out_cells = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TgeompointH3indexSplit(temp, resolution, border_inc, _out_cells, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_cells_arr = Marshal.ReadIntPtr(_out_cells);
+                ulong[] __out_cells_out = new ulong[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_cells_out[_i] = (ulong) Marshal.ReadInt64(__out_cells_arr, _i * 8); }
+                return (_resultArr, __out_cells_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_cells);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
 
         public static IntPtr Th3indexToTgeogpoint(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.Th3indexToTgeogpoint(temp));
@@ -252,11 +357,80 @@ namespace MEOS.NET.Functions
         public static IntPtr H3indexToSet(ulong cell)
             => SafeExecution<IntPtr>(() => Native.H3indexToSet(cell));
 
+        public static IntPtr H3indexsetIn(string str)
+            => SafeExecution<IntPtr>(() => Native.H3indexsetIn(str));
+
+        public static string H3indexsetOut(IntPtr s)
+            => SafeExecution<string>(() => Native.H3indexsetOut(s));
+
+        public static IntPtr H3indexsetMake(IntPtr values, int count)
+            => SafeExecution<IntPtr>(() => Native.H3indexsetMake(values, count));
+
+        public static ulong H3indexsetEndValue(IntPtr s)
+            => SafeExecution<ulong>(() => Native.H3indexsetEndValue(s));
+
+        public static ulong H3indexsetStartValue(IntPtr s)
+            => SafeExecution<ulong>(() => Native.H3indexsetStartValue(s));
+
+        public static bool H3indexsetValueN(IntPtr s, int n, IntPtr result)
+            => SafeExecution<bool>(() => Native.H3indexsetValueN(s, n, result));
+
+        public static ulong[] H3indexsetValues(IntPtr s)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.H3indexsetValues(s, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                ulong[] _out = new ulong[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = (ulong) Marshal.ReadInt64(_p, _i * 8); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static bool ContainedH3indexSet(ulong cell, IntPtr s)
+            => SafeExecution<bool>(() => Native.ContainedH3indexSet(cell, s));
+
+        public static bool ContainsSetH3index(IntPtr s, ulong cell)
+            => SafeExecution<bool>(() => Native.ContainsSetH3index(s, cell));
+
+        public static IntPtr IntersectionH3indexSet(ulong cell, IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.IntersectionH3indexSet(cell, s));
+
+        public static IntPtr IntersectionSetH3index(IntPtr s, ulong cell)
+            => SafeExecution<IntPtr>(() => Native.IntersectionSetH3index(s, cell));
+
+        public static IntPtr MinusH3indexSet(ulong cell, IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.MinusH3indexSet(cell, s));
+
+        public static IntPtr MinusSetH3index(IntPtr s, ulong cell)
+            => SafeExecution<IntPtr>(() => Native.MinusSetH3index(s, cell));
+
+        public static IntPtr UnionH3indexSet(ulong cell, IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.UnionH3indexSet(cell, s));
+
+        public static IntPtr UnionSetH3index(IntPtr s, ulong cell)
+            => SafeExecution<IntPtr>(() => Native.UnionSetH3index(s, cell));
+
+        public static IntPtr H3indexUnionTransfn(IntPtr state, ulong cell)
+            => SafeExecution<IntPtr>(() => Native.H3indexUnionTransfn(state, cell));
+
+        public static IntPtr H3indexsetGridDisk(IntPtr cells, int k)
+            => SafeExecution<IntPtr>(() => Native.H3indexsetGridDisk(cells, k));
+
+        public static IntPtr H3indexsetCoverCells(IntPtr cells, int resolution)
+            => SafeExecution<IntPtr>(() => Native.H3indexsetCoverCells(cells, resolution));
+
         public static ulong GeoToH3indexCell(IntPtr point, int resolution)
             => SafeExecution<ulong>(() => Native.GeoToH3indexCell(point, resolution));
 
         public static IntPtr GeoToH3indexSet(IntPtr gs, int resolution)
             => SafeExecution<IntPtr>(() => Native.GeoToH3indexSet(gs, resolution));
+
+        public static IntPtr H3indexCellToCover(ulong cell, int resolution)
+            => SafeExecution<IntPtr>(() => Native.H3indexCellToCover(cell, resolution));
 
         public static IntPtr H3indexToStbox(ulong cell)
             => SafeExecution<IntPtr>(() => Native.H3indexToStbox(cell));
@@ -269,6 +443,9 @@ namespace MEOS.NET.Functions
 
         public static int EverEqH3indexsetTh3index(IntPtr cells, IntPtr th3idx)
             => SafeExecution<int>(() => Native.EverEqH3indexsetTh3index(cells, th3idx));
+
+        public static int EverEqTh3indexH3indexset(IntPtr th3idx, IntPtr cells)
+            => SafeExecution<int>(() => Native.EverEqTh3indexH3indexset(th3idx, cells));
 
         public static IntPtr Th3indexAreNeighborCells(IntPtr origin, IntPtr dest)
             => SafeExecution<IntPtr>(() => Native.Th3indexAreNeighborCells(origin, dest));

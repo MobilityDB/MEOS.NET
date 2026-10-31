@@ -50,6 +50,12 @@ namespace MEOS.NET.Types
         public Set? Radius()
             => MEOSFactory.WrapSet(Meos.TcbufferRadius(this.Ptr));
 
+        public Temporal? Rotate(double angle, double x0, double y0)
+            => MEOSFactory.WrapTemporal(Meos.TcbufferRotate(this.Ptr, angle, x0, y0));
+
+        public Temporal? RotateZ(double angle)
+            => MEOSFactory.WrapTemporal(Meos.TcbufferRotateZ(this.Ptr, angle));
+
         public Cbuffer? StartValue()
             => MEOSFactory.WrapCbuffer(Meos.TcbufferStartValue(this.Ptr));
 
@@ -59,8 +65,21 @@ namespace MEOS.NET.Types
         public Temporal? ToTgeompoint()
             => MEOSFactory.WrapTemporal(Meos.TcbufferToTgeompoint(this.Ptr));
 
+        public Temporal? Translate(double deltax, double deltay)
+            => MEOSFactory.WrapTemporal(Meos.TcbufferTranslate(this.Ptr, deltax, deltay));
+
         public Geo? TraversedArea(bool unary_union)
             => MEOSFactory.WrapGeo(Meos.TcbufferTraversedArea(this.Ptr, unary_union));
+
+        public (SpanSet?[], Cbuffer?[]) Unnest()
+        {
+            var _answered = Meos.TcbufferUnnest(this.Ptr);
+
+            return (MEOSFactory.WrapSpanSetArray(_answered.Item1), MEOSFactory.WrapCbufferArray(_answered.Item2));
+        }
+
+        public Cbuffer? Value()
+            => MEOSFactory.WrapCbuffer(Meos.TcbufferValue(this.Ptr));
 
         public Cbuffer? ValueAtTimestamptz(DateTime t, bool strict)
         {

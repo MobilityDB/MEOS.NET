@@ -18,8 +18,8 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
-        public Span?[] Bins(long vsize, long vorigin)
-            => MEOSFactory.WrapSpanArray(Meos.BigintspansetBins(this.Ptr, vsize, vorigin));
+        public Span?[] Bins(long vsize, long vorigin, bool border_inc)
+            => MEOSFactory.WrapSpanArray(Meos.BigintspansetBins(this.Ptr, vsize, vorigin, border_inc));
 
         public long Lower()
             => Meos.BigintspansetLower(this.Ptr);

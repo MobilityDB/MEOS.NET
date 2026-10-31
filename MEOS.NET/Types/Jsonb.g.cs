@@ -33,11 +33,17 @@ namespace MEOS.NET.Types
         public int ArrayLength()
             => Meos.JsonbArrayLength(this.Ptr);
 
+        public int Cmp(Jsonb jb2)
+            => Meos.JsonbCmp(this.Ptr, jb2.Ptr);
+
         public Jsonb? Concat(Jsonb jb2)
             => MEOSFactory.WrapJsonb(Meos.JsonbConcat(this.Ptr, jb2.Ptr));
 
         public bool Contained(Jsonb jb2)
             => Meos.JsonbContained(this.Ptr, jb2.Ptr);
+
+        public bool Contains(Jsonb jb2)
+            => Meos.JsonbContains(this.Ptr, jb2.Ptr);
 
         public Jsonb? Copy()
             => MEOSFactory.WrapJsonb(Meos.JsonbCopy(this.Ptr));
@@ -85,6 +91,23 @@ namespace MEOS.NET.Types
                 _path_elems.Free();
             }
         }
+
+        public (Text?[], Jsonb?[]) Each()
+        {
+            var _answered = Meos.JsonbEach(this.Ptr);
+
+            return (MEOSFactory.WrapTextArray(_answered.Item1), MEOSFactory.WrapJsonbArray(_answered.Item2));
+        }
+
+        public (Text?[], Text?[]) EachText()
+        {
+            var _answered = Meos.JsonbEachText(this.Ptr);
+
+            return (MEOSFactory.WrapTextArray(_answered.Item1), MEOSFactory.WrapTextArray(_answered.Item2));
+        }
+
+        public bool Eq(Jsonb jb2)
+            => Meos.JsonbEq(this.Ptr, jb2.Ptr);
 
         public bool Exists(Text key)
             => Meos.JsonbExists(this.Ptr, key.Ptr);
@@ -146,6 +169,12 @@ namespace MEOS.NET.Types
             }
         }
 
+        public bool Ge(Jsonb jb2)
+            => Meos.JsonbGe(this.Ptr, jb2.Ptr);
+
+        public bool Gt(Jsonb jb2)
+            => Meos.JsonbGt(this.Ptr, jb2.Ptr);
+
         public uint Hash()
             => Meos.JsonbHash(this.Ptr);
 
@@ -170,6 +199,18 @@ namespace MEOS.NET.Types
                 _path_elems.Free();
             }
         }
+
+        public bool Le(Jsonb jb2)
+            => Meos.JsonbLe(this.Ptr, jb2.Ptr);
+
+        public bool Lt(Jsonb jb2)
+            => Meos.JsonbLt(this.Ptr, jb2.Ptr);
+
+        public int MemSize()
+            => Meos.JsonbMemSize(this.Ptr);
+
+        public bool Ne(Jsonb jb2)
+            => Meos.JsonbNe(this.Ptr, jb2.Ptr);
 
         public Jsonb? ObjectField(Text key)
             => MEOSFactory.WrapJsonb(Meos.JsonbObjectField(this.Ptr, key.Ptr));

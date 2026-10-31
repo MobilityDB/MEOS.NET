@@ -18,7 +18,7 @@ namespace MEOS.NET.Tests
             TJsonb temp = (TJsonb)TJsonb.In(
                 "[{\"a\": [1, 2]}@2024-12-06, {\"a\": [1, 2]}@2024-12-08]")!;
 
-            Temporal? first = temp.ArrayElement(0, true, NullHandleType.NullJsonNull);
+            Temporal? first = temp.ArrayElement(0, NullHandleType.NullJsonNull);
 
             Assert.IsNotNull(first);
         }
@@ -31,19 +31,6 @@ namespace MEOS.NET.Tests
             ulong cell = point.ToS2cellCell(10);
 
             Assert.AreNotEqual(0UL, cell);
-        }
-
-        [TestMethod]
-        public void AStructReturnedByValueComesBackAsTheStruct()
-        {
-            TPoint trip = (TPoint)TGeomPoint.In(
-                "[POINT(0 0)@2024-12-06, POINT(2 2)@2024-12-08]")!;
-            STBox bounds = STBox.In("STBOX X((-1,-1),(3,3))")!;
-
-            MvtGeom mvt = trip.AsMvtgeom(bounds, 4096, 0, true);
-
-            Assert.AreNotEqual(IntPtr.Zero, mvt.geom);
-            Assert.IsTrue(mvt.count > 0);
         }
     }
 }

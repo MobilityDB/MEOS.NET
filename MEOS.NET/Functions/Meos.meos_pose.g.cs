@@ -9,8 +9,14 @@ namespace MEOS.NET.Functions
     /// <summary>The MEOS functions <c>meos_pose.h</c> declares.</summary>
     public static partial class Meos
     {
+        public static IntPtr PoseAsEwkb(IntPtr pose, byte variant, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.PoseAsEwkb(pose, variant, size_out));
+
         public static string PoseAsEwkt(IntPtr pose, int maxdd)
             => SafeExecution<string>(() => Native.PoseAsEwkt(pose, maxdd));
+
+        public static string PoseAsHexewkb(IntPtr pose, byte variant, IntPtr size_out)
+            => SafeExecution<string>(() => Native.PoseAsHexewkb(pose, variant, size_out));
 
         public static string PoseAsHexwkb(IntPtr pose, byte variant, IntPtr size_out)
             => SafeExecution<string>(() => Native.PoseAsHexwkb(pose, variant, size_out));
@@ -26,6 +32,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr PoseFromHexwkb(string hexwkb)
             => SafeExecution<IntPtr>(() => Native.PoseFromHexwkb(hexwkb));
+
+        public static IntPtr PoseFromText(string str)
+            => SafeExecution<IntPtr>(() => Native.PoseFromText(str));
 
         public static IntPtr PoseIn(string str)
             => SafeExecution<IntPtr>(() => Native.PoseIn(str));
@@ -72,6 +81,15 @@ namespace MEOS.NET.Functions
         public static IntPtr GeoposeFrame(int frame_id)
             => SafeExecution<IntPtr>(() => Native.GeoposeFrame(frame_id));
 
+        public static string GeoposeFrameName(int frame_id)
+            => SafeExecution<string>(() => Native.GeoposeFrameName(frame_id));
+
+        public static int GeoposeFrameSrid(int frame_id)
+            => SafeExecution<int>(() => Native.GeoposeFrameSrid(frame_id));
+
+        public static bool GeoposeFrameIsGeographic(int frame_id)
+            => SafeExecution<bool>(() => Native.GeoposeFrameIsGeographic(frame_id));
+
         public static IntPtr PoseApplyGeo(IntPtr pose, IntPtr body)
             => SafeExecution<IntPtr>(() => Native.PoseApplyGeo(pose, body));
 
@@ -89,6 +107,21 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TposeInverse(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TposeInverse(temp));
+
+        public static IntPtr TposeRotate(IntPtr temp, double angle, double x0, double y0)
+            => SafeExecution<IntPtr>(() => Native.TposeRotate(temp, angle, x0, y0));
+
+        public static IntPtr TposeRotateX(IntPtr temp, double angle)
+            => SafeExecution<IntPtr>(() => Native.TposeRotateX(temp, angle));
+
+        public static IntPtr TposeRotateY(IntPtr temp, double angle)
+            => SafeExecution<IntPtr>(() => Native.TposeRotateY(temp, angle));
+
+        public static IntPtr TposeRotateZ(IntPtr temp, double angle)
+            => SafeExecution<IntPtr>(() => Native.TposeRotateZ(temp, angle));
+
+        public static IntPtr TposeTranslate(IntPtr temp, double deltax, double deltay, double deltaz)
+            => SafeExecution<IntPtr>(() => Native.TposeTranslate(temp, deltax, deltay, deltaz));
 
         public static IntPtr PoseCopy(IntPtr pose)
             => SafeExecution<IntPtr>(() => Native.PoseCopy(pose));
@@ -119,6 +152,9 @@ namespace MEOS.NET.Functions
 
         public static ulong PoseHashExtended(IntPtr pose, ulong seed)
             => SafeExecution<ulong>(() => Native.PoseHashExtended(pose, seed));
+
+        public static int PoseMemSize(IntPtr pose)
+            => SafeExecution<int>(() => Native.PoseMemSize(pose));
 
         public static double[] PoseQuaternion(IntPtr pose)
         {
@@ -172,8 +208,15 @@ namespace MEOS.NET.Functions
         public static IntPtr PoseRound(IntPtr pose, int maxdd)
             => SafeExecution<IntPtr>(() => Native.PoseRound(pose, maxdd));
 
-        public static IntPtr PosearrRound(IntPtr posearr, int count, int maxdd)
-            => SafeExecution<IntPtr>(() => Native.PosearrRound(posearr, count, maxdd));
+        public static IntPtr[] PosearrRound(IntPtr posearr, int count, int maxdd)
+        {
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PosearrRound(posearr, count, maxdd));
+            int _n = count;
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+            return _out;
+        }
 
         public static IntPtr PoseSetSrid(IntPtr pose, int srid)
             => SafeExecution<IntPtr>(() => Native.PoseSetSrid(pose, srid));
@@ -222,12 +265,6 @@ namespace MEOS.NET.Functions
 
         public static bool PoseNe(IntPtr pose1, IntPtr pose2)
             => SafeExecution<bool>(() => Native.PoseNe(pose1, pose2));
-
-        public static bool PoseNsame(IntPtr pose1, IntPtr pose2)
-            => SafeExecution<bool>(() => Native.PoseNsame(pose1, pose2));
-
-        public static bool PoseSame(IntPtr pose1, IntPtr pose2)
-            => SafeExecution<bool>(() => Native.PoseSame(pose1, pose2));
 
         public static IntPtr PosesetIn(string str)
             => SafeExecution<IntPtr>(() => Native.PosesetIn(str));
@@ -292,6 +329,9 @@ namespace MEOS.NET.Functions
         public static IntPtr UnionSetPose(IntPtr s, IntPtr pose)
             => SafeExecution<IntPtr>(() => Native.UnionSetPose(s, pose));
 
+        public static double DistancePosesetPoseset(IntPtr s1, IntPtr s2)
+            => SafeExecution<double>(() => Native.DistancePosesetPoseset(s1, s2));
+
         public static IntPtr TposeFromMfjson(string str)
             => SafeExecution<IntPtr>(() => Native.TposeFromMfjson(str));
 
@@ -346,6 +386,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TposeTrajectory(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TposeTrajectory(temp));
 
+        public static IntPtr TposeValue(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TposeValue(temp));
+
         public static bool TposeValueAtTimestamptz(IntPtr temp, long t, bool strict, IntPtr result)
             => SafeExecution<bool>(() => Native.TposeValueAtTimestamptz(temp, t, strict, result));
 
@@ -365,6 +408,30 @@ namespace MEOS.NET.Functions
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static (IntPtr[], IntPtr[]) TposeUnnest(IntPtr temp)
+        {
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TposeUnnest(temp, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                IntPtr[] __out_values_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
+                return (_resultArr, __out_values_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
         }
 
         public static IntPtr TposeAtElevation(IntPtr temp, IntPtr s)
@@ -487,11 +554,17 @@ namespace MEOS.NET.Functions
         public static string PosechainAsText(IntPtr pc, int maxdd)
             => SafeExecution<string>(() => Native.PosechainAsText(pc, maxdd));
 
+        public static IntPtr PosechainAsEwkb(IntPtr pc, byte variant, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.PosechainAsEwkb(pc, variant, size_out));
+
         public static string PosechainAsEwkt(IntPtr pc, int maxdd)
             => SafeExecution<string>(() => Native.PosechainAsEwkt(pc, maxdd));
 
         public static IntPtr PosechainAsWkb(IntPtr pc, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.PosechainAsWkb(pc, variant, size_out));
+
+        public static string PosechainAsHexewkb(IntPtr pc, byte variant, IntPtr size_out)
+            => SafeExecution<string>(() => Native.PosechainAsHexewkb(pc, variant, size_out));
 
         public static string PosechainAsHexwkb(IntPtr pc, byte variant, IntPtr size_out)
             => SafeExecution<string>(() => Native.PosechainAsHexwkb(pc, variant, size_out));
@@ -565,6 +638,9 @@ namespace MEOS.NET.Functions
         public static ulong PosechainHashExtended(IntPtr pc, ulong seed)
             => SafeExecution<ulong>(() => Native.PosechainHashExtended(pc, seed));
 
+        public static int PosechainMemSize(IntPtr pc)
+            => SafeExecution<int>(() => Native.PosechainMemSize(pc));
+
         public static IntPtr PosechainRound(IntPtr pc, int maxdd)
             => SafeExecution<IntPtr>(() => Native.PosechainRound(pc, maxdd));
 
@@ -577,8 +653,8 @@ namespace MEOS.NET.Functions
         public static IntPtr PosechainTransform(IntPtr pc, int srid_to)
             => SafeExecution<IntPtr>(() => Native.PosechainTransform(pc, srid_to));
 
-        public static IntPtr PosechainTransformPipeline(IntPtr pc, string pipeline, int srid_to, bool is_forward)
-            => SafeExecution<IntPtr>(() => Native.PosechainTransformPipeline(pc, pipeline, srid_to, is_forward));
+        public static IntPtr PosechainTransformPipeline(IntPtr pc, string pipelinestr, int srid, bool is_forward)
+            => SafeExecution<IntPtr>(() => Native.PosechainTransformPipeline(pc, pipelinestr, srid, is_forward));
 
         public static IntPtr TposechainFromGeopose(string json)
             => SafeExecution<IntPtr>(() => Native.TposechainFromGeopose(json));
@@ -595,12 +671,6 @@ namespace MEOS.NET.Functions
         public static bool PosechainNe(IntPtr pc1, IntPtr pc2)
             => SafeExecution<bool>(() => Native.PosechainNe(pc1, pc2));
 
-        public static bool PosechainSame(IntPtr pc1, IntPtr pc2)
-            => SafeExecution<bool>(() => Native.PosechainSame(pc1, pc2));
-
-        public static bool PosechainNsame(IntPtr pc1, IntPtr pc2)
-            => SafeExecution<bool>(() => Native.PosechainNsame(pc1, pc2));
-
         public static int PosechainCmp(IntPtr pc1, IntPtr pc2)
             => SafeExecution<int>(() => Native.PosechainCmp(pc1, pc2));
 
@@ -615,6 +685,15 @@ namespace MEOS.NET.Functions
 
         public static bool PosechainGe(IntPtr pc1, IntPtr pc2)
             => SafeExecution<bool>(() => Native.PosechainGe(pc1, pc2));
+
+        public static double DistancePosechainGeo(IntPtr pc, IntPtr gs)
+            => SafeExecution<double>(() => Native.DistancePosechainGeo(pc, gs));
+
+        public static double DistancePosechainPosechain(IntPtr pc1, IntPtr pc2)
+            => SafeExecution<double>(() => Native.DistancePosechainPosechain(pc1, pc2));
+
+        public static double DistancePosechainStbox(IntPtr pc, IntPtr box)
+            => SafeExecution<double>(() => Native.DistancePosechainStbox(pc, box));
 
         public static IntPtr PosechainsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.PosechainsetIn(str));
@@ -679,20 +758,149 @@ namespace MEOS.NET.Functions
         public static IntPtr UnionSetPosechain(IntPtr s, IntPtr pc)
             => SafeExecution<IntPtr>(() => Native.UnionSetPosechain(s, pc));
 
+        public static double DistancePosechainsetPosechainset(IntPtr s1, IntPtr s2)
+            => SafeExecution<double>(() => Native.DistancePosechainsetPosechainset(s1, s2));
+
         public static IntPtr TposechainIn(string str)
             => SafeExecution<IntPtr>(() => Native.TposechainIn(str));
 
         public static IntPtr TposechainFromMfjson(string mfjson)
             => SafeExecution<IntPtr>(() => Native.TposechainFromMfjson(mfjson));
 
+        public static IntPtr TposechaininstMake(IntPtr pc, long t)
+            => SafeExecution<IntPtr>(() => Native.TposechaininstMake(pc, t));
+
         public static IntPtr TposechainFromBaseTemp(IntPtr pc, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TposechainFromBaseTemp(pc, temp));
+
+        public static IntPtr TposechainseqFromBaseTstzset(IntPtr pc, IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.TposechainseqFromBaseTstzset(pc, s));
+
+        public static IntPtr TposechainseqFromBaseTstzspan(IntPtr pc, IntPtr s, int interp)
+            => SafeExecution<IntPtr>(() => Native.TposechainseqFromBaseTstzspan(pc, s, interp));
+
+        public static IntPtr TposechainseqsetFromBaseTstzspanset(IntPtr pc, IntPtr ss, int interp)
+            => SafeExecution<IntPtr>(() => Native.TposechainseqsetFromBaseTstzspanset(pc, ss, interp));
 
         public static IntPtr TposechainToTpose(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TposechainToTpose(temp));
 
+        public static IntPtr TposechainEndValue(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TposechainEndValue(temp));
+
         public static int TposechainNumPoses(IntPtr temp)
             => SafeExecution<int>(() => Native.TposechainNumPoses(temp));
+
+        public static IntPtr TposechainStartValue(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TposechainStartValue(temp));
+
+        public static IntPtr TposechainValue(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TposechainValue(temp));
+
+        public static bool TposechainValueAtTimestamptz(IntPtr temp, long t, bool strict, IntPtr result)
+            => SafeExecution<bool>(() => Native.TposechainValueAtTimestamptz(temp, t, strict, result));
+
+        public static bool TposechainValueN(IntPtr temp, int n, IntPtr result)
+            => SafeExecution<bool>(() => Native.TposechainValueN(temp, n, result));
+
+        public static IntPtr[] TposechainValues(IntPtr temp)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TposechainValues(temp, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static (IntPtr[], IntPtr[]) TposechainUnnest(IntPtr temp)
+        {
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TposechainUnnest(temp, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                IntPtr[] __out_values_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
+                return (_resultArr, __out_values_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
+
+        public static IntPtr TposechainRotate(IntPtr temp, double angle, double x0, double y0)
+            => SafeExecution<IntPtr>(() => Native.TposechainRotate(temp, angle, x0, y0));
+
+        public static IntPtr TposechainRotateX(IntPtr temp, double angle)
+            => SafeExecution<IntPtr>(() => Native.TposechainRotateX(temp, angle));
+
+        public static IntPtr TposechainRotateY(IntPtr temp, double angle)
+            => SafeExecution<IntPtr>(() => Native.TposechainRotateY(temp, angle));
+
+        public static IntPtr TposechainRotateZ(IntPtr temp, double angle)
+            => SafeExecution<IntPtr>(() => Native.TposechainRotateZ(temp, angle));
+
+        public static IntPtr TposechainTranslate(IntPtr temp, double deltax, double deltay, double deltaz)
+            => SafeExecution<IntPtr>(() => Native.TposechainTranslate(temp, deltax, deltay, deltaz));
+
+        public static IntPtr TposechainAtValue(IntPtr temp, IntPtr pc)
+            => SafeExecution<IntPtr>(() => Native.TposechainAtValue(temp, pc));
+
+        public static IntPtr TposechainMinusValue(IntPtr temp, IntPtr pc)
+            => SafeExecution<IntPtr>(() => Native.TposechainMinusValue(temp, pc));
+
+        public static IntPtr TdistanceTposechainGeo(IntPtr temp, IntPtr gs)
+            => SafeExecution<IntPtr>(() => Native.TdistanceTposechainGeo(temp, gs));
+
+        public static IntPtr TdistanceTposechainPosechain(IntPtr temp, IntPtr pc)
+            => SafeExecution<IntPtr>(() => Native.TdistanceTposechainPosechain(temp, pc));
+
+        public static IntPtr TdistanceTposechainTposechain(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<IntPtr>(() => Native.TdistanceTposechainTposechain(temp1, temp2));
+
+        public static double NadTposechainGeo(IntPtr temp, IntPtr gs)
+            => SafeExecution<double>(() => Native.NadTposechainGeo(temp, gs));
+
+        public static double NadTposechainPosechain(IntPtr temp, IntPtr pc)
+            => SafeExecution<double>(() => Native.NadTposechainPosechain(temp, pc));
+
+        public static double NadTposechainStbox(IntPtr temp, IntPtr box)
+            => SafeExecution<double>(() => Native.NadTposechainStbox(temp, box));
+
+        public static double NadTposechainTposechain(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<double>(() => Native.NadTposechainTposechain(temp1, temp2));
+
+        public static IntPtr NaiTposechainGeo(IntPtr temp, IntPtr gs)
+            => SafeExecution<IntPtr>(() => Native.NaiTposechainGeo(temp, gs));
+
+        public static IntPtr NaiTposechainPosechain(IntPtr temp, IntPtr pc)
+            => SafeExecution<IntPtr>(() => Native.NaiTposechainPosechain(temp, pc));
+
+        public static IntPtr NaiTposechainTposechain(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<IntPtr>(() => Native.NaiTposechainTposechain(temp1, temp2));
+
+        public static IntPtr ShortestlineTposechainGeo(IntPtr temp, IntPtr gs)
+            => SafeExecution<IntPtr>(() => Native.ShortestlineTposechainGeo(temp, gs));
+
+        public static IntPtr ShortestlineTposechainPosechain(IntPtr temp, IntPtr pc)
+            => SafeExecution<IntPtr>(() => Native.ShortestlineTposechainPosechain(temp, pc));
+
+        public static IntPtr ShortestlineTposechainTposechain(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<IntPtr>(() => Native.ShortestlineTposechainTposechain(temp1, temp2));
 
         public static int AlwaysEqPosechainTposechain(IntPtr posechain, IntPtr temp)
             => SafeExecution<int>(() => Native.AlwaysEqPosechainTposechain(posechain, temp));

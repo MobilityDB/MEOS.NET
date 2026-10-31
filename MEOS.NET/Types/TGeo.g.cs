@@ -14,19 +14,8 @@ namespace MEOS.NET.Types
     {
         internal TGeo(IntPtr ptr) : base(ptr) { }
 
-        public Temporal? Affine(AFFINE a)
-        {
-            IntPtr _a = Marshal.AllocHGlobal(Marshal.SizeOf<AFFINE>());
-            try
-            {
-                Marshal.StructureToPtr(a, _a, false);
-                return MEOSFactory.WrapTemporal(Meos.TgeoAffine(this.Ptr, _a));
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(_a);
-            }
-        }
+        public Temporal? Affine(double a, double b, double c, double d, double e, double f, double g, double h, double i, double xoff, double yoff, double zoff)
+            => MEOSFactory.WrapTemporal(Meos.TgeoAffine(this.Ptr, a, b, c, d, e, f, g, h, i, xoff, yoff, zoff));
 
         public Temporal? AtGeom(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.TgeoAtGeom(this.Ptr, gs.Ptr));
@@ -37,8 +26,8 @@ namespace MEOS.NET.Types
         public Temporal? AtValue(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.TgeoAtValue(this.Ptr, gs.Ptr));
 
-        public Temporal? Centroid()
-            => MEOSFactory.WrapTemporal(Meos.TgeoCentroid(this.Ptr));
+        public Temporal? Centroid(bool spheroid)
+            => MEOSFactory.WrapTemporal(Meos.TgeoCentroid(this.Ptr, spheroid));
 
         public Geo? ConvexHull()
             => MEOSFactory.WrapGeo(Meos.TgeoConvexHull(this.Ptr));
@@ -55,14 +44,36 @@ namespace MEOS.NET.Types
         public Temporal? MinusValue(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.TgeoMinusValue(this.Ptr, gs.Ptr));
 
-        public Temporal? Scale(Geo scale, Geo sorigin)
-            => MEOSFactory.WrapTemporal(Meos.TgeoScale(this.Ptr, scale.Ptr, sorigin.Ptr));
+        public Temporal? Rotate(double angle, double x0, double y0)
+            => MEOSFactory.WrapTemporal(Meos.TgeoRotate(this.Ptr, angle, x0, y0));
+
+        public Temporal? RotateGeo(double angle, Geo origin)
+            => MEOSFactory.WrapTemporal(Meos.TgeoRotateGeo(this.Ptr, angle, origin.Ptr));
+
+        public Temporal? RotateX(double angle)
+            => MEOSFactory.WrapTemporal(Meos.TgeoRotateX(this.Ptr, angle));
+
+        public Temporal? RotateY(double angle)
+            => MEOSFactory.WrapTemporal(Meos.TgeoRotateY(this.Ptr, angle));
+
+        public Temporal? RotateZ(double angle)
+            => MEOSFactory.WrapTemporal(Meos.TgeoRotateZ(this.Ptr, angle));
+
+        public Temporal? Scale(double xfactor, double yfactor, double zfactor)
+            => MEOSFactory.WrapTemporal(Meos.TgeoScale(this.Ptr, xfactor, yfactor, zfactor));
+
+        public Temporal? ScaleGeo(Geo scale, Geo sorigin)
+            => MEOSFactory.WrapTemporal(Meos.TgeoScaleGeo(this.Ptr, scale.Ptr, sorigin.Ptr));
 
         public STBox?[] SpaceBoxes(double xsize, double ysize, double zsize, Geo sorigin, bool bitmatrix, bool border_inc)
             => MEOSFactory.WrapSTBoxArray(Meos.TgeoSpaceBoxes(this.Ptr, xsize, ysize, zsize, sorigin.Ptr, bitmatrix, border_inc));
 
-        public SpaceSplit SpaceSplit(double xsize, double ysize, double zsize, Geo sorigin, bool bitmatrix, bool border_inc)
-            => Meos.TgeoSpaceSplit(this.Ptr, xsize, ysize, zsize, sorigin.Ptr, bitmatrix, border_inc);
+        public (Temporal?[], Geo?[]) SpaceSplit(double xsize, double ysize, double zsize, Geo sorigin, bool bitmatrix, bool border_inc)
+        {
+            var _answered = Meos.TgeoSpaceSplit(this.Ptr, xsize, ysize, zsize, sorigin.Ptr, bitmatrix, border_inc);
+
+            return (MEOSFactory.WrapTemporalArray(_answered.Item1), MEOSFactory.WrapGeoArray(_answered.Item2));
+        }
 
         public STBox?[] SpaceTimeBoxes(double xsize, double ysize, double zsize, Interval duration, Geo sorigin, DateTime torigin, bool bitmatrix, bool border_inc)
         {
@@ -78,13 +89,15 @@ namespace MEOS.NET.Types
             }
         }
 
-        public SpaceTimeSplit SpaceTimeSplit(double xsize, double ysize, double zsize, Interval duration, Geo sorigin, DateTime torigin, bool bitmatrix, bool border_inc)
+        public (Temporal?[], Geo?[], DateTime[]) SpaceTimeSplit(double xsize, double ysize, double zsize, Interval duration, Geo sorigin, DateTime torigin, bool bitmatrix, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
             {
                 Marshal.StructureToPtr(duration, _duration, false);
-                return Meos.TgeoSpaceTimeSplit(this.Ptr, xsize, ysize, zsize, _duration, sorigin.Ptr, MEOSConvert.ToTimestampTz(torigin), bitmatrix, border_inc);
+                var _answered = Meos.TgeoSpaceTimeSplit(this.Ptr, xsize, ysize, zsize, _duration, sorigin.Ptr, MEOSConvert.ToTimestampTz(torigin), bitmatrix, border_inc);
+
+                return (MEOSFactory.WrapTemporalArray(_answered.Item1), MEOSFactory.WrapGeoArray(_answered.Item2), MEOSConvert.ToDateTimeArray(_answered.Item3));
             }
             finally
             {
@@ -104,8 +117,38 @@ namespace MEOS.NET.Types
         public STBox?[] Stboxes()
             => MEOSFactory.WrapSTBoxArray(Meos.TgeoStboxes(this.Ptr));
 
+        public STBox?[] TimeBoxes(Interval duration, DateTime torigin, bool bitmatrix, bool border_inc)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSTBoxArray(Meos.TgeoTimeBoxes(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), bitmatrix, border_inc));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public Temporal? Translate(double deltax, double deltay, double deltaz)
+            => MEOSFactory.WrapTemporal(Meos.TgeoTranslate(this.Ptr, deltax, deltay, deltaz));
+
+        public Temporal? Transscale(double deltax, double deltay, double xfactor, double yfactor)
+            => MEOSFactory.WrapTemporal(Meos.TgeoTransscale(this.Ptr, deltax, deltay, xfactor, yfactor));
+
         public Geo? TraversedArea(bool unary_union)
             => MEOSFactory.WrapGeo(Meos.TgeoTraversedArea(this.Ptr, unary_union));
+
+        public (SpanSet?[], Geo?[]) Unnest()
+        {
+            var _answered = Meos.TgeoUnnest(this.Ptr);
+
+            return (MEOSFactory.WrapSpanSetArray(_answered.Item1), MEOSFactory.WrapGeoArray(_answered.Item2));
+        }
+
+        public Geo? Value()
+            => MEOSFactory.WrapGeo(Meos.TgeoValue(this.Ptr));
 
         public Geo? ValueAtTimestamptz(DateTime t, bool strict)
         {

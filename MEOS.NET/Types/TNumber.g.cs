@@ -29,6 +29,9 @@ namespace MEOS.NET.Types
         public Temporal? AtTbox(TBox box)
             => MEOSFactory.WrapTemporal(Meos.TnumberAtTbox(this.Ptr, box.Ptr));
 
+        public double AvgValue()
+            => Meos.TnumberAvgValue(this.Ptr);
+
         public Temporal? DeltaValue()
             => MEOSFactory.WrapTemporal(Meos.TnumberDeltaValue(this.Ptr));
 

@@ -54,10 +54,10 @@ namespace MEOS.NET.Functions
         public static bool TextGt(IntPtr txt1, IntPtr txt2)
             => SafeExecution<bool>(() => Native.TextGt(txt1, txt2));
 
-        public static uint TextHash(IntPtr txt, uint collid)
+        public static uint TextHash(IntPtr txt, IntPtr collid)
             => SafeExecution<uint>(() => Native.TextHash(txt, collid));
 
-        public static ulong TextHashExtended(IntPtr txt, ulong seed, uint collid)
+        public static ulong TextHashExtended(IntPtr txt, ulong seed, IntPtr collid)
             => SafeExecution<ulong>(() => Native.TextHashExtended(txt, seed, collid));
 
         public static IntPtr TextLarger(IntPtr txt1, IntPtr txt2)

@@ -18,13 +18,13 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
-        public Span?[] Bins(Interval duration, DateOnly torigin)
+        public Span?[] Bins(Interval duration, DateOnly torigin, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
             {
                 Marshal.StructureToPtr(duration, _duration, false);
-                return MEOSFactory.WrapSpanArray(Meos.DatespansetBins(this.Ptr, _duration, MEOSConvert.ToDateADT(torigin)));
+                return MEOSFactory.WrapSpanArray(Meos.DatespansetBins(this.Ptr, _duration, MEOSConvert.ToDateADT(torigin), border_inc));
             }
             finally
             {

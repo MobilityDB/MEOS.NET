@@ -78,6 +78,16 @@ namespace MEOS.NET.Types
         public Geo? Twcentroid()
             => MEOSFactory.WrapGeo(Meos.TnpointTwcentroid(this.Ptr));
 
+        public (SpanSet?[], Npoint?[]) Unnest()
+        {
+            var _answered = Meos.TnpointUnnest(this.Ptr);
+
+            return (MEOSFactory.WrapSpanSetArray(_answered.Item1), MEOSFactory.WrapNpointArray(_answered.Item2));
+        }
+
+        public Npoint? Value()
+            => MEOSFactory.WrapNpoint(Meos.TnpointValue(this.Ptr));
+
         public Npoint? ValueAtTimestamptz(DateTime t, bool strict)
         {
             IntPtr _value = Marshal.AllocHGlobal(8);

@@ -24,6 +24,27 @@ namespace MEOS.NET.Types
         public Geo? ApplyGeo(Geo body)
             => MEOSFactory.WrapGeo(Meos.PoseApplyGeo(this.Ptr, body.Ptr));
 
+        public byte[]? AsEWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.PoseAsEwkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public string AsEWKT(int maxdd)
             => Meos.PoseAsEwkt(this.Ptr, maxdd);
 
@@ -36,6 +57,19 @@ namespace MEOS.NET.Types
             try
             {
                 return Meos.PoseAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public string AsHexewkb(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.PoseAsHexewkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -103,14 +137,14 @@ namespace MEOS.NET.Types
         public bool Lt(Pose pose2)
             => Meos.PoseLt(this.Ptr, pose2.Ptr);
 
+        public int MemSize()
+            => Meos.PoseMemSize(this.Ptr);
+
         public bool Ne(Pose pose2)
             => Meos.PoseNe(this.Ptr, pose2.Ptr);
 
         public Pose? Normalize()
             => MEOSFactory.WrapPose(Meos.PoseNormalize(this.Ptr));
-
-        public bool Nsame(Pose pose2)
-            => Meos.PoseNsame(this.Ptr, pose2.Ptr);
 
         public string Out(int maxdd)
             => Meos.PoseOut(this.Ptr, maxdd);
@@ -129,9 +163,6 @@ namespace MEOS.NET.Types
 
         public int SRID()
             => Meos.PoseSrid(this.Ptr);
-
-        public bool Same(Pose pose2)
-            => Meos.PoseSame(this.Ptr, pose2.Ptr);
 
         public Pose? SetSRID(int srid)
             => MEOSFactory.WrapPose(Meos.PoseSetSrid(this.Ptr, srid));
@@ -171,6 +202,9 @@ namespace MEOS.NET.Types
 
         public static Pose? FromHEXWKB(string hexwkb)
             => MEOSFactory.WrapPose(Meos.PoseFromHexwkb(hexwkb));
+
+        public static Pose? FromText(string str)
+            => MEOSFactory.WrapPose(Meos.PoseFromText(str));
 
         public static Pose? FromWKB(byte[] wkb)
         {

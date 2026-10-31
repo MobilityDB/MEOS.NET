@@ -14,14 +14,44 @@ namespace MEOS.NET.Types
     {
         internal TGeomPoint(IntPtr ptr) : base(ptr) { }
 
+        public (Temporal?[], ulong[]) H3indexSplit(int resolution, bool border_inc)
+        {
+            var _answered = Meos.TgeompointH3indexSplit(this.Ptr, resolution, border_inc);
+
+            return (MEOSFactory.WrapTemporalArray(_answered.Item1), _answered.Item2);
+        }
+
+        public (Temporal?[], ulong[]) QuadbinSplit(int resolution, bool border_inc)
+        {
+            var _answered = Meos.TgeompointQuadbinSplit(this.Ptr, resolution, border_inc);
+
+            return (MEOSFactory.WrapTemporalArray(_answered.Item1), _answered.Item2);
+        }
+
+        public (Temporal?[], ulong[]) S2cellSplit(int level, bool border_inc)
+        {
+            var _answered = Meos.TgeompointS2cellSplit(this.Ptr, level, border_inc);
+
+            return (MEOSFactory.WrapTemporalArray(_answered.Item1), _answered.Item2);
+        }
+
+        public Temporal? ToTgeogpoint()
+            => MEOSFactory.WrapTemporal(Meos.TgeompointToTgeogpoint(this.Ptr));
+
         public Temporal? ToTgeometry()
             => MEOSFactory.WrapTemporal(Meos.TgeompointToTgeometry(this.Ptr));
 
-        public Temporal? ToTh3index(int resolution)
-            => MEOSFactory.WrapTemporal(Meos.TgeompointToTh3index(this.Ptr, resolution));
+        public Temporal? ToTh3index(int resolution, bool border_inc)
+            => MEOSFactory.WrapTemporal(Meos.TgeompointToTh3index(this.Ptr, resolution, border_inc));
 
         public Temporal? ToTnpoint()
             => MEOSFactory.WrapTemporal(Meos.TgeompointToTnpoint(this.Ptr));
+
+        public Temporal? ToTquadbin(int resolution, bool border_inc)
+            => MEOSFactory.WrapTemporal(Meos.TgeompointToTquadbin(this.Ptr, resolution, border_inc));
+
+        public Temporal? ToTs2cell(int level, bool border_inc)
+            => MEOSFactory.WrapTemporal(Meos.TgeompointToTs2cell(this.Ptr, level, border_inc));
 
         public static Temporal? FromMFJSON(string str)
             => MEOSFactory.WrapTemporal(Meos.TgeompointFromMfjson(str));

@@ -63,7 +63,7 @@ namespace MEOS.NET.Functions
         public static string TextOut(IntPtr txt)
             => SafeExecution<string>(() => Native.TextOut(txt));
 
-        public static int TextCmp(IntPtr txt1, IntPtr txt2, uint collid)
+        public static int TextCmp(IntPtr txt1, IntPtr txt2, IntPtr collid)
             => SafeExecution<int>(() => Native.TextCmp(txt1, txt2, collid));
 
         public static IntPtr TextCopy(IntPtr txt)
@@ -120,6 +120,12 @@ namespace MEOS.NET.Functions
         public static void MeosArrayDestroyFree(IntPtr array)
             => SafeExecution(() => Native.MeosArrayDestroyFree(array));
 
+        public static IntPtr IndexResultCreate()
+            => SafeExecution<IntPtr>(() => Native.IndexResultCreate());
+
+        public static bool IndexResultId(IntPtr result, int n, IntPtr id)
+            => SafeExecution<bool>(() => Native.IndexResultId(result, n, id));
+
         public static IntPtr RtreeCreateIntspan()
             => SafeExecution<IntPtr>(() => Native.RtreeCreateIntspan());
 
@@ -140,9 +146,6 @@ namespace MEOS.NET.Functions
 
         public static IntPtr RtreeCreateStbox()
             => SafeExecution<IntPtr>(() => Native.RtreeCreateStbox());
-
-        public static IntPtr RtreeCreateTpcbox()
-            => SafeExecution<IntPtr>(() => Native.RtreeCreateTpcbox());
 
         public static void RtreeFree(IntPtr rtree)
             => SafeExecution(() => Native.RtreeFree(rtree));
@@ -210,9 +213,6 @@ namespace MEOS.NET.Functions
         public static IntPtr SptreeCreateStbox(int kind)
             => SafeExecution<IntPtr>(() => Native.SptreeCreateStbox(kind));
 
-        public static IntPtr SptreeCreateTpcbox(int kind)
-            => SafeExecution<IntPtr>(() => Native.SptreeCreateTpcbox(kind));
-
         public static void SptreeFree(IntPtr sptree)
             => SafeExecution(() => Native.SptreeFree(sptree));
 
@@ -261,6 +261,9 @@ namespace MEOS.NET.Functions
         public static void MeosInitializeErrorHandler(IntPtr err_handler)
             => SafeExecution(() => Native.MeosInitializeErrorHandler(err_handler));
 
+        public static void MeosInitializeInterruptHandler(IntPtr handler)
+            => SafeExecution(() => Native.MeosInitializeInterruptHandler(handler));
+
         public static void MeosInitializeAllocator(IntPtr malloc_fn, IntPtr realloc_fn, IntPtr free_fn)
             => SafeExecution(() => Native.MeosInitializeAllocator(malloc_fn, realloc_fn, free_fn));
 
@@ -282,11 +285,11 @@ namespace MEOS.NET.Functions
         public static void MeosFinalizeProjsrs()
             => SafeExecution(() => Native.MeosFinalizeProjsrs());
 
+        public static void MeosFinalizeRelate()
+            => SafeExecution(() => Native.MeosFinalizeRelate());
+
         public static void MeosFinalizeWays()
             => SafeExecution(() => Native.MeosFinalizeWays());
-
-        public static void MeosInitializePointcloud()
-            => SafeExecution(() => Native.MeosInitializePointcloud());
 
         public static bool MeosSetDatestyle(string newval, IntPtr extra)
             => SafeExecution<bool>(() => Native.MeosSetDatestyle(newval, extra));
@@ -513,10 +516,10 @@ namespace MEOS.NET.Functions
         public static IntPtr BigintToSet(long i)
             => SafeExecution<IntPtr>(() => Native.BigintToSet(i));
 
-        public static IntPtr BigintToSpan(int i)
+        public static IntPtr BigintToSpan(long i)
             => SafeExecution<IntPtr>(() => Native.BigintToSpan(i));
 
-        public static IntPtr BigintToSpanset(int i)
+        public static IntPtr BigintToSpanset(long i)
             => SafeExecution<IntPtr>(() => Native.BigintToSpanset(i));
 
         public static IntPtr DateToSet(int d)
@@ -800,6 +803,9 @@ namespace MEOS.NET.Functions
         public static ulong SetHashExtended(IntPtr s, ulong seed)
             => SafeExecution<ulong>(() => Native.SetHashExtended(s, seed));
 
+        public static int SetMemSize(IntPtr s)
+            => SafeExecution<int>(() => Native.SetMemSize(s));
+
         public static int SetNumValues(IntPtr s)
             => SafeExecution<int>(() => Native.SetNumValues(s));
 
@@ -826,6 +832,9 @@ namespace MEOS.NET.Functions
 
         public static bool SpansetLowerInc(IntPtr ss)
             => SafeExecution<bool>(() => Native.SpansetLowerInc(ss));
+
+        public static int SpansetMemSize(IntPtr ss)
+            => SafeExecution<int>(() => Native.SpansetMemSize(ss));
 
         public static int SpansetNumSpans(IntPtr ss)
             => SafeExecution<int>(() => Native.SpansetNumSpans(ss));
@@ -1078,6 +1087,9 @@ namespace MEOS.NET.Functions
         public static bool SetNe(IntPtr s1, IntPtr s2)
             => SafeExecution<bool>(() => Native.SetNe(s1, s2));
 
+        public static IntPtr SetSortkey(IntPtr s, IntPtr size)
+            => SafeExecution<IntPtr>(() => Native.SetSortkey(s, size));
+
         public static int SpanCmp(IntPtr s1, IntPtr s2)
             => SafeExecution<int>(() => Native.SpanCmp(s1, s2));
 
@@ -1099,6 +1111,9 @@ namespace MEOS.NET.Functions
         public static bool SpanNe(IntPtr s1, IntPtr s2)
             => SafeExecution<bool>(() => Native.SpanNe(s1, s2));
 
+        public static IntPtr SpanSortkey(IntPtr s, IntPtr size)
+            => SafeExecution<IntPtr>(() => Native.SpanSortkey(s, size));
+
         public static int SpansetCmp(IntPtr ss1, IntPtr ss2)
             => SafeExecution<int>(() => Native.SpansetCmp(ss1, ss2));
 
@@ -1119,6 +1134,9 @@ namespace MEOS.NET.Functions
 
         public static bool SpansetNe(IntPtr ss1, IntPtr ss2)
             => SafeExecution<bool>(() => Native.SpansetNe(ss1, ss2));
+
+        public static IntPtr SpansetSortkey(IntPtr ss, IntPtr size)
+            => SafeExecution<IntPtr>(() => Native.SpansetSortkey(ss, size));
 
         public static IntPtr[] SetSpans(IntPtr s)
         {
@@ -1234,17 +1252,32 @@ namespace MEOS.NET.Functions
         public static bool AdjacentBigintSpan(long i, IntPtr s)
             => SafeExecution<bool>(() => Native.AdjacentBigintSpan(i, s));
 
+        public static bool AdjacentBigintSpanset(long i, IntPtr ss)
+            => SafeExecution<bool>(() => Native.AdjacentBigintSpanset(i, ss));
+
         public static bool AdjacentDateSpan(int d, IntPtr s)
             => SafeExecution<bool>(() => Native.AdjacentDateSpan(d, s));
+
+        public static bool AdjacentDateSpanset(int d, IntPtr ss)
+            => SafeExecution<bool>(() => Native.AdjacentDateSpanset(d, ss));
 
         public static bool AdjacentFloatSpan(double d, IntPtr s)
             => SafeExecution<bool>(() => Native.AdjacentFloatSpan(d, s));
 
+        public static bool AdjacentFloatSpanset(double d, IntPtr ss)
+            => SafeExecution<bool>(() => Native.AdjacentFloatSpanset(d, ss));
+
         public static bool AdjacentIntSpan(int i, IntPtr s)
             => SafeExecution<bool>(() => Native.AdjacentIntSpan(i, s));
 
+        public static bool AdjacentIntSpanset(int i, IntPtr ss)
+            => SafeExecution<bool>(() => Native.AdjacentIntSpanset(i, ss));
+
         public static bool AdjacentTimestamptzSpan(long t, IntPtr s)
             => SafeExecution<bool>(() => Native.AdjacentTimestamptzSpan(t, s));
+
+        public static bool AdjacentTimestamptzSpanset(long t, IntPtr ss)
+            => SafeExecution<bool>(() => Native.AdjacentTimestamptzSpanset(t, ss));
 
         public static bool AdjacentSpansetBigint(IntPtr ss, long i)
             => SafeExecution<bool>(() => Native.AdjacentSpansetBigint(ss, i));
@@ -1858,14 +1891,38 @@ namespace MEOS.NET.Functions
         public static IntPtr IntersectionBigintSet(long i, IntPtr s)
             => SafeExecution<IntPtr>(() => Native.IntersectionBigintSet(i, s));
 
+        public static IntPtr IntersectionBigintSpan(long i, IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.IntersectionBigintSpan(i, s));
+
+        public static IntPtr IntersectionBigintSpanset(long i, IntPtr ss)
+            => SafeExecution<IntPtr>(() => Native.IntersectionBigintSpanset(i, ss));
+
         public static IntPtr IntersectionDateSet(int d, IntPtr s)
             => SafeExecution<IntPtr>(() => Native.IntersectionDateSet(d, s));
+
+        public static IntPtr IntersectionDateSpan(int d, IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.IntersectionDateSpan(d, s));
+
+        public static IntPtr IntersectionDateSpanset(int d, IntPtr ss)
+            => SafeExecution<IntPtr>(() => Native.IntersectionDateSpanset(d, ss));
 
         public static IntPtr IntersectionFloatSet(double d, IntPtr s)
             => SafeExecution<IntPtr>(() => Native.IntersectionFloatSet(d, s));
 
+        public static IntPtr IntersectionFloatSpan(double d, IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.IntersectionFloatSpan(d, s));
+
+        public static IntPtr IntersectionFloatSpanset(double d, IntPtr ss)
+            => SafeExecution<IntPtr>(() => Native.IntersectionFloatSpanset(d, ss));
+
         public static IntPtr IntersectionIntSet(int i, IntPtr s)
             => SafeExecution<IntPtr>(() => Native.IntersectionIntSet(i, s));
+
+        public static IntPtr IntersectionIntSpan(int i, IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.IntersectionIntSpan(i, s));
+
+        public static IntPtr IntersectionIntSpanset(int i, IntPtr ss)
+            => SafeExecution<IntPtr>(() => Native.IntersectionIntSpanset(i, ss));
 
         public static IntPtr IntersectionSetBigint(IntPtr s, long i)
             => SafeExecution<IntPtr>(() => Native.IntersectionSetBigint(s, i));
@@ -1935,6 +1992,12 @@ namespace MEOS.NET.Functions
 
         public static IntPtr IntersectionTimestamptzSet(long t, IntPtr s)
             => SafeExecution<IntPtr>(() => Native.IntersectionTimestamptzSet(t, s));
+
+        public static IntPtr IntersectionTimestamptzSpan(long t, IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.IntersectionTimestamptzSpan(t, s));
+
+        public static IntPtr IntersectionTimestamptzSpanset(long t, IntPtr ss)
+            => SafeExecution<IntPtr>(() => Native.IntersectionTimestamptzSpanset(t, ss));
 
         public static IntPtr MinusBigintSet(long i, IntPtr s)
             => SafeExecution<IntPtr>(() => Native.MinusBigintSet(i, s));
@@ -2218,8 +2281,8 @@ namespace MEOS.NET.Functions
         public static int DistanceSetInt(IntPtr s, int i)
             => SafeExecution<int>(() => Native.DistanceSetInt(s, i));
 
-        public static double DistanceSetTimestamptz(IntPtr s, long t)
-            => SafeExecution<double>(() => Native.DistanceSetTimestamptz(s, t));
+        public static IntPtr DistanceSetTimestamptz(IntPtr s, long t)
+            => SafeExecution<IntPtr>(() => Native.DistanceSetTimestamptz(s, t));
 
         public static long DistanceSpanBigint(IntPtr s, long i)
             => SafeExecution<long>(() => Native.DistanceSpanBigint(s, i));
@@ -2233,8 +2296,8 @@ namespace MEOS.NET.Functions
         public static int DistanceSpanInt(IntPtr s, int i)
             => SafeExecution<int>(() => Native.DistanceSpanInt(s, i));
 
-        public static double DistanceSpanTimestamptz(IntPtr s, long t)
-            => SafeExecution<double>(() => Native.DistanceSpanTimestamptz(s, t));
+        public static IntPtr DistanceSpanTimestamptz(IntPtr s, long t)
+            => SafeExecution<IntPtr>(() => Native.DistanceSpanTimestamptz(s, t));
 
         public static long DistanceSpansetBigint(IntPtr ss, long i)
             => SafeExecution<long>(() => Native.DistanceSpansetBigint(ss, i));
@@ -2248,20 +2311,20 @@ namespace MEOS.NET.Functions
         public static int DistanceSpansetInt(IntPtr ss, int i)
             => SafeExecution<int>(() => Native.DistanceSpansetInt(ss, i));
 
-        public static double DistanceSpansetTimestamptz(IntPtr ss, long t)
-            => SafeExecution<double>(() => Native.DistanceSpansetTimestamptz(ss, t));
+        public static IntPtr DistanceSpansetTimestamptz(IntPtr ss, long t)
+            => SafeExecution<IntPtr>(() => Native.DistanceSpansetTimestamptz(ss, t));
 
-        public static double DistanceTstzsetTstzset(IntPtr s1, IntPtr s2)
-            => SafeExecution<double>(() => Native.DistanceTstzsetTstzset(s1, s2));
+        public static IntPtr DistanceTstzsetTstzset(IntPtr s1, IntPtr s2)
+            => SafeExecution<IntPtr>(() => Native.DistanceTstzsetTstzset(s1, s2));
 
-        public static double DistanceTstzspanTstzspan(IntPtr s1, IntPtr s2)
-            => SafeExecution<double>(() => Native.DistanceTstzspanTstzspan(s1, s2));
+        public static IntPtr DistanceTstzspanTstzspan(IntPtr s1, IntPtr s2)
+            => SafeExecution<IntPtr>(() => Native.DistanceTstzspanTstzspan(s1, s2));
 
-        public static double DistanceTstzspansetTstzspan(IntPtr ss, IntPtr s)
-            => SafeExecution<double>(() => Native.DistanceTstzspansetTstzspan(ss, s));
+        public static IntPtr DistanceTstzspansetTstzspan(IntPtr ss, IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.DistanceTstzspansetTstzspan(ss, s));
 
-        public static double DistanceTstzspansetTstzspanset(IntPtr ss1, IntPtr ss2)
-            => SafeExecution<double>(() => Native.DistanceTstzspansetTstzspanset(ss1, ss2));
+        public static IntPtr DistanceTstzspansetTstzspanset(IntPtr ss1, IntPtr ss2)
+            => SafeExecution<IntPtr>(() => Native.DistanceTstzspansetTstzspanset(ss1, ss2));
 
         public static IntPtr BigintExtentTransfn(IntPtr state, long i)
             => SafeExecution<IntPtr>(() => Native.BigintExtentTransfn(state, i));
@@ -2290,11 +2353,20 @@ namespace MEOS.NET.Functions
         public static IntPtr SetExtentTransfn(IntPtr state, IntPtr s)
             => SafeExecution<IntPtr>(() => Native.SetExtentTransfn(state, s));
 
+        public static IntPtr SetUnionCombinefn(IntPtr state1, IntPtr state2)
+            => SafeExecution<IntPtr>(() => Native.SetUnionCombinefn(state1, state2));
+
         public static IntPtr SetUnionFinalfn(IntPtr state)
             => SafeExecution<IntPtr>(() => Native.SetUnionFinalfn(state));
 
         public static IntPtr SetUnionTransfn(IntPtr state, IntPtr s)
             => SafeExecution<IntPtr>(() => Native.SetUnionTransfn(state, s));
+
+        public static IntPtr SetstateDeserialize(IntPtr bytes, ulong size)
+            => SafeExecution<IntPtr>(() => Native.SetstateDeserialize(bytes, size));
+
+        public static IntPtr SetstateSerialize(IntPtr state, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.SetstateSerialize(state, size_out));
 
         public static IntPtr SpanExtentTransfn(IntPtr state, IntPtr s)
             => SafeExecution<IntPtr>(() => Native.SpanExtentTransfn(state, s));
@@ -2305,11 +2377,20 @@ namespace MEOS.NET.Functions
         public static IntPtr SpansetExtentTransfn(IntPtr state, IntPtr ss)
             => SafeExecution<IntPtr>(() => Native.SpansetExtentTransfn(state, ss));
 
+        public static IntPtr SpansetUnionCombinefn(IntPtr state1, IntPtr state2)
+            => SafeExecution<IntPtr>(() => Native.SpansetUnionCombinefn(state1, state2));
+
         public static IntPtr SpansetUnionFinalfn(IntPtr state)
             => SafeExecution<IntPtr>(() => Native.SpansetUnionFinalfn(state));
 
         public static IntPtr SpansetUnionTransfn(IntPtr state, IntPtr ss)
             => SafeExecution<IntPtr>(() => Native.SpansetUnionTransfn(state, ss));
+
+        public static IntPtr SpansetstateDeserialize(IntPtr bytes, ulong size)
+            => SafeExecution<IntPtr>(() => Native.SpansetstateDeserialize(bytes, size));
+
+        public static IntPtr SpansetstateSerialize(IntPtr state, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.SpansetstateSerialize(state, size_out));
 
         public static IntPtr TextUnionTransfn(IntPtr state, IntPtr txt)
             => SafeExecution<IntPtr>(() => Native.TextUnionTransfn(state, txt));
@@ -2323,12 +2404,12 @@ namespace MEOS.NET.Functions
         public static long BigintGetBin(long value, long vsize, long vorigin)
             => SafeExecution<long>(() => Native.BigintGetBin(value, vsize, vorigin));
 
-        public static IntPtr[] BigintspanBins(IntPtr s, long vsize, long vorigin)
+        public static IntPtr[] BigintspanBins(IntPtr s, long vsize, long vorigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.BigintspanBins(s, vsize, vorigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.BigintspanBins(s, vsize, vorigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -2338,12 +2419,15 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] BigintspansetBins(IntPtr ss, long vsize, long vorigin)
+        public static IntPtr BigintspanGetBin(long value, long vsize, long vorigin)
+            => SafeExecution<IntPtr>(() => Native.BigintspanGetBin(value, vsize, vorigin));
+
+        public static IntPtr[] BigintspansetBins(IntPtr ss, long vsize, long vorigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.BigintspansetBins(ss, vsize, vorigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.BigintspansetBins(ss, vsize, vorigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -2356,12 +2440,12 @@ namespace MEOS.NET.Functions
         public static int DateGetBin(int d, IntPtr duration, int torigin)
             => SafeExecution<int>(() => Native.DateGetBin(d, duration, torigin));
 
-        public static IntPtr[] DatespanBins(IntPtr s, IntPtr duration, int torigin)
+        public static IntPtr[] DatespanBins(IntPtr s, IntPtr duration, int torigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.DatespanBins(s, duration, torigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.DatespanBins(s, duration, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -2371,12 +2455,15 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] DatespansetBins(IntPtr ss, IntPtr duration, int torigin)
+        public static IntPtr DatespanGetBin(int d, IntPtr duration, int torigin)
+            => SafeExecution<IntPtr>(() => Native.DatespanGetBin(d, duration, torigin));
+
+        public static IntPtr[] DatespansetBins(IntPtr ss, IntPtr duration, int torigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.DatespansetBins(ss, duration, torigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.DatespansetBins(ss, duration, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -2389,12 +2476,12 @@ namespace MEOS.NET.Functions
         public static double FloatGetBin(double value, double vsize, double vorigin)
             => SafeExecution<double>(() => Native.FloatGetBin(value, vsize, vorigin));
 
-        public static IntPtr[] FloatspanBins(IntPtr s, double vsize, double vorigin)
+        public static IntPtr[] FloatspanBins(IntPtr s, double vsize, double vorigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.FloatspanBins(s, vsize, vorigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.FloatspanBins(s, vsize, vorigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -2404,12 +2491,15 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] FloatspansetBins(IntPtr ss, double vsize, double vorigin)
+        public static IntPtr FloatspanGetBin(double value, double vsize, double vorigin)
+            => SafeExecution<IntPtr>(() => Native.FloatspanGetBin(value, vsize, vorigin));
+
+        public static IntPtr[] FloatspansetBins(IntPtr ss, double vsize, double vorigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.FloatspansetBins(ss, vsize, vorigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.FloatspansetBins(ss, vsize, vorigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -2422,12 +2512,12 @@ namespace MEOS.NET.Functions
         public static int IntGetBin(int value, int vsize, int vorigin)
             => SafeExecution<int>(() => Native.IntGetBin(value, vsize, vorigin));
 
-        public static IntPtr[] IntspanBins(IntPtr s, int vsize, int vorigin)
+        public static IntPtr[] IntspanBins(IntPtr s, int vsize, int vorigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.IntspanBins(s, vsize, vorigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.IntspanBins(s, vsize, vorigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -2437,12 +2527,15 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] IntspansetBins(IntPtr ss, int vsize, int vorigin)
+        public static IntPtr IntspanGetBin(int value, int vsize, int vorigin)
+            => SafeExecution<IntPtr>(() => Native.IntspanGetBin(value, vsize, vorigin));
+
+        public static IntPtr[] IntspansetBins(IntPtr ss, int vsize, int vorigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.IntspansetBins(ss, vsize, vorigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.IntspansetBins(ss, vsize, vorigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -2455,12 +2548,12 @@ namespace MEOS.NET.Functions
         public static long TimestamptzGetBin(long t, IntPtr duration, long torigin)
             => SafeExecution<long>(() => Native.TimestamptzGetBin(t, duration, torigin));
 
-        public static IntPtr[] TstzspanBins(IntPtr s, IntPtr duration, long origin)
+        public static IntPtr[] TstzspanBins(IntPtr s, IntPtr duration, long torigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TstzspanBins(s, duration, origin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TstzspanBins(s, duration, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -2470,12 +2563,15 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] TstzspansetBins(IntPtr ss, IntPtr duration, long torigin)
+        public static IntPtr TstzspanGetBin(long t, IntPtr duration, long torigin)
+            => SafeExecution<IntPtr>(() => Native.TstzspanGetBin(t, duration, torigin));
+
+        public static IntPtr[] TstzspansetBins(IntPtr ss, IntPtr duration, long torigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TstzspansetBins(ss, duration, torigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TstzspansetBins(ss, duration, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -2692,6 +2788,114 @@ namespace MEOS.NET.Functions
         public static bool RightTboxTbox(IntPtr box1, IntPtr box2)
             => SafeExecution<bool>(() => Native.RightTboxTbox(box1, box2));
 
+        public static bool AdjacentNumspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.AdjacentNumspanTbox(s, box));
+
+        public static bool AdjacentTboxNumspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.AdjacentTboxNumspan(box, s));
+
+        public static bool AdjacentTboxTstzspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.AdjacentTboxTstzspan(box, s));
+
+        public static bool AdjacentTstzspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.AdjacentTstzspanTbox(s, box));
+
+        public static bool ContainedNumspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.ContainedNumspanTbox(s, box));
+
+        public static bool ContainedTboxNumspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.ContainedTboxNumspan(box, s));
+
+        public static bool ContainedTboxTstzspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.ContainedTboxTstzspan(box, s));
+
+        public static bool ContainedTstzspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.ContainedTstzspanTbox(s, box));
+
+        public static bool ContainsNumspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.ContainsNumspanTbox(s, box));
+
+        public static bool ContainsTboxNumspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.ContainsTboxNumspan(box, s));
+
+        public static bool ContainsTboxTstzspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.ContainsTboxTstzspan(box, s));
+
+        public static bool ContainsTstzspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.ContainsTstzspanTbox(s, box));
+
+        public static bool OverlapsNumspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.OverlapsNumspanTbox(s, box));
+
+        public static bool OverlapsTboxNumspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.OverlapsTboxNumspan(box, s));
+
+        public static bool OverlapsTboxTstzspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.OverlapsTboxTstzspan(box, s));
+
+        public static bool OverlapsTstzspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.OverlapsTstzspanTbox(s, box));
+
+        public static bool SameNumspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.SameNumspanTbox(s, box));
+
+        public static bool SameTboxNumspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.SameTboxNumspan(box, s));
+
+        public static bool SameTboxTstzspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.SameTboxTstzspan(box, s));
+
+        public static bool SameTstzspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.SameTstzspanTbox(s, box));
+
+        public static bool AfterTboxTstzspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.AfterTboxTstzspan(box, s));
+
+        public static bool AfterTstzspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.AfterTstzspanTbox(s, box));
+
+        public static bool BeforeTboxTstzspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.BeforeTboxTstzspan(box, s));
+
+        public static bool BeforeTstzspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.BeforeTstzspanTbox(s, box));
+
+        public static bool LeftNumspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.LeftNumspanTbox(s, box));
+
+        public static bool LeftTboxNumspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.LeftTboxNumspan(box, s));
+
+        public static bool OverafterTboxTstzspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.OverafterTboxTstzspan(box, s));
+
+        public static bool OverafterTstzspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.OverafterTstzspanTbox(s, box));
+
+        public static bool OverbeforeTboxTstzspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.OverbeforeTboxTstzspan(box, s));
+
+        public static bool OverbeforeTstzspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.OverbeforeTstzspanTbox(s, box));
+
+        public static bool OverleftNumspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.OverleftNumspanTbox(s, box));
+
+        public static bool OverleftTboxNumspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.OverleftTboxNumspan(box, s));
+
+        public static bool OverrightNumspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.OverrightNumspanTbox(s, box));
+
+        public static bool OverrightTboxNumspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.OverrightTboxNumspan(box, s));
+
+        public static bool RightNumspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<bool>(() => Native.RightNumspanTbox(s, box));
+
+        public static bool RightTboxNumspan(IntPtr box, IntPtr s)
+            => SafeExecution<bool>(() => Native.RightTboxNumspan(box, s));
+
         public static int TboxCmp(IntPtr box1, IntPtr box2)
             => SafeExecution<int>(() => Native.TboxCmp(box1, box2));
 
@@ -2713,6 +2917,9 @@ namespace MEOS.NET.Functions
         public static bool TboxNe(IntPtr box1, IntPtr box2)
             => SafeExecution<bool>(() => Native.TboxNe(box1, box2));
 
+        public static IntPtr TboxSortkey(IntPtr box, IntPtr size)
+            => SafeExecution<IntPtr>(() => Native.TboxSortkey(box, size));
+
         public static IntPtr TboolFromMfjson(string str)
             => SafeExecution<IntPtr>(() => Native.TboolFromMfjson(str));
 
@@ -2725,14 +2932,17 @@ namespace MEOS.NET.Functions
         public static string TemporalAsHexwkb(IntPtr temp, byte variant, IntPtr size_out)
             => SafeExecution<string>(() => Native.TemporalAsHexwkb(temp, variant, size_out));
 
-        public static string TemporalAsMfjson(IntPtr temp, bool with_bbox, int flags, int precision, string srs)
-            => SafeExecution<string>(() => Native.TemporalAsMfjson(temp, with_bbox, flags, precision, srs));
+        public static string TemporalAsMfjson(IntPtr temp, int option, int flags, int precision, string srs)
+            => SafeExecution<string>(() => Native.TemporalAsMfjson(temp, option, flags, precision, srs));
 
         public static IntPtr TemporalAsWkb(IntPtr temp, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.TemporalAsWkb(temp, variant, size_out));
 
         public static byte WkbVariantFromEndian(string endian)
             => SafeExecution<byte>(() => Native.WkbVariantFromEndian(endian));
+
+        public static int InterptypeFromString(string str)
+            => SafeExecution<int>(() => Native.InterptypeFromString(str));
 
         public static IntPtr TemporalFromHexwkb(string hexwkb)
             => SafeExecution<IntPtr>(() => Native.TemporalFromHexwkb(hexwkb));
@@ -2899,6 +3109,9 @@ namespace MEOS.NET.Functions
         public static bool TboolStartValue(IntPtr temp)
             => SafeExecution<bool>(() => Native.TboolStartValue(temp));
 
+        public static bool TboolValue(IntPtr temp)
+            => SafeExecution<bool>(() => Native.TboolValue(temp));
+
         public static bool TboolValueAtTimestamptz(IntPtr temp, long t, bool strict, IntPtr value)
             => SafeExecution<bool>(() => Native.TboolValueAtTimestamptz(temp, t, strict, value));
 
@@ -2918,6 +3131,30 @@ namespace MEOS.NET.Functions
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static (IntPtr[], bool[]) TboolUnnest(IntPtr temp)
+        {
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TboolUnnest(temp, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                bool[] __out_values_out = new bool[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_values_out[_i] = Marshal.ReadByte(__out_values_arr, _i) != 0; }
+                return (_resultArr, __out_values_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
         }
 
         public static IntPtr TemporalDuration(IntPtr temp, bool boundspan)
@@ -2964,6 +3201,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TemporalMaxInstant(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TemporalMaxInstant(temp));
+
+        public static int TemporalMemSize(IntPtr temp)
+            => SafeExecution<int>(() => Native.TemporalMemSize(temp));
 
         public static IntPtr TemporalMinInstant(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TemporalMinInstant(temp));
@@ -3054,6 +3294,9 @@ namespace MEOS.NET.Functions
         public static bool TemporalUpperInc(IntPtr temp)
             => SafeExecution<bool>(() => Native.TemporalUpperInc(temp));
 
+        public static IntPtr TemporalValueset(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TemporalValueset(temp));
+
         public static double TfloatEndValue(IntPtr temp)
             => SafeExecution<double>(() => Native.TfloatEndValue(temp));
 
@@ -3065,6 +3308,9 @@ namespace MEOS.NET.Functions
 
         public static double TfloatStartValue(IntPtr temp)
             => SafeExecution<double>(() => Native.TfloatStartValue(temp));
+
+        public static double TfloatValue(IntPtr temp)
+            => SafeExecution<double>(() => Native.TfloatValue(temp));
 
         public static bool TfloatValueAtTimestamptz(IntPtr temp, long t, bool strict, IntPtr value)
             => SafeExecution<bool>(() => Native.TfloatValueAtTimestamptz(temp, t, strict, value));
@@ -3085,6 +3331,32 @@ namespace MEOS.NET.Functions
             }
             finally { Marshal.FreeHGlobal(_cnt); }
         }
+
+        public static (IntPtr[], double[]) TfloatUnnest(IntPtr temp)
+        {
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TfloatUnnest(temp, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                double[] __out_values_out = new double[_n];
+                Marshal.Copy(__out_values_arr, __out_values_out, 0, _n);
+                return (_resultArr, __out_values_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
+
+        public static long TinstantTimestamptz(IntPtr inst)
+            => SafeExecution<long>(() => Native.TinstantTimestamptz(inst));
 
         public static int TintEndValue(IntPtr temp)
             => SafeExecution<int>(() => Native.TintEndValue(temp));
@@ -3109,6 +3381,12 @@ namespace MEOS.NET.Functions
 
         public static long TbigintStartValue(IntPtr temp)
             => SafeExecution<long>(() => Native.TbigintStartValue(temp));
+
+        public static int TintValue(IntPtr temp)
+            => SafeExecution<int>(() => Native.TintValue(temp));
+
+        public static long TbigintValue(IntPtr temp)
+            => SafeExecution<long>(() => Native.TbigintValue(temp));
 
         public static bool TbigintValueAtTimestamptz(IntPtr temp, long t, bool strict, IntPtr value)
             => SafeExecution<bool>(() => Native.TbigintValueAtTimestamptz(temp, t, strict, value));
@@ -3136,6 +3414,29 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
+        public static (IntPtr[], int[]) TintUnnest(IntPtr temp)
+        {
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TintUnnest(temp, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                int[] __out_values_out = new int[_n];
+                Marshal.Copy(__out_values_arr, __out_values_out, 0, _n);
+                return (_resultArr, __out_values_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
+
         public static long[] TbigintValues(IntPtr temp)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
@@ -3148,6 +3449,29 @@ namespace MEOS.NET.Functions
                 return _out;
             }
             finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static (IntPtr[], long[]) TbigintUnnest(IntPtr temp)
+        {
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TbigintUnnest(temp, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                long[] __out_values_out = new long[_n];
+                Marshal.Copy(__out_values_arr, __out_values_out, 0, _n);
+                return (_resultArr, __out_values_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
         }
 
         public static double TnumberAvgValue(IntPtr temp)
@@ -3174,6 +3498,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TtextStartValue(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TtextStartValue(temp));
 
+        public static IntPtr TtextValue(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TtextValue(temp));
+
         public static bool TtextValueAtTimestamptz(IntPtr temp, long t, bool strict, IntPtr value)
             => SafeExecution<bool>(() => Native.TtextValueAtTimestamptz(temp, t, strict, value));
 
@@ -3195,11 +3522,45 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
+        public static (IntPtr[], IntPtr[]) TtextUnnest(IntPtr temp)
+        {
+            IntPtr _out_values = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TtextUnnest(temp, _out_values, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_values_arr = Marshal.ReadIntPtr(_out_values);
+                IntPtr[] __out_values_out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { __out_values_out[_i] = Marshal.ReadIntPtr(__out_values_arr, _i * IntPtr.Size); }
+                return (_resultArr, __out_values_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_values);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
+
         public static double FloatDegrees(double value, bool normalize)
             => SafeExecution<double>(() => Native.FloatDegrees(value, normalize));
 
-        public static IntPtr TemparrRound(IntPtr temp, int count, int maxdd)
-            => SafeExecution<IntPtr>(() => Native.TemparrRound(temp, count, maxdd));
+        public static double FloatRound(double d, int maxdd)
+            => SafeExecution<double>(() => Native.FloatRound(d, maxdd));
+
+        public static IntPtr[] TemparrRound(IntPtr temparr, int count, int maxdd)
+        {
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TemparrRound(temparr, count, maxdd));
+            int _n = count;
+            IntPtr[] _out = new IntPtr[_n];
+            for (int _i = 0; _i < _n; _i++)
+            { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
+            return _out;
+        }
 
         public static IntPtr TemporalRound(IntPtr temp, int maxdd)
             => SafeExecution<IntPtr>(() => Native.TemporalRound(temp, maxdd));
@@ -3293,6 +3654,12 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TemporalUpdate(IntPtr temp1, IntPtr temp2, bool connect)
             => SafeExecution<IntPtr>(() => Native.TemporalUpdate(temp1, temp2, connect));
+
+        public static IntPtr TbigintAtValue(IntPtr temp, long i)
+            => SafeExecution<IntPtr>(() => Native.TbigintAtValue(temp, i));
+
+        public static IntPtr TbigintMinusValue(IntPtr temp, long i)
+            => SafeExecution<IntPtr>(() => Native.TbigintMinusValue(temp, i));
 
         public static IntPtr TboolAtValue(IntPtr temp, bool b)
             => SafeExecution<IntPtr>(() => Native.TboolAtValue(temp, b));
@@ -3404,6 +3771,9 @@ namespace MEOS.NET.Functions
 
         public static bool TemporalNe(IntPtr temp1, IntPtr temp2)
             => SafeExecution<bool>(() => Native.TemporalNe(temp1, temp2));
+
+        public static IntPtr TemporalSortkey(IntPtr temp, IntPtr size)
+            => SafeExecution<IntPtr>(() => Native.TemporalSortkey(temp, size));
 
         public static int AlwaysEqBoolTbool(bool b, IntPtr temp)
             => SafeExecution<int>(() => Native.AlwaysEqBoolTbool(b, temp));
@@ -4443,14 +4813,26 @@ namespace MEOS.NET.Functions
         public static IntPtr TdistanceTnumberTnumber(IntPtr temp1, IntPtr temp2)
             => SafeExecution<IntPtr>(() => Native.TdistanceTnumberTnumber(temp1, temp2));
 
+        public static long NadBigintspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<long>(() => Native.NadBigintspanTbox(s, box));
+
         public static double NadTboxfloatTboxfloat(IntPtr box1, IntPtr box2)
             => SafeExecution<double>(() => Native.NadTboxfloatTboxfloat(box1, box2));
+
+        public static double NadFloatspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<double>(() => Native.NadFloatspanTbox(s, box));
 
         public static int NadTboxintTboxint(IntPtr box1, IntPtr box2)
             => SafeExecution<int>(() => Native.NadTboxintTboxint(box1, box2));
 
+        public static int NadIntspanTbox(IntPtr s, IntPtr box)
+            => SafeExecution<int>(() => Native.NadIntspanTbox(s, box));
+
         public static double NadTfloatFloat(IntPtr temp, double d)
             => SafeExecution<double>(() => Native.NadTfloatFloat(temp, d));
+
+        public static double NadTfloatFloatspan(IntPtr temp, IntPtr s)
+            => SafeExecution<double>(() => Native.NadTfloatFloatspan(temp, s));
 
         public static double NadTfloatTfloat(IntPtr temp1, IntPtr temp2)
             => SafeExecution<double>(() => Native.NadTfloatTfloat(temp1, temp2));
@@ -4460,6 +4842,9 @@ namespace MEOS.NET.Functions
 
         public static long NadTbigintBigint(IntPtr temp, long i)
             => SafeExecution<long>(() => Native.NadTbigintBigint(temp, i));
+
+        public static long NadTbigintBigintspan(IntPtr temp, IntPtr s)
+            => SafeExecution<long>(() => Native.NadTbigintBigintspan(temp, s));
 
         public static long NadTbigintTbox(IntPtr temp, IntPtr box)
             => SafeExecution<long>(() => Native.NadTbigintTbox(temp, box));
@@ -4473,29 +4858,29 @@ namespace MEOS.NET.Functions
         public static int NadTintInt(IntPtr temp, int i)
             => SafeExecution<int>(() => Native.NadTintInt(temp, i));
 
+        public static int NadTintIntspan(IntPtr temp, IntPtr s)
+            => SafeExecution<int>(() => Native.NadTintIntspan(temp, s));
+
         public static int NadTintTbox(IntPtr temp, IntPtr box)
             => SafeExecution<int>(() => Native.NadTintTbox(temp, box));
 
         public static int NadTintTint(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.NadTintTint(temp1, temp2));
 
+        public static IntPtr TaggstateDeserialize(IntPtr bytes, ulong size)
+            => SafeExecution<IntPtr>(() => Native.TaggstateDeserialize(bytes, size));
+
+        public static IntPtr TaggstateSerialize(IntPtr state, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.TaggstateSerialize(state, size_out));
+
         public static IntPtr TbigintTmaxTransfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TbigintTmaxTransfn(state, temp));
-
-        public static IntPtr TbigintTmaxCombinefn(IntPtr state1, IntPtr state2)
-            => SafeExecution<IntPtr>(() => Native.TbigintTmaxCombinefn(state1, state2));
 
         public static IntPtr TbigintTminTransfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TbigintTminTransfn(state, temp));
 
-        public static IntPtr TbigintTminCombinefn(IntPtr state1, IntPtr state2)
-            => SafeExecution<IntPtr>(() => Native.TbigintTminCombinefn(state1, state2));
-
         public static IntPtr TbigintTsumTransfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TbigintTsumTransfn(state, temp));
-
-        public static IntPtr TbigintTsumCombinefn(IntPtr state1, IntPtr state2)
-            => SafeExecution<IntPtr>(() => Native.TbigintTsumCombinefn(state1, state2));
 
         public static IntPtr TbigintWmaxTransfn(IntPtr state, IntPtr temp, IntPtr interv)
             => SafeExecution<IntPtr>(() => Native.TbigintWmaxTransfn(state, temp, interv));
@@ -4518,8 +4903,17 @@ namespace MEOS.NET.Functions
         public static IntPtr TboolTorCombinefn(IntPtr state1, IntPtr state2)
             => SafeExecution<IntPtr>(() => Native.TboolTorCombinefn(state1, state2));
 
-        public static IntPtr TemporalExtentTransfn(IntPtr s, IntPtr temp)
-            => SafeExecution<IntPtr>(() => Native.TemporalExtentTransfn(s, temp));
+        public static IntPtr TemporalAppTinstTransfn(IntPtr state, IntPtr inst, int interp, double maxdist, IntPtr maxt)
+            => SafeExecution<IntPtr>(() => Native.TemporalAppTinstTransfn(state, inst, interp, maxdist, maxt));
+
+        public static IntPtr TemporalAppTseqTransfn(IntPtr state, IntPtr seq)
+            => SafeExecution<IntPtr>(() => Native.TemporalAppTseqTransfn(state, seq));
+
+        public static IntPtr TemporalAppendFinalfn(IntPtr state)
+            => SafeExecution<IntPtr>(() => Native.TemporalAppendFinalfn(state));
+
+        public static IntPtr TemporalExtentTransfn(IntPtr state, IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TemporalExtentTransfn(state, temp));
 
         public static IntPtr TemporalTaggFinalfn(IntPtr state)
             => SafeExecution<IntPtr>(() => Native.TemporalTaggFinalfn(state));
@@ -4530,23 +4924,26 @@ namespace MEOS.NET.Functions
         public static IntPtr TemporalTcountCombinefn(IntPtr state1, IntPtr state2)
             => SafeExecution<IntPtr>(() => Native.TemporalTcountCombinefn(state1, state2));
 
+        public static IntPtr TemporalTmaxCombinefn(IntPtr state1, IntPtr state2)
+            => SafeExecution<IntPtr>(() => Native.TemporalTmaxCombinefn(state1, state2));
+
+        public static IntPtr TemporalTminCombinefn(IntPtr state1, IntPtr state2)
+            => SafeExecution<IntPtr>(() => Native.TemporalTminCombinefn(state1, state2));
+
+        public static IntPtr TemporalWcountTransfn(IntPtr state, IntPtr temp, IntPtr interv)
+            => SafeExecution<IntPtr>(() => Native.TemporalWcountTransfn(state, temp, interv));
+
+        public static IntPtr TemporalToTaggstate(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TemporalToTaggstate(temp));
+
         public static IntPtr TfloatTmaxTransfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TfloatTmaxTransfn(state, temp));
-
-        public static IntPtr TfloatTmaxCombinefn(IntPtr state1, IntPtr state2)
-            => SafeExecution<IntPtr>(() => Native.TfloatTmaxCombinefn(state1, state2));
 
         public static IntPtr TfloatTminTransfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TfloatTminTransfn(state, temp));
 
-        public static IntPtr TfloatTminCombinefn(IntPtr state1, IntPtr state2)
-            => SafeExecution<IntPtr>(() => Native.TfloatTminCombinefn(state1, state2));
-
         public static IntPtr TfloatTsumTransfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TfloatTsumTransfn(state, temp));
-
-        public static IntPtr TfloatTsumCombinefn(IntPtr state1, IntPtr state2)
-            => SafeExecution<IntPtr>(() => Native.TfloatTsumCombinefn(state1, state2));
 
         public static IntPtr TfloatWmaxTransfn(IntPtr state, IntPtr temp, IntPtr interv)
             => SafeExecution<IntPtr>(() => Native.TfloatWmaxTransfn(state, temp, interv));
@@ -4563,20 +4960,11 @@ namespace MEOS.NET.Functions
         public static IntPtr TintTmaxTransfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TintTmaxTransfn(state, temp));
 
-        public static IntPtr TintTmaxCombinefn(IntPtr state1, IntPtr state2)
-            => SafeExecution<IntPtr>(() => Native.TintTmaxCombinefn(state1, state2));
-
         public static IntPtr TintTminTransfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TintTminTransfn(state, temp));
 
-        public static IntPtr TintTminCombinefn(IntPtr state1, IntPtr state2)
-            => SafeExecution<IntPtr>(() => Native.TintTminCombinefn(state1, state2));
-
         public static IntPtr TintTsumTransfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TintTsumTransfn(state, temp));
-
-        public static IntPtr TintTsumCombinefn(IntPtr state1, IntPtr state2)
-            => SafeExecution<IntPtr>(() => Native.TintTsumCombinefn(state1, state2));
 
         public static IntPtr TintWmaxTransfn(IntPtr state, IntPtr temp, IntPtr interv)
             => SafeExecution<IntPtr>(() => Native.TintWmaxTransfn(state, temp, interv));
@@ -4587,8 +4975,11 @@ namespace MEOS.NET.Functions
         public static IntPtr TintWsumTransfn(IntPtr state, IntPtr temp, IntPtr interv)
             => SafeExecution<IntPtr>(() => Native.TintWsumTransfn(state, temp, interv));
 
-        public static IntPtr TnumberExtentTransfn(IntPtr box, IntPtr temp)
-            => SafeExecution<IntPtr>(() => Native.TnumberExtentTransfn(box, temp));
+        public static IntPtr TboxExtentTransfn(IntPtr state, IntPtr box)
+            => SafeExecution<IntPtr>(() => Native.TboxExtentTransfn(state, box));
+
+        public static IntPtr TnumberExtentTransfn(IntPtr state, IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TnumberExtentTransfn(state, temp));
 
         public static IntPtr TnumberTavgFinalfn(IntPtr state)
             => SafeExecution<IntPtr>(() => Native.TnumberTavgFinalfn(state));
@@ -4598,6 +4989,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TnumberTavgCombinefn(IntPtr state1, IntPtr state2)
             => SafeExecution<IntPtr>(() => Native.TnumberTavgCombinefn(state1, state2));
+
+        public static IntPtr TnumberTsumCombinefn(IntPtr state1, IntPtr state2)
+            => SafeExecution<IntPtr>(() => Native.TnumberTsumCombinefn(state1, state2));
 
         public static IntPtr TnumberWavgTransfn(IntPtr state, IntPtr temp, IntPtr interv)
             => SafeExecution<IntPtr>(() => Native.TnumberWavgTransfn(state, temp, interv));
@@ -4620,14 +5014,8 @@ namespace MEOS.NET.Functions
         public static IntPtr TtextTmaxTransfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TtextTmaxTransfn(state, temp));
 
-        public static IntPtr TtextTmaxCombinefn(IntPtr state1, IntPtr state2)
-            => SafeExecution<IntPtr>(() => Native.TtextTmaxCombinefn(state1, state2));
-
         public static IntPtr TtextTminTransfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TtextTminTransfn(state, temp));
-
-        public static IntPtr TtextTminCombinefn(IntPtr state1, IntPtr state2)
-            => SafeExecution<IntPtr>(() => Native.TtextTminCombinefn(state1, state2));
 
         public static IntPtr TemporalSimplifyDp(IntPtr temp, double dist, bool synchronized)
             => SafeExecution<IntPtr>(() => Native.TemporalSimplifyDp(temp, dist, synchronized));
@@ -4641,21 +5029,21 @@ namespace MEOS.NET.Functions
         public static IntPtr TemporalSimplifyMinTdelta(IntPtr temp, IntPtr mint)
             => SafeExecution<IntPtr>(() => Native.TemporalSimplifyMinTdelta(temp, mint));
 
-        public static IntPtr TemporalTprecision(IntPtr temp, IntPtr duration, long origin)
-            => SafeExecution<IntPtr>(() => Native.TemporalTprecision(temp, duration, origin));
+        public static IntPtr TemporalTprecision(IntPtr temp, IntPtr duration, long torigin)
+            => SafeExecution<IntPtr>(() => Native.TemporalTprecision(temp, duration, torigin));
 
-        public static IntPtr TemporalTsample(IntPtr temp, IntPtr duration, long origin, int interp)
-            => SafeExecution<IntPtr>(() => Native.TemporalTsample(temp, duration, origin, interp));
+        public static IntPtr TemporalTsample(IntPtr temp, IntPtr duration, long torigin, int interp)
+            => SafeExecution<IntPtr>(() => Native.TemporalTsample(temp, duration, torigin, interp));
 
-        public static double TemporalDyntimewarpDistance(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<double>(() => Native.TemporalDyntimewarpDistance(temp1, temp2));
+        public static double TemporalDyntimewarpDistance(IntPtr temp1, IntPtr temp2, bool spheroid)
+            => SafeExecution<double>(() => Native.TemporalDyntimewarpDistance(temp1, temp2, spheroid));
 
-        public static IntPtr[] TemporalDyntimewarpPath(IntPtr temp1, IntPtr temp2)
+        public static IntPtr[] TemporalDyntimewarpPath(IntPtr temp1, IntPtr temp2, bool spheroid)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalDyntimewarpPath(temp1, temp2, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalDyntimewarpPath(temp1, temp2, spheroid, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4665,15 +5053,15 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static double TemporalFrechetDistance(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<double>(() => Native.TemporalFrechetDistance(temp1, temp2));
+        public static double TemporalFrechetDistance(IntPtr temp1, IntPtr temp2, bool spheroid)
+            => SafeExecution<double>(() => Native.TemporalFrechetDistance(temp1, temp2, spheroid));
 
-        public static IntPtr[] TemporalFrechetPath(IntPtr temp1, IntPtr temp2)
+        public static IntPtr[] TemporalFrechetPath(IntPtr temp1, IntPtr temp2, bool spheroid)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalFrechetPath(temp1, temp2, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalFrechetPath(temp1, temp2, spheroid, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4683,24 +5071,24 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static double TemporalHausdorffDistance(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<double>(() => Native.TemporalHausdorffDistance(temp1, temp2));
+        public static double TemporalHausdorffDistance(IntPtr temp1, IntPtr temp2, bool spheroid)
+            => SafeExecution<double>(() => Native.TemporalHausdorffDistance(temp1, temp2, spheroid));
 
-        public static double TemporalAverageHausdorffDistance(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<double>(() => Native.TemporalAverageHausdorffDistance(temp1, temp2));
+        public static double TemporalAverageHausdorffDistance(IntPtr temp1, IntPtr temp2, bool spheroid)
+            => SafeExecution<double>(() => Native.TemporalAverageHausdorffDistance(temp1, temp2, spheroid));
 
-        public static double TemporalLcssDistance(IntPtr temp1, IntPtr temp2, double epsilon)
-            => SafeExecution<double>(() => Native.TemporalLcssDistance(temp1, temp2, epsilon));
+        public static double TemporalLcssDistance(IntPtr temp1, IntPtr temp2, double epsilon, bool spheroid)
+            => SafeExecution<double>(() => Native.TemporalLcssDistance(temp1, temp2, epsilon, spheroid));
 
         public static IntPtr TemporalExtKalmanFilter(IntPtr temp, double gate, double q, double variance, bool to_drop)
             => SafeExecution<IntPtr>(() => Native.TemporalExtKalmanFilter(temp, gate, q, variance, to_drop));
 
-        public static IntPtr[] TemporalTimeBins(IntPtr temp, IntPtr duration, long origin)
+        public static IntPtr[] TemporalTimeBins(IntPtr temp, IntPtr duration, long torigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalTimeBins(temp, duration, origin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalTimeBins(temp, duration, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4710,13 +5098,13 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static (IntPtr[], long[]) TemporalTimeSplit(IntPtr temp, IntPtr duration, long torigin)
+        public static (IntPtr[], long[]) TemporalTimeSplit(IntPtr temp, IntPtr duration, long torigin, bool border_inc)
         {
             IntPtr _out_bins = Marshal.AllocHGlobal(IntPtr.Size);
             IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TemporalTimeSplit(temp, duration, torigin, _out_bins, _count_count));
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TemporalTimeSplit(temp, duration, torigin, border_inc, _out_bins, _count_count));
                 int _n = Marshal.ReadInt32(_count_count);
                 IntPtr[] _resultArr = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4733,12 +5121,12 @@ namespace MEOS.NET.Functions
             }
         }
 
-        public static IntPtr[] TfloatTimeBoxes(IntPtr temp, IntPtr duration, long torigin)
+        public static IntPtr[] TbigintTimeBoxes(IntPtr temp, IntPtr duration, long torigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatTimeBoxes(temp, duration, torigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TbigintTimeBoxes(temp, duration, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4748,12 +5136,12 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] TfloatValueBins(IntPtr temp, double vsize, double vorigin)
+        public static IntPtr[] TbigintValueBins(IntPtr temp, long vsize, long vorigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatValueBins(temp, vsize, vorigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TbigintValueBins(temp, vsize, vorigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4763,12 +5151,12 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] TfloatValueBoxes(IntPtr temp, double vsize, double vorigin)
+        public static IntPtr[] TbigintValueBoxes(IntPtr temp, long vsize, long vorigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatValueBoxes(temp, vsize, vorigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TbigintValueBoxes(temp, vsize, vorigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4778,13 +5166,193 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static (IntPtr[], double[]) TfloatValueSplit(IntPtr temp, double size, double origin)
+        public static (IntPtr[], long[]) TbigintValueSplit(IntPtr temp, long vsize, long vorigin, bool border_inc)
         {
             IntPtr _out_bins = Marshal.AllocHGlobal(IntPtr.Size);
             IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TfloatValueSplit(temp, size, origin, _out_bins, _count_count));
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TbigintValueSplit(temp, vsize, vorigin, border_inc, _out_bins, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_bins_arr = Marshal.ReadIntPtr(_out_bins);
+                long[] __out_bins_out = new long[_n];
+                Marshal.Copy(__out_bins_arr, __out_bins_out, 0, _n);
+                return (_resultArr, __out_bins_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_bins);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
+
+        public static IntPtr[] TbigintValueTimeBoxes(IntPtr temp, long vsize, IntPtr duration, long vorigin, long torigin, bool border_inc)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TbigintValueTimeBoxes(temp, vsize, duration, vorigin, torigin, border_inc, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static (IntPtr[], long[], long[]) TbigintValueTimeSplit(IntPtr temp, long vsize, IntPtr duration, long vorigin, long torigin, bool border_inc)
+        {
+            IntPtr _out_value_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _out_time_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TbigintValueTimeSplit(temp, vsize, duration, vorigin, torigin, border_inc, _out_value_bins, _out_time_bins, _count_count));
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr[] _resultArr = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _resultArr[_i] = Marshal.ReadIntPtr(_resultPtr, _i * IntPtr.Size); }
+                IntPtr __out_value_bins_arr = Marshal.ReadIntPtr(_out_value_bins);
+                long[] __out_value_bins_out = new long[_n];
+                Marshal.Copy(__out_value_bins_arr, __out_value_bins_out, 0, _n);
+                IntPtr __out_time_bins_arr = Marshal.ReadIntPtr(_out_time_bins);
+                long[] __out_time_bins_out = new long[_n];
+                Marshal.Copy(__out_time_bins_arr, __out_time_bins_out, 0, _n);
+                return (_resultArr, __out_value_bins_out, __out_time_bins_out);
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_value_bins);
+            Marshal.FreeHGlobal(_out_time_bins);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
+
+        public static IntPtr[] TbigintboxTimeTiles(IntPtr box, IntPtr duration, long torigin, bool border_inc)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TbigintboxTimeTiles(box, duration, torigin, border_inc, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TbigintboxValueTiles(IntPtr box, long vsize, long vorigin, bool border_inc)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TbigintboxValueTiles(box, vsize, vorigin, border_inc, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TbigintboxValueTimeTiles(IntPtr box, long vsize, IntPtr duration, long vorigin, long torigin, bool border_inc)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TbigintboxValueTimeTiles(box, vsize, duration, vorigin, torigin, border_inc, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr TboxGetTimeTile(long t, IntPtr duration, long torigin)
+            => SafeExecution<IntPtr>(() => Native.TboxGetTimeTile(t, duration, torigin));
+
+        public static IntPtr TboxGetValueTile(double value, double vsize, double vorigin)
+            => SafeExecution<IntPtr>(() => Native.TboxGetValueTile(value, vsize, vorigin));
+
+        public static IntPtr TboxGetValueTimeTile(double value, long t, double vsize, IntPtr duration, double vorigin, long torigin)
+            => SafeExecution<IntPtr>(() => Native.TboxGetValueTimeTile(value, t, vsize, duration, vorigin, torigin));
+
+        public static IntPtr[] TboxTimeTiles(IntPtr box, IntPtr duration, long torigin, bool border_inc)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TboxTimeTiles(box, duration, torigin, border_inc, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TfloatTimeBoxes(IntPtr temp, IntPtr duration, long torigin, bool border_inc)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatTimeBoxes(temp, duration, torigin, border_inc, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TfloatValueBins(IntPtr temp, double vsize, double vorigin, bool border_inc)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatValueBins(temp, vsize, vorigin, border_inc, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TfloatValueBoxes(IntPtr temp, double vsize, double vorigin, bool border_inc)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatValueBoxes(temp, vsize, vorigin, border_inc, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static (IntPtr[], double[]) TfloatValueSplit(IntPtr temp, double vsize, double vorigin, bool border_inc)
+        {
+            IntPtr _out_bins = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TfloatValueSplit(temp, vsize, vorigin, border_inc, _out_bins, _count_count));
                 int _n = Marshal.ReadInt32(_count_count);
                 IntPtr[] _resultArr = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4801,12 +5369,12 @@ namespace MEOS.NET.Functions
             }
         }
 
-        public static IntPtr[] TfloatValueTimeBoxes(IntPtr temp, double vsize, IntPtr duration, double vorigin, long torigin)
+        public static IntPtr[] TfloatValueTimeBoxes(IntPtr temp, double vsize, IntPtr duration, double vorigin, long torigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatValueTimeBoxes(temp, vsize, duration, vorigin, torigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatValueTimeBoxes(temp, vsize, duration, vorigin, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4816,14 +5384,14 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static (IntPtr[], double[], long[]) TfloatValueTimeSplit(IntPtr temp, double vsize, IntPtr duration, double vorigin, long torigin)
+        public static (IntPtr[], double[], long[]) TfloatValueTimeSplit(IntPtr temp, double vsize, IntPtr duration, double vorigin, long torigin, bool border_inc)
         {
             IntPtr _out_value_bins = Marshal.AllocHGlobal(IntPtr.Size);
             IntPtr _out_time_bins = Marshal.AllocHGlobal(IntPtr.Size);
             IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TfloatValueTimeSplit(temp, vsize, duration, vorigin, torigin, _out_value_bins, _out_time_bins, _count_count));
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TfloatValueTimeSplit(temp, vsize, duration, vorigin, torigin, border_inc, _out_value_bins, _out_time_bins, _count_count));
                 int _n = Marshal.ReadInt32(_count_count);
                 IntPtr[] _resultArr = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4844,12 +5412,12 @@ namespace MEOS.NET.Functions
             }
         }
 
-        public static IntPtr[] TfloatboxTimeTiles(IntPtr box, IntPtr duration, long torigin)
+        public static IntPtr[] TfloatboxTimeTiles(IntPtr box, IntPtr duration, long torigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatboxTimeTiles(box, duration, torigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatboxTimeTiles(box, duration, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4859,12 +5427,12 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] TfloatboxValueTiles(IntPtr box, double vsize, double vorigin)
+        public static IntPtr[] TfloatboxValueTiles(IntPtr box, double vsize, double vorigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatboxValueTiles(box, vsize, vorigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatboxValueTiles(box, vsize, vorigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4874,12 +5442,12 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] TfloatboxValueTimeTiles(IntPtr box, double vsize, IntPtr duration, double vorigin, long torigin)
+        public static IntPtr[] TfloatboxValueTimeTiles(IntPtr box, double vsize, IntPtr duration, double vorigin, long torigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatboxValueTimeTiles(box, vsize, duration, vorigin, torigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatboxValueTimeTiles(box, vsize, duration, vorigin, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4889,12 +5457,12 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] TintTimeBoxes(IntPtr temp, IntPtr duration, long torigin)
+        public static IntPtr[] TintTimeBoxes(IntPtr temp, IntPtr duration, long torigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintTimeBoxes(temp, duration, torigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintTimeBoxes(temp, duration, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4904,12 +5472,12 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] TintValueBins(IntPtr temp, int vsize, int vorigin)
+        public static IntPtr[] TintValueBins(IntPtr temp, int vsize, int vorigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintValueBins(temp, vsize, vorigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintValueBins(temp, vsize, vorigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4919,12 +5487,12 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] TintValueBoxes(IntPtr temp, int vsize, int vorigin)
+        public static IntPtr[] TintValueBoxes(IntPtr temp, int vsize, int vorigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintValueBoxes(temp, vsize, vorigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintValueBoxes(temp, vsize, vorigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4934,13 +5502,13 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static (IntPtr[], int[]) TintValueSplit(IntPtr temp, int vsize, int vorigin)
+        public static (IntPtr[], int[]) TintValueSplit(IntPtr temp, int vsize, int vorigin, bool border_inc)
         {
             IntPtr _out_bins = Marshal.AllocHGlobal(IntPtr.Size);
             IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TintValueSplit(temp, vsize, vorigin, _out_bins, _count_count));
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TintValueSplit(temp, vsize, vorigin, border_inc, _out_bins, _count_count));
                 int _n = Marshal.ReadInt32(_count_count);
                 IntPtr[] _resultArr = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4957,12 +5525,12 @@ namespace MEOS.NET.Functions
             }
         }
 
-        public static IntPtr[] TintValueTimeBoxes(IntPtr temp, int vsize, IntPtr duration, int vorigin, long torigin)
+        public static IntPtr[] TintValueTimeBoxes(IntPtr temp, int vsize, IntPtr duration, int vorigin, long torigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintValueTimeBoxes(temp, vsize, duration, vorigin, torigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintValueTimeBoxes(temp, vsize, duration, vorigin, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4972,14 +5540,14 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static (IntPtr[], int[], long[]) TintValueTimeSplit(IntPtr temp, int size, IntPtr duration, int vorigin, long torigin)
+        public static (IntPtr[], int[], long[]) TintValueTimeSplit(IntPtr temp, int vsize, IntPtr duration, int vorigin, long torigin, bool border_inc)
         {
             IntPtr _out_value_bins = Marshal.AllocHGlobal(IntPtr.Size);
             IntPtr _out_time_bins = Marshal.AllocHGlobal(IntPtr.Size);
             IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TintValueTimeSplit(temp, size, duration, vorigin, torigin, _out_value_bins, _out_time_bins, _count_count));
+                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.TintValueTimeSplit(temp, vsize, duration, vorigin, torigin, border_inc, _out_value_bins, _out_time_bins, _count_count));
                 int _n = Marshal.ReadInt32(_count_count);
                 IntPtr[] _resultArr = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -5000,12 +5568,12 @@ namespace MEOS.NET.Functions
             }
         }
 
-        public static IntPtr[] TintboxTimeTiles(IntPtr box, IntPtr duration, long torigin)
+        public static IntPtr[] TintboxTimeTiles(IntPtr box, IntPtr duration, long torigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintboxTimeTiles(box, duration, torigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintboxTimeTiles(box, duration, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -5015,12 +5583,12 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] TintboxValueTiles(IntPtr box, int xsize, int xorigin)
+        public static IntPtr[] TintboxValueTiles(IntPtr box, int vsize, int vorigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintboxValueTiles(box, xsize, xorigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintboxValueTiles(box, vsize, vorigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -5030,12 +5598,12 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr[] TintboxValueTimeTiles(IntPtr box, int xsize, IntPtr duration, int xorigin, long torigin)
+        public static IntPtr[] TintboxValueTimeTiles(IntPtr box, int vsize, IntPtr duration, int vorigin, long torigin, bool border_inc)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintboxValueTimeTiles(box, xsize, duration, xorigin, torigin, _cnt));
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TintboxValueTimeTiles(box, vsize, duration, vorigin, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)

@@ -56,7 +56,7 @@ namespace MEOS.NET.Tests
             Temporal trip = TFloat.In("[1@2024-12-06, 3@2024-12-08]")!;
             Temporal other = TFloat.In("[2@2024-12-06, 4@2024-12-08]")!;
 
-            Match[] path = trip.FrechetPath(other);
+            Match[] path = trip.FrechetPath(other, true);
 
             // A match pairs an instant of one value with an instant of the
             // other, and MEOS walks the distance matrix back from the last pair

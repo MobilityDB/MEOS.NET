@@ -21,6 +21,9 @@ namespace MEOS.NET.Types
         public JsonPath? Copy()
             => MEOSFactory.WrapJsonPath(Meos.JsonpathCopy(this.Ptr));
 
+        public int MemSize()
+            => Meos.JsonpathMemSize(this.Ptr);
+
         public string Out()
             => Meos.JsonpathOut(this.Ptr);
 

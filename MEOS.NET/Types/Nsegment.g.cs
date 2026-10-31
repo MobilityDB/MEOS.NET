@@ -18,8 +18,85 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out(15);
 
+        public byte[]? AsEWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.NsegmentAsEwkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public string AsEWKT(int maxdd)
+            => Meos.NsegmentAsEwkt(this.Ptr, maxdd);
+
+        public string AsHEXWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.NsegmentAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public string AsHexewkb(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.NsegmentAsHexewkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public string AsText(int maxdd)
+            => Meos.NsegmentAsText(this.Ptr, maxdd);
+
+        public byte[]? AsWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.NsegmentAsWkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public int Cmp(Nsegment ns2)
             => Meos.NsegmentCmp(this.Ptr, ns2.Ptr);
+
+        public Nsegment? Copy()
+            => MEOSFactory.WrapNsegment(Meos.NsegmentCopy(this.Ptr));
 
         public double EndPosition()
             => Meos.NsegmentEndPosition(this.Ptr);
@@ -62,6 +139,22 @@ namespace MEOS.NET.Types
 
         public STBox? ToStbox()
             => MEOSFactory.WrapSTBox(Meos.NsegmentToStbox(this.Ptr));
+
+        public static Nsegment? FromHEXWKB(string hexwkb)
+            => MEOSFactory.WrapNsegment(Meos.NsegmentFromHexwkb(hexwkb));
+
+        public static Nsegment? FromWKB(byte[] wkb)
+        {
+            GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapNsegment(Meos.NsegmentFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+            }
+            finally
+            {
+                _wkb.Free();
+            }
+        }
 
         public static Nsegment? In(string str)
             => MEOSFactory.WrapNsegment(Meos.NsegmentIn(str));

@@ -18,6 +18,27 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out(15);
 
+        public byte[]? AsEWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.CbufferAsEwkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public string AsEWKT(int maxdd)
             => Meos.CbufferAsEwkt(this.Ptr, maxdd);
 
@@ -27,6 +48,19 @@ namespace MEOS.NET.Types
             try
             {
                 return Meos.CbufferAsHexwkb(this.Ptr, variant, _size_out);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public string AsHexewkb(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                return Meos.CbufferAsHexewkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -85,11 +119,11 @@ namespace MEOS.NET.Types
         public bool Lt(Cbuffer cb2)
             => Meos.CbufferLt(this.Ptr, cb2.Ptr);
 
+        public int MemSize()
+            => Meos.CbufferMemSize(this.Ptr);
+
         public bool Ne(Cbuffer cb2)
             => Meos.CbufferNe(this.Ptr, cb2.Ptr);
-
-        public bool Nsame(Cbuffer cb2)
-            => Meos.CbufferNsame(this.Ptr, cb2.Ptr);
 
         public string Out(int maxdd)
             => Meos.CbufferOut(this.Ptr, maxdd);
@@ -105,9 +139,6 @@ namespace MEOS.NET.Types
 
         public int SRID()
             => Meos.CbufferSrid(this.Ptr);
-
-        public bool Same(Cbuffer cb2)
-            => Meos.CbufferSame(this.Ptr, cb2.Ptr);
 
         public Cbuffer? SetSRID(int srid)
             => MEOSFactory.WrapCbuffer(Meos.CbufferSetSrid(this.Ptr, srid));

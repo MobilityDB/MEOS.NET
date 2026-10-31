@@ -14,23 +14,32 @@ namespace MEOS.NET.Types
     {
         internal Geography(IntPtr ptr) : base(ptr) { }
 
-        public double Area(bool use_spheroid)
+        public new double Area(bool use_spheroid)
             => Meos.GeogArea(this.Ptr, use_spheroid);
 
-        public Geo? Centroid(bool use_spheroid)
+        public new Geo? Centroid(bool use_spheroid)
             => MEOSFactory.WrapGeo(Meos.GeogCentroid(this.Ptr, use_spheroid));
 
-        public double Distance(Geo g2)
-            => Meos.GeogDistance(this.Ptr, g2.Ptr);
+        public bool Disjoint(Geo gs2, bool use_spheroid)
+            => Meos.GeogDisjoint(this.Ptr, gs2.Ptr, use_spheroid);
+
+        public new double Distance(Geo g2, bool use_spheroid)
+            => Meos.GeogDistance(this.Ptr, g2.Ptr, use_spheroid);
 
         public bool Dwithin(Geo g2, double tolerance, bool use_spheroid)
             => Meos.GeogDwithin(this.Ptr, g2.Ptr, tolerance, use_spheroid);
 
-        public double Length(bool use_spheroid)
+        public bool Intersects(Geo gs2, bool use_spheroid)
+            => Meos.GeogIntersects(this.Ptr, gs2.Ptr, use_spheroid);
+
+        public new double Length(bool use_spheroid)
             => Meos.GeogLength(this.Ptr, use_spheroid);
 
-        public double Perimeter(bool use_spheroid)
+        public new double Perimeter(bool use_spheroid)
             => Meos.GeogPerimeter(this.Ptr, use_spheroid);
+
+        public new Geo? Shortestline(Geo gs2, bool use_spheroid)
+            => MEOSFactory.WrapGeo(Meos.GeogShortestline(this.Ptr, gs2.Ptr, use_spheroid));
 
         public Geo? ToGeom()
             => MEOSFactory.WrapGeo(Meos.GeogToGeom(this.Ptr));
@@ -54,8 +63,8 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static Geo? FromHexewkb(string wkt)
-            => MEOSFactory.WrapGeo(Meos.GeogFromHexewkb(wkt));
+        public static Geo? FromHexewkb(string hexwkb)
+            => MEOSFactory.WrapGeo(Meos.GeogFromHexewkb(hexwkb));
 
         public static Geo? In(string str, int typmod)
             => MEOSFactory.WrapGeo(Meos.GeogIn(str, typmod));

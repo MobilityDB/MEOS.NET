@@ -54,24 +54,5 @@ namespace MEOS.NET.Types
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.NpointsetIn(str));
 
-        public static Set? Make(Npoint[] values)
-        {
-            IntPtr[] _valuesValues = new IntPtr[values.Length];
-            for (int i = 0; i < values.Length; i++)
-            {
-                _valuesValues[i] = values[i].Ptr;
-            }
-
-            GCHandle _values = GCHandle.Alloc(_valuesValues, GCHandleType.Pinned);
-            try
-            {
-                return MEOSFactory.WrapSet(Meos.NpointsetMake(_values.AddrOfPinnedObject(), values.Length));
-            }
-            finally
-            {
-                _values.Free();
-            }
-        }
-
     }
 }
