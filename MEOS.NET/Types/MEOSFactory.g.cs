@@ -496,6 +496,13 @@ namespace MEOS.NET.Types
                 49 => new NpointSet(ptr),  // T_NPOINTSET
                 55 => new PoseSet(ptr),  // T_POSESET
                 58 => new CbufferSet(ptr),  // T_CBUFFERSET
+                65 => new JsonbSet(ptr),  // T_JSONBSET
+                69 => new H3IndexSet(ptr),  // T_H3INDEXSET
+                72 => new QuadbinSet(ptr),  // T_QUADBINSET
+                75 => new PcpointSet(ptr),  // T_PCPOINTSET
+                78 => new PcpatchSet(ptr),  // T_PCPATCHSET
+                83 => new PoseChainSet(ptr),  // T_POSECHAINSET
+                86 => new S2CellSet(ptr),  // T_S2CELLSET
                 _ => new Set(ptr),
             };
         }
@@ -652,6 +659,12 @@ namespace MEOS.NET.Types
                 62 => WrapTRGeometrySubtype(ptr),  // T_TRGEOMETRY
                 66 => WrapTJsonbSubtype(ptr),  // T_TJSONB
                 67 => WrapTBigintSubtype(ptr),  // T_TBIGINT
+                70 => WrapTH3IndexSubtype(ptr),  // T_TH3INDEX
+                73 => WrapTQuadbinSubtype(ptr),  // T_TQUADBIN
+                76 => WrapTPcpointSubtype(ptr),  // T_TPCPOINT
+                79 => WrapTPcpatchSubtype(ptr),  // T_TPCPATCH
+                84 => WrapTPoseChainSubtype(ptr),  // T_TPOSECHAIN
+                87 => WrapTS2CellSubtype(ptr),  // T_TS2CELL
                 _ => new Temporal(ptr),
             };
         }
@@ -756,6 +769,17 @@ namespace MEOS.NET.Types
                 _ => new TGeometry(ptr),
             };
 
+        /// <summary>The concrete TH3Index class for the template subtype
+        /// at byte 5.</summary>
+        private static TH3Index WrapTH3IndexSubtype(IntPtr ptr)
+            => Marshal.ReadByte(ptr, 5) switch
+            {
+                1 => new TH3IndexInst(ptr),
+                2 => new TH3IndexSeq(ptr),
+                3 => new TH3IndexSeqSet(ptr),
+                _ => new TH3Index(ptr),
+            };
+
         /// <summary>The concrete TInt class for the template subtype
         /// at byte 5.</summary>
         private static TInt WrapTIntSubtype(IntPtr ptr)
@@ -789,6 +813,28 @@ namespace MEOS.NET.Types
                 _ => new TNpoint(ptr),
             };
 
+        /// <summary>The concrete TPcpatch class for the template subtype
+        /// at byte 5.</summary>
+        private static TPcpatch WrapTPcpatchSubtype(IntPtr ptr)
+            => Marshal.ReadByte(ptr, 5) switch
+            {
+                1 => new TPcpatchInst(ptr),
+                2 => new TPcpatchSeq(ptr),
+                3 => new TPcpatchSeqSet(ptr),
+                _ => new TPcpatch(ptr),
+            };
+
+        /// <summary>The concrete TPcpoint class for the template subtype
+        /// at byte 5.</summary>
+        private static TPcpoint WrapTPcpointSubtype(IntPtr ptr)
+            => Marshal.ReadByte(ptr, 5) switch
+            {
+                1 => new TPcpointInst(ptr),
+                2 => new TPcpointSeq(ptr),
+                3 => new TPcpointSeqSet(ptr),
+                _ => new TPcpoint(ptr),
+            };
+
         /// <summary>The concrete TPose class for the template subtype
         /// at byte 5.</summary>
         private static TPose WrapTPoseSubtype(IntPtr ptr)
@@ -800,6 +846,28 @@ namespace MEOS.NET.Types
                 _ => new TPose(ptr),
             };
 
+        /// <summary>The concrete TPoseChain class for the template subtype
+        /// at byte 5.</summary>
+        private static TPoseChain WrapTPoseChainSubtype(IntPtr ptr)
+            => Marshal.ReadByte(ptr, 5) switch
+            {
+                1 => new TPoseChainInst(ptr),
+                2 => new TPoseChainSeq(ptr),
+                3 => new TPoseChainSeqSet(ptr),
+                _ => new TPoseChain(ptr),
+            };
+
+        /// <summary>The concrete TQuadbin class for the template subtype
+        /// at byte 5.</summary>
+        private static TQuadbin WrapTQuadbinSubtype(IntPtr ptr)
+            => Marshal.ReadByte(ptr, 5) switch
+            {
+                1 => new TQuadbinInst(ptr),
+                2 => new TQuadbinSeq(ptr),
+                3 => new TQuadbinSeqSet(ptr),
+                _ => new TQuadbin(ptr),
+            };
+
         /// <summary>The concrete TRGeometry class for the template subtype
         /// at byte 5.</summary>
         private static TRGeometry WrapTRGeometrySubtype(IntPtr ptr)
@@ -809,6 +877,17 @@ namespace MEOS.NET.Types
                 2 => new TRGeometrySeq(ptr),
                 3 => new TRGeometrySeqSet(ptr),
                 _ => new TRGeometry(ptr),
+            };
+
+        /// <summary>The concrete TS2Cell class for the template subtype
+        /// at byte 5.</summary>
+        private static TS2Cell WrapTS2CellSubtype(IntPtr ptr)
+            => Marshal.ReadByte(ptr, 5) switch
+            {
+                1 => new TS2CellInst(ptr),
+                2 => new TS2CellSeq(ptr),
+                3 => new TS2CellSeqSet(ptr),
+                _ => new TS2Cell(ptr),
             };
 
         /// <summary>The concrete TText class for the template subtype

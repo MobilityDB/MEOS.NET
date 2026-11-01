@@ -4574,30 +4574,40 @@ The flat surface emits no wrapper for the function, so the layer has no signatur
 
 None in this run.
 
-### return needs a class — 5
+### return needs a class — 6
 
 The function answers a type no class stands for and no scalar, value struct or array rule reads, so there is nothing to hand back.
 
 | class | member | what is missing |
 | --- | --- | --- |
 | Jsonb | toNumeric | return Numeric needs wrapping |
+| JsonbSet | existsArray | return bool * needs wrapping |
 | Raster | dumpAsPolygons | return GeomVal * needs wrapping |
 | Raster | pixelAsPoints | return Pixel * needs wrapping |
 | STBox | toGbox | return GBOX * needs wrapping |
 | Temporal | toTaggstate | return SkipList * needs wrapping |
 
-### argument needs a class — 8
+### argument needs a class — 17
 
 The function takes a type no class stands for and no marshalling rule reads, so there is nothing for a caller to pass.
 
 | class | member | what is missing |
 | --- | --- | --- |
 | CbufferSet | make | argument values is an array of Cbuffer, which has no class |
+| H3IndexSet | valueN | argument result of type uint64_t * needs marshalling |
 | NpointSet | make | argument values is an array of Npoint, which has no class |
 | Pcschema | fromDims | argument dims of type PCDimensionSpec * needs marshalling |
 | Pcschema | registerDims | argument dims of type PCDimensionSpec * needs marshalling |
+| QuadbinSet | valueN | argument result of type uint64_t * needs marshalling |
+| S2CellSet | valueN | argument result of type uint64_t * needs marshalling |
 | SpanSet | make | argument spans is an array of Span, which has no class |
+| TH3Index | valueAtTimestamptz | argument result of type uint64_t * needs marshalling |
+| TH3Index | valueN | argument result of type uint64_t * needs marshalling |
 | TPoint | asMvtgeom | argument gsarr of type GSERIALIZED ** needs marshalling |
+| TQuadbin | valueAtTimestamptz | argument result of type uint64_t * needs marshalling |
+| TQuadbin | valueN | argument result of type uint64_t * needs marshalling |
+| TS2Cell | valueAtTimestamptz | argument result of type uint64_t * needs marshalling |
+| TS2Cell | valueN | argument result of type uint64_t * needs marshalling |
 | Text | hash | argument collid of type Oid needs marshalling |
 | Text | hashExtended | argument collid of type Oid needs marshalling |
 

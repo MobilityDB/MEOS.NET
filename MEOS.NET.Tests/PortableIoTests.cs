@@ -54,6 +54,31 @@ namespace MEOS.NET.Tests
         }
 
         [TestMethod]
+        public void ATemporalCellIndexAndItsSetHaveTheirClasses()
+        {
+            Temporal temp = TH3Index.FromText("8a2a1072b59ffff@2024-12-06")!;
+            Set set = H3IndexSet.FromText("{8a2a1072b59ffff}")!;
+
+            Assert.IsInstanceOfType(temp, typeof(TH3Index));
+            Assert.AreEqual("8a2a1072b59ffff@2024-12-06 00:00:00+00", temp.ToString());
+            // The text MobilityDB writes for an h3indexset, each cell quoted.
+            Assert.AreEqual("{\"8a2a1072b59ffff\"}", set.ToString());
+        }
+
+        [TestMethod]
+        public void AJsonbSetAndATemporalPoseChainHaveTheirClasses()
+        {
+            Set set = JsonbSet.FromText("{\"{\\\"a\\\": 1}\"}")!;
+            Temporal chain = TPoseChain.FromText(
+                "PoseChain(Pose(Point(1 1), 0.5))@2024-12-06")!;
+
+            Assert.IsInstanceOfType(set, typeof(JsonbSet));
+            Assert.IsInstanceOfType(chain, typeof(TPoseChain));
+            Assert.AreEqual(
+                "PoseChain(Pose(POINT(1 1),0.5))@2024-12-06 00:00:00+00", chain.ToString());
+        }
+
+        [TestMethod]
         public void ASpanReadsItsTextUnderThePortableName()
         {
             Span span = FloatSpan.FromText("[8, 10]")!;
