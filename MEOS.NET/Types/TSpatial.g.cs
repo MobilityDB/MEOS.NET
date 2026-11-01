@@ -14,10 +14,6 @@ namespace MEOS.NET.Types
     {
         internal TSpatial(IntPtr ptr) : base(ptr) { }
 
-        /// <summary>The text MEOS writes this value as.</summary>
-        public override string ToString()
-            => this.Out(15);
-
         public byte[]? AsEWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));

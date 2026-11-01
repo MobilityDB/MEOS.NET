@@ -27,6 +27,9 @@ namespace MEOS.NET.Types
         public Temporal? ArrayLength()
             => MEOSFactory.WrapTemporal(Meos.TjsonbArrayLength(this.Ptr));
 
+        public string AsText()
+            => this.Out();
+
         public Temporal? AtValue(Jsonb jsb)
             => MEOSFactory.WrapTemporal(Meos.TjsonbAtValue(this.Ptr, jsb.Ptr));
 
@@ -330,6 +333,9 @@ namespace MEOS.NET.Types
 
         public static Temporal? FromMFJSON(string str)
             => MEOSFactory.WrapTemporal(Meos.TjsonbFromMfjson(str));
+
+        public static Temporal? FromText(string str)
+            => TJsonb.In(str);
 
         public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TjsonbIn(str));

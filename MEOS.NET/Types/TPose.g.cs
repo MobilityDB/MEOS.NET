@@ -14,6 +14,10 @@ namespace MEOS.NET.Types
     {
         internal TPose(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.AsText(15);
+
         public Temporal? AngularSpeed()
             => MEOSFactory.WrapTemporal(Meos.TposeAngularSpeed(this.Ptr));
 
@@ -162,11 +166,23 @@ namespace MEOS.NET.Types
         public static Temporal? FromBaseTemp(Pose pose, Temporal temp)
             => MEOSFactory.WrapTemporal(Meos.TposeFromBaseTemp(pose.Ptr, temp.Ptr));
 
+        public static Temporal? FromEWKB(byte[] wkb)
+            => Temporal.FromWKB(wkb);
+
+        public static Temporal? FromEWKT(string str)
+            => TPose.In(str);
+
         public static Temporal? FromGeopose(string json)
             => MEOSFactory.WrapTemporal(Meos.TposeFromGeopose(json));
 
+        public static Temporal? FromHexEWKB(string hexwkb)
+            => Temporal.FromHexWKB(hexwkb);
+
         public static Temporal? FromMFJSON(string str)
             => MEOSFactory.WrapTemporal(Meos.TposeFromMfjson(str));
+
+        public static Temporal? FromText(string str)
+            => TPose.In(str);
 
         public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TposeIn(str));

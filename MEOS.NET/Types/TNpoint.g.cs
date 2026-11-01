@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public Temporal? AtGeom(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.TnpointAtGeom(this.Ptr, gs.Ptr));
@@ -130,8 +130,20 @@ namespace MEOS.NET.Types
         public static Temporal? FromBaseTemp(Npoint np, Temporal temp)
             => MEOSFactory.WrapTemporal(Meos.TnpointFromBaseTemp(np.Ptr, temp.Ptr));
 
+        public static Temporal? FromEWKB(byte[] wkb)
+            => Temporal.FromWKB(wkb);
+
+        public static Temporal? FromEWKT(string str)
+            => TNpoint.In(str);
+
+        public static Temporal? FromHexEWKB(string hexwkb)
+            => Temporal.FromHexWKB(hexwkb);
+
         public static Temporal? FromMFJSON(string mfjson)
             => MEOSFactory.WrapTemporal(Meos.TnpointFromMfjson(mfjson));
+
+        public static Temporal? FromText(string str)
+            => TNpoint.In(str);
 
         public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TnpointIn(str));

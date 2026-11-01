@@ -33,6 +33,9 @@ namespace MEOS.NET.Types
         public int ArrayLength()
             => Meos.JsonbArrayLength(this.Ptr);
 
+        public string AsText()
+            => this.Out();
+
         public int Cmp(Jsonb jb2)
             => Meos.JsonbCmp(this.Ptr, jb2.Ptr);
 

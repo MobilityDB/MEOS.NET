@@ -17,6 +17,9 @@ namespace MEOS.NET.Types
         public double Area()
             => Meos.GeomArea(this.Ptr);
 
+        public string AsMFJSON(int option, int precision, string srs)
+            => this.AsGeoJSON(option, precision, srs);
+
         public double? Azimuth(Geo gs2)
         {
             IntPtr _result = Marshal.AllocHGlobal(8);
@@ -191,6 +194,9 @@ namespace MEOS.NET.Types
 
         public static Geo? FromHexEWKB(string hexwkb)
             => MEOSFactory.WrapGeo(Meos.GeomFromHexewkb(hexwkb));
+
+        public static Geo? FromMFJSON(string geojson)
+            => Geo.FromGeoJSON(geojson);
 
         public static Geo? In(string str, int typmod)
             => MEOSFactory.WrapGeo(Meos.GeomIn(str, typmod));

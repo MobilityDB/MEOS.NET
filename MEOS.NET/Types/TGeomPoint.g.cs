@@ -14,6 +14,10 @@ namespace MEOS.NET.Types
     {
         internal TGeomPoint(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.AsText(15);
+
         public (Temporal?[], ulong[]) H3indexSplit(int resolution, bool border_inc)
         {
             var _answered = Meos.TgeompointH3indexSplit(this.Ptr, resolution, border_inc);
@@ -53,8 +57,20 @@ namespace MEOS.NET.Types
         public Temporal? ToTs2cell(int level, bool border_inc)
             => MEOSFactory.WrapTemporal(Meos.TgeompointToTs2cell(this.Ptr, level, border_inc));
 
+        public static Temporal? FromEWKB(byte[] wkb)
+            => Temporal.FromWKB(wkb);
+
+        public static Temporal? FromEWKT(string str)
+            => TGeomPoint.In(str);
+
+        public static Temporal? FromHexEWKB(string hexwkb)
+            => Temporal.FromHexWKB(hexwkb);
+
         public static Temporal? FromMFJSON(string str)
             => MEOSFactory.WrapTemporal(Meos.TgeompointFromMfjson(str));
+
+        public static Temporal? FromText(string str)
+            => TGeomPoint.In(str);
 
         public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TgeompointIn(str));

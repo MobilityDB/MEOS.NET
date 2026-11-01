@@ -14,6 +14,10 @@ namespace MEOS.NET.Types
     {
         internal TGeometry(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.AsText(15);
+
         public Temporal? ToTcbuffer()
             => MEOSFactory.WrapTemporal(Meos.TgeometryToTcbuffer(this.Ptr));
 
@@ -23,8 +27,20 @@ namespace MEOS.NET.Types
         public Temporal? ToTgeompoint()
             => MEOSFactory.WrapTemporal(Meos.TgeometryToTgeompoint(this.Ptr));
 
+        public static Temporal? FromEWKB(byte[] wkb)
+            => Temporal.FromWKB(wkb);
+
+        public static Temporal? FromEWKT(string str)
+            => TGeometry.In(str);
+
+        public static Temporal? FromHexEWKB(string hexwkb)
+            => Temporal.FromHexWKB(hexwkb);
+
         public static Temporal? FromMFJSON(string str)
             => MEOSFactory.WrapTemporal(Meos.TgeometryFromMfjson(str));
+
+        public static Temporal? FromText(string str)
+            => TGeometry.In(str);
 
         public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TgeometryIn(str));

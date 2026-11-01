@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public double AngularDistance(Pose pose2)
             => Meos.PoseAngularDistance(this.Ptr, pose2.Ptr);
@@ -197,8 +197,17 @@ namespace MEOS.NET.Types
         public double[] Ypr()
             => Meos.PoseYpr(this.Ptr);
 
+        public static Pose? FromEWKB(byte[] wkb)
+            => Pose.FromWKB(wkb);
+
+        public static Pose? FromEWKT(string str)
+            => Pose.FromText(str);
+
         public static Pose? FromGeopose(string json)
             => MEOSFactory.WrapPose(Meos.PoseFromGeopose(json));
+
+        public static Pose? FromHexEWKB(string hexwkb)
+            => Pose.FromHexWKB(hexwkb);
 
         public static Pose? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapPose(Meos.PoseFromHexwkb(hexwkb));

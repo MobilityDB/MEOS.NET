@@ -18,6 +18,9 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public string AsText()
+            => this.Out();
+
         public long EndValue()
             => Meos.BigintsetEndValue(this.Ptr);
 
@@ -50,6 +53,9 @@ namespace MEOS.NET.Types
 
         public long[] Values()
             => Meos.BigintsetValues(this.Ptr);
+
+        public static Set? FromText(string str)
+            => BigIntSet.In(str);
 
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.BigintsetIn(str));

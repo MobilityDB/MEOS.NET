@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public PoseChain? Append(Pose pose)
             => MEOSFactory.WrapPoseChain(Meos.PosechainAppend(this.Ptr, pose.Ptr));
@@ -182,8 +182,20 @@ namespace MEOS.NET.Types
         public STBox? TstzspanToStbox(Span s)
             => MEOSFactory.WrapSTBox(Meos.PosechainTstzspanToStbox(this.Ptr, s.Ptr));
 
+        public static PoseChain? FromEWKB(byte[] wkb)
+            => PoseChain.FromWKB(wkb);
+
+        public static PoseChain? FromEWKT(string str)
+            => PoseChain.In(str);
+
+        public static PoseChain? FromHexEWKB(string hexwkb)
+            => PoseChain.FromHexWKB(hexwkb);
+
         public static PoseChain? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapPoseChain(Meos.PosechainFromHexwkb(hexwkb));
+
+        public static PoseChain? FromText(string str)
+            => PoseChain.In(str);
 
         public static PoseChain? FromWKB(byte[] wkb)
         {

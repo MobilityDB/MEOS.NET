@@ -333,6 +333,16 @@ class Generator:
         self.m = model
         self.deferred: dict[str, list[str]] = defaultdict(list)
         self.class_member_names: dict[str, set[str]] = {}
+        # class -> {C function: instance method}, its ancestors' included, as
+        # #inherited_names carries the member names down the parent edges.
+        self.class_functions: dict[str | None, dict] = {}
+        # class -> the text writer its ToString calls, so a class emits ToString
+        # only where its writer differs from the one it inherits.
+        self.class_text_writer: dict[str | None, str | None] = {}
+        # C function -> (class, static method) for every reader of the classes
+        # emitted before this one, its ancestors among them, so a class reaches a
+        # reader an ancestor carries (`Temporal.FromWKB`).
+        self.static_functions: dict[str, tuple[str, Method]] = {}
         self.emitted = 0
         self.ledger = gapledger.Ledger(
             "object layer", "The object layer — `tools/objectgen.py`")
@@ -688,9 +698,20 @@ class Generator:
         parent = self.m.parent.get(cls) or "MEOSObject"
         entries = [e for e in self.m.om["classes"].get(cls, {}).get("methods", [])
                    if not e.get("ooExclude")]
-        methods = [m for m in (self.method_for(cls, e) for e in entries) if m]
+        paired = [(e["function"], self.method_for(cls, e)) for e in entries]
+        methods = [m for _f, m in paired if m]
         methods.sort(key=lambda m: (m.static, m.name))
         self.emitted += len(methods)
+        # The C function behind each instance method this class or an ancestor
+        # emits, so ToString reaches the writer the catalog names wherever it is.
+        functions = dict(self.class_functions.get(self.m.parent.get(cls), {}))
+        functions.update({f: m for f, m in paired if m and not m.static})
+        self.class_functions[cls] = functions
+        self.static_functions.update({f: (cls, m) for f, m in paired if m and m.static})
+        portable = self.portable_methods(cls, methods, functions)
+        methods += portable
+        methods.sort(key=lambda m: (m.static, m.name))
+        self.emitted += len(portable)
 
         # A method hides a base one only when the signature matches too, so the
         # `new` keyword is keyed on the whole signature: on the name alone C#
@@ -717,7 +738,7 @@ class Generator:
             f"        internal {cls}(IntPtr ptr) : base(ptr) {{ }}",
             "",
         ]
-        lines += self.to_string(cls, methods)
+        lines += self.to_string(cls, functions)
         for m in methods:
             args = ", ".join(f"{t} {ident(n)}" for t, n in m.params)
             new = "new " if (m.name, tuple(t for t, _ in m.params)) in inherited else ""
@@ -842,17 +863,99 @@ class Generator:
                     f"            return {reads};"]
         return [f"            return {method.body};"]
 
-    def to_string(self, cls: str, methods: list) -> list[str]:
-        """`ToString` over the class's own text output, where MEOS publishes one.
+    # The portable spelling of each encoding the catalog's typeEncodings names,
+    # the SQL dialect's (`asText`, `asEWKT`, `asWKB`, `asHexWKB`, `asEWKB`,
+    # `asHexEWKB`, `asMFJSON` and their `From` readers), as MEOS-API's
+    # parser/object_model.py spells a method's acronyms.
+    FORMAT_SPELLING = {"text": "Text", "ewkt": "EWKT", "wkb": "WKB",
+                       "hexwkb": "HexWKB", "ewkb": "EWKB", "hexewkb": "HexEWKB",
+                       "mfjson": "MFJSON"}
 
-        MEOS publishes text output per concrete type — `tfloat_out`, `stbox_out`,
-        `floatspan_out` — and keeps the generic dispatchers internal, so a class
-        that carries an `Out` of its own is exactly a class whose values MEOS
-        writes.  The decimal digits are the default the catalog records for that
-        C type's text encoding."""
-        out = next((m for m in methods if m.name == "Out" and not m.static
-                    and [t for t, _ in m.params] in ([], ["int"])), None)
-        if out is None:
+    def portable_methods(self, cls: str, methods: list, functions: dict) -> list[Method]:
+        """The portable reader and writer of every encoding the catalog's
+        `typeEncodings` gives the class's type (rule 1 of the bindings in the I/O
+        plan, MobilityDB #3353), read as #text_writer reads the text writer: the
+        function of the type's SQL name in `readers`/`writers`, else the C type's
+        `decoders`/`encoders`.  Where the class or an ancestor emits no method of
+        that name, `As<Format>` forwards to the instance method behind the writer
+        and `From<Format>` to the static method behind the reader, so
+        `TGeomPoint.FromEWKB` is `Temporal.FromWKB` and `FloatSpan.FromText` is
+        `FloatSpan.In`, one function under two names as in SQL."""
+        meostype = self.m.meostype.get(cls)
+        encoding = self.m.idl.get("typeEncodings", {}).get(self.m.ctype.get(cls))
+        if not meostype or not encoding:
+            return []
+        sqltype = meostype[2:].lower()
+        taken = {m.name for m in methods} | {n for n, _ in self.inherited_names(cls)}
+        out = []
+        for enc in encoding.get("encodings", []):
+            spelling = self.FORMAT_SPELLING.get(enc)
+            if not spelling:
+                continue
+            for verb, by_type, by_class in (("As", "writers", "encoders"),
+                                            ("From", "readers", "decoders")):
+                name = verb + spelling
+                fn = (encoding.get(by_type, {}).get(enc, {}).get(sqltype)
+                      or encoding.get(by_class, {}).get(enc))
+                if name in taken or not fn:
+                    continue
+                if verb == "As":
+                    target = functions.get(fn)
+                    owner = "this"
+                else:
+                    owner, target = self.static_functions.get(fn, (None, None))
+                if target is None:
+                    continue
+                args = ", ".join(ident(n) for _t, n in target.params)
+                out.append(Method(name, target.ret, list(target.params),
+                                  f"{owner}.{target.name}({args})", verb == "From"))
+                taken.add(name)
+        return out
+
+    def text_writer(self, cls: str) -> str | None:
+        """The function the catalog's `typeEncodings` names as the text writer of
+        the class, read as #_struct_text_io of tools/codegen.py reads a struct's:
+        the writer of its SQL type where the class stands for one (`writers.text`:
+        `tspatial_as_text` for `tgeompoint`, `floatspan_out` for `floatspan`),
+        else the text encoder of its C type (`cbuffer_as_text`).
+
+        A class's SQL type is its MEOS type's name, which `meos_catalog.c`
+        writes as the constant without its `T_`, lower-cased (`T_TGEOMPOINT`,
+        "tgeompoint", every one of its 88 entries)."""
+        encodings = self.m.idl.get("typeEncodings", {})
+        ctype = self.m.ctype.get(cls)
+        if ctype not in encodings:
+            # A C type the catalog keeps out of its codecs, `text`, which
+            # parser/enrich.py of MEOS-API counts with the strings since a binding
+            # passes a `text *` as one: the class writes itself through its own
+            # `*_out` (`text_out`), the function the SQL text output calls.
+            return next((f for f in self.class_functions.get(cls, {})
+                         if f.endswith("_out")), None)
+        encoding = encodings[ctype]
+        meostype = self.m.meostype.get(cls)
+        if meostype:
+            writer = encoding.get("writers", {}).get("text", {}).get(
+                meostype[2:].lower())
+            if writer:
+                return writer
+        return encoding.get("encoders", {}).get("text")
+
+    def to_string(self, cls: str, functions: dict) -> list[str]:
+        """`ToString` over the text writer #text_writer names for the class, the
+        function behind the SQL `asText` of its type (rule 2 of the bindings in
+        the I/O plan, MobilityDB #3353): `AsText` for a spatial value, which
+        writes its points as WKT, and `Out` for the others.  The writer may be a
+        method of an ancestor (`tspatial_as_text` is `TSpatial.AsText`), and a
+        class whose writer is the one it inherits emits no `ToString` of its own.
+        The decimal digits are the default the catalog records for that C type's
+        text encoding."""
+        inherited = self.class_text_writer.get(self.m.parent.get(cls))
+        writer = self.text_writer(cls) or inherited
+        self.class_text_writer[cls] = writer
+        if writer is None or writer == inherited:
+            return []
+        out = functions.get(writer)
+        if out is None or [t for t, _ in out.params] not in ([], ["int"]):
             return []
         ctype = self.m.ctype.get(cls)
         encoding = self.m.idl.get("typeEncodings", {}).get(ctype, {})
@@ -875,7 +978,7 @@ class Generator:
         return [
             "        /// <summary>The text MEOS writes this value as.</summary>",
             f"        public override string{nullable} ToString()",
-            f"            => this.Out({argument});",
+            f"            => this.{out.name}({argument});",
             "",
         ]
 

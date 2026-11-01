@@ -18,6 +18,9 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public string AsText()
+            => this.Out();
+
         public Span?[] Bins(Interval duration, DateTime torigin, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
@@ -138,6 +141,9 @@ namespace MEOS.NET.Types
 
         public DateTime Upper()
             => MEOSConvert.ToDateTime(Meos.TstzspansetUpper(this.Ptr));
+
+        public static SpanSet? FromText(string str)
+            => TsTzSpanSet.In(str);
 
         public static SpanSet? In(string str)
             => MEOSFactory.WrapSpanSet(Meos.TstzspansetIn(str));

@@ -14,8 +14,15 @@ namespace MEOS.NET.Types
     {
         internal Pcpatch(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.HexOut(15);
+
         public string AsHexWKB()
             => Meos.PcpatchAsHexwkb(this.Ptr);
+
+        public string AsText(int maxdd)
+            => this.HexOut(maxdd);
 
         public int Cmp(Pcpatch pa2)
             => Meos.PcpatchCmp(this.Ptr, pa2.Ptr);
@@ -76,6 +83,9 @@ namespace MEOS.NET.Types
 
         public static Pcpatch? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapPcpatch(Meos.PcpatchFromHexwkb(hexwkb));
+
+        public static Pcpatch? FromText(string str)
+            => Pcpatch.HexIn(str);
 
         public static Pcpatch? HexIn(string str)
             => MEOSFactory.WrapPcpatch(Meos.PcpatchHexIn(str));

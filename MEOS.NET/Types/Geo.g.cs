@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.AsText(15);
 
         public Geo? Affine(double a, double b, double c, double d, double e, double f, double g, double h, double i, double xoff, double yoff, double zoff)
             => MEOSFactory.WrapGeo(Meos.GeoAffine(this.Ptr, a, b, c, d, e, f, g, h, i, xoff, yoff, zoff));

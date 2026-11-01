@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public byte[]? AsEWKB(byte variant)
         {
@@ -155,8 +155,20 @@ namespace MEOS.NET.Types
         public STBox? TstzspanToStbox(Span s)
             => MEOSFactory.WrapSTBox(Meos.NpointTstzspanToStbox(this.Ptr, s.Ptr));
 
+        public static Npoint? FromEWKB(byte[] wkb)
+            => Npoint.FromWKB(wkb);
+
+        public static Npoint? FromEWKT(string str)
+            => Npoint.In(str);
+
+        public static Npoint? FromHexEWKB(string hexwkb)
+            => Npoint.FromHexWKB(hexwkb);
+
         public static Npoint? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapNpoint(Meos.NpointFromHexwkb(hexwkb));
+
+        public static Npoint? FromText(string str)
+            => Npoint.In(str);
 
         public static Npoint? FromWKB(byte[] wkb)
         {
