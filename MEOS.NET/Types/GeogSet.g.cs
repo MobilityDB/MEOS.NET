@@ -10,7 +10,7 @@ namespace MEOS.NET.Types
 {
     /// <summary>The GeogSet class of the MEOS object model.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class GeogSet : Set
+    public class GeogSet : GeoSet
     {
         internal GeogSet(IntPtr ptr) : base(ptr) { }
 

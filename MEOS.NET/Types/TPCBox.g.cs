@@ -39,12 +39,12 @@ namespace MEOS.NET.Types
             }
         }
 
-        public string AsHEXWKB(byte variant)
+        public string AsHexEWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
             {
-                return Meos.TpcboxAsHexwkb(this.Ptr, variant, _size_out);
+                return Meos.TpcboxAsHexewkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -52,12 +52,12 @@ namespace MEOS.NET.Types
             }
         }
 
-        public string AsHexewkb(byte variant)
+        public string AsHexWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
             {
-                return Meos.TpcboxAsHexewkb(this.Ptr, variant, _size_out);
+                return Meos.TpcboxAsHexwkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -341,7 +341,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static TPCBox? FromHEXWKB(string hexwkb)
+        public static TPCBox? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapTPCBox(Meos.TpcboxFromHexwkb(hexwkb));
 
         public static TPCBox? FromWKB(byte[] wkb)

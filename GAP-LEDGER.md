@@ -10,14 +10,14 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `3c5baef2b3b54fdd69fbce37e9bdd81008df4480` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `91f8d676e789ac67c9c4fbfde6b6dbe25ceddbb5` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
 
 ## The flat surface — `tools/codegen.py`
 
-### parameter nullability — 4443
+### parameter nullability — 4468
 
 `shape.nullable` names the parameters a function accepts NULL for, and the catalog carries no field saying a parameter is required. A pointer parameter named in neither reaches the surface with its contract unstated: the wrapper takes it, and nothing says whether zero is an argument or a fault.
 
@@ -1034,6 +1034,8 @@ and `tools/objectgen.py`.  Do not edit.
 | geo_same | gs1, gs2 |
 | geo_scale | gs |
 | geo_scale_geo | gs, scale |
+| geo_scale_geo_intl | gs, scale, sorigin |
+| geo_scale_geo_origin | gs, scale, sorigin |
 | geo_segmentize | gs |
 | geo_set_srid | gs |
 | geo_set_stbox | gs, result |
@@ -1335,11 +1337,11 @@ and `tools/objectgen.py`.  Do not edit.
 | jsonb_object_field_text | jb, key |
 | jsonb_object_keys | jb, count |
 | jsonb_out | jb |
-| jsonb_path_exists | jb, jp |
-| jsonb_path_match | jb, jp |
-| jsonb_path_query_all | jb, jp, count |
-| jsonb_path_query_array | jb, jp |
-| jsonb_path_query_first | jb, jp |
+| jsonb_path_exists | jb, jp, vars |
+| jsonb_path_match | jb, jp, vars |
+| jsonb_path_query_all | jb, jp, vars, count |
+| jsonb_path_query_array | jb, jp, vars |
+| jsonb_path_query_first | jb, jp, vars |
 | jsonb_pretty | jb |
 | jsonb_set | jb, path_elems, newjb |
 | jsonb_set_lax | jb, path_elems, handle_null |
@@ -1376,10 +1378,12 @@ and `tools/objectgen.py`.  Do not edit.
 | jsonbset_object_field_common | set, key |
 | jsonbset_object_field_text | set, key |
 | jsonbset_out | s |
-| jsonbset_path_exists | set, jp, count |
-| jsonbset_path_match | set, jp, count |
-| jsonbset_path_query_array | set, jp |
-| jsonbset_path_query_first | set, jp |
+| jsonbset_path_exists | set, jp, vars, count |
+| jsonbset_path_exists_intl | set, jp, vars, count |
+| jsonbset_path_match | set, jp, vars, count |
+| jsonbset_path_match_intl | set, jp, vars, count |
+| jsonbset_path_query_array | set, jp, vars |
+| jsonbset_path_query_first | set, jp, vars |
 | jsonbset_pretty | set |
 | jsonbset_set | set, keys, newjb, null_handle |
 | jsonbset_start_value | s |
@@ -2564,7 +2568,7 @@ and `tools/objectgen.py`.  Do not edit.
 | skiplist_keys_values | list, values |
 | skiplist_make | comp_fn, merge_fn |
 | skiplist_search | list, key, value |
-| skiplist_splice | list, keys, values, func |
+| skiplist_splice | list, keys, values |
 | skiplist_values | list |
 | span_adjacent | s1, s2 |
 | span_as_hexwkb | s, size_out |
@@ -2725,11 +2729,14 @@ and `tools/objectgen.py`.  Do not edit.
 | stbox_right | box1, box2 |
 | stbox_round | box |
 | stbox_same | box1, box2 |
+| stbox_scale_time | box, duration |
 | stbox_set | s, result |
 | stbox_set_box3d | box, result |
 | stbox_set_gbox | box, result |
 | stbox_set_srid | box |
-| stbox_shift_scale_time | box |
+| stbox_shift_scale_time | box, shift, duration |
+| stbox_shift_scale_time_intl | box, shift, duration |
+| stbox_shift_time | box, shift |
 | stbox_sortkey | box, size |
 | stbox_sortkey_intl | box, size |
 | stbox_space_tiles | bounds, sorigin, count |
@@ -2880,9 +2887,12 @@ and `tools/objectgen.py`.  Do not edit.
 | tbox_right | box1, box2 |
 | tbox_round | box |
 | tbox_same | box1, box2 |
+| tbox_scale_time | box, duration |
 | tbox_set | s, p, box |
-| tbox_shift_scale_time | box |
+| tbox_shift_scale_time | box, shift, duration |
+| tbox_shift_scale_time_intl | box, shift, duration |
 | tbox_shift_scale_value | box |
+| tbox_shift_time | box, shift |
 | tbox_sortkey | box, size |
 | tbox_sortkey_intl | box, size |
 | tbox_time_tiles | box, duration, count |
@@ -3112,7 +3122,8 @@ and `tools/objectgen.py`.  Do not edit.
 | temporal_set_bbox | temp, box |
 | temporal_set_interp | temp |
 | temporal_set_tstzspan | temp, s |
-| temporal_shift_scale_time | temp |
+| temporal_shift_scale_time | temp, shift, duration |
+| temporal_shift_scale_time_intl | temp, shift, duration |
 | temporal_shift_time | temp, shift |
 | temporal_simplify_dp | temp |
 | temporal_simplify_max_dist | temp |
@@ -3339,6 +3350,8 @@ and `tools/objectgen.py`.  Do not edit.
 | tgeo_rotate_z | temp |
 | tgeo_scale | temp |
 | tgeo_scale_geo | temp, scale |
+| tgeo_scale_geo_intl | temp, scale, sorigin |
+| tgeo_scale_geo_origin | temp, scale, sorigin |
 | tgeo_space_boxes | temp, sorigin, count |
 | tgeo_space_split | temp, sorigin, count |
 | tgeo_space_time_boxes | temp, duration, sorigin, count |
@@ -3649,10 +3662,12 @@ and `tools/objectgen.py`.  Do not edit.
 | tjsonb_object_field_common | temp, key |
 | tjsonb_object_field_text | temp, key |
 | tjsonb_out | temp |
-| tjsonb_path_exists | temp, jp |
-| tjsonb_path_match | temp, jp |
-| tjsonb_path_query_array | temp, jp |
-| tjsonb_path_query_first | temp, jp |
+| tjsonb_path_exists | temp, jp, vars |
+| tjsonb_path_exists_intl | temp, jp, vars |
+| tjsonb_path_match | temp, jp, vars |
+| tjsonb_path_match_intl | temp, jp, vars |
+| tjsonb_path_query_array | temp, jp, vars |
+| tjsonb_path_query_first | temp, jp, vars |
 | tjsonb_pretty | temp |
 | tjsonb_set | temp, keys, handle_null |
 | tjsonb_start_value | temp |
@@ -3804,7 +3819,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tnumber_value_bins | temp, count |
 | tnumber_value_split | temp, bins, count |
 | tnumber_value_time_boxes | temp, count |
-| tnumber_value_time_split | temp, duration, value_bins, time_bins, count |
+| tnumber_value_time_split | temp, duration, time_bins, count |
 | tnumber_valuespans | temp |
 | tnumber_wavg_transfn | interv |
 | tnumberinst_abs | inst |
@@ -4144,6 +4159,7 @@ and `tools/objectgen.py`.  Do not edit.
 | trgeometry_twcentroid | temp |
 | trgeometry_unnest | temp, values, count |
 | trgeometry_value | temp |
+| trgeometry_value_at_timestamptz | temp, result |
 | trgeometry_value_n | temp, result |
 | trgeometry_values | temp, count |
 | trgeometry_yaw | temp |
@@ -4315,9 +4331,12 @@ and `tools/objectgen.py`.  Do not edit.
 | tstzset_in | str |
 | tstzset_make | values |
 | tstzset_out | set |
+| tstzset_scale | s, duration |
 | tstzset_set_stbox | s, result |
 | tstzset_set_tbox | s, box |
-| tstzset_shift_scale | s |
+| tstzset_shift | s, shift |
+| tstzset_shift_scale | s, shift, duration |
+| tstzset_shift_scale_intl | s, shift, duration |
 | tstzset_start_value | s |
 | tstzset_to_dateset | s |
 | tstzset_to_stbox | s |
@@ -4331,10 +4350,13 @@ and `tools/objectgen.py`.  Do not edit.
 | tstzspan_in | str |
 | tstzspan_lower | s |
 | tstzspan_out | s |
+| tstzspan_scale | s, duration |
 | tstzspan_set_datespan | s1, s2 |
 | tstzspan_set_stbox | s, result |
 | tstzspan_set_tbox | s, box |
-| tstzspan_shift_scale | s |
+| tstzspan_shift | s, shift |
+| tstzspan_shift_scale | s, shift, duration |
+| tstzspan_shift_scale_intl | s, shift, duration |
 | tstzspan_to_datespan | s |
 | tstzspan_to_stbox | s |
 | tstzspan_tprecision | s, duration |
@@ -4346,8 +4368,11 @@ and `tools/objectgen.py`.  Do not edit.
 | tstzspanset_lower | ss |
 | tstzspanset_num_timestamps | ss |
 | tstzspanset_out | ss |
+| tstzspanset_scale | ss, duration |
 | tstzspanset_set_stbox | s, result |
-| tstzspanset_shift_scale | ss |
+| tstzspanset_shift | ss, shift |
+| tstzspanset_shift_scale | ss, shift, duration |
+| tstzspanset_shift_scale_intl | ss, shift, duration |
 | tstzspanset_start_timestamptz | ss |
 | tstzspanset_timestamps | ss |
 | tstzspanset_timestamptz_n | ss, result |

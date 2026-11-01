@@ -20,7 +20,7 @@ namespace MEOS.NET.Types
         public Raster? AddBandRaster(Raster fromrast, int fromband, int toindex)
             => MEOSFactory.WrapRaster(Meos.RasterAddBandRaster(this.Ptr, fromrast.Ptr, fromband, toindex));
 
-        public string AsHEXWKB(byte variant)
+        public string AsHexWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
@@ -238,7 +238,7 @@ namespace MEOS.NET.Types
         public static Temporal? AtValueGdal(Temporal traj, string path, int band, Span vspan)
             => MEOSFactory.WrapTemporal(Meos.RasterAtValueGdal(traj.Ptr, path, band, vspan.Ptr));
 
-        public static Raster? FromHEXWKB(string hexwkb)
+        public static Raster? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapRaster(Meos.RasterFromHexwkb(hexwkb));
 
         public static Raster? FromWKB(byte[] wkb)

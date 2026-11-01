@@ -33,7 +33,7 @@ namespace MEOS.NET.Tests
             Assert.AreEqual(1, day!.Value.day);
             Assert.AreEqual(0, day!.Value.time);
             Assert.AreEqual("1 day", day.ToString());
-            Assert.ThrowsException<MEOS.NET.Exceptions.MEOSInternalErrorException>(
+            Assert.ThrowsException<MEOS.NET.Exceptions.MEOSTextInputException>(
                 () => Interval.In("not an interval"));
         }
 

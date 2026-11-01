@@ -45,10 +45,10 @@ namespace MEOS.NET.Tests
         {
             Span span = FloatSpan.In("[8, 10]")!;
 
-            string hex = span.AsHEXWKB(0);
+            string hex = span.AsHexWKB(0);
 
             Assert.IsTrue(hex.Length > 0);
-            Assert.AreEqual("[8, 10]", Span.FromHEXWKB(hex)!.ToString());
+            Assert.AreEqual("[8, 10]", Span.FromHexWKB(hex)!.ToString());
         }
     }
 }

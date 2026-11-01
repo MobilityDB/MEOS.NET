@@ -14,7 +14,7 @@ namespace MEOS.NET.Types
     {
         internal Pcpatch(IntPtr ptr) : base(ptr) { }
 
-        public string AsHEXWKB()
+        public string AsHexWKB()
             => Meos.PcpatchAsHexwkb(this.Ptr);
 
         public int Cmp(Pcpatch pa2)
@@ -74,7 +74,7 @@ namespace MEOS.NET.Types
         public TPCBox? ToTpcbox()
             => MEOSFactory.WrapTPCBox(Meos.PcpatchToTpcbox(this.Ptr));
 
-        public static Pcpatch? FromHEXWKB(string hexwkb)
+        public static Pcpatch? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapPcpatch(Meos.PcpatchFromHexwkb(hexwkb));
 
         public static Pcpatch? HexIn(string str)

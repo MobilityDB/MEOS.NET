@@ -1048,17 +1048,35 @@ namespace MEOS.NET.Functions
         public static long TimestamptzTprecision(long t, IntPtr duration, long torigin)
             => SafeExecution<long>(() => Native.TimestamptzTprecision(t, duration, torigin));
 
+        public static IntPtr TstzsetScale(IntPtr s, IntPtr duration)
+            => SafeExecution<IntPtr>(() => Native.TstzsetScale(s, duration));
+
+        public static IntPtr TstzsetShift(IntPtr s, IntPtr shift)
+            => SafeExecution<IntPtr>(() => Native.TstzsetShift(s, shift));
+
         public static IntPtr TstzsetShiftScale(IntPtr s, IntPtr shift, IntPtr duration)
             => SafeExecution<IntPtr>(() => Native.TstzsetShiftScale(s, shift, duration));
 
         public static IntPtr TstzsetTprecision(IntPtr s, IntPtr duration, long torigin)
             => SafeExecution<IntPtr>(() => Native.TstzsetTprecision(s, duration, torigin));
 
+        public static IntPtr TstzspanScale(IntPtr s, IntPtr duration)
+            => SafeExecution<IntPtr>(() => Native.TstzspanScale(s, duration));
+
+        public static IntPtr TstzspanShift(IntPtr s, IntPtr shift)
+            => SafeExecution<IntPtr>(() => Native.TstzspanShift(s, shift));
+
         public static IntPtr TstzspanShiftScale(IntPtr s, IntPtr shift, IntPtr duration)
             => SafeExecution<IntPtr>(() => Native.TstzspanShiftScale(s, shift, duration));
 
         public static IntPtr TstzspanTprecision(IntPtr s, IntPtr duration, long torigin)
             => SafeExecution<IntPtr>(() => Native.TstzspanTprecision(s, duration, torigin));
+
+        public static IntPtr TstzspansetScale(IntPtr ss, IntPtr duration)
+            => SafeExecution<IntPtr>(() => Native.TstzspansetScale(ss, duration));
+
+        public static IntPtr TstzspansetShift(IntPtr ss, IntPtr shift)
+            => SafeExecution<IntPtr>(() => Native.TstzspansetShift(ss, shift));
 
         public static IntPtr TstzspansetShiftScale(IntPtr ss, IntPtr shift, IntPtr duration)
             => SafeExecution<IntPtr>(() => Native.TstzspansetShiftScale(ss, shift, duration));
@@ -2734,8 +2752,14 @@ namespace MEOS.NET.Functions
         public static IntPtr TintboxShiftScale(IntPtr box, int shift, int width, bool hasshift, bool haswidth)
             => SafeExecution<IntPtr>(() => Native.TintboxShiftScale(box, shift, width, hasshift, haswidth));
 
+        public static IntPtr TboxScaleTime(IntPtr box, IntPtr duration)
+            => SafeExecution<IntPtr>(() => Native.TboxScaleTime(box, duration));
+
         public static IntPtr TboxShiftScaleTime(IntPtr box, IntPtr shift, IntPtr duration)
             => SafeExecution<IntPtr>(() => Native.TboxShiftScaleTime(box, shift, duration));
+
+        public static IntPtr TboxShiftTime(IntPtr box, IntPtr shift)
+            => SafeExecution<IntPtr>(() => Native.TboxShiftTime(box, shift));
 
         public static IntPtr TbigintboxExpand(IntPtr box, long i)
             => SafeExecution<IntPtr>(() => Native.TbigintboxExpand(box, i));

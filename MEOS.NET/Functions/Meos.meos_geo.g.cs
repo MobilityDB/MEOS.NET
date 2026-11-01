@@ -168,8 +168,11 @@ namespace MEOS.NET.Functions
         public static IntPtr GeoScale(IntPtr gs, double xfactor, double yfactor, double zfactor)
             => SafeExecution<IntPtr>(() => Native.GeoScale(gs, xfactor, yfactor, zfactor));
 
-        public static IntPtr GeoScaleGeo(IntPtr gs, IntPtr scale, IntPtr sorigin)
-            => SafeExecution<IntPtr>(() => Native.GeoScaleGeo(gs, scale, sorigin));
+        public static IntPtr GeoScaleGeo(IntPtr gs, IntPtr scale)
+            => SafeExecution<IntPtr>(() => Native.GeoScaleGeo(gs, scale));
+
+        public static IntPtr GeoScaleGeoOrigin(IntPtr gs, IntPtr scale, IntPtr sorigin)
+            => SafeExecution<IntPtr>(() => Native.GeoScaleGeoOrigin(gs, scale, sorigin));
 
         public static IntPtr GeoSegmentize(IntPtr gs, double max_seg_length)
             => SafeExecution<IntPtr>(() => Native.GeoSegmentize(gs, max_seg_length));
@@ -666,8 +669,14 @@ namespace MEOS.NET.Functions
         public static IntPtr StboxRound(IntPtr box, int maxdd)
             => SafeExecution<IntPtr>(() => Native.StboxRound(box, maxdd));
 
+        public static IntPtr StboxScaleTime(IntPtr box, IntPtr duration)
+            => SafeExecution<IntPtr>(() => Native.StboxScaleTime(box, duration));
+
         public static IntPtr StboxShiftScaleTime(IntPtr box, IntPtr shift, IntPtr duration)
             => SafeExecution<IntPtr>(() => Native.StboxShiftScaleTime(box, shift, duration));
+
+        public static IntPtr StboxShiftTime(IntPtr box, IntPtr shift)
+            => SafeExecution<IntPtr>(() => Native.StboxShiftTime(box, shift));
 
         public static IntPtr[] StboxarrRound(IntPtr boxarr, int count, int maxdd)
         {
@@ -1027,8 +1036,11 @@ namespace MEOS.NET.Functions
         public static IntPtr TgeoScale(IntPtr temp, double xfactor, double yfactor, double zfactor)
             => SafeExecution<IntPtr>(() => Native.TgeoScale(temp, xfactor, yfactor, zfactor));
 
-        public static IntPtr TgeoScaleGeo(IntPtr temp, IntPtr scale, IntPtr sorigin)
-            => SafeExecution<IntPtr>(() => Native.TgeoScaleGeo(temp, scale, sorigin));
+        public static IntPtr TgeoScaleGeo(IntPtr temp, IntPtr scale)
+            => SafeExecution<IntPtr>(() => Native.TgeoScaleGeo(temp, scale));
+
+        public static IntPtr TgeoScaleGeoOrigin(IntPtr temp, IntPtr scale, IntPtr sorigin)
+            => SafeExecution<IntPtr>(() => Native.TgeoScaleGeoOrigin(temp, scale, sorigin));
 
         public static IntPtr TgeoTranslate(IntPtr temp, double deltax, double deltay, double deltaz)
             => SafeExecution<IntPtr>(() => Native.TgeoTranslate(temp, deltax, deltay, deltaz));

@@ -18,7 +18,7 @@ namespace MEOS.NET.Tests
             Geo line = Geometry.In(Line, -1)!;
 
             byte[]? ewkb = line.AsEWKB("ndr");
-            string hex = line.AsHexewkb("ndr");
+            string hex = line.AsHexEWKB("ndr");
 
             Assert.IsNotNull(ewkb);
             Assert.AreEqual(hex.Length, ewkb!.Length * 2);

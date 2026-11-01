@@ -34,7 +34,7 @@ namespace MEOS.NET.Types
         public Temporal? AppendTsequence(Temporal seq, bool expand)
             => MEOSFactory.WrapTemporal(Meos.TemporalAppendTsequence(this.Ptr, seq.Ptr, expand));
 
-        public string AsHEXWKB(byte variant)
+        public string AsHexWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
@@ -492,7 +492,7 @@ namespace MEOS.NET.Types
         public Set? Valueset()
             => MEOSFactory.WrapSet(Meos.TemporalValueset(this.Ptr));
 
-        public static Temporal? FromHEXWKB(string hexwkb)
+        public static Temporal? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapTemporal(Meos.TemporalFromHexwkb(hexwkb));
 
         public static Temporal? FromWKB(byte[] wkb)

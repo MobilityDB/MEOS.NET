@@ -24,6 +24,34 @@ namespace MEOS.NET.Types
         public string Out()
             => Meos.TstzsetOut(this.Ptr);
 
+        public Set? Scale(Interval duration)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSet(Meos.TstzsetScale(this.Ptr, _duration));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public Set? Shift(Interval shift)
+        {
+            IntPtr _shift = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(shift, _shift, false);
+                return MEOSFactory.WrapSet(Meos.TstzsetShift(this.Ptr, _shift));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_shift);
+            }
+        }
+
         public Set? ShiftScale(Interval shift, Interval duration)
         {
             IntPtr _shift = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());

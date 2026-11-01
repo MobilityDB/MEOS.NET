@@ -579,6 +579,36 @@ namespace MEOS.NET.Functions
         public static IntPtr JsonbsetObjectFieldCommon(IntPtr set, IntPtr key, bool astext, int null_handle)
             => SafeExecution<IntPtr>(() => Native.JsonbsetObjectFieldCommon(set, key, astext, null_handle));
 
+        public static bool[] JsonbsetPathExistsIntl(IntPtr set, IntPtr jp, IntPtr vars, bool silent, bool tz)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbsetPathExistsIntl(set, jp, vars, silent, tz, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                bool[] _out = new bool[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = Marshal.ReadByte(_p, _i) != 0; }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static bool[] JsonbsetPathMatchIntl(IntPtr set, IntPtr jp, IntPtr vars, bool silent, bool tz)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbsetPathMatchIntl(set, jp, vars, silent, tz, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                bool[] _out = new bool[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = Marshal.ReadByte(_p, _i) != 0; }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
         public static bool ContainedJsonbSet(IntPtr jb, IntPtr s)
             => SafeExecution<bool>(() => Native.ContainedJsonbSet(jb, s));
 
@@ -836,6 +866,12 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TjsonbObjectFieldCommon(IntPtr temp, IntPtr key, bool astext, int null_handle)
             => SafeExecution<IntPtr>(() => Native.TjsonbObjectFieldCommon(temp, key, astext, null_handle));
+
+        public static IntPtr TjsonbPathExistsIntl(IntPtr temp, IntPtr jp, IntPtr vars, bool silent, bool tz)
+            => SafeExecution<IntPtr>(() => Native.TjsonbPathExistsIntl(temp, jp, vars, silent, tz));
+
+        public static IntPtr TjsonbPathMatchIntl(IntPtr temp, IntPtr jp, IntPtr vars, bool silent, bool tz)
+            => SafeExecution<IntPtr>(() => Native.TjsonbPathMatchIntl(temp, jp, vars, silent, tz));
 
         public static IntPtr TjsonbAtValue(IntPtr temp, IntPtr jsb)
             => SafeExecution<IntPtr>(() => Native.TjsonbAtValue(temp, jsb));

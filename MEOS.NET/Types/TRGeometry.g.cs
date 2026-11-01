@@ -274,6 +274,24 @@ namespace MEOS.NET.Types
         public Pose? Value()
             => MEOSFactory.WrapPose(Meos.TrgeometryValue(this.Ptr));
 
+        public Geo? ValueAtTimestamptz(DateTime t, bool strict)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.TrgeometryValueAtTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict, _result))
+                {
+                    return null;
+                }
+
+                return MEOSFactory.WrapGeo(Marshal.ReadIntPtr(_result));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public Geo? ValueN(int n)
         {
             IntPtr _result = Marshal.AllocHGlobal(8);

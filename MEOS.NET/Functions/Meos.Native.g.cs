@@ -1000,17 +1000,35 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "timestamptz_tprecision", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial long TimestamptzTprecision(long t, IntPtr duration, long torigin);
 
+            [LibraryImport(DllPath, EntryPoint = "tstzset_scale", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TstzsetScale(IntPtr s, IntPtr duration);
+
+            [LibraryImport(DllPath, EntryPoint = "tstzset_shift", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TstzsetShift(IntPtr s, IntPtr shift);
+
             [LibraryImport(DllPath, EntryPoint = "tstzset_shift_scale", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TstzsetShiftScale(IntPtr s, IntPtr shift, IntPtr duration);
 
             [LibraryImport(DllPath, EntryPoint = "tstzset_tprecision", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TstzsetTprecision(IntPtr s, IntPtr duration, long torigin);
 
+            [LibraryImport(DllPath, EntryPoint = "tstzspan_scale", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TstzspanScale(IntPtr s, IntPtr duration);
+
+            [LibraryImport(DllPath, EntryPoint = "tstzspan_shift", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TstzspanShift(IntPtr s, IntPtr shift);
+
             [LibraryImport(DllPath, EntryPoint = "tstzspan_shift_scale", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TstzspanShiftScale(IntPtr s, IntPtr shift, IntPtr duration);
 
             [LibraryImport(DllPath, EntryPoint = "tstzspan_tprecision", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TstzspanTprecision(IntPtr s, IntPtr duration, long torigin);
+
+            [LibraryImport(DllPath, EntryPoint = "tstzspanset_scale", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TstzspansetScale(IntPtr ss, IntPtr duration);
+
+            [LibraryImport(DllPath, EntryPoint = "tstzspanset_shift", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TstzspansetShift(IntPtr ss, IntPtr shift);
 
             [LibraryImport(DllPath, EntryPoint = "tstzspanset_shift_scale", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TstzspansetShiftScale(IntPtr ss, IntPtr shift, IntPtr duration);
@@ -2748,8 +2766,14 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "tintbox_shift_scale", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TintboxShiftScale(IntPtr box, int shift, int width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
+            [LibraryImport(DllPath, EntryPoint = "tbox_scale_time", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TboxScaleTime(IntPtr box, IntPtr duration);
+
             [LibraryImport(DllPath, EntryPoint = "tbox_shift_scale_time", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TboxShiftScaleTime(IntPtr box, IntPtr shift, IntPtr duration);
+
+            [LibraryImport(DllPath, EntryPoint = "tbox_shift_time", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TboxShiftTime(IntPtr box, IntPtr shift);
 
             [LibraryImport(DllPath, EntryPoint = "tbigintbox_expand", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TbigintboxExpand(IntPtr box, long i);
@@ -5540,7 +5564,10 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr GeoScale(IntPtr gs, double xfactor, double yfactor, double zfactor);
 
             [LibraryImport(DllPath, EntryPoint = "geo_scale_geo", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr GeoScaleGeo(IntPtr gs, IntPtr scale, IntPtr sorigin);
+            internal static partial IntPtr GeoScaleGeo(IntPtr gs, IntPtr scale);
+
+            [LibraryImport(DllPath, EntryPoint = "geo_scale_geo_origin", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr GeoScaleGeoOrigin(IntPtr gs, IntPtr scale, IntPtr sorigin);
 
             [LibraryImport(DllPath, EntryPoint = "geo_segmentize", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GeoSegmentize(IntPtr gs, double max_seg_length);
@@ -5999,8 +6026,14 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "stbox_round", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr StboxRound(IntPtr box, int maxdd);
 
+            [LibraryImport(DllPath, EntryPoint = "stbox_scale_time", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr StboxScaleTime(IntPtr box, IntPtr duration);
+
             [LibraryImport(DllPath, EntryPoint = "stbox_shift_scale_time", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr StboxShiftScaleTime(IntPtr box, IntPtr shift, IntPtr duration);
+
+            [LibraryImport(DllPath, EntryPoint = "stbox_shift_time", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr StboxShiftTime(IntPtr box, IntPtr shift);
 
             [LibraryImport(DllPath, EntryPoint = "stboxarr_round", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr StboxarrRound(IntPtr boxarr, int count, int maxdd);
@@ -6355,7 +6388,10 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TgeoScale(IntPtr temp, double xfactor, double yfactor, double zfactor);
 
             [LibraryImport(DllPath, EntryPoint = "tgeo_scale_geo", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr TgeoScaleGeo(IntPtr temp, IntPtr scale, IntPtr sorigin);
+            internal static partial IntPtr TgeoScaleGeo(IntPtr temp, IntPtr scale);
+
+            [LibraryImport(DllPath, EntryPoint = "tgeo_scale_geo_origin", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TgeoScaleGeoOrigin(IntPtr temp, IntPtr scale, IntPtr sorigin);
 
             [LibraryImport(DllPath, EntryPoint = "tgeo_translate", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TgeoTranslate(IntPtr temp, double deltax, double deltay, double deltaz);
@@ -8292,14 +8328,23 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "numset_shift_scale", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NumsetShiftScale(IntPtr s, long shift, long width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
+            [LibraryImport(DllPath, EntryPoint = "tstzset_shift_scale_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TstzsetShiftScaleIntl(IntPtr s, IntPtr shift, IntPtr duration);
+
             [LibraryImport(DllPath, EntryPoint = "numspan_expand", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NumspanExpand(IntPtr s, long value);
 
             [LibraryImport(DllPath, EntryPoint = "numspan_shift_scale", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NumspanShiftScale(IntPtr s, long shift, long width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
+            [LibraryImport(DllPath, EntryPoint = "tstzspan_shift_scale_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TstzspanShiftScaleIntl(IntPtr s, IntPtr shift, IntPtr duration);
+
             [LibraryImport(DllPath, EntryPoint = "numspanset_shift_scale", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NumspansetShiftScale(IntPtr ss, long shift, long width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
+
+            [LibraryImport(DllPath, EntryPoint = "tstzspanset_shift_scale_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TstzspansetShiftScaleIntl(IntPtr ss, IntPtr shift, IntPtr duration);
 
             [LibraryImport(DllPath, EntryPoint = "set_compact", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr SetCompact(IntPtr s);
@@ -8675,6 +8720,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "tstzspan_set_tbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial void TstzspanSetTbox(IntPtr s, IntPtr box);
+
+            [LibraryImport(DllPath, EntryPoint = "tbox_shift_scale_time_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TboxShiftScaleTimeIntl(IntPtr box, IntPtr shift, IntPtr duration);
 
             [LibraryImport(DllPath, EntryPoint = "tbox_shift_scale_value", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TboxShiftScaleValue(IntPtr box, long shift, long width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
@@ -9195,6 +9243,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "tinstant_as_tsequenceset", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TinstantAsTsequenceset(IntPtr inst, int interp);
 
+            [LibraryImport(DllPath, EntryPoint = "temporal_shift_scale_time_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TemporalShiftScaleTimeIntl(IntPtr temp, IntPtr shift, IntPtr duration);
+
             [LibraryImport(DllPath, EntryPoint = "tnumber_shift_scale_value", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TnumberShiftScaleValue(IntPtr temp, long shift, long width, [MarshalAs(UnmanagedType.U1)] bool hasshift, [MarshalAs(UnmanagedType.U1)] bool haswidth);
 
@@ -9707,6 +9758,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "point_round", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PointRound(IntPtr gs, int maxdd);
 
+            [LibraryImport(DllPath, EntryPoint = "geo_scale_geo_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr GeoScaleGeoIntl(IntPtr gs, IntPtr scale, IntPtr sorigin);
+
             [LibraryImport(DllPath, EntryPoint = "stbox_set", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial void StboxSet([MarshalAs(UnmanagedType.U1)] bool hasx, [MarshalAs(UnmanagedType.U1)] bool hasz, [MarshalAs(UnmanagedType.U1)] bool geodetic, int srid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, IntPtr s, IntPtr result);
 
@@ -9757,6 +9811,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "stbox_expand_space_set", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool StboxExpandSpaceSet(IntPtr box, double d, IntPtr result);
+
+            [LibraryImport(DllPath, EntryPoint = "stbox_shift_scale_time_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr StboxShiftScaleTimeIntl(IntPtr box, IntPtr shift, IntPtr duration);
 
             [LibraryImport(DllPath, EntryPoint = "stbox_contains", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -9923,6 +9980,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "tgeometryseqset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TgeometryseqsetIn(string str);
+
+            [LibraryImport(DllPath, EntryPoint = "tgeo_scale_geo_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TgeoScaleGeoIntl(IntPtr temp, IntPtr scale, IntPtr sorigin);
 
             [LibraryImport(DllPath, EntryPoint = "tspatial_set_stbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial void TspatialSetStbox(IntPtr temp, IntPtr result);
@@ -10494,6 +10554,12 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "jsonbset_object_field_common", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr JsonbsetObjectFieldCommon(IntPtr set, IntPtr key, [MarshalAs(UnmanagedType.U1)] bool astext, int null_handle);
 
+            [LibraryImport(DllPath, EntryPoint = "jsonbset_path_exists_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr JsonbsetPathExistsIntl(IntPtr set, IntPtr jp, IntPtr vars, [MarshalAs(UnmanagedType.U1)] bool silent, [MarshalAs(UnmanagedType.U1)] bool tz, IntPtr count);
+
+            [LibraryImport(DllPath, EntryPoint = "jsonbset_path_match_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr JsonbsetPathMatchIntl(IntPtr set, IntPtr jp, IntPtr vars, [MarshalAs(UnmanagedType.U1)] bool silent, [MarshalAs(UnmanagedType.U1)] bool tz, IntPtr count);
+
             [LibraryImport(DllPath, EntryPoint = "contained_jsonb_set", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool ContainedJsonbSet(IntPtr jb, IntPtr s);
@@ -10722,6 +10788,12 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "tjsonb_object_field_common", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TjsonbObjectFieldCommon(IntPtr temp, IntPtr key, [MarshalAs(UnmanagedType.U1)] bool astext, int null_handle);
+
+            [LibraryImport(DllPath, EntryPoint = "tjsonb_path_exists_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TjsonbPathExistsIntl(IntPtr temp, IntPtr jp, IntPtr vars, [MarshalAs(UnmanagedType.U1)] bool silent, [MarshalAs(UnmanagedType.U1)] bool tz);
+
+            [LibraryImport(DllPath, EntryPoint = "tjsonb_path_match_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TjsonbPathMatchIntl(IntPtr temp, IntPtr jp, IntPtr vars, [MarshalAs(UnmanagedType.U1)] bool silent, [MarshalAs(UnmanagedType.U1)] bool tz);
 
             [LibraryImport(DllPath, EntryPoint = "tjsonb_at_value", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TjsonbAtValue(IntPtr temp, IntPtr jsb);
@@ -13992,6 +14064,10 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "trgeometry_value_n", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool TrgeometryValueN(IntPtr temp, int n, IntPtr result);
+
+            [LibraryImport(DllPath, EntryPoint = "trgeometry_value_at_timestamptz", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool TrgeometryValueAtTimestamptz(IntPtr temp, long t, [MarshalAs(UnmanagedType.U1)] bool strict, IntPtr result);
 
             [LibraryImport(DllPath, EntryPoint = "trgeometry_traversed_area", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TrgeometryTraversedArea(IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool unary_union);

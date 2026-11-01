@@ -42,12 +42,12 @@ namespace MEOS.NET.Types
         public string AsEWKT(int maxdd)
             => Meos.NsegmentAsEwkt(this.Ptr, maxdd);
 
-        public string AsHEXWKB(byte variant)
+        public string AsHexEWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
             {
-                return Meos.NsegmentAsHexwkb(this.Ptr, variant, _size_out);
+                return Meos.NsegmentAsHexewkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -55,12 +55,12 @@ namespace MEOS.NET.Types
             }
         }
 
-        public string AsHexewkb(byte variant)
+        public string AsHexWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
             {
-                return Meos.NsegmentAsHexewkb(this.Ptr, variant, _size_out);
+                return Meos.NsegmentAsHexwkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -140,7 +140,7 @@ namespace MEOS.NET.Types
         public STBox? ToStbox()
             => MEOSFactory.WrapSTBox(Meos.NsegmentToStbox(this.Ptr));
 
-        public static Nsegment? FromHEXWKB(string hexwkb)
+        public static Nsegment? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapNsegment(Meos.NsegmentFromHexwkb(hexwkb));
 
         public static Nsegment? FromWKB(byte[] wkb)
