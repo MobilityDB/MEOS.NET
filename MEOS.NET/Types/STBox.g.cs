@@ -68,6 +68,9 @@ namespace MEOS.NET.Types
             }
         }
 
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
+
         public byte[]? AsWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
@@ -467,8 +470,17 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static STBox? FromEWKB(byte[] wkb)
+            => STBox.FromWKB(wkb);
+
+        public static STBox? FromHexEWKB(string hexwkb)
+            => STBox.FromHexWKB(hexwkb);
+
         public static STBox? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapSTBox(Meos.StboxFromHexwkb(hexwkb));
+
+        public static STBox? FromText(string str)
+            => STBox.In(str);
 
         public static STBox? FromWKB(byte[] wkb)
         {

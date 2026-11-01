@@ -18,6 +18,9 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out(15);
 
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
+
         public Span?[] Bins(double vsize, double vorigin, bool border_inc)
             => MEOSFactory.WrapSpanArray(Meos.FloatspanBins(this.Ptr, vsize, vorigin, border_inc));
 
@@ -59,6 +62,9 @@ namespace MEOS.NET.Types
 
         public double Width()
             => Meos.FloatspanWidth(this.Ptr);
+
+        public static Span? FromText(string str)
+            => FloatSpan.In(str);
 
         public static Span? GetBin(double value, double vsize, double vorigin)
             => MEOSFactory.WrapSpan(Meos.FloatspanGetBin(value, vsize, vorigin));

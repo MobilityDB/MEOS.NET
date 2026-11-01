@@ -18,6 +18,9 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public string AsText()
+            => this.Out();
+
         public Span?[] Bins(int vsize, int vorigin, bool border_inc)
             => MEOSFactory.WrapSpanArray(Meos.IntspansetBins(this.Ptr, vsize, vorigin, border_inc));
 
@@ -38,6 +41,9 @@ namespace MEOS.NET.Types
 
         public int Width(bool boundspan)
             => Meos.IntspansetWidth(this.Ptr, boundspan);
+
+        public static SpanSet? FromText(string str)
+            => IntSpanSet.In(str);
 
         public static SpanSet? In(string str)
             => MEOSFactory.WrapSpanSet(Meos.IntspansetIn(str));

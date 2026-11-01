@@ -14,6 +14,10 @@ namespace MEOS.NET.Types
     {
         internal TCbuffer(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.AsText(15);
+
         public Temporal? AtCbuffer(Cbuffer cb)
             => MEOSFactory.WrapTemporal(Meos.TcbufferAtCbuffer(this.Ptr, cb.Ptr));
 
@@ -123,8 +127,20 @@ namespace MEOS.NET.Types
         public static Temporal? FromBaseTemp(Cbuffer cb, Temporal temp)
             => MEOSFactory.WrapTemporal(Meos.TcbufferFromBaseTemp(cb.Ptr, temp.Ptr));
 
+        public static Temporal? FromEWKB(byte[] wkb)
+            => Temporal.FromWKB(wkb);
+
+        public static Temporal? FromEWKT(string str)
+            => TCbuffer.In(str);
+
+        public static Temporal? FromHexEWKB(string hexwkb)
+            => Temporal.FromHexWKB(hexwkb);
+
         public static Temporal? FromMFJSON(string mfjson)
             => MEOSFactory.WrapTemporal(Meos.TcbufferFromMfjson(mfjson));
+
+        public static Temporal? FromText(string str)
+            => TCbuffer.In(str);
 
         public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TcbufferIn(str));

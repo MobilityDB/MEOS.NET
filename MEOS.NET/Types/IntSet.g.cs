@@ -18,6 +18,9 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public string AsText()
+            => this.Out();
+
         public int EndValue()
             => Meos.IntsetEndValue(this.Ptr);
 
@@ -53,6 +56,9 @@ namespace MEOS.NET.Types
 
         public int[] Values()
             => Meos.IntsetValues(this.Ptr);
+
+        public static Set? FromText(string str)
+            => IntSet.In(str);
 
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.IntsetIn(str));

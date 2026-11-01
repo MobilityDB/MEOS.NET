@@ -18,6 +18,9 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out(15);
 
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
+
         public Set? Ceil()
             => MEOSFactory.WrapSet(Meos.FloatsetCeil(this.Ptr));
 
@@ -65,6 +68,9 @@ namespace MEOS.NET.Types
 
         public double[] Values()
             => Meos.FloatsetValues(this.Ptr);
+
+        public static Set? FromText(string str)
+            => FloatSet.In(str);
 
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.FloatsetIn(str));

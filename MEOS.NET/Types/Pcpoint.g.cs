@@ -14,8 +14,15 @@ namespace MEOS.NET.Types
     {
         internal Pcpoint(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.HexOut(15);
+
         public string AsHexWKB()
             => Meos.PcpointAsHexwkb(this.Ptr);
+
+        public string AsText(int maxdd)
+            => this.HexOut(maxdd);
 
         public int Cmp(Pcpoint pt2)
             => Meos.PcpointCmp(this.Ptr, pt2.Ptr);
@@ -136,6 +143,9 @@ namespace MEOS.NET.Types
 
         public static Pcpoint? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapPcpoint(Meos.PcpointFromHexwkb(hexwkb));
+
+        public static Pcpoint? FromText(string str)
+            => Pcpoint.HexIn(str);
 
         public static Pcpoint? HexIn(string str)
             => MEOSFactory.WrapPcpoint(Meos.PcpointHexIn(str));

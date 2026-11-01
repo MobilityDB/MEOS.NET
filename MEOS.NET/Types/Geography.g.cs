@@ -17,6 +17,9 @@ namespace MEOS.NET.Types
         public new double Area(bool use_spheroid)
             => Meos.GeogArea(this.Ptr, use_spheroid);
 
+        public string AsMFJSON(int option, int precision, string srs)
+            => this.AsGeoJSON(option, precision, srs);
+
         public new Geo? Centroid(bool use_spheroid)
             => MEOSFactory.WrapGeo(Meos.GeogCentroid(this.Ptr, use_spheroid));
 
@@ -65,6 +68,9 @@ namespace MEOS.NET.Types
 
         public static Geo? FromHexEWKB(string hexwkb)
             => MEOSFactory.WrapGeo(Meos.GeogFromHexewkb(hexwkb));
+
+        public static Geo? FromMFJSON(string geojson)
+            => Geo.FromGeoJSON(geojson);
 
         public static Geo? In(string str, int typmod)
             => MEOSFactory.WrapGeo(Meos.GeogIn(str, typmod));

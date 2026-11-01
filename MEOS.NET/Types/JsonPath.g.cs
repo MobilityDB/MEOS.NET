@@ -18,6 +18,9 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public string AsText()
+            => this.Out();
+
         public JsonPath? Copy()
             => MEOSFactory.WrapJsonPath(Meos.JsonpathCopy(this.Ptr));
 
@@ -26,6 +29,9 @@ namespace MEOS.NET.Types
 
         public string Out()
             => Meos.JsonpathOut(this.Ptr);
+
+        public static JsonPath? FromText(string str)
+            => JsonPath.In(str);
 
         public static JsonPath? In(string str)
             => MEOSFactory.WrapJsonPath(Meos.JsonpathIn(str));

@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.AsText(15);
 
         public new Temporal? AfterTimestamptz(DateTime t, bool strict)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAfterTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict));
@@ -316,8 +316,20 @@ namespace MEOS.NET.Types
         public Temporal? Yaw()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryYaw(this.Ptr));
 
+        public static Temporal? FromEWKB(byte[] wkb)
+            => Temporal.FromWKB(wkb);
+
+        public static Temporal? FromEWKT(string str)
+            => TRGeometry.In(str);
+
+        public static Temporal? FromHexEWKB(string hexwkb)
+            => Temporal.FromHexWKB(hexwkb);
+
         public static Temporal? FromMFJSON(string mfjson)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryFromMfjson(mfjson));
+
+        public static Temporal? FromText(string str)
+            => TRGeometry.In(str);
 
         public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryIn(str));

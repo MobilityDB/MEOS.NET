@@ -18,6 +18,9 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out(15);
 
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
+
         public Temporal? AtValue(double d)
             => MEOSFactory.WrapTemporal(Meos.TfloatAtValue(this.Ptr, d));
 
@@ -195,6 +198,9 @@ namespace MEOS.NET.Types
 
         public static Temporal? FromMFJSON(string str)
             => MEOSFactory.WrapTemporal(Meos.TfloatFromMfjson(str));
+
+        public static Temporal? FromText(string str)
+            => TFloat.In(str);
 
         public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TfloatIn(str));

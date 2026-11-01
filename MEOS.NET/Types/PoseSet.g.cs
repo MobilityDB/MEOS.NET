@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public Pose? EndValue()
             => MEOSFactory.WrapPose(Meos.PosesetEndValue(this.Ptr));
@@ -47,6 +47,18 @@ namespace MEOS.NET.Types
 
         public Pose?[] Values()
             => MEOSFactory.WrapPoseArray(Meos.PosesetValues(this.Ptr));
+
+        public static Set? FromEWKB(byte[] wkb)
+            => Set.FromWKB(wkb);
+
+        public static Set? FromEWKT(string str)
+            => PoseSet.In(str);
+
+        public static Set? FromHexEWKB(string hexwkb)
+            => Set.FromHexWKB(hexwkb);
+
+        public static Set? FromText(string str)
+            => PoseSet.In(str);
 
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.PosesetIn(str));

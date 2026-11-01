@@ -18,6 +18,9 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public string AsText()
+            => this.Out();
+
         public Temporal? AtValue(bool b)
             => MEOSFactory.WrapTemporal(Meos.TboolAtValue(this.Ptr, b));
 
@@ -93,6 +96,9 @@ namespace MEOS.NET.Types
 
         public static Temporal? FromMFJSON(string str)
             => MEOSFactory.WrapTemporal(Meos.TboolFromMfjson(str));
+
+        public static Temporal? FromText(string str)
+            => TBool.In(str);
 
         public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TboolIn(str));

@@ -14,6 +14,10 @@ namespace MEOS.NET.Types
     {
         internal TGeogPoint(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.AsText(15);
+
         public Temporal? GreatCircleDistance(Temporal b)
             => MEOSFactory.WrapTemporal(Meos.TgeogpointGreatCircleDistance(this.Ptr, b.Ptr));
 
@@ -53,8 +57,20 @@ namespace MEOS.NET.Types
         public Temporal? ToTs2cell(int level, bool border_inc)
             => MEOSFactory.WrapTemporal(Meos.TgeogpointToTs2cell(this.Ptr, level, border_inc));
 
+        public static Temporal? FromEWKB(byte[] wkb)
+            => Temporal.FromWKB(wkb);
+
+        public static Temporal? FromEWKT(string str)
+            => TGeogPoint.In(str);
+
+        public static Temporal? FromHexEWKB(string hexwkb)
+            => Temporal.FromHexWKB(hexwkb);
+
         public static Temporal? FromMFJSON(string str)
             => MEOSFactory.WrapTemporal(Meos.TgeogpointFromMfjson(str));
+
+        public static Temporal? FromText(string str)
+            => TGeogPoint.In(str);
 
         public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TgeogpointIn(str));

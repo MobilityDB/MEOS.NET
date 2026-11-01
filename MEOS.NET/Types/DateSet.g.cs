@@ -18,6 +18,9 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public string AsText()
+            => this.Out();
+
         public DateOnly EndValue()
             => MEOSConvert.ToDateOnly(Meos.DatesetEndValue(this.Ptr));
 
@@ -53,6 +56,9 @@ namespace MEOS.NET.Types
 
         public int[] Values()
             => Meos.DatesetValues(this.Ptr);
+
+        public static Set? FromText(string str)
+            => DateSet.In(str);
 
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.DatesetIn(str));
