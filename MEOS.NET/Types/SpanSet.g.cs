@@ -14,7 +14,7 @@ namespace MEOS.NET.Types
     {
         internal SpanSet(IntPtr ptr) : base(ptr) { }
 
-        public string AsHEXWKB(byte variant)
+        public string AsHexWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
@@ -138,7 +138,7 @@ namespace MEOS.NET.Types
         public bool UpperInc()
             => Meos.SpansetUpperInc(this.Ptr);
 
-        public static SpanSet? FromHEXWKB(string hexwkb)
+        public static SpanSet? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapSpanSet(Meos.SpansetFromHexwkb(hexwkb));
 
         public static SpanSet? FromWKB(byte[] wkb)

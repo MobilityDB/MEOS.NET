@@ -62,8 +62,11 @@ namespace MEOS.NET.Types
         public Temporal? Scale(double xfactor, double yfactor, double zfactor)
             => MEOSFactory.WrapTemporal(Meos.TgeoScale(this.Ptr, xfactor, yfactor, zfactor));
 
-        public Temporal? ScaleGeo(Geo scale, Geo sorigin)
-            => MEOSFactory.WrapTemporal(Meos.TgeoScaleGeo(this.Ptr, scale.Ptr, sorigin.Ptr));
+        public Temporal? ScaleGeo(Geo scale)
+            => MEOSFactory.WrapTemporal(Meos.TgeoScaleGeo(this.Ptr, scale.Ptr));
+
+        public Temporal? ScaleGeoOrigin(Geo scale, Geo sorigin)
+            => MEOSFactory.WrapTemporal(Meos.TgeoScaleGeoOrigin(this.Ptr, scale.Ptr, sorigin.Ptr));
 
         public STBox?[] SpaceBoxes(double xsize, double ysize, double zsize, Geo sorigin, bool bitmatrix, bool border_inc)
             => MEOSFactory.WrapSTBoxArray(Meos.TgeoSpaceBoxes(this.Ptr, xsize, ysize, zsize, sorigin.Ptr, bitmatrix, border_inc));

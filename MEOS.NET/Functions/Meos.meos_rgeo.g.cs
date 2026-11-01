@@ -177,6 +177,9 @@ namespace MEOS.NET.Functions
         public static bool TrgeometryValueN(IntPtr temp, int n, IntPtr result)
             => SafeExecution<bool>(() => Native.TrgeometryValueN(temp, n, result));
 
+        public static bool TrgeometryValueAtTimestamptz(IntPtr temp, long t, bool strict, IntPtr result)
+            => SafeExecution<bool>(() => Native.TrgeometryValueAtTimestamptz(temp, t, strict, result));
+
         public static IntPtr TrgeometryTraversedArea(IntPtr temp, bool unary_union)
             => SafeExecution<IntPtr>(() => Native.TrgeometryTraversedArea(temp, unary_union));
 

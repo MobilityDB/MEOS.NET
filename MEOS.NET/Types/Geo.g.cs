@@ -48,10 +48,10 @@ namespace MEOS.NET.Types
         public string AsEWKT(int precision)
             => Meos.GeoAsEwkt(this.Ptr, precision);
 
-        public string AsGEOJSON(int option, int precision, string srs)
+        public string AsGeoJSON(int option, int precision, string srs)
             => Meos.GeoAsGeojson(this.Ptr, option, precision, srs);
 
-        public string AsHexewkb(string endian)
+        public string AsHexEWKB(string endian)
             => Meos.GeoAsHexewkb(this.Ptr, endian);
 
         public string AsText(int precision)
@@ -132,8 +132,11 @@ namespace MEOS.NET.Types
         public Geo? Scale(double xfactor, double yfactor, double zfactor)
             => MEOSFactory.WrapGeo(Meos.GeoScale(this.Ptr, xfactor, yfactor, zfactor));
 
-        public Geo? ScaleGeo(Geo scale, Geo sorigin)
-            => MEOSFactory.WrapGeo(Meos.GeoScaleGeo(this.Ptr, scale.Ptr, sorigin.Ptr));
+        public Geo? ScaleGeo(Geo scale)
+            => MEOSFactory.WrapGeo(Meos.GeoScaleGeo(this.Ptr, scale.Ptr));
+
+        public Geo? ScaleGeoOrigin(Geo scale, Geo sorigin)
+            => MEOSFactory.WrapGeo(Meos.GeoScaleGeoOrigin(this.Ptr, scale.Ptr, sorigin.Ptr));
 
         public Geo? Segmentize(double max_seg_length)
             => MEOSFactory.WrapGeo(Meos.GeoSegmentize(this.Ptr, max_seg_length));
@@ -303,7 +306,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static Geo? FromGEOJSON(string geojson)
+        public static Geo? FromGeoJSON(string geojson)
             => MEOSFactory.WrapGeo(Meos.GeoFromGeojson(geojson));
 
         public static Geo? FromText(string wkt, int srid)

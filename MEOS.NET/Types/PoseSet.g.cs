@@ -10,7 +10,7 @@ namespace MEOS.NET.Types
 {
     /// <summary>The PoseSet class of the MEOS object model.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class PoseSet : Set
+    public class PoseSet : SpatialSet
     {
         internal PoseSet(IntPtr ptr) : base(ptr) { }
 
@@ -21,7 +21,7 @@ namespace MEOS.NET.Types
         public Pose? EndValue()
             => MEOSFactory.WrapPose(Meos.PosesetEndValue(this.Ptr));
 
-        public string Out(int maxdd)
+        public new string Out(int maxdd)
             => Meos.PosesetOut(this.Ptr, maxdd);
 
         public Pose? StartValue()

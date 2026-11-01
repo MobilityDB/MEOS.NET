@@ -18,7 +18,7 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out(15);
 
-        public string AsHEXWKB(byte variant)
+        public string AsHexWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
@@ -108,6 +108,20 @@ namespace MEOS.NET.Types
         public TBox? Round(int maxdd)
             => MEOSFactory.WrapTBox(Meos.TboxRound(this.Ptr, maxdd));
 
+        public TBox? ScaleTime(Interval duration)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapTBox(Meos.TboxScaleTime(this.Ptr, _duration));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
         public TBox? ShiftScaleTime(Interval shift, Interval duration)
         {
             IntPtr _shift = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
@@ -122,6 +136,20 @@ namespace MEOS.NET.Types
             {
                 Marshal.FreeHGlobal(_shift);
                 Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public TBox? ShiftTime(Interval shift)
+        {
+            IntPtr _shift = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(shift, _shift, false);
+                return MEOSFactory.WrapTBox(Meos.TboxShiftTime(this.Ptr, _shift));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_shift);
             }
         }
 
@@ -316,7 +344,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static TBox? FromHEXWKB(string hexwkb)
+        public static TBox? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapTBox(Meos.TboxFromHexwkb(hexwkb));
 
         public static TBox? FromWKB(byte[] wkb)

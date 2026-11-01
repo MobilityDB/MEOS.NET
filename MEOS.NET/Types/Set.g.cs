@@ -14,7 +14,7 @@ namespace MEOS.NET.Types
     {
         internal Set(IntPtr ptr) : base(ptr) { }
 
-        public string AsHEXWKB(byte variant)
+        public string AsHexWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
@@ -126,7 +126,7 @@ namespace MEOS.NET.Types
         public TBox? ToTbox()
             => MEOSFactory.WrapTBox(Meos.SetToTbox(this.Ptr));
 
-        public static Set? FromHEXWKB(string hexwkb)
+        public static Set? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapSet(Meos.SetFromHexwkb(hexwkb));
 
         public static Set? FromWKB(byte[] wkb)

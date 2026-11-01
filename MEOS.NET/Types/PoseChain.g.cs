@@ -45,12 +45,12 @@ namespace MEOS.NET.Types
         public string AsEWKT(int maxdd)
             => Meos.PosechainAsEwkt(this.Ptr, maxdd);
 
-        public string AsHEXWKB(byte variant)
+        public string AsHexEWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
             {
-                return Meos.PosechainAsHexwkb(this.Ptr, variant, _size_out);
+                return Meos.PosechainAsHexewkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -58,12 +58,12 @@ namespace MEOS.NET.Types
             }
         }
 
-        public string AsHexewkb(byte variant)
+        public string AsHexWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
             {
-                return Meos.PosechainAsHexewkb(this.Ptr, variant, _size_out);
+                return Meos.PosechainAsHexwkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -182,7 +182,7 @@ namespace MEOS.NET.Types
         public STBox? TstzspanToStbox(Span s)
             => MEOSFactory.WrapSTBox(Meos.PosechainTstzspanToStbox(this.Ptr, s.Ptr));
 
-        public static PoseChain? FromHEXWKB(string hexwkb)
+        public static PoseChain? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapPoseChain(Meos.PosechainFromHexwkb(hexwkb));
 
         public static PoseChain? FromWKB(byte[] wkb)

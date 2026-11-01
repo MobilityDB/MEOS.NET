@@ -18,6 +18,9 @@ namespace MEOS.NET.Functions
         public static IntPtr PointRound(IntPtr gs, int maxdd)
             => SafeExecution<IntPtr>(() => Native.PointRound(gs, maxdd));
 
+        public static IntPtr GeoScaleGeoIntl(IntPtr gs, IntPtr scale, IntPtr sorigin)
+            => SafeExecution<IntPtr>(() => Native.GeoScaleGeoIntl(gs, scale, sorigin));
+
         public static void StboxSet(bool hasx, bool hasz, bool geodetic, int srid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, IntPtr s, IntPtr result)
             => SafeExecution(() => Native.StboxSet(hasx, hasz, geodetic, srid, xmin, xmax, ymin, ymax, zmin, zmax, s, result));
 
@@ -65,6 +68,9 @@ namespace MEOS.NET.Functions
 
         public static bool StboxExpandSpaceSet(IntPtr box, double d, IntPtr result)
             => SafeExecution<bool>(() => Native.StboxExpandSpaceSet(box, d, result));
+
+        public static IntPtr StboxShiftScaleTimeIntl(IntPtr box, IntPtr shift, IntPtr duration)
+            => SafeExecution<IntPtr>(() => Native.StboxShiftScaleTimeIntl(box, shift, duration));
 
         public static bool StboxContains(IntPtr box1, IntPtr box2)
             => SafeExecution<bool>(() => Native.StboxContains(box1, box2));
@@ -209,6 +215,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TgeometryseqsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.TgeometryseqsetIn(str));
+
+        public static IntPtr TgeoScaleGeoIntl(IntPtr temp, IntPtr scale, IntPtr sorigin)
+            => SafeExecution<IntPtr>(() => Native.TgeoScaleGeoIntl(temp, scale, sorigin));
 
         public static void TspatialSetStbox(IntPtr temp, IntPtr result)
             => SafeExecution(() => Native.TspatialSetStbox(temp, result));

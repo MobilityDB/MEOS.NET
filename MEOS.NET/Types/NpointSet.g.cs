@@ -10,7 +10,7 @@ namespace MEOS.NET.Types
 {
     /// <summary>The NpointSet class of the MEOS object model.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class NpointSet : Set
+    public class NpointSet : SpatialSet
     {
         internal NpointSet(IntPtr ptr) : base(ptr) { }
 
@@ -21,7 +21,7 @@ namespace MEOS.NET.Types
         public Npoint? EndValue()
             => MEOSFactory.WrapNpoint(Meos.NpointsetEndValue(this.Ptr));
 
-        public string Out(int maxdd)
+        public new string Out(int maxdd)
             => Meos.NpointsetOut(this.Ptr, maxdd);
 
         public Set? Routes()

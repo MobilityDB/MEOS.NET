@@ -42,12 +42,12 @@ namespace MEOS.NET.Types
         public string AsEWKT(int maxdd)
             => Meos.CbufferAsEwkt(this.Ptr, maxdd);
 
-        public string AsHEXWKB(byte variant)
+        public string AsHexEWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
             {
-                return Meos.CbufferAsHexwkb(this.Ptr, variant, _size_out);
+                return Meos.CbufferAsHexewkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -55,12 +55,12 @@ namespace MEOS.NET.Types
             }
         }
 
-        public string AsHexewkb(byte variant)
+        public string AsHexWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
             {
-                return Meos.CbufferAsHexewkb(this.Ptr, variant, _size_out);
+                return Meos.CbufferAsHexwkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -164,7 +164,7 @@ namespace MEOS.NET.Types
         public STBox? TstzspanToStbox(Span s)
             => MEOSFactory.WrapSTBox(Meos.CbufferTstzspanToStbox(this.Ptr, s.Ptr));
 
-        public static Cbuffer? FromHEXWKB(string hexwkb)
+        public static Cbuffer? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapCbuffer(Meos.CbufferFromHexwkb(hexwkb));
 
         public static Cbuffer? FromWKB(byte[] wkb)

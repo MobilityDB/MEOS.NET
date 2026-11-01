@@ -10,7 +10,7 @@ namespace MEOS.NET.Types
 {
     /// <summary>The CbufferSet class of the MEOS object model.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class CbufferSet : Set
+    public class CbufferSet : SpatialSet
     {
         internal CbufferSet(IntPtr ptr) : base(ptr) { }
 
@@ -21,7 +21,7 @@ namespace MEOS.NET.Types
         public Cbuffer? EndValue()
             => MEOSFactory.WrapCbuffer(Meos.CbuffersetEndValue(this.Ptr));
 
-        public string Out(int maxdd)
+        public new string Out(int maxdd)
             => Meos.CbuffersetOut(this.Ptr, maxdd);
 
         public Cbuffer? StartValue()

@@ -42,12 +42,12 @@ namespace MEOS.NET.Types
             }
         }
 
-        public string AsHEXWKB(byte variant)
+        public string AsHexEWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
             {
-                return Meos.StboxAsHexwkb(this.Ptr, variant, _size_out);
+                return Meos.StboxAsHexewkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -55,12 +55,12 @@ namespace MEOS.NET.Types
             }
         }
 
-        public string AsHexewkb(byte variant)
+        public string AsHexWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
             {
-                return Meos.StboxAsHexewkb(this.Ptr, variant, _size_out);
+                return Meos.StboxAsHexwkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -166,6 +166,20 @@ namespace MEOS.NET.Types
         public int SRID()
             => Meos.StboxSrid(this.Ptr);
 
+        public STBox? ScaleTime(Interval duration)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapSTBox(Meos.StboxScaleTime(this.Ptr, _duration));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
         public STBox? SetSRID(int srid)
             => MEOSFactory.WrapSTBox(Meos.StboxSetSrid(this.Ptr, srid));
 
@@ -183,6 +197,20 @@ namespace MEOS.NET.Types
             {
                 Marshal.FreeHGlobal(_shift);
                 Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public STBox? ShiftTime(Interval shift)
+        {
+            IntPtr _shift = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(shift, _shift, false);
+                return MEOSFactory.WrapSTBox(Meos.StboxShiftTime(this.Ptr, _shift));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_shift);
             }
         }
 
@@ -439,7 +467,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static STBox? FromHEXWKB(string hexwkb)
+        public static STBox? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapSTBox(Meos.StboxFromHexwkb(hexwkb));
 
         public static STBox? FromWKB(byte[] wkb)

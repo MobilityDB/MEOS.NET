@@ -51,12 +51,12 @@ namespace MEOS.NET.Types
         public string AsGeopose(int conformance, int precision)
             => Meos.PoseAsGeopose(this.Ptr, conformance, precision);
 
-        public string AsHEXWKB(byte variant)
+        public string AsHexEWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
             {
-                return Meos.PoseAsHexwkb(this.Ptr, variant, _size_out);
+                return Meos.PoseAsHexewkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -64,12 +64,12 @@ namespace MEOS.NET.Types
             }
         }
 
-        public string AsHexewkb(byte variant)
+        public string AsHexWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
             {
-                return Meos.PoseAsHexewkb(this.Ptr, variant, _size_out);
+                return Meos.PoseAsHexwkb(this.Ptr, variant, _size_out);
             }
             finally
             {
@@ -200,7 +200,7 @@ namespace MEOS.NET.Types
         public static Pose? FromGeopose(string json)
             => MEOSFactory.WrapPose(Meos.PoseFromGeopose(json));
 
-        public static Pose? FromHEXWKB(string hexwkb)
+        public static Pose? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapPose(Meos.PoseFromHexwkb(hexwkb));
 
         public static Pose? FromText(string str)

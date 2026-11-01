@@ -14,7 +14,7 @@ namespace MEOS.NET.Types
     {
         internal Span(IntPtr ptr) : base(ptr) { }
 
-        public string AsHEXWKB(byte variant)
+        public string AsHexWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
@@ -111,7 +111,7 @@ namespace MEOS.NET.Types
         public bool UpperInc()
             => Meos.SpanUpperInc(this.Ptr);
 
-        public static Span? FromHEXWKB(string hexwkb)
+        public static Span? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapSpan(Meos.SpanFromHexwkb(hexwkb));
 
         public static Span? FromWKB(byte[] wkb)

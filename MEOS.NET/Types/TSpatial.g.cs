@@ -42,7 +42,7 @@ namespace MEOS.NET.Types
         public string AsEWKT(int maxdd)
             => Meos.TspatialAsEwkt(this.Ptr, maxdd);
 
-        public string AsHexewkb(byte variant)
+        public string AsHexEWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try

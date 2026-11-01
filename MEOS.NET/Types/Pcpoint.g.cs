@@ -14,7 +14,7 @@ namespace MEOS.NET.Types
     {
         internal Pcpoint(IntPtr ptr) : base(ptr) { }
 
-        public string AsHEXWKB()
+        public string AsHexWKB()
             => Meos.PcpointAsHexwkb(this.Ptr);
 
         public int Cmp(Pcpoint pt2)
@@ -134,7 +134,7 @@ namespace MEOS.NET.Types
         public TPCBox? ToTpcbox()
             => MEOSFactory.WrapTPCBox(Meos.PcpointToTpcbox(this.Ptr));
 
-        public static Pcpoint? FromHEXWKB(string hexwkb)
+        public static Pcpoint? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapPcpoint(Meos.PcpointFromHexwkb(hexwkb));
 
         public static Pcpoint? HexIn(string str)

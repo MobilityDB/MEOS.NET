@@ -18,7 +18,7 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
-        public string AsHEXWKB(byte variant)
+        public string AsHexWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
             try
@@ -145,7 +145,7 @@ namespace MEOS.NET.Types
         public int Width()
             => Meos.RaquetWidth(this.Ptr);
 
-        public static Raquet? FromHEXWKB(string hexwkb)
+        public static Raquet? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapRaquet(Meos.RaquetFromHexwkb(hexwkb));
 
         public static Raquet? FromWKB(byte[] wkb)

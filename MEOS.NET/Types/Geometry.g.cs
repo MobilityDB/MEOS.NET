@@ -189,7 +189,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static Geo? FromHexewkb(string hexwkb)
+        public static Geo? FromHexEWKB(string hexwkb)
             => MEOSFactory.WrapGeo(Meos.GeomFromHexewkb(hexwkb));
 
         public static Geo? In(string str, int typmod)
