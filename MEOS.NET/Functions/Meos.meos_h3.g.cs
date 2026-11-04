@@ -16,7 +16,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<ulong>(() => Native.BigintToH3index(i));
 
         public static string H3indexOut(ulong cell)
-            => SafeExecution<string>(() => Native.H3indexOut(cell));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.H3indexOut(cell, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static bool H3IsValidCell(ulong cell)
             => SafeExecution<bool>(() => Native.H3IsValidCell(cell));
@@ -90,8 +106,24 @@ namespace MEOS.NET.Functions
         public static IntPtr H3indexAsWkb(ulong cell, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.H3indexAsWkb(cell, variant, size_out));
 
-        public static string H3indexAsHexwkb(ulong cell, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.H3indexAsHexwkb(cell, variant, size_out));
+        public static string H3indexAsHexwkb(ulong cell, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.H3indexAsHexwkb(cell, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static uint H3indexGetResolution(ulong cell)
             => SafeExecution<uint>(() => Native.H3indexGetResolution(cell));
@@ -121,7 +153,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.Th3indexseqsetIn(str));
 
         public static string Th3indexOut(IntPtr temp)
-            => SafeExecution<string>(() => Native.Th3indexOut(temp));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.Th3indexOut(temp, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr Th3indexFromMfjson(string mfjson)
             => SafeExecution<IntPtr>(() => Native.Th3indexFromMfjson(mfjson));
@@ -361,7 +409,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.H3indexsetIn(str));
 
         public static string H3indexsetOut(IntPtr s)
-            => SafeExecution<string>(() => Native.H3indexsetOut(s));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.H3indexsetOut(s, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr H3indexsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.H3indexsetMake(values, count));

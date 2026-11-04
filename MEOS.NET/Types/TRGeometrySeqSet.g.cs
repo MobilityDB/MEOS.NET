@@ -14,7 +14,7 @@ namespace MEOS.NET.Types
     {
         internal TRGeometrySeqSet(IntPtr ptr) : base(ptr) { }
 
-        public Temporal? Make(Temporal[] sequences, bool normalize)
+        public static Temporal? Make(Geo geom, Temporal[] sequences, bool normalize)
         {
             IntPtr[] _sequencesValues = new IntPtr[sequences.Length];
             for (int i = 0; i < sequences.Length; i++)
@@ -25,7 +25,7 @@ namespace MEOS.NET.Types
             GCHandle _sequences = GCHandle.Alloc(_sequencesValues, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapTemporal(Meos.TrgeometryseqsetMake(this.Ptr, _sequences.AddrOfPinnedObject(), sequences.Length, normalize));
+                return MEOSFactory.WrapTemporal(Meos.TrgeometryseqsetMake(geom.Ptr, _sequences.AddrOfPinnedObject(), sequences.Length, normalize));
             }
             finally
             {
@@ -33,7 +33,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public Temporal? MakeGaps(Temporal[] instants, InterpType interp, Interval maxt, double maxdist)
+        public static Temporal? MakeGaps(Geo geom, Temporal[] instants, InterpType interp, Interval maxt, double maxdist)
         {
             IntPtr _maxt = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             IntPtr[] _instantsValues = new IntPtr[instants.Length];
@@ -46,7 +46,7 @@ namespace MEOS.NET.Types
             try
             {
                 Marshal.StructureToPtr(maxt, _maxt, false);
-                return MEOSFactory.WrapTemporal(Meos.TrgeometryseqsetMakeGaps(this.Ptr, _instants.AddrOfPinnedObject(), instants.Length, (int) interp, _maxt, maxdist));
+                return MEOSFactory.WrapTemporal(Meos.TrgeometryseqsetMakeGaps(geom.Ptr, _instants.AddrOfPinnedObject(), instants.Length, (int) interp, _maxt, maxdist));
             }
             finally
             {

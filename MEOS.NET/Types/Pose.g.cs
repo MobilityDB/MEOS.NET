@@ -52,30 +52,10 @@ namespace MEOS.NET.Types
             => Meos.PoseAsGeopose(this.Ptr, conformance, precision);
 
         public string AsHexEWKB(byte variant)
-        {
-            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
-            try
-            {
-                return Meos.PoseAsHexewkb(this.Ptr, variant, _size_out);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(_size_out);
-            }
-        }
+            => Meos.PoseAsHexewkb(this.Ptr, variant);
 
         public string AsHexWKB(byte variant)
-        {
-            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
-            try
-            {
-                return Meos.PoseAsHexwkb(this.Ptr, variant, _size_out);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(_size_out);
-            }
-        }
+            => Meos.PoseAsHexwkb(this.Ptr, variant);
 
         public string AsText(int maxdd)
             => Meos.PoseAsText(this.Ptr, maxdd);

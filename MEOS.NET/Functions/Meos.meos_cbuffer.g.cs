@@ -13,16 +13,80 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.CbufferAsEwkb(cb, variant, size_out));
 
         public static string CbufferAsEwkt(IntPtr cb, int maxdd)
-            => SafeExecution<string>(() => Native.CbufferAsEwkt(cb, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.CbufferAsEwkt(cb, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
 
-        public static string CbufferAsHexewkb(IntPtr cb, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.CbufferAsHexewkb(cb, variant, size_out));
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
-        public static string CbufferAsHexwkb(IntPtr cb, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.CbufferAsHexwkb(cb, variant, size_out));
+        public static string CbufferAsHexewkb(IntPtr cb, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.CbufferAsHexewkb(cb, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static string CbufferAsHexwkb(IntPtr cb, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.CbufferAsHexwkb(cb, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string CbufferAsText(IntPtr cb, int maxdd)
-            => SafeExecution<string>(() => Native.CbufferAsText(cb, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.CbufferAsText(cb, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr CbufferAsWkb(IntPtr cb, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.CbufferAsWkb(cb, variant, size_out));
@@ -37,7 +101,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.CbufferIn(str));
 
         public static string CbufferOut(IntPtr cb, int maxdd)
-            => SafeExecution<string>(() => Native.CbufferOut(cb, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.CbufferOut(cb, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr CbufferCopy(IntPtr cb)
             => SafeExecution<IntPtr>(() => Native.CbufferCopy(cb));
@@ -158,7 +238,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.CbuffersetIn(str));
 
         public static string CbuffersetOut(IntPtr s, int maxdd)
-            => SafeExecution<string>(() => Native.CbuffersetOut(s, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.CbuffersetOut(s, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr CbuffersetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.CbuffersetMake(values, count));

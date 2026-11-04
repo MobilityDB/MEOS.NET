@@ -32,19 +32,6 @@ namespace MEOS.NET.Types
         public int Join(RTree rtree2, IndexSearchOp op, MeosArray result)
             => Meos.RtreeJoin(this.Ptr, rtree2.Ptr, (int) op, result.Ptr);
 
-        public bool Load(IntPtr boxes, long[] ids)
-        {
-            GCHandle _ids = GCHandle.Alloc(ids, GCHandleType.Pinned);
-            try
-            {
-                return Meos.RtreeLoad(this.Ptr, boxes, _ids.AddrOfPinnedObject(), ids.Length);
-            }
-            finally
-            {
-                _ids.Free();
-            }
-        }
-
         public long MemSize()
             => Meos.RtreeMemSize(this.Ptr);
 

@@ -13,13 +13,45 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.PcpointHexIn(str));
 
         public static string PcpointHexOut(IntPtr pt, int maxdd)
-            => SafeExecution<string>(() => Native.PcpointHexOut(pt, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PcpointHexOut(pt, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr PcpointFromHexwkb(string hexwkb)
             => SafeExecution<IntPtr>(() => Native.PcpointFromHexwkb(hexwkb));
 
         public static string PcpointAsHexwkb(IntPtr pt)
-            => SafeExecution<string>(() => Native.PcpointAsHexwkb(pt));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PcpointAsHexwkb(pt, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr PcpointMake(uint pcid, IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.PcpointMake(pcid, values, count));
@@ -121,13 +153,45 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.PcpatchHexIn(str));
 
         public static string PcpatchHexOut(IntPtr pa, int maxdd)
-            => SafeExecution<string>(() => Native.PcpatchHexOut(pa, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PcpatchHexOut(pa, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr PcpatchFromHexwkb(string hexwkb)
             => SafeExecution<IntPtr>(() => Native.PcpatchFromHexwkb(hexwkb));
 
         public static string PcpatchAsHexwkb(IntPtr pa)
-            => SafeExecution<string>(() => Native.PcpatchAsHexwkb(pa));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PcpatchAsHexwkb(pa, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr PcpatchMake(IntPtr points, int count)
             => SafeExecution<IntPtr>(() => Native.PcpatchMake(points, count));
@@ -199,7 +263,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.PcpointsetIn(str));
 
         public static string PcpointsetOut(IntPtr s, int maxdd)
-            => SafeExecution<string>(() => Native.PcpointsetOut(s, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PcpointsetOut(s, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr PcpointsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.PcpointsetMake(values, count));
@@ -262,7 +342,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.PcpatchsetIn(str));
 
         public static string PcpatchsetOut(IntPtr s, int maxdd)
-            => SafeExecution<string>(() => Native.PcpatchsetOut(s, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PcpatchsetOut(s, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr PcpatchsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.PcpatchsetMake(values, count));
@@ -324,11 +420,43 @@ namespace MEOS.NET.Functions
         public static IntPtr TpcboxAsEwkb(IntPtr box, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.TpcboxAsEwkb(box, variant, size_out));
 
-        public static string TpcboxAsHexewkb(IntPtr box, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.TpcboxAsHexewkb(box, variant, size_out));
+        public static string TpcboxAsHexewkb(IntPtr box, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TpcboxAsHexewkb(box, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
 
-        public static string TpcboxAsHexwkb(IntPtr box, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.TpcboxAsHexwkb(box, variant, size_out));
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static string TpcboxAsHexwkb(IntPtr box, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TpcboxAsHexwkb(box, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TpcboxAsWkb(IntPtr box, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.TpcboxAsWkb(box, variant, size_out));
@@ -343,10 +471,26 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TpcboxIn(str));
 
         public static string TpcboxOut(IntPtr box, int maxdd)
-            => SafeExecution<string>(() => Native.TpcboxOut(box, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TpcboxOut(box, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
 
-        public static IntPtr TpcboxMake(bool hasx, bool hasz, bool hast, bool geodetic, uint pcid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, IntPtr period)
-            => SafeExecution<IntPtr>(() => Native.TpcboxMake(hasx, hasz, hast, geodetic, pcid, xmin, xmax, ymin, ymax, zmin, zmax, period));
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static IntPtr TpcboxMake(bool hasx, bool hasz, bool geodetic, uint pcid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, IntPtr period)
+            => SafeExecution<IntPtr>(() => Native.TpcboxMake(hasx, hasz, geodetic, pcid, xmin, xmax, ymin, ymax, zmin, zmax, period));
 
         public static IntPtr TpcboxCopy(IntPtr box)
             => SafeExecution<IntPtr>(() => Native.TpcboxCopy(box));
@@ -511,7 +655,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TpcpointIn(str));
 
         public static string TpcpointOut(IntPtr temp)
-            => SafeExecution<string>(() => Native.TpcpointOut(temp));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TpcpointOut(temp, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TpcpointFromMfjson(string mfjson)
             => SafeExecution<IntPtr>(() => Native.TpcpointFromMfjson(mfjson));
@@ -520,7 +680,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TpcpatchIn(str));
 
         public static string TpcpatchOut(IntPtr temp)
-            => SafeExecution<string>(() => Native.TpcpatchOut(temp));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TpcpatchOut(temp, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TpcpatchFromMfjson(string mfjson)
             => SafeExecution<IntPtr>(() => Native.TpcpatchFromMfjson(mfjson));
@@ -1001,6 +1177,15 @@ namespace MEOS.NET.Functions
 
         public static bool OverafterTpointcloudTpointcloud(IntPtr temp1, IntPtr temp2)
             => SafeExecution<bool>(() => Native.OverafterTpointcloudTpointcloud(temp1, temp2));
+
+        public static double NadTpcboxTpcbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<double>(() => Native.NadTpcboxTpcbox(box1, box2));
+
+        public static double NadTpointcloudTpcbox(IntPtr temp, IntPtr box)
+            => SafeExecution<double>(() => Native.NadTpointcloudTpcbox(temp, box));
+
+        public static double NadTpointcloudTpointcloud(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<double>(() => Native.NadTpointcloudTpointcloud(temp1, temp2));
 
         public static IntPtr TpcExtentTransfn(IntPtr state, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TpcExtentTransfn(state, temp));

@@ -19,7 +19,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.RaquetIn(str));
 
         public static string RaquetOut(IntPtr rq)
-            => SafeExecution<string>(() => Native.RaquetOut(rq));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.RaquetOut(rq, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr RaquetFromWkb(IntPtr wkb, ulong size)
             => SafeExecution<IntPtr>(() => Native.RaquetFromWkb(wkb, size));
@@ -30,8 +46,24 @@ namespace MEOS.NET.Functions
         public static IntPtr RaquetAsWkb(IntPtr rq, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.RaquetAsWkb(rq, variant, size_out));
 
-        public static string RaquetAsHexwkb(IntPtr rq, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.RaquetAsHexwkb(rq, variant, size_out));
+        public static string RaquetAsHexwkb(IntPtr rq, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.RaquetAsHexwkb(rq, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr RaquetMake(ulong quadbin, int width, int height, int pixtype, double nodata, bool has_nodata, IntPtr pixels, ulong pixels_size)
             => SafeExecution<IntPtr>(() => Native.RaquetMake(quadbin, width, height, pixtype, nodata, has_nodata, pixels, pixels_size));
@@ -55,7 +87,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<int>(() => Native.RaquetHeight(rq));
 
         public static string RaquetBandPixelType(IntPtr rq)
-            => SafeExecution<string>(() => Native.RaquetBandPixelType(rq));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.RaquetBandPixelType(rq, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static bool RaquetBandHasNodataValue(IntPtr rq)
             => SafeExecution<bool>(() => Native.RaquetBandHasNodataValue(rq));
@@ -84,8 +132,24 @@ namespace MEOS.NET.Functions
         public static IntPtr RasterAsWkb(IntPtr rast, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.RasterAsWkb(rast, variant, size_out));
 
-        public static string RasterAsHexwkb(IntPtr rast, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.RasterAsHexwkb(rast, variant, size_out));
+        public static string RasterAsHexwkb(IntPtr rast, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.RasterAsHexwkb(rast, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr RasterCopy(IntPtr rast)
             => SafeExecution<IntPtr>(() => Native.RasterCopy(rast));
@@ -136,7 +200,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<double>(() => Native.RasterSkewY(rast));
 
         public static string RasterBandPixelType(IntPtr rast, int band)
-            => SafeExecution<string>(() => Native.RasterBandPixelType(rast, band));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.RasterBandPixelType(rast, band, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static bool RasterBandHasNodataValue(IntPtr rast, int band)
             => SafeExecution<bool>(() => Native.RasterBandHasNodataValue(rast, band));
@@ -315,7 +395,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<bool>(() => Native.RasterSameAlignment(rast1, rast2));
 
         public static string RasterNotSameAlignmentReason(IntPtr rast1, IntPtr rast2)
-            => SafeExecution<string>(() => Native.RasterNotSameAlignmentReason(rast1, rast2));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.RasterNotSameAlignmentReason(rast1, rast2, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr RasterSameAlignmentCombinefn(IntPtr state1, IntPtr state2)
             => SafeExecution<IntPtr>(() => Native.RasterSameAlignmentCombinefn(state1, state2));

@@ -9,8 +9,24 @@ namespace MEOS.NET.Functions
     /// <summary>The MEOS functions <c>meos_quadbin.h</c> declares.</summary>
     public static partial class Meos
     {
-        public static string QuadbinAsHexwkb(ulong cell, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.QuadbinAsHexwkb(cell, variant, size_out));
+        public static string QuadbinAsHexwkb(ulong cell, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.QuadbinAsHexwkb(cell, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr QuadbinAsWkb(ulong cell, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.QuadbinAsWkb(cell, variant, size_out));
@@ -28,7 +44,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<ulong>(() => Native.BigintToQuadbin(i));
 
         public static string QuadbinOut(ulong cell)
-            => SafeExecution<string>(() => Native.QuadbinOut(cell));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.QuadbinOut(cell, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static bool QuadbinEq(ulong a, ulong b)
             => SafeExecution<bool>(() => Native.QuadbinEq(a, b));
@@ -153,13 +185,45 @@ namespace MEOS.NET.Functions
             => SafeExecution<double>(() => Native.QuadbinCellArea(cell));
 
         public static string QuadbinIndexToString(ulong index)
-            => SafeExecution<string>(() => Native.QuadbinIndexToString(index));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.QuadbinIndexToString(index, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static ulong QuadbinStringToIndex(string str)
             => SafeExecution<ulong>(() => Native.QuadbinStringToIndex(str));
 
         public static string QuadbinCellToQuadkey(ulong cell)
-            => SafeExecution<string>(() => Native.QuadbinCellToQuadkey(cell));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.QuadbinCellToQuadkey(cell, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr QuadbinGridDisk(ulong origin, int k)
             => SafeExecution<IntPtr>(() => Native.QuadbinGridDisk(origin, k));
@@ -186,7 +250,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.QuadbinsetIn(str));
 
         public static string QuadbinsetOut(IntPtr s)
-            => SafeExecution<string>(() => Native.QuadbinsetOut(s));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.QuadbinsetOut(s, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr QuadbinsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.QuadbinsetMake(values, count));
@@ -255,7 +335,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TquadbinseqsetIn(str));
 
         public static string TquadbinOut(IntPtr temp)
-            => SafeExecution<string>(() => Native.TquadbinOut(temp));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TquadbinOut(temp, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TquadbinFromMfjson(string mfjson)
             => SafeExecution<IntPtr>(() => Native.TquadbinFromMfjson(mfjson));

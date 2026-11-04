@@ -35,17 +35,7 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTemporal(Meos.TemporalAppendTsequence(this.Ptr, seq.Ptr, expand));
 
         public string AsHexWKB(byte variant)
-        {
-            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
-            try
-            {
-                return Meos.TemporalAsHexwkb(this.Ptr, variant, _size_out);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(_size_out);
-            }
-        }
+            => Meos.TemporalAsHexwkb(this.Ptr, variant);
 
         public string AsMFJSON(int option, int flags, int precision, string srs)
             => Meos.TemporalAsMfjson(this.Ptr, option, flags, precision, srs);

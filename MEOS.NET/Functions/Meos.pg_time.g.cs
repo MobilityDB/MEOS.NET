@@ -139,7 +139,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TimetzCopy(timetz));
 
         public static string TimetzOut(IntPtr timetz)
-            => SafeExecution<string>(() => Native.TimetzOut(timetz));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TimetzOut(timetz, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static bool TimetzOverlaps(IntPtr ts1, IntPtr te1, IntPtr ts2, IntPtr te2)
             => SafeExecution<bool>(() => Native.TimetzOverlaps(ts1, te1, ts2, te2));

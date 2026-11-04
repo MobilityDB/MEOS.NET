@@ -9,8 +9,24 @@ namespace MEOS.NET.Functions
     /// <summary>The MEOS functions <c>meos_s2cell.h</c> declares.</summary>
     public static partial class Meos
     {
-        public static string S2cellAsHexwkb(ulong cell, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.S2cellAsHexwkb(cell, variant, size_out));
+        public static string S2cellAsHexwkb(ulong cell, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.S2cellAsHexwkb(cell, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr S2cellAsWkb(ulong cell, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.S2cellAsWkb(cell, variant, size_out));
@@ -28,7 +44,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<ulong>(() => Native.BigintToS2cell(i));
 
         public static string S2cellOut(ulong cell)
-            => SafeExecution<string>(() => Native.S2cellOut(cell));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.S2cellOut(cell, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static bool S2cellEq(ulong a, ulong b)
             => SafeExecution<bool>(() => Native.S2cellEq(a, b));
@@ -61,7 +93,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<bool>(() => Native.S2cellIsValidCell(cell));
 
         public static string S2cellCellToToken(ulong cell)
-            => SafeExecution<string>(() => Native.S2cellCellToToken(cell));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.S2cellCellToToken(cell, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static ulong S2cellTokenToCell(string token)
             => SafeExecution<ulong>(() => Native.S2cellTokenToCell(token));
@@ -178,7 +226,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.S2cellsetIn(str));
 
         public static string S2cellsetOut(IntPtr s)
-            => SafeExecution<string>(() => Native.S2cellsetOut(s));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.S2cellsetOut(s, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr S2cellsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.S2cellsetMake(values, count));
@@ -247,7 +311,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.Ts2cellseqsetIn(str));
 
         public static string Ts2cellOut(IntPtr temp)
-            => SafeExecution<string>(() => Native.Ts2cellOut(temp));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.Ts2cellOut(temp, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr Ts2cellFromMfjson(string mfjson)
             => SafeExecution<IntPtr>(() => Native.Ts2cellFromMfjson(mfjson));

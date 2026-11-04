@@ -327,6 +327,20 @@ def is_borrowed_string(c_type: str) -> bool:
     return " ".join(c_type.split()).startswith("const char *")
 
 
+def string_size_out(f: dict) -> str | None:
+    """The ``size_t *`` a ``char *`` return's shape lists in ``outParams``, or None.
+
+    It states the size of the string the call answers, its terminator included, so
+    the import returns the pointer and takes the size as an ``out nuint``, and the
+    wrapper reads the string for that size (#_emit_sized_string), as
+    #_emit_array_return_wrapper hides an ``int *count``."""
+    if " ".join(f["returnType"]["c"].split()) != "char *":
+        return None
+    out_params = (f.get("shape") or {}).get("outParams") or []
+    return next((p["name"] for p in f.get("params", [])
+                 if p["name"] in out_params and p["cType"].replace(" ", "") == "size_t*"), None)
+
+
 def csharp_type_for(canonical: str) -> str:
     """Translate a libclang-canonical C type to a C# type for LibraryImport signatures."""
     t = canonical.strip()
@@ -409,9 +423,15 @@ def gen_external_functions(funcs: list[dict]) -> str:
     for f in funcs:
         name = f["name"]
         rt = csharp_return_type(f["returnType"]["c"], f["returnType"]["canonical"])
+        size_out = string_size_out(f)
+        if size_out:
+            rt = "IntPtr"
         params: list[str] = []
         for p in f.get("params", []):
             pname = csharp_param_name(p["name"]) if p["name"] else "arg"
+            if p["name"] == size_out:
+                params.append(f"out nuint {pname}")
+                continue
             ptype = csharp_param_type(p["cType"], p["canonical"])
             # The LibraryImport source generator marshals C# bool as the
             # 4-byte Windows BOOL by default; MEOS uses C ``_Bool`` (1
@@ -748,6 +768,40 @@ def _emit_array_return_wrapper(f: dict, ext_params: str, ext_args: str) -> list[
     return lines
 
 
+def _emit_sized_string(f: dict, size_out: str) -> list[str]:
+    """A ``char *`` return read for the size MEOS writes (#string_size_out) and freed.
+
+    A null pointer, for which MEOS wrote no size, answers null, as the Utf8 string
+    marshaller of #csharp_return_type answers it."""
+    name = f["name"]
+    size_name = csharp_param_name(size_out)
+    typed = _typed_params(f)
+    public = [t for t in typed if t[1] != size_name]
+    SIGNATURES[name] = ("string", public)
+    pub = ", ".join(f"{t} {n}" for t, n in public)
+    args = ", ".join("out _size" if n == size_name else n for _t, n in typed)
+    return [
+        f"        public static string {public_name(name)}({pub})",
+        "        {",
+        "            nuint _size = 0;",
+        f"            IntPtr _p = SafeExecution<IntPtr>(() => Native.{public_name(name)}({args}));",
+        "            if (_p == IntPtr.Zero)",
+        "            {",
+        "                return null!;",
+        "            }",
+        "",
+        "            try",
+        "            {",
+        "                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);",
+        "            }",
+        "            finally",
+        "            {",
+        "                Marshal.FreeCoTaskMem(_p);",
+        "            }",
+        "        }",
+    ]
+
+
 def _emit_simple_passthrough(f: dict, ext_params: str, ext_args: str, default_rt: str | None = None) -> list[str]:
     name = f["name"]
     rt = default_rt or csharp_return_type(f["returnType"]["c"], f["returnType"]["canonical"])
@@ -826,7 +880,10 @@ def gen_exposed_functions(funcs: list[dict], header: str | None = None) -> str:
             continue
 
         emitted: list[str] = []
-        if "outputArrays" in shape:
+        size_out = string_size_out(f)
+        if size_out:
+            emitted = _emit_sized_string(f, size_out)
+        if not emitted and "outputArrays" in shape:
             emitted = _emit_outputs_wrapper(f)
         if not emitted and "arrayReturn" in shape:
             kind = shape["arrayReturn"]["lengthFrom"]["kind"]

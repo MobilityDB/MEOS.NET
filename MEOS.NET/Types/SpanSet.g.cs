@@ -15,17 +15,7 @@ namespace MEOS.NET.Types
         internal SpanSet(IntPtr ptr) : base(ptr) { }
 
         public string AsHexWKB(byte variant)
-        {
-            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
-            try
-            {
-                return Meos.SpansetAsHexwkb(this.Ptr, variant, _size_out);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(_size_out);
-            }
-        }
+            => Meos.SpansetAsHexwkb(this.Ptr, variant);
 
         public byte[]? AsWKB(byte variant)
         {

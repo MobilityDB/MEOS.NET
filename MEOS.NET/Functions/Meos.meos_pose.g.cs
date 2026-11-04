@@ -13,16 +13,80 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.PoseAsEwkb(pose, variant, size_out));
 
         public static string PoseAsEwkt(IntPtr pose, int maxdd)
-            => SafeExecution<string>(() => Native.PoseAsEwkt(pose, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PoseAsEwkt(pose, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
 
-        public static string PoseAsHexewkb(IntPtr pose, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.PoseAsHexewkb(pose, variant, size_out));
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
-        public static string PoseAsHexwkb(IntPtr pose, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.PoseAsHexwkb(pose, variant, size_out));
+        public static string PoseAsHexewkb(IntPtr pose, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PoseAsHexewkb(pose, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static string PoseAsHexwkb(IntPtr pose, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PoseAsHexwkb(pose, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string PoseAsText(IntPtr pose, int maxdd)
-            => SafeExecution<string>(() => Native.PoseAsText(pose, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PoseAsText(pose, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr PoseAsWkb(IntPtr pose, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.PoseAsWkb(pose, variant, size_out));
@@ -40,28 +104,124 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.PoseIn(str));
 
         public static string PoseOut(IntPtr pose, int maxdd)
-            => SafeExecution<string>(() => Native.PoseOut(pose, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PoseOut(pose, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr PoseFromGeopose(string json)
             => SafeExecution<IntPtr>(() => Native.PoseFromGeopose(json));
 
         public static string PoseAsGeopose(IntPtr pose, int conformance, int precision)
-            => SafeExecution<string>(() => Native.PoseAsGeopose(pose, conformance, precision));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PoseAsGeopose(pose, conformance, precision, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TposeFromGeopose(string json)
             => SafeExecution<IntPtr>(() => Native.TposeFromGeopose(json));
 
         public static string TposeAsGeopose(IntPtr temp, int conformance, int precision)
-            => SafeExecution<string>(() => Native.TposeAsGeopose(temp, conformance, precision));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TposeAsGeopose(temp, conformance, precision, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string TposeAsGeoposeStreamHeader(IntPtr temp, int precision)
-            => SafeExecution<string>(() => Native.TposeAsGeoposeStreamHeader(temp, precision));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TposeAsGeoposeStreamHeader(temp, precision, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string TposeAsGeoposeStreamElement(IntPtr temp, IntPtr inst, int precision)
-            => SafeExecution<string>(() => Native.TposeAsGeoposeStreamElement(temp, inst, precision));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TposeAsGeoposeStreamElement(temp, inst, precision, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string TposeAsGeoposeStream(IntPtr temp, int precision)
-            => SafeExecution<string>(() => Native.TposeAsGeoposeStream(temp, precision));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TposeAsGeoposeStream(temp, precision, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr[] GeoposeFrames()
         {
@@ -82,7 +242,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.GeoposeFrame(frame_id));
 
         public static string GeoposeFrameName(int frame_id)
-            => SafeExecution<string>(() => Native.GeoposeFrameName(frame_id));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.GeoposeFrameName(frame_id, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static int GeoposeFrameSrid(int frame_id)
             => SafeExecution<int>(() => Native.GeoposeFrameSrid(frame_id));
@@ -270,7 +446,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.PosesetIn(str));
 
         public static string PosesetOut(IntPtr s, int maxdd)
-            => SafeExecution<string>(() => Native.PosesetOut(s, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PosesetOut(s, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr PosesetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.PosesetMake(values, count));
@@ -549,25 +741,105 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.PosechainIn(str));
 
         public static string PosechainOut(IntPtr pc, int maxdd)
-            => SafeExecution<string>(() => Native.PosechainOut(pc, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PosechainOut(pc, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string PosechainAsText(IntPtr pc, int maxdd)
-            => SafeExecution<string>(() => Native.PosechainAsText(pc, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PosechainAsText(pc, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr PosechainAsEwkb(IntPtr pc, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.PosechainAsEwkb(pc, variant, size_out));
 
         public static string PosechainAsEwkt(IntPtr pc, int maxdd)
-            => SafeExecution<string>(() => Native.PosechainAsEwkt(pc, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PosechainAsEwkt(pc, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr PosechainAsWkb(IntPtr pc, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.PosechainAsWkb(pc, variant, size_out));
 
-        public static string PosechainAsHexewkb(IntPtr pc, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.PosechainAsHexewkb(pc, variant, size_out));
+        public static string PosechainAsHexewkb(IntPtr pc, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PosechainAsHexewkb(pc, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
 
-        public static string PosechainAsHexwkb(IntPtr pc, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.PosechainAsHexwkb(pc, variant, size_out));
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static string PosechainAsHexwkb(IntPtr pc, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PosechainAsHexwkb(pc, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr PosechainFromWkb(IntPtr wkb, ulong size)
             => SafeExecution<IntPtr>(() => Native.PosechainFromWkb(wkb, size));
@@ -660,10 +932,42 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TposechainFromGeopose(json));
 
         public static string TposechainAsGeopose(IntPtr temp, int precision)
-            => SafeExecution<string>(() => Native.TposechainAsGeopose(temp, precision));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TposechainAsGeopose(temp, precision, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string TposechainarrAsGeopose(IntPtr temparr, int count, int precision)
-            => SafeExecution<string>(() => Native.TposechainarrAsGeopose(temparr, count, precision));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TposechainarrAsGeopose(temparr, count, precision, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static bool PosechainEq(IntPtr pc1, IntPtr pc2)
             => SafeExecution<bool>(() => Native.PosechainEq(pc1, pc2));
@@ -699,7 +1003,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.PosechainsetIn(str));
 
         public static string PosechainsetOut(IntPtr s, int maxdd)
-            => SafeExecution<string>(() => Native.PosechainsetOut(s, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PosechainsetOut(s, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr PosechainsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.PosechainsetMake(values, count));

@@ -216,6 +216,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TgeometryseqsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.TgeometryseqsetIn(str));
 
+        public static bool TpointTfloatToGeomeasIntl(IntPtr tpoint, IntPtr meas, bool segmentize, IntPtr result)
+            => SafeExecution<bool>(() => Native.TpointTfloatToGeomeasIntl(tpoint, meas, segmentize, result));
+
         public static IntPtr TgeoScaleGeoIntl(IntPtr temp, IntPtr scale, IntPtr sorigin)
             => SafeExecution<IntPtr>(() => Native.TgeoScaleGeoIntl(temp, scale, sorigin));
 

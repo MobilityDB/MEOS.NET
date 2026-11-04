@@ -74,14 +74,14 @@ namespace MEOS.NET.Types
         public double Distance3d(Geo gs2)
             => Meos.GeomDistance3d(this.Ptr, gs2.Ptr);
 
-        public bool Dwithin(Geo gs2, double tolerance)
-            => Meos.GeomDwithin(this.Ptr, gs2.Ptr, tolerance);
+        public bool Dwithin(Geo gs2, double dist)
+            => Meos.GeomDwithin(this.Ptr, gs2.Ptr, dist);
 
-        public bool Dwithin2d(Geo gs2, double tolerance)
-            => Meos.GeomDwithin2d(this.Ptr, gs2.Ptr, tolerance);
+        public bool Dwithin2d(Geo gs2, double dist)
+            => Meos.GeomDwithin2d(this.Ptr, gs2.Ptr, dist);
 
-        public bool Dwithin3d(Geo gs2, double tolerance)
-            => Meos.GeomDwithin3d(this.Ptr, gs2.Ptr, tolerance);
+        public bool Dwithin3d(Geo gs2, double dist)
+            => Meos.GeomDwithin3d(this.Ptr, gs2.Ptr, dist);
 
         public Geo? Intersection2d(Geo gs2)
             => MEOSFactory.WrapGeo(Meos.GeomIntersection2d(this.Ptr, gs2.Ptr));
