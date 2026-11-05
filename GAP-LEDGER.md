@@ -4353,44 +4353,16 @@ A pointer answer whose pointed-to type no emitted function accepts. The caller r
 
 | function | api | pointed-to type |
 | --- | --- | --- |
-| date_extract | public | struct NumericData |
+| date_extract | public | NumericData |
 | geopose_frame | public | GeoPoseFrame |
 | geopose_frames | public | GeoPoseFrame |
-| interval_extract | public | struct NumericData |
-| jsonb_to_numeric | public | struct NumericData |
-| meos_proj_get_context | internal | struct pj_ctx |
-| time_extract | public | struct NumericData |
-| timestamp_extract | public | struct NumericData |
-| timestamptz_extract | public | struct NumericData |
-| timetz_extract | public | struct NumericData |
-
-### unmapped C type — 10
-
-A type crossing the boundary by value that the C# mapping does not name. It reaches the surface as an opaque pointer, which reads an address where the ABI passes a value.
-
-| function | site | type |
-| --- | --- | --- |
-| meos_initialize_allocator | parameter free_fn | meos_free_fn |
-| meos_initialize_allocator | parameter malloc_fn | meos_malloc_fn |
-| meos_initialize_allocator | parameter realloc_fn | meos_realloc_fn |
-| meos_initialize_error_handler | parameter err_handler | error_handler_fn |
-| meos_initialize_interrupt_handler | parameter handler | interrupt_handler_fn |
-| skiplist_splice | parameter func | datum_func2 |
-| temporal_skiplist_splice | parameter func | datum_func2 |
-| text_cmp | parameter collid | Oid |
-| text_hash | parameter collid | Oid |
-| text_hash_extended | parameter collid | Oid |
-
-### struct field width — 4
-
-A struct the emitted surface names, holding a field whose type the catalog gives no scalar width and no layout of its own, so the struct cannot be laid out and stays an opaque pointer. A struct no emitted function names is left out: this binding lays out no such struct, so its width is a contract nothing here needs.
-
-| struct | field | type |
-| --- | --- | --- |
-| GBOX | flags | lwflags_t |
-| LWGEOM | flags | lwflags_t |
-| SkipList | comp_fn | int (*)(void *, void *) |
-| SkipList | merge_fn | void *(*)(void *, void *) |
+| interval_extract | public | NumericData |
+| jsonb_to_numeric | public | NumericData |
+| meos_proj_get_context | internal | pj_ctx |
+| time_extract | public | NumericData |
+| timestamp_extract | public | NumericData |
+| timestamptz_extract | public | NumericData |
+| timetz_extract | public | NumericData |
 
 ### array element type — 1
 
@@ -4414,7 +4386,7 @@ An `outputArrays` parameter with no length source, so the count of what the call
 | --- | --- | --- |
 | tpoint_as_mvtgeom | outputArrays names no lengthFrom and there is no arrayReturn to take one from | the raw pointers, for the caller to size and read |
 
-### value text I/O — 4
+### value text I/O — 5
 
 A struct the binding carries as a value and the catalog names no complete text reader and writer for, so the value states itself in no form a caller can read or write.
 
@@ -4424,6 +4396,7 @@ A struct the binding carries as a value and the catalog names no complete text r
 | Match | serialization names in=None out=None |
 | RasterStatsState | serialization names in=None out=None |
 | ValueCount | serialization names in=None out=None |
+| pg_prng_state | serialization names in=None out=None |
 
 <!-- gap-ledger:end flat surface -->
 
@@ -4443,20 +4416,19 @@ The flat surface emits no wrapper for the function, so the layer has no signatur
 
 None in this run.
 
-### return needs a class — 6
+### return needs a class — 5
 
 The function answers a type no class stands for and no scalar, value struct or array rule reads, so there is nothing to hand back.
 
 | class | member | what is missing |
 | --- | --- | --- |
-| Jsonb | toNumeric | return Numeric needs wrapping |
+| Jsonb | toNumeric | return NumericData * needs wrapping |
 | JsonbSet | existsArray | return bool * needs wrapping |
 | Raster | dumpAsPolygons | return GeomVal * needs wrapping |
 | Raster | pixelAsPoints | return Pixel * needs wrapping |
-| STBox | toGbox | return GBOX * needs wrapping |
 | Temporal | toTaggstate | return SkipList * needs wrapping |
 
-### argument needs a class — 17
+### argument needs a class — 15
 
 The function takes a type no class stands for and no marshalling rule reads, so there is nothing for a caller to pass.
 
@@ -4477,7 +4449,5 @@ The function takes a type no class stands for and no marshalling rule reads, so 
 | TQuadbin | valueN | argument result of type uint64_t * needs marshalling |
 | TS2Cell | valueAtTimestamptz | argument result of type uint64_t * needs marshalling |
 | TS2Cell | valueN | argument result of type uint64_t * needs marshalling |
-| Text | hash | argument collid of type Oid needs marshalling |
-| Text | hashExtended | argument collid of type Oid needs marshalling |
 
 <!-- gap-ledger:end object layer -->

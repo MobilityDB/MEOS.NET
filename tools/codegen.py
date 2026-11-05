@@ -42,50 +42,109 @@ NAMESPACE = "MEOS.NET.Functions"
 CLASS = "Meos"
 STRUCT_NAMESPACE = "MEOS.NET.Structures"
 
-# Canonical C type -> C# parameter/return type.
-# `canonical` field from meos-idl.json is libclang-normalized (e.g. int32_t -> int).
-SCALAR_MAP: dict[str, str] = {
-    "void": "void",
-    "bool": "bool",
-    "char": "byte",
-    "int": "int",
-    "unsigned int": "uint",
-    "short": "short",
-    "long": "long",
-    "long long": "long",
-    "unsigned long": "ulong",
-    "unsigned long long": "ulong",
-    "float": "float",
-    "double": "double",
-    # MEOS / Postgres / vendored typedefs that libclang doesn't always reduce.
-    "DateADT": "int",
-    "TimeADT": "long",
-    "TimeOffset": "long",
-    "TimestampTz": "long",
-    "Timestamp": "long",
-    "Datum": "long",
-    "int8": "sbyte",
-    "uint8": "byte",
-    "uint8_t": "byte",
-    "int16": "short",
-    "uint16": "ushort",
-    "int32": "int",
-    "uint32": "uint",
-    "int64": "long",
-    "uint64": "ulong",
-    "int8_t": "sbyte",
-    "int16_t": "short",
-    "int32_t": "int",
-    "int64_t": "long",
-    "uint16_t": "ushort",
-    "uint32_t": "uint",
-    "uint64_t": "ulong",
-    "signed char": "sbyte",
-    "unsigned char": "byte",
-    "unsigned short": "ushort",
-    "size_t": "ulong",
-    "ssize_t": "long",
+# The C standard types a slot's `canonical` states a width in: the C# type each
+# crosses the boundary as, and its size in bytes, which is also its alignment, on
+# the 64-bit targets the binding ships for.  Every other name `canonical` uses is
+# the catalog's own — an enum, a struct, a callback, or an entry of `typedefs`
+# that resolves to one of these — so no MEOS or PostgreSQL spelling has a row.
+# A pointer-sized unsigned integer reads `ulong`, as `size_t` does.
+C_TYPES: dict[str, tuple[str, int]] = {
+    "void": ("void", 0),
+    "bool": ("bool", 1),
+    "char": ("byte", 1),
+    "signed char": ("sbyte", 1),
+    "unsigned char": ("byte", 1),
+    "short": ("short", 2),
+    "unsigned short": ("ushort", 2),
+    "int": ("int", 4),
+    "unsigned int": ("uint", 4),
+    "long": ("long", 8),
+    "unsigned long": ("ulong", 8),
+    "long long": ("long", 8),
+    "unsigned long long": ("ulong", 8),
+    "float": ("float", 4),
+    "double": ("double", 8),
+    "int8_t": ("sbyte", 1),
+    "uint8_t": ("byte", 1),
+    "int16_t": ("short", 2),
+    "uint16_t": ("ushort", 2),
+    "int32_t": ("int", 4),
+    "uint32_t": ("uint", 4),
+    "int64_t": ("long", 8),
+    "uint64_t": ("ulong", 8),
+    "size_t": ("ulong", 8),
+    "ssize_t": ("long", 8),
+    "intptr_t": ("long", 8),
+    "uintptr_t": ("ulong", 8),
 }
+
+# The C# types a scalar crosses the boundary as.
+SCALAR_CS: set[str] = {cs for cs, _size in C_TYPES.values()}
+
+# The names PostgreSQL and MEOS declare and `canonical` keeps — `TimestampTz`,
+# `Datum`, `Oid`, `text` — each with the type it is defined as, filled in by
+# ``configure`` from the catalog's `typedefs`.
+TYPEDEFS: dict[str, str] = {}
+
+# The catalog's callback types by name, filled in by ``configure``: a function
+# pointer at the ABI.
+CALLBACKS: set[str] = set()
+
+
+class UnmappedType(SystemExit):
+    """A type the catalog names that this generator cannot map.
+
+    The run stops on it: a binding emitted with a guessed width reads the
+    wrong bytes at run time, and nothing downstream can tell."""
+
+    def __init__(self, c_type: str, where: str):
+        super().__init__(f"codegen: {where}: C type {c_type!r} maps to no C# "
+                         f"type — it is no C standard type and the catalog "
+                         f"states it as no enum, struct, callback or typedef")
+
+
+def _bare(c_type: str) -> str:
+    """The type without `const` and without a `struct` tag, single-spaced."""
+    t = " ".join(c_type.replace("const ", "").split())
+    return t[len("struct "):] if t.startswith("struct ") else t
+
+
+def is_pointer(c_type: str) -> bool:
+    """Whether the type crosses the boundary as an address: a pointer of any
+    depth, an array, or a function pointer."""
+    return "*" in c_type or "[" in c_type
+
+
+def resolve(c_type: str, where: str) -> str:
+    """The name a by-value type is at the ABI: a C standard type, an enum, a
+    struct or a callback, reached through the catalog's `typedefs`."""
+    t = _bare(c_type)
+    seen: set[str] = set()
+    while t in TYPEDEFS and t not in C_TYPES and t not in seen:
+        seen.add(t)
+        t = _bare(TYPEDEFS[t])
+    if t in C_TYPES or t in ENUM_TYPES or t in STRUCT_NAMES or t in CALLBACKS:
+        return t
+    raise UnmappedType(c_type, where)
+
+
+def scalar_bytes(c_type: str, where: str) -> int | None:
+    """The width of a by-value scalar, or None when the type is no scalar."""
+    if is_pointer(c_type):
+        return None
+    t = resolve(c_type, where)
+    if t in C_TYPES and t != "void":
+        return C_TYPES[t][1]
+    return None
+
+
+def scalar_cs(c_type: str, where: str) -> str | None:
+    """The C# type of a by-value scalar, or None when the type is no scalar."""
+    if is_pointer(c_type):
+        return None
+    t = resolve(c_type, where)
+    return C_TYPES[t][0] if t in C_TYPES and t != "void" else None
+
 
 # The names of the catalog's own enums, filled in by ``configure``.  A C enum is
 # an int at the ABI, and taking the set from the catalog is what keeps a newly
@@ -103,13 +162,27 @@ TYPE_ENCODINGS: dict[str, dict] = {}
 # records is what gives.
 STRUCTS: dict[str, dict] = {}
 
+# Every struct the catalog names, a layout stated or not.
+STRUCT_NAMES: set[str] = set()
+
 
 def configure(idl: dict) -> None:
     """Take from the catalog the type facts the mapping below reads."""
+    if "typedefs" not in idl:
+        raise SystemExit(
+            "codegen: the catalog carries no `typedefs`, so the names `canonical` "
+            "keeps (TimestampTz, Datum, Oid, text, ...) resolve to no width; "
+            "regenerate it with a MEOS-API that states them")
+    TYPEDEFS.clear()
+    TYPEDEFS.update({t["name"]: t["canonical"] for t in idl["typedefs"]})
+    CALLBACKS.clear()
+    CALLBACKS.update(c["name"] for c in idl.get("callbacks", []) if c.get("name"))
     ENUM_TYPES.clear()
     ENUM_TYPES.update(e["name"] for e in idl.get("enums", []) if e.get("name"))
     STRUCTS.clear()
     STRUCTS.update({s["name"]: s for s in idl.get("structs", []) if s.get("fields")})
+    STRUCT_NAMES.clear()
+    STRUCT_NAMES.update(s["name"] for s in idl.get("structs", []) if s.get("name"))
     TYPE_ENCODINGS.clear()
     TYPE_ENCODINGS.update(idl.get("typeEncodings", {}))
     BY_VALUE_STRUCTS.clear()
@@ -120,7 +193,7 @@ def configure(idl: dict) -> None:
         if f.get("vendored"):
             continue
         for spot in [f["returnType"]] + list(f.get("params", [])):
-            canonical = spot["canonical"].replace("const ", "").strip()
+            canonical = _bare(spot["canonical"])
             if "*" not in canonical and canonical in STRUCTS:
                 BY_VALUE_STRUCTS.add(canonical)
                 continue
@@ -135,21 +208,9 @@ def configure(idl: dict) -> None:
                 if base in classed:
                     continue
                 fields = STRUCTS[base]["fields"]
-                if all(fl["cType"] in _SCALAR_BYTES for fl in fields):
+                if all(scalar_bytes(fl["canonical"], f"{base}.{fl['name']}")
+                       for fl in fields):
                     BY_VALUE_STRUCTS.add(base)
-
-
-# Size and alignment in bytes of the scalar C types a struct field can have, on
-# the 64-bit targets the binding ships for.
-_SCALAR_BYTES: dict[str, int] = {
-    "bool": 1, "char": 1, "int8": 1, "int8_t": 1, "uint8": 1, "uint8_t": 1,
-    "short": 2, "int16": 2, "int16_t": 2, "uint16": 2, "uint16_t": 2,
-    "int": 4, "int32": 4, "int32_t": 4, "uint32": 4, "uint32_t": 4,
-    "float": 4, "Oid": 4, "DateADT": 4,
-    "long": 8, "int64": 8, "int64_t": 8, "uint64": 8, "uint64_t": 8,
-    "double": 8, "float8": 8, "Datum": 8, "Timestamp": 8, "TimestampTz": 8,
-    "TimeADT": 8, "TimeOffset": 8, "size_t": 8, "uintptr_t": 8,
-}
 
 
 # The catalog structs the binding gives a C# VALUE type, filled in by
@@ -160,16 +221,18 @@ _SCALAR_BYTES: dict[str, int] = {
 BY_VALUE_STRUCTS: set[str] = set()
 
 
-def csharp_field_type(c_type: str) -> str:
+def csharp_field_type(c_type: str, where: str) -> str:
     """The C# type of a by-value struct's field."""
-    t = c_type.replace("const ", "").strip()
-    if t.endswith("*"):
+    if is_pointer(c_type):
         return "IntPtr"
+    t = resolve(c_type, where)
     if t in ENUM_TYPES:
         return "int"
-    if t not in SCALAR_MAP:
-        raise SystemExit(f"codegen: struct field type {t!r} has no C# mapping")
-    return SCALAR_MAP[t]
+    if t in CALLBACKS:
+        return "IntPtr"
+    if t not in C_TYPES:
+        raise UnmappedType(c_type, where)
+    return C_TYPES[t][0]
 
 
 def gen_structs() -> str:
@@ -201,8 +264,12 @@ def gen_structs() -> str:
             "    {",
         ]
         for field in struct["fields"]:
-            lines.append(f"        public {csharp_field_type(field['cType'])} "
-                         f"{csharp_param_name(field['name'])};")
+            cs = csharp_field_type(field["canonical"], f"{name}.{field['name']}")
+            # A field is marshalled at C#'s own default width, which for `bool`
+            # is the 4-byte Windows BOOL; MEOS's `bool` is one byte.
+            if cs == "bool":
+                lines.append("        [MarshalAs(UnmanagedType.U1)]")
+            lines.append(f"        public {cs} {csharp_param_name(field['name'])};")
         lines += _struct_text_io(name, struct)
         lines += ["    }", ""]
     lines += ["}", ""]
@@ -285,18 +352,23 @@ def _struct_text_io(name: str, struct: dict) -> list[str]:
 def _type_layout(c_type: str) -> tuple[int, int]:
     """``(size, alignment)`` in bytes of a struct field's type: a scalar, a
     pointer, a fixed-size array, or a nested catalog struct."""
-    t = c_type.replace("const ", "").strip()
-    if t.endswith("*"):
-        return (8, 8)
+    t = _bare(c_type)
     if "[" in t:
         base, count = t[:t.index("[")].strip(), int(t[t.index("[") + 1:t.index("]")])
         size, align = _type_layout(base)
         return (size * count, align)
+    if "*" in t:
+        return (8, 8)
+    t = resolve(t, f"field type {c_type}")
     if t in STRUCTS:
         return struct_layout(t)
-    if t not in _SCALAR_BYTES:
-        raise KeyError(f"struct field type {t!r} has no known layout")
-    return (_SCALAR_BYTES[t], _SCALAR_BYTES[t])
+    if t in ENUM_TYPES:
+        return (4, 4)
+    if t in CALLBACKS:
+        return (8, 8)
+    if t not in C_TYPES or t == "void":
+        raise UnmappedType(c_type, "struct layout")
+    return (C_TYPES[t][1], C_TYPES[t][1])
 
 
 def struct_layout(name: str) -> tuple[int, int]:
@@ -304,19 +376,18 @@ def struct_layout(name: str) -> tuple[int, int]:
     catalog records, and the whole is padded to a multiple of its widest field."""
     size = align = 1
     for field in STRUCTS[name]["fields"]:
-        fsize, falign = _type_layout(field["cType"])
+        fsize, falign = _type_layout(field["canonical"])
         align = max(align, falign)
         size = max(size, field["offset_bits"] // 8 + fsize)
     return ((size + align - 1) // align * align, align)
 
 
 # C pointer-to-char marshalled as managed string when StringMarshalling.Utf8 is on.
-def is_string_pointer(c_type: str) -> bool:
-    t = c_type.replace("const ", "").strip()
-    return t in ("char *", "char**", "char *const *", "const char *")
+def is_string_pointer(canonical: str) -> bool:
+    return _bare(canonical) == "char *"
 
 
-def is_borrowed_string(c_type: str) -> bool:
+def is_borrowed_string(canonical: str) -> bool:
     """A ``const char *`` return the caller does not own.
 
     The Utf8 string marshaller frees what it is handed back, which is right for
@@ -324,7 +395,7 @@ def is_borrowed_string(c_type: str) -> bool:
     it returns out of a static table — ``interptype_name`` hands back an element
     of ``MEOS_INTERPTYPE_NAMES``.  A borrowed return comes back as the pointer
     itself and is read without a free."""
-    return " ".join(c_type.split()).startswith("const char *")
+    return " ".join(canonical.split()).startswith("const char *")
 
 
 def string_size_out(f: dict) -> str | None:
@@ -341,35 +412,42 @@ def string_size_out(f: dict) -> str | None:
                  if p["name"] in out_params and p["cType"].replace(" ", "") == "size_t*"), None)
 
 
-def csharp_type_for(canonical: str) -> str:
-    """Translate a libclang-canonical C type to a C# type for LibraryImport signatures."""
-    t = canonical.strip()
-    # Strip leading const
-    if t.startswith("const "):
-        t = t[len("const "):].strip()
-    # Pointer of any depth -> IntPtr (we don't propagate pointer types into C# semantics).
-    if "*" in t or t.endswith("[]"):
+def csharp_type_for(canonical: str, where: str) -> str:
+    """The C# type a slot crosses the LibraryImport boundary as, read from its
+    `canonical`; ``where`` names the slot in the message of a type that maps to
+    nothing, which stops the run."""
+    # An address of any depth, a function pointer among them, is an IntPtr: the
+    # binding does not carry pointee types into C#.
+    if is_pointer(canonical):
         return "IntPtr"
+    t = resolve(canonical, where)
+    if t in C_TYPES:
+        return C_TYPES[t][0]
     if t in ENUM_TYPES:
         return "int"
+    if t in CALLBACKS:
+        return "IntPtr"
     if t in BY_VALUE_STRUCTS:
         return t
-    return SCALAR_MAP.get(t, "IntPtr")  # unknown scalar -> opaque pointer is safer than guessing
+    raise UnmappedType(canonical, f"{where} (a struct passed by value with no "
+                                  f"layout the catalog states)")
 
 
-def csharp_param_type(c_type: str, canonical: str) -> str:
-    """For a single parameter, decide the C# type, treating `char *` specially as string."""
-    if is_string_pointer(c_type):
+def csharp_param_type(p: dict, fname: str) -> str:
+    """The C# type of one parameter, a `char *` read as a managed string."""
+    if is_string_pointer(p["canonical"]):
         return "string"
-    return csharp_type_for(canonical)
+    return csharp_type_for(p["canonical"], f"{fname} parameter {p['name']}")
 
 
-def csharp_return_type(c_type: str, canonical: str) -> str:
-    if is_borrowed_string(c_type):
+def csharp_return_type(f: dict) -> str:
+    """The C# type of a function's return, a `char *` read as a managed string."""
+    canonical = f["returnType"]["canonical"]
+    if is_borrowed_string(canonical):
         return "IntPtr"
-    if is_string_pointer(c_type):
+    if is_string_pointer(canonical):
         return "string"
-    return csharp_type_for(canonical)
+    return csharp_type_for(canonical, f"{f['name']} return")
 
 
 def public_name(c_name: str) -> str:
@@ -422,7 +500,7 @@ def gen_external_functions(funcs: list[dict]) -> str:
 
     for f in funcs:
         name = f["name"]
-        rt = csharp_return_type(f["returnType"]["c"], f["returnType"]["canonical"])
+        rt = csharp_return_type(f)
         size_out = string_size_out(f)
         if size_out:
             rt = "IntPtr"
@@ -432,7 +510,7 @@ def gen_external_functions(funcs: list[dict]) -> str:
             if p["name"] == size_out:
                 params.append(f"out nuint {pname}")
                 continue
-            ptype = csharp_param_type(p["cType"], p["canonical"])
+            ptype = csharp_param_type(p, f["name"])
             # The LibraryImport source generator marshals C# bool as the
             # 4-byte Windows BOOL by default; MEOS uses C ``_Bool`` (1
             # byte).  Tag both param and return for U1 marshalling so the
@@ -489,12 +567,18 @@ _SCALAR_ELEM_READER: dict[str, tuple[int, str]] = {
 
 
 def _strip_const_stars(c_type: str) -> tuple[str, int]:
-    s = c_type.replace("const ", "").strip()
+    s = _bare(c_type)
     stars = s.count("*")
     return s.replace("*", "").strip(), stars
 
 
-def _csharp_array_element(c_type: str, canonical: str) -> tuple[str, str]:
+def _names_a_value(name: str) -> bool:
+    """Whether the catalog states this name as a type it can map by value."""
+    return (name in C_TYPES or name in TYPEDEFS or name in ENUM_TYPES
+            or name in STRUCT_NAMES or name in CALLBACKS)
+
+
+def _csharp_array_element(canonical: str, where: str) -> tuple[str, str]:
     """Return ``(elem_csharp_type, marshal_strategy)`` for one C-array element.
 
     ``marshal_strategy`` is ``"Marshal.Copy"`` for primitives we can copy
@@ -510,14 +594,21 @@ def _csharp_array_element(c_type: str, canonical: str) -> tuple[str, str]:
     two cases without extra context is awkward; we prefer the primitive
     interpretation when the base type is a known scalar, falling back to
     IntPtrArray only when the base is itself a wrapped opaque type."""
-    base, stars = _strip_const_stars(c_type)
-    elem = SCALAR_MAP.get(base) or SCALAR_MAP.get(canonical.replace("*", "").strip())
+    base, stars = _strip_const_stars(canonical)
+    if not _names_a_value(base):
+        # A pointer to a type the catalog leaves opaque — `struct json_object
+        # **` — is an array of addresses; one array of such VALUES has no stride.
+        if stars >= 2:
+            return ("IntPtr", "IntPtrArray")
+        raise UnmappedType(canonical, f"{where} (array element)")
+    elem = scalar_cs(base, f"{where} (array element)")
     if elem in _MARSHAL_ELEM:
         return (elem, "Marshal.Copy")
     if base == "uint8_t":
         return ("byte", "ByteBuffer")
     if elem in _SCALAR_ELEM_READER:
         return (elem, f"ScalarArray:{elem}")
+    base = resolve(base, f"{where} (array element)")
     if stars == 1 and base in STRUCTS:
         # A single pointer to a catalog struct is an array of struct VALUES, not
         # of pointers: element i sits at the struct's own stride, and reading it
@@ -563,7 +654,7 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
 
     for p in f.get("params", []):
         pname = csharp_param_name(p["name"]) if p["name"] else "arg"
-        ptype = csharp_param_type(p["cType"], p["canonical"])
+        ptype = csharp_param_type(p, f["name"])
         if p["name"] == count_param:
             local = f"_count_{pname}"
             setup.append(f"            IntPtr {local} = Marshal.AllocHGlobal(sizeof(int));")
@@ -576,7 +667,7 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
             teardown.append(f"            Marshal.FreeHGlobal({local});")
             ext_call_args.append(local)
             oa = next(oa for oa in output_params if oa["param"] == p["name"])
-            elem, strategy = _csharp_array_element(p["cType"], p["canonical"])
+            elem, strategy = _csharp_array_element(p["canonical"], f"{name} parameter {p['name']}")
             output_locals.append((local, oa, elem, strategy))
             continue
         sig_params.append(f"{ptype} {pname}")
@@ -586,7 +677,7 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
     # Compose the return tuple type.
     ret_pieces: list[str] = []
     if array_ret:
-        ret_elem, _ = _csharp_array_element(f["returnType"]["c"], f["returnType"]["canonical"])
+        ret_elem, _ = _csharp_array_element(f["returnType"]["canonical"], f"{name} return")
         ret_pieces.append(f"{ret_elem}[]")
     for _, _oa, elem, _strategy in output_locals:
         ret_pieces.append(f"{elem}[]")
@@ -614,14 +705,14 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
         lines.append(f"                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.{public_name(name)}({ext_args}));")
     else:
         # Void or bool return with only outputs.
-        rt = csharp_return_type(f["returnType"]["c"], f["returnType"]["canonical"])
+        rt = csharp_return_type(f)
         if rt == "void":
             lines.append(f"                SafeExecution(() => Native.{public_name(name)}({ext_args}));")
         else:
             lines.append(f"                SafeExecution<{rt}>(() => Native.{public_name(name)}({ext_args}));")
     lines.append(f"                int _n = Marshal.ReadInt32(_count_{count_param});")
     if array_ret:
-        ret_elem, ret_strategy = _csharp_array_element(f["returnType"]["c"], f["returnType"]["canonical"])
+        ret_elem, ret_strategy = _csharp_array_element(f["returnType"]["canonical"], f"{name} return")
         lines.append(f"                {ret_elem}[] _resultArr = new {ret_elem}[_n];")
         if ret_strategy == "Marshal.Copy":
             lines.append("                Marshal.Copy(_resultPtr, _resultArr, 0, _n);")
@@ -686,7 +777,7 @@ def _emit_array_return_wrapper(f: dict, ext_params: str, ext_args: str) -> list[
     name = f["name"]
     shape = f["shape"]
     length_meta = shape["arrayReturn"]["lengthFrom"]
-    elem, strategy = _csharp_array_element(f["returnType"]["c"], f["returnType"]["canonical"])
+    elem, strategy = _csharp_array_element(f["returnType"]["canonical"], f"{name} return")
     ret_type = f"{elem}[]"
 
     def _copy(indent: str) -> list[str]:
@@ -724,7 +815,7 @@ def _emit_array_return_wrapper(f: dict, ext_params: str, ext_args: str) -> list[
 
     count_name = csharp_param_name(length_meta["name"])
     count_param = next(p for p in f["params"] if csharp_param_name(p["name"]) == count_name)
-    if "*" not in count_param["cType"]:
+    if not is_pointer(count_param["canonical"]):
         # kind == "param" with a by-value ``int count``: the returned array has
         # the length the caller passes (``STBox *stboxarr_round(const STBox
         # *boxarr, int count, int maxdd)``), so the parameter stays in the public
@@ -744,7 +835,7 @@ def _emit_array_return_wrapper(f: dict, ext_params: str, ext_args: str) -> list[
     # ``int *count`` output.  Allocate it, hide it from the public signature,
     # and read the count back after the call.
     pub = ", ".join(
-        f"{csharp_param_type(p['cType'], p['canonical'])} {csharp_param_name(p['name'])}"
+        f"{csharp_param_type(p, f['name'])} {csharp_param_name(p['name'])}"
         for p in f["params"] if csharp_param_name(p["name"]) != count_name)
     call_args = ", ".join(
         "_cnt" if csharp_param_name(p["name"]) == count_name else csharp_param_name(p["name"])
@@ -804,8 +895,8 @@ def _emit_sized_string(f: dict, size_out: str) -> list[str]:
 
 def _emit_simple_passthrough(f: dict, ext_params: str, ext_args: str, default_rt: str | None = None) -> list[str]:
     name = f["name"]
-    rt = default_rt or csharp_return_type(f["returnType"]["c"], f["returnType"]["canonical"])
-    if default_rt is None and is_borrowed_string(f["returnType"]["c"]):
+    rt = default_rt or csharp_return_type(f)
+    if default_rt is None and is_borrowed_string(f["returnType"]["canonical"]):
         SIGNATURES[name] = ("string?", _typed_params(f))
         return [
             f"        public static string? {public_name(name)}({ext_params})",
@@ -914,7 +1005,7 @@ def by_header(funcs: list[dict]) -> dict[str, list[dict]]:
 
 def _typed_params(f: dict) -> list[tuple[str, str]]:
     """The wrapper's parameter list as ``(csharp_type, name)`` pairs, in order."""
-    return [(csharp_param_type(p["cType"], p["canonical"]),
+    return [(csharp_param_type(p, f["name"]),
              csharp_param_name(p["name"]) if p["name"] else "arg")
             for p in f.get("params", [])]
 
@@ -924,7 +1015,7 @@ def _format_params(f: dict) -> tuple[str, str]:
     arg_names: list[str] = []
     for p in f.get("params", []):
         pname = csharp_param_name(p["name"]) if p["name"] else "arg"
-        ptype = csharp_param_type(p["cType"], p["canonical"])
+        ptype = csharp_param_type(p, f["name"])
         params.append(f"{ptype} {pname}")
         arg_names.append(pname)
     return ", ".join(params), ", ".join(arg_names)
@@ -949,20 +1040,6 @@ def _declare_kinds(ledger: gapledger.Ledger) -> None:
         "caller receives an address and the catalog names nothing this binding "
         "reaches that renders it, operates on it or takes it back.",
         ("function", "api", "pointed-to type"))
-    ledger.kind(
-        "unmapped C type",
-        "A type crossing the boundary by value that the C# mapping does not "
-        "name. It reaches the surface as an opaque pointer, which reads an "
-        "address where the ABI passes a value.",
-        ("function", "site", "type"))
-    ledger.kind(
-        "struct field width",
-        "A struct the emitted surface names, holding a field whose type the "
-        "catalog gives no scalar width and no layout of its own, so the struct "
-        "cannot be laid out and stays an opaque pointer. A struct no emitted "
-        "function names is left out: this binding lays out no such struct, so "
-        "its width is a contract nothing here needs.",
-        ("struct", "field", "type"))
     ledger.kind(
         "array element type",
         "A function the catalog states answers an array without stating what "
@@ -1002,9 +1079,7 @@ def survey(funcs: list[dict], idl: dict) -> None:
     named: set[str] = set()
     for f in funcs:
         for spot in [f["returnType"]] + list(f.get("params", [])):
-            base = _strip_const_stars(spot["canonical"])[0]
-            named.add(base)
-            named.add(_strip_const_stars(spot.get("c") or spot["cType"])[0])
+            named.add(_strip_const_stars(spot["canonical"])[0])
         for p in f.get("params", []):
             accepted.add(_strip_const_stars(p["canonical"])[0])
 
@@ -1015,30 +1090,23 @@ def survey(funcs: list[dict], idl: dict) -> None:
         if unstated:
             _gap("parameter nullability", f["name"], ", ".join(unstated))
 
-        for spot, site in ([(f["returnType"], "return")]
-                           + [(p, f"parameter {p['name']}") for p in f.get("params", [])]):
-            canonical = spot["canonical"].replace("const ", "").strip()
-            if ("*" in canonical or canonical.endswith("[]")
-                    or canonical in ENUM_TYPES or canonical in BY_VALUE_STRUCTS
-                    or canonical in SCALAR_MAP):
-                continue
-            _gap("unmapped C type", f["name"], site, canonical)
-
         base, stars = _strip_const_stars(f["returnType"]["canonical"])
-        if (stars and base not in ("char", "void", "uint8_t") and base not in SCALAR_MAP
+        scalar = (_names_a_value(base)
+                  and scalar_cs(base, f"{f['name']} return") is not None)
+        if (stars and base not in ("char", "void", "uint8_t") and not scalar
                 and base not in ENUM_TYPES and base not in BY_VALUE_STRUCTS
                 and base not in classed and base not in accepted):
             _gap("unreadable return", f["name"], f.get("api", "?"), base)
 
+    # A struct the surface names states every by-value field in a type the
+    # catalog maps; one it does not stops the run.
     for struct in idl.get("structs", []):
         if struct["name"] not in named:
             continue
         for field in struct.get("fields") or []:
-            t = field["cType"].replace("const ", "").strip().split("[")[0].strip()
-            if (t.endswith("*") or t in _SCALAR_BYTES or t in STRUCTS
-                    or t in ENUM_TYPES):
-                continue
-            _gap("struct field width", struct["name"], field["name"], t)
+            t = _bare(field["canonical"]).split("[")[0].strip()
+            if not is_pointer(t):
+                resolve(t, f"struct {struct['name']} field {field['name']}")
 
 
 def main(idl_path: str, dll_path: str = DLL_PATH) -> None:
@@ -1057,10 +1125,7 @@ def main(idl_path: str, dll_path: str = DLL_PATH) -> None:
     funcs = [f for f in idl["functions"] if not f.get("vendored")]
     repo_root = Path(__file__).resolve().parent.parent
     out_dir = repo_root / "MEOS.NET" / "Functions"
-    if out_dir.exists():
-        for stale in out_dir.glob("*.g.cs"):
-            stale.unlink()
-    out_dir.mkdir(parents=True, exist_ok=True)
+    struct_dir = repo_root / "MEOS.NET" / "Structures"
 
     collisions = {}
     for f in funcs:
@@ -1069,20 +1134,24 @@ def main(idl_path: str, dll_path: str = DLL_PATH) -> None:
     if clashing:
         raise SystemExit(f"codegen: C names sharing one C# name: {clashing}")
 
-    (out_dir / "Meos.Native.g.cs").write_text(gen_external_functions(funcs))
+    # Every file is rendered before any is written, so a type that maps to
+    # nothing stops the run with the committed files in place.
+    rendered = {out_dir / "Meos.Native.g.cs": gen_external_functions(funcs)}
     grouped = by_header(funcs)
     for header, group in sorted(grouped.items()):
         stem = header.removesuffix(".h")
-        (out_dir / f"Meos.{stem}.g.cs").write_text(gen_exposed_functions(group, header))
-
+        rendered[out_dir / f"Meos.{stem}.g.cs"] = gen_exposed_functions(group, header)
     # The structs come last: a value struct reads and writes itself through the
     # wrappers above, so the signature registry has to hold them first.
-    struct_dir = repo_root / "MEOS.NET" / "Structures"
-    if struct_dir.exists():
-        for stale in struct_dir.glob("*.g.cs"):
-            stale.unlink()
-    struct_dir.mkdir(parents=True, exist_ok=True)
-    (struct_dir / "MeosStructs.g.cs").write_text(gen_structs())
+    rendered[struct_dir / "MeosStructs.g.cs"] = gen_structs()
+
+    for directory in (out_dir, struct_dir):
+        if directory.exists():
+            for stale in directory.glob("*.g.cs"):
+                stale.unlink()
+        directory.mkdir(parents=True, exist_ok=True)
+    for path, text in rendered.items():
+        path.write_text(text)
 
     # The ledger comes last: it takes the emission's own fall-throughs, which
     # are only known once every wrapper and every struct has been written.

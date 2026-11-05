@@ -327,6 +327,9 @@ namespace MEOS.NET.Types
         public BOX3D? ToBox3d()
             => MEOSConvert.ToStruct<BOX3D>(Meos.StboxToBox3d(this.Ptr));
 
+        public GBOX? ToGbox()
+            => MEOSConvert.ToStruct<GBOX>(Meos.StboxToGbox(this.Ptr));
+
         public Geo? ToGeo()
             => MEOSFactory.WrapGeo(Meos.StboxToGeo(this.Ptr));
 
