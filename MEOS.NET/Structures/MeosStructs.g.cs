@@ -56,6 +56,44 @@ namespace MEOS.NET.Structures
         public double max;
     }
 
+    /// <summary>The MEOS <c>GBOX</c> struct, as MEOS returns it.</summary>
+    [GeneratedCode("MEOS.NET.Codegen", "0.1.0")]
+    [StructLayout(LayoutKind.Sequential)]
+    public struct GBOX
+    {
+        public ushort flags;
+        public double xmin;
+        public double xmax;
+        public double ymin;
+        public double ymax;
+        public double zmin;
+        public double zmax;
+        public double mmin;
+        public double mmax;
+
+        /// <summary>The <c>GBOX</c> MEOS reads from this text.</summary>
+        public static GBOX? In(string str)
+        {
+            IntPtr ptr = Meos.GboxIn(str);
+            return ptr == IntPtr.Zero ? null : Marshal.PtrToStructure<GBOX>(ptr);
+        }
+
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+        {
+            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf<GBOX>());
+            try
+            {
+                Marshal.StructureToPtr(this, ptr, false);
+                return Meos.GboxOut(ptr, 15);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(ptr);
+            }
+        }
+    }
+
     /// <summary>The MEOS <c>Interval</c> struct, as MEOS returns it.</summary>
     [GeneratedCode("MEOS.NET.Codegen", "0.1.0")]
     [StructLayout(LayoutKind.Sequential)]
@@ -103,6 +141,7 @@ namespace MEOS.NET.Structures
     public struct RasterStatsState
     {
         public int band;
+        [MarshalAs(UnmanagedType.U1)]
         public bool exclude_nodata;
         public ulong count;
         public double sum;
@@ -151,6 +190,15 @@ namespace MEOS.NET.Structures
         public double value;
         public uint count;
         public double percent;
+    }
+
+    /// <summary>The MEOS <c>pg_prng_state</c> struct, as MEOS returns it.</summary>
+    [GeneratedCode("MEOS.NET.Codegen", "0.1.0")]
+    [StructLayout(LayoutKind.Sequential)]
+    public struct pg_prng_state
+    {
+        public ulong s0;
+        public ulong s1;
     }
 
 }

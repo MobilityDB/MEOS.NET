@@ -81,11 +81,11 @@ TEMPORAL_STRUCTS = ("Temporal", "TInstant", "TSequence", "TSequenceSet")
 # The template axis: a concrete class is the product `<leaf><suffix>`.
 SUBTYPE_SUFFIX = {"TInstant": "Inst", "TSequence": "Seq", "TSequenceSet": "SeqSet"}
 
-# What a value out-parameter of each pointee type reads back as: the C# type, the
-# bytes to allocate for it, and how to read the value MEOS wrote there.
+# What a value out-parameter reads back as, keyed by the parameter's
+# `canonical`: the C# type, the bytes to allocate for it, and how to read the
+# value MEOS wrote there.
 OUT_PARAM_READERS = {
     "double *": ("double", 8, "Marshal.PtrToStructure<double>({0})"),
-    "float8 *": ("double", 8, "Marshal.PtrToStructure<double>({0})"),
     "bool *": ("bool", 1, "Marshal.ReadByte({0}) != 0"),
     "int *": ("int", 4, "Marshal.ReadInt32({0})"),
     "int32_t *": ("int", 4, "Marshal.ReadInt32({0})"),
@@ -105,7 +105,7 @@ def is_scalar(cs_type: str) -> bool:
     return cs_type in _SCALAR_CS or cs_type in codegen.BY_VALUE_STRUCTS
 
 
-_SCALAR_CS = set(codegen.SCALAR_MAP.values()) | {"void", "bool", "string", "string?"}
+_SCALAR_CS = codegen.SCALAR_CS | {"void", "bool", "string", "string?"}
 
 # Acronym runs the error names carry, kept upper-case so the C# spelling reads
 # the way the catalog's own camelCase names do (`asMFJSON`).
@@ -126,8 +126,9 @@ RESERVED = {
 
 
 def clean(c_type: str) -> str:
-    """The C type without ``const`` and with single spaces."""
-    return " ".join(c_type.replace("const ", "").split())
+    """The C type without ``const`` or a ``struct`` tag, single-spaced: a slot's
+    `canonical` names `struct Pose *` where the model names the struct `Pose`."""
+    return codegen._bare(c_type)
 
 
 def scratch(name: str) -> str:
@@ -365,7 +366,7 @@ class Generator:
 
         The template spells the wrapper call as ``$``.
         """
-        c = clean(f["returnType"]["c"])
+        c = clean(f["returnType"]["canonical"])
         if wrapper_ret == "void":
             return ("void", "$")
         if c in ("TimestampTz", "Timestamp"):
@@ -426,8 +427,8 @@ class Generator:
         an array of MEOS values wraps element by element, an array of instants
         reads as instants, and an array of plain scalars is handed on."""
         shape = f.get("shape") or {}
-        element = ((shape.get("arrayReturn") or {}).get("element") or {}).get("c")
-        params = {p["name"]: p["cType"] for p in f.get("params", [])}
+        element = ((shape.get("arrayReturn") or {}).get("element") or {}).get("canonical")
+        params = {p["name"]: p["canonical"] for p in f.get("params", [])}
         # `TYPE **bins` is an out-ARRAY of `TYPE`, so two stars come off: one
         # for the handle MEOS writes through, one for the array itself.
         c_types = [element] + [
@@ -523,7 +524,7 @@ class Generator:
             return None
         wrapper_ret, wrapper_params = signature
         c_by_name = {
-            (codegen.csharp_param_name(p["name"]) if p["name"] else "arg"): p["cType"]
+            (codegen.csharp_param_name(p["name"]) if p["name"] else "arg"): p["canonical"]
             for p in f.get("params", [])
         }
 
@@ -533,7 +534,7 @@ class Generator:
         # comes from and its element type — so the layer reads it rather than
         # matching a length by its name, which the surface spells eight ways.
         input_arrays = (f.get("shape") or {}).get("inputArrays") or []
-        counted = {codegen.csharp_param_name(a["param"]): a["element"]["c"]
+        counted = {codegen.csharp_param_name(a["param"]): a["element"]["canonical"]
                    for a in input_arrays}
         recv_ctype = self.m.ctype.get(cls)
 
@@ -552,7 +553,7 @@ class Generator:
         out_params = (f.get("shape") or {}).get("outParams") or []
         length_out = next(
             (codegen.csharp_param_name(p["name"]) for p in f.get("params", [])
-             if p["name"] in out_params and clean(p["cType"]) == "size_t *"), None)
+             if p["name"] in out_params and clean(p["canonical"]) == "size_t *"), None)
         if length_out:
             out_params = [o for o in out_params
                           if codegen.csharp_param_name(o) != length_out]
@@ -577,7 +578,7 @@ class Generator:
         # fills its `Jsonb **values` with one pointer per member of the object.
         # Reading such a parameter as a single value allocates room for one and
         # takes what MEOS wrote first for the whole answer.
-        if any(p["name"] == "count" and clean(p["cType"]) == "int *"
+        if any(p["name"] == "count" and clean(p["canonical"]) == "int *"
                for p in f.get("params", [])):
             out_params = []
 
@@ -589,20 +590,20 @@ class Generator:
         result_outs = []
         for name in out_params:
             pointee = clean(next(
-                (p["cType"] for p in f.get("params", [])
+                (p["canonical"] for p in f.get("params", [])
                  if p["name"] == name), ""))
             reader = OUT_PARAM_READERS.get(pointee) or self.wrapped_out_reader(pointee)
             if reader:
                 result_outs.append((codegen.csharp_param_name(name), reader))
-        answers_existence = clean(f["returnType"]["c"]) == "bool" and result_outs
+        answers_existence = clean(f["returnType"]["canonical"]) == "bool" and result_outs
 
-        if length_out and clean(f["returnType"]["c"]) == "uint8_t *":
+        if length_out and clean(f["returnType"]["canonical"]) == "uint8_t *":
             ret = ("byte[]?", "$")
         else:
             ret = self.map_return(f, wrapper_ret)
         if ret is None:
             self.defer(cls, oo, "return needs a class",
-                       f"return {clean(f['returnType']['c'])} needs wrapping")
+                       f"return {clean(f['returnType']['canonical'])} needs wrapping")
             return None
         ret_type, ret_expr = ret
 
@@ -654,7 +655,8 @@ class Generator:
                     continue
                 # A scalar element is the array itself: the values need no
                 # gathering, so what is pinned is the caller's own array.
-                scalar = codegen.SCALAR_MAP.get(pointee)
+                scalar = codegen.scalar_cs(
+                    pointee, f"{fname} parameter {pname} (array element)")
                 if scalar is not None:
                     sig.append((f"{scalar}[]", pname))
                     scalar_arrays.append(pname)

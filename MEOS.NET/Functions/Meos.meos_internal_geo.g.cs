@@ -12,8 +12,8 @@ namespace MEOS.NET.Functions
         public static IntPtr MeosProjGetContext()
             => SafeExecution<IntPtr>(() => Native.MeosProjGetContext());
 
-        public static long DatumGeoRound(long value, long size)
-            => SafeExecution<long>(() => Native.DatumGeoRound(value, size));
+        public static ulong DatumGeoRound(ulong value, ulong size)
+            => SafeExecution<ulong>(() => Native.DatumGeoRound(value, size));
 
         public static IntPtr PointRound(IntPtr gs, int maxdd)
             => SafeExecution<IntPtr>(() => Native.PointRound(gs, maxdd));
@@ -33,17 +33,17 @@ namespace MEOS.NET.Functions
         public static void GeoarrSetStbox(IntPtr values, int count, IntPtr result)
             => SafeExecution(() => Native.GeoarrSetStbox(values, count, result));
 
-        public static bool SpatialSetStbox(long d, int basetype, IntPtr result)
+        public static bool SpatialSetStbox(ulong d, int basetype, IntPtr result)
             => SafeExecution<bool>(() => Native.SpatialSetStbox(d, basetype, result));
 
         public static void SpatialsetSetStbox(IntPtr set, IntPtr result)
             => SafeExecution(() => Native.SpatialsetSetStbox(set, result));
 
-        public static long DistanceSpatialsetValue(IntPtr s, long value, bool spheroid)
-            => SafeExecution<long>(() => Native.DistanceSpatialsetValue(s, value, spheroid));
+        public static ulong DistanceSpatialsetValue(IntPtr s, ulong value, bool spheroid)
+            => SafeExecution<ulong>(() => Native.DistanceSpatialsetValue(s, value, spheroid));
 
-        public static long DistanceSpatialsetSpatialset(IntPtr s1, IntPtr s2, bool spheroid)
-            => SafeExecution<long>(() => Native.DistanceSpatialsetSpatialset(s1, s2, spheroid));
+        public static ulong DistanceSpatialsetSpatialset(IntPtr s1, IntPtr s2, bool spheroid)
+            => SafeExecution<ulong>(() => Native.DistanceSpatialsetSpatialset(s1, s2, spheroid));
 
         public static void StboxSetBox3d(IntPtr box, IntPtr result)
             => SafeExecution(() => Native.StboxSetBox3d(box, result));
@@ -327,10 +327,10 @@ namespace MEOS.NET.Functions
         public static double StboxNad(IntPtr box1, IntPtr box2, bool spheroid)
             => SafeExecution<double>(() => Native.StboxNad(box1, box2, spheroid));
 
-        public static int SpatialSrid(long d, int basetype)
+        public static int SpatialSrid(ulong d, int basetype)
             => SafeExecution<int>(() => Native.SpatialSrid(d, basetype));
 
-        public static bool SpatialSetSrid(long d, int basetype, int srid)
+        public static bool SpatialSetSrid(ulong d, int basetype, int srid)
             => SafeExecution<bool>(() => Native.SpatialSetSrid(d, basetype, srid));
 
         public static int TspatialinstSrid(IntPtr inst)

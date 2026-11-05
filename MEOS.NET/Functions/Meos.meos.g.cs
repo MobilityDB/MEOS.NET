@@ -191,7 +191,7 @@ namespace MEOS.NET.Functions
             }
         }
 
-        public static int TextCmp(IntPtr txt1, IntPtr txt2, IntPtr collid)
+        public static int TextCmp(IntPtr txt1, IntPtr txt2, uint collid)
             => SafeExecution<int>(() => Native.TextCmp(txt1, txt2, collid));
 
         public static IntPtr TextCopy(IntPtr txt)
