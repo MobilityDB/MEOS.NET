@@ -6372,6 +6372,12 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "tgeo_affine", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TgeoAffine(IntPtr temp, double a, double b, double c, double d, double e, double f, double g, double h, double i, double xoff, double yoff, double zoff);
 
+            [LibraryImport(DllPath, EntryPoint = "tgeo_force2d", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TgeoForce2d(IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "tgeo_force3d", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TgeoForce3d(IntPtr temp, double zvalue);
+
             [LibraryImport(DllPath, EntryPoint = "tgeo_rotate", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TgeoRotate(IntPtr temp, double angle, double x0, double y0);
 
@@ -11750,6 +11756,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "pcpatch_to_tpcbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PcpatchToTpcbox(IntPtr pa);
 
+            [LibraryImport(DllPath, EntryPoint = "tpointcloud_to_tpcbox", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TpointcloudToTpcbox(IntPtr temp);
+
             [LibraryImport(DllPath, EntryPoint = "tpcbox_hasx", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool TpcboxHasx(IntPtr box);
@@ -12566,6 +12575,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "tpose_rotate_y", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TposeRotateY(IntPtr temp, double angle);
 
+            [LibraryImport(DllPath, EntryPoint = "tpose_force2d", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TposeForce2d(IntPtr temp);
+
             [LibraryImport(DllPath, EntryPoint = "tpose_rotate_z", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TposeRotateZ(IntPtr temp, double angle);
 
@@ -12589,6 +12601,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "pose_make_point3d_ypr", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PoseMakePoint3dYpr(IntPtr gs, double yaw, double pitch, double roll);
+
+            [LibraryImport(DllPath, EntryPoint = "pose_to_geog", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr PoseToGeog(IntPtr pose);
 
             [LibraryImport(DllPath, EntryPoint = "pose_to_point", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PoseToPoint(IntPtr pose);
@@ -14185,6 +14200,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "trgeometry_delete_tstzspanset", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TrgeometryDeleteTstzspanset(IntPtr temp, IntPtr ss, [MarshalAs(UnmanagedType.U1)] bool connect);
+
+            [LibraryImport(DllPath, EntryPoint = "trgeometry_force2d", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TrgeometryForce2d(IntPtr temp);
 
             [LibraryImport(DllPath, EntryPoint = "trgeometry_merge", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TrgeometryMerge(IntPtr temp1, IntPtr temp2);

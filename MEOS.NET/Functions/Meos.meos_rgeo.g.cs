@@ -363,6 +363,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TrgeometryDeleteTstzspanset(IntPtr temp, IntPtr ss, bool connect)
             => SafeExecution<IntPtr>(() => Native.TrgeometryDeleteTstzspanset(temp, ss, connect));
 
+        public static IntPtr TrgeometryForce2d(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TrgeometryForce2d(temp));
+
         public static IntPtr TrgeometryMerge(IntPtr temp1, IntPtr temp2)
             => SafeExecution<IntPtr>(() => Native.TrgeometryMerge(temp1, temp2));
 

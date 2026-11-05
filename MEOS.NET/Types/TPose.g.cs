@@ -57,6 +57,9 @@ namespace MEOS.NET.Types
         public Pose? EndValue()
             => MEOSFactory.WrapPose(Meos.TposeEndValue(this.Ptr));
 
+        public Temporal? Force2d()
+            => MEOSFactory.WrapTemporal(Meos.TposeForce2d(this.Ptr));
+
         public Temporal? Inverse()
             => MEOSFactory.WrapTemporal(Meos.TposeInverse(this.Ptr));
 

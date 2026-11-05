@@ -10,14 +10,14 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `78a82d4b1df606080eaad436fbb22d091d134836` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `acae48bc72afde2b54fb85d681da0d42eaab800f` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
 
 ## The flat surface — `tools/codegen.py`
 
-### parameter nullability — 4317
+### parameter nullability — 4323
 
 `shape.nullable` names the parameters a function accepts NULL for, and the catalog carries no field saying a parameter is required. A pointer parameter named in neither reaches the surface with its contract unstated: the wrapper takes it, and nothing says whether zero is an argument or a fault.
 
@@ -2058,6 +2058,7 @@ and `tools/objectgen.py`.  Do not edit.
 | pose_set_srid | pose |
 | pose_srid | pose |
 | pose_timestamptz_to_stbox | pose |
+| pose_to_geog | pose |
 | pose_to_point | pose |
 | pose_to_posechain | pose |
 | pose_to_set | pose |
@@ -3177,6 +3178,8 @@ and `tools/objectgen.py`.  Do not edit.
 | tgeo_centroid | temp |
 | tgeo_convex_hull | temp |
 | tgeo_end_value | temp |
+| tgeo_force2d | temp |
+| tgeo_force3d | temp |
 | tgeo_from_base_temp | gs, temp |
 | tgeo_minus_geom | temp, gs |
 | tgeo_minus_stbox | temp, box |
@@ -3815,6 +3818,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tpoint_to_geomeas | tpoint |
 | tpoint_trajectory | temp |
 | tpoint_twcentroid | temp |
+| tpointcloud_to_tpcbox | temp |
 | tpointinst_make | gs |
 | tpointseq_azimuth | seq |
 | tpointseq_cumulative_length | seq |
@@ -3846,6 +3850,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tpose_compose_pose | body, frame |
 | tpose_compose_tpose | body, frame |
 | tpose_end_value | temp |
+| tpose_force2d | temp |
 | tpose_from_base_temp | pose, temp |
 | tpose_from_geopose | json |
 | tpose_from_mfjson | str |
@@ -3957,6 +3962,7 @@ and `tools/objectgen.py`.  Do not edit.
 | trgeometry_end_instant | temp |
 | trgeometry_end_sequence | temp |
 | trgeometry_end_value | temp |
+| trgeometry_force2d | temp |
 | trgeometry_from_mfjson | mfjson |
 | trgeometry_geom | temp |
 | trgeometry_in | str |

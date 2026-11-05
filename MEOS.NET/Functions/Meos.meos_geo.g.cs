@@ -1325,6 +1325,12 @@ namespace MEOS.NET.Functions
         public static IntPtr TgeoAffine(IntPtr temp, double a, double b, double c, double d, double e, double f, double g, double h, double i, double xoff, double yoff, double zoff)
             => SafeExecution<IntPtr>(() => Native.TgeoAffine(temp, a, b, c, d, e, f, g, h, i, xoff, yoff, zoff));
 
+        public static IntPtr TgeoForce2d(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TgeoForce2d(temp));
+
+        public static IntPtr TgeoForce3d(IntPtr temp, double zvalue)
+            => SafeExecution<IntPtr>(() => Native.TgeoForce3d(temp, zvalue));
+
         public static IntPtr TgeoRotate(IntPtr temp, double angle, double x0, double y0)
             => SafeExecution<IntPtr>(() => Native.TgeoRotate(temp, angle, x0, y0));
 

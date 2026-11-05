@@ -35,6 +35,12 @@ namespace MEOS.NET.Types
         public Geo? EndValue()
             => MEOSFactory.WrapGeo(Meos.TgeoEndValue(this.Ptr));
 
+        public Temporal? Force2d()
+            => MEOSFactory.WrapTemporal(Meos.TgeoForce2d(this.Ptr));
+
+        public Temporal? Force3d(double zvalue)
+            => MEOSFactory.WrapTemporal(Meos.TgeoForce3d(this.Ptr, zvalue));
+
         public Temporal? MinusGeom(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.TgeoMinusGeom(this.Ptr, gs.Ptr));
 

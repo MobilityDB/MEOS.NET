@@ -293,6 +293,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TposeRotateY(IntPtr temp, double angle)
             => SafeExecution<IntPtr>(() => Native.TposeRotateY(temp, angle));
 
+        public static IntPtr TposeForce2d(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TposeForce2d(temp));
+
         public static IntPtr TposeRotateZ(IntPtr temp, double angle)
             => SafeExecution<IntPtr>(() => Native.TposeRotateZ(temp, angle));
 
@@ -316,6 +319,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr PoseMakePoint3dYpr(IntPtr gs, double yaw, double pitch, double roll)
             => SafeExecution<IntPtr>(() => Native.PoseMakePoint3dYpr(gs, yaw, pitch, roll));
+
+        public static IntPtr PoseToGeog(IntPtr pose)
+            => SafeExecution<IntPtr>(() => Native.PoseToGeog(pose));
 
         public static IntPtr PoseToPoint(IntPtr pose)
             => SafeExecution<IntPtr>(() => Native.PoseToPoint(pose));
