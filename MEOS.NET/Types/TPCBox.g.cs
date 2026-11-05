@@ -40,30 +40,10 @@ namespace MEOS.NET.Types
         }
 
         public string AsHexEWKB(byte variant)
-        {
-            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
-            try
-            {
-                return Meos.TpcboxAsHexewkb(this.Ptr, variant, _size_out);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(_size_out);
-            }
-        }
+            => Meos.TpcboxAsHexewkb(this.Ptr, variant);
 
         public string AsHexWKB(byte variant)
-        {
-            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
-            try
-            {
-                return Meos.TpcboxAsHexwkb(this.Ptr, variant, _size_out);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(_size_out);
-            }
-        }
+            => Meos.TpcboxAsHexwkb(this.Ptr, variant);
 
         public string AsText(int maxdd)
             => this.Out(maxdd);
@@ -372,8 +352,8 @@ namespace MEOS.NET.Types
         public static TPCBox? In(string str)
             => MEOSFactory.WrapTPCBox(Meos.TpcboxIn(str));
 
-        public static TPCBox? Make(bool hasx, bool hasz, bool hast, bool geodetic, uint pcid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, Span period)
-            => MEOSFactory.WrapTPCBox(Meos.TpcboxMake(hasx, hasz, hast, geodetic, pcid, xmin, xmax, ymin, ymax, zmin, zmax, period.Ptr));
+        public static TPCBox? Make(bool hasx, bool hasz, bool geodetic, uint pcid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, Span period)
+            => MEOSFactory.WrapTPCBox(Meos.TpcboxMake(hasx, hasz, geodetic, pcid, xmin, xmax, ymin, ymax, zmin, zmax, period.Ptr));
 
     }
 }

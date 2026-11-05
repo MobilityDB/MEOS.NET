@@ -43,30 +43,10 @@ namespace MEOS.NET.Types
             => Meos.NpointAsEwkt(this.Ptr, maxdd);
 
         public string AsHexEWKB(byte variant)
-        {
-            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
-            try
-            {
-                return Meos.NpointAsHexewkb(this.Ptr, variant, _size_out);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(_size_out);
-            }
-        }
+            => Meos.NpointAsHexewkb(this.Ptr, variant);
 
         public string AsHexWKB(byte variant)
-        {
-            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
-            try
-            {
-                return Meos.NpointAsHexwkb(this.Ptr, variant, _size_out);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(_size_out);
-            }
-        }
+            => Meos.NpointAsHexwkb(this.Ptr, variant);
 
         public string AsText(int maxdd)
             => Meos.NpointAsText(this.Ptr, maxdd);

@@ -21,17 +21,7 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapRaster(Meos.RasterAddBandRaster(this.Ptr, fromrast.Ptr, fromband, toindex));
 
         public string AsHexWKB(byte variant)
-        {
-            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
-            try
-            {
-                return Meos.RasterAsHexwkb(this.Ptr, variant, _size_out);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(_size_out);
-            }
-        }
+            => Meos.RasterAsHexwkb(this.Ptr, variant);
 
         public byte[]? AsWKB(byte variant)
         {

@@ -19,16 +19,16 @@ namespace MEOS.NET.Functions
             internal static partial bool BoolIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "bool_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string BoolOut([MarshalAs(UnmanagedType.U1)] bool b);
+            internal static partial IntPtr BoolOut([MarshalAs(UnmanagedType.U1)] bool b, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "float8_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string Float8Out(double num, int maxdd);
+            internal static partial IntPtr Float8Out(double num, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "date_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int DateIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "date_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string DateOut(int date);
+            internal static partial IntPtr DateOut(int date, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "interval_cmp", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int IntervalCmp(IntPtr interv1, IntPtr interv2);
@@ -37,25 +37,25 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr IntervalIn(string str, int typmod);
 
             [LibraryImport(DllPath, EntryPoint = "interval_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string IntervalOut(IntPtr interv);
+            internal static partial IntPtr IntervalOut(IntPtr interv, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "time_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial long TimeIn(string str, int typmod);
 
             [LibraryImport(DllPath, EntryPoint = "time_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TimeOut(long time);
+            internal static partial IntPtr TimeOut(long time, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "timestamp_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial long TimestampIn(string str, int typmod);
 
             [LibraryImport(DllPath, EntryPoint = "timestamp_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TimestampOut(long ts);
+            internal static partial IntPtr TimestampOut(long ts, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "timestamptz_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial long TimestamptzIn(string str, int typmod);
 
             [LibraryImport(DllPath, EntryPoint = "timestamptz_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TimestamptzOut(long tstz);
+            internal static partial IntPtr TimestamptzOut(long tstz, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "cstring_to_text", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr CstringToText(string str);
@@ -67,7 +67,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TextIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "text_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TextOut(IntPtr txt);
+            internal static partial IntPtr TextOut(IntPtr txt, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "text_cmp", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int TextCmp(IntPtr txt1, IntPtr txt2, IntPtr collid);
@@ -317,10 +317,10 @@ namespace MEOS.NET.Functions
             internal static partial bool MeosSetIntervalstyle(string newval, int extra);
 
             [LibraryImport(DllPath, EntryPoint = "meos_get_datestyle", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string MeosGetDatestyle();
+            internal static partial IntPtr MeosGetDatestyle(out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "meos_get_intervalstyle", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string MeosGetIntervalstyle();
+            internal static partial IntPtr MeosGetIntervalstyle(out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "meos_set_spatial_ref_sys_csv", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial void MeosSetSpatialRefSysCsv(string path);
@@ -335,22 +335,22 @@ namespace MEOS.NET.Functions
             internal static partial void MeosFinalize();
 
             [LibraryImport(DllPath, EntryPoint = "meos_version", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string MeosVersion();
+            internal static partial IntPtr MeosVersion(out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "meos_full_version", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string MeosFullVersion();
+            internal static partial IntPtr MeosFullVersion(out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "mobilitydb_version", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string MobilitydbVersion();
+            internal static partial IntPtr MobilitydbVersion(out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "mobilitydb_full_version", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string MobilitydbFullVersion();
+            internal static partial IntPtr MobilitydbFullVersion(out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "bigintset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr BigintsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "bigintset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string BigintsetOut(IntPtr set);
+            internal static partial IntPtr BigintsetOut(IntPtr set, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "bigintspan_expand", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr BigintspanExpand(IntPtr s, long value);
@@ -359,37 +359,37 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr BigintspanIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "bigintspan_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string BigintspanOut(IntPtr s);
+            internal static partial IntPtr BigintspanOut(IntPtr s, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "bigintspanset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr BigintspansetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "bigintspanset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string BigintspansetOut(IntPtr ss);
+            internal static partial IntPtr BigintspansetOut(IntPtr ss, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "dateset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr DatesetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "dateset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string DatesetOut(IntPtr s);
+            internal static partial IntPtr DatesetOut(IntPtr s, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "datespan_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr DatespanIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "datespan_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string DatespanOut(IntPtr s);
+            internal static partial IntPtr DatespanOut(IntPtr s, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "datespanset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr DatespansetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "datespanset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string DatespansetOut(IntPtr ss);
+            internal static partial IntPtr DatespansetOut(IntPtr ss, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "floatset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr FloatsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "floatset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string FloatsetOut(IntPtr set, int maxdd);
+            internal static partial IntPtr FloatsetOut(IntPtr set, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "floatspan_expand", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr FloatspanExpand(IntPtr s, double value);
@@ -398,19 +398,19 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr FloatspanIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "floatspan_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string FloatspanOut(IntPtr s, int maxdd);
+            internal static partial IntPtr FloatspanOut(IntPtr s, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "floatspanset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr FloatspansetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "floatspanset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string FloatspansetOut(IntPtr ss, int maxdd);
+            internal static partial IntPtr FloatspansetOut(IntPtr ss, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "intset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr IntsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "intset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string IntsetOut(IntPtr set);
+            internal static partial IntPtr IntsetOut(IntPtr set, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "intspan_expand", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr IntspanExpand(IntPtr s, int value);
@@ -419,16 +419,16 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr IntspanIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "intspan_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string IntspanOut(IntPtr s);
+            internal static partial IntPtr IntspanOut(IntPtr s, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "intspanset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr IntspansetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "intspanset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string IntspansetOut(IntPtr ss);
+            internal static partial IntPtr IntspansetOut(IntPtr ss, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "set_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string SetAsHexwkb(IntPtr s, byte variant, IntPtr size_out);
+            internal static partial IntPtr SetAsHexwkb(IntPtr s, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "set_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr SetAsWkb(IntPtr s, byte variant, IntPtr size_out);
@@ -440,7 +440,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr SetFromWkb(IntPtr wkb, ulong size);
 
             [LibraryImport(DllPath, EntryPoint = "span_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string SpanAsHexwkb(IntPtr s, byte variant, IntPtr size_out);
+            internal static partial IntPtr SpanAsHexwkb(IntPtr s, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "span_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr SpanAsWkb(IntPtr s, byte variant, IntPtr size_out);
@@ -452,7 +452,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr SpanFromWkb(IntPtr wkb, ulong size);
 
             [LibraryImport(DllPath, EntryPoint = "spanset_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string SpansetAsHexwkb(IntPtr ss, byte variant, IntPtr size_out);
+            internal static partial IntPtr SpansetAsHexwkb(IntPtr ss, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "spanset_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr SpansetAsWkb(IntPtr ss, byte variant, IntPtr size_out);
@@ -467,25 +467,25 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TextsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "textset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TextsetOut(IntPtr set);
+            internal static partial IntPtr TextsetOut(IntPtr set, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tstzset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TstzsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "tstzset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TstzsetOut(IntPtr set);
+            internal static partial IntPtr TstzsetOut(IntPtr set, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tstzspan_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TstzspanIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "tstzspan_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TstzspanOut(IntPtr s);
+            internal static partial IntPtr TstzspanOut(IntPtr s, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tstzspanset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TstzspansetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "tstzspanset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TstzspansetOut(IntPtr ss);
+            internal static partial IntPtr TstzspansetOut(IntPtr ss, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "bigintset_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr BigintsetMake(IntPtr values, int count);
@@ -2598,7 +2598,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TstzspansetBins(IntPtr ss, IntPtr duration, long torigin, [MarshalAs(UnmanagedType.U1)] bool border_inc, IntPtr count);
 
             [LibraryImport(DllPath, EntryPoint = "tbox_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TboxAsHexwkb(IntPtr box, byte variant, IntPtr size_out);
+            internal static partial IntPtr TboxAsHexwkb(IntPtr box, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tbox_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TboxAsWkb(IntPtr box, byte variant, IntPtr size_out);
@@ -2613,7 +2613,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TboxIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "tbox_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TboxOut(IntPtr box, int maxdd);
+            internal static partial IntPtr TboxOut(IntPtr box, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "float_timestamptz_to_tbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr FloatTimestamptzToTbox(double d, long t);
@@ -2634,7 +2634,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr BigintTstzspanToTbox(long i, IntPtr s);
 
             [LibraryImport(DllPath, EntryPoint = "numspan_tstzspan_to_tbox", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr NumspanTstzspanToTbox(IntPtr span, IntPtr s);
+            internal static partial IntPtr NumspanTstzspanToTbox(IntPtr s, IntPtr p);
 
             [LibraryImport(DllPath, EntryPoint = "numspan_timestamptz_to_tbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NumspanTimestamptzToTbox(IntPtr span, long t);
@@ -3020,13 +3020,13 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TboolIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "tbool_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TboolOut(IntPtr temp);
+            internal static partial IntPtr TboolOut(IntPtr temp, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "temporal_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TemporalAsHexwkb(IntPtr temp, byte variant, IntPtr size_out);
+            internal static partial IntPtr TemporalAsHexwkb(IntPtr temp, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "temporal_as_mfjson", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TemporalAsMfjson(IntPtr temp, int option, int flags, int precision, string srs);
+            internal static partial IntPtr TemporalAsMfjson(IntPtr temp, int option, int flags, int precision, string srs, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "temporal_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TemporalAsWkb(IntPtr temp, byte variant, IntPtr size_out);
@@ -3050,7 +3050,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TfloatIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "tfloat_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TfloatOut(IntPtr temp, int maxdd);
+            internal static partial IntPtr TfloatOut(IntPtr temp, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tint_from_mfjson", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TintFromMfjson(string str);
@@ -3065,10 +3065,10 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TbigintIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "tint_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TintOut(IntPtr temp);
+            internal static partial IntPtr TintOut(IntPtr temp, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tbigint_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TbigintOut(IntPtr temp);
+            internal static partial IntPtr TbigintOut(IntPtr temp, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "ttext_from_mfjson", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TtextFromMfjson(string str);
@@ -3077,7 +3077,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TtextIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "ttext_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TtextOut(IntPtr temp);
+            internal static partial IntPtr TtextOut(IntPtr temp, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tbool_from_base_temp", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TboolFromBaseTemp([MarshalAs(UnmanagedType.U1)] bool b, IntPtr temp);
@@ -5408,7 +5408,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr Box3dIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "box3d_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string Box3dOut(IntPtr box, int maxdd);
+            internal static partial IntPtr Box3dOut(IntPtr box, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "gbox_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GboxMake([MarshalAs(UnmanagedType.U1)] bool hasz, [MarshalAs(UnmanagedType.U1)] bool hasm, [MarshalAs(UnmanagedType.U1)] bool geodetic, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, double mmin, double mmax);
@@ -5417,22 +5417,22 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr GboxIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "gbox_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string GboxOut(IntPtr box, int maxdd);
+            internal static partial IntPtr GboxOut(IntPtr box, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "geo_as_ewkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GeoAsEwkb(IntPtr gs, string endian, IntPtr size);
 
             [LibraryImport(DllPath, EntryPoint = "geo_as_ewkt", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string GeoAsEwkt(IntPtr gs, int precision);
+            internal static partial IntPtr GeoAsEwkt(IntPtr gs, int precision, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "geo_as_geojson", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string GeoAsGeojson(IntPtr gs, int option, int precision, string srs);
+            internal static partial IntPtr GeoAsGeojson(IntPtr gs, int option, int precision, string srs, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "geo_as_hexewkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string GeoAsHexewkb(IntPtr gs, string endian);
+            internal static partial IntPtr GeoAsHexewkb(IntPtr gs, string endian, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "geo_as_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string GeoAsText(IntPtr gs, int precision);
+            internal static partial IntPtr GeoAsText(IntPtr gs, int precision, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "geo_from_ewkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GeoFromEwkb(IntPtr wkb, ulong wkb_size, int srid);
@@ -5444,7 +5444,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr GeoFromText(string wkt, int srid);
 
             [LibraryImport(DllPath, EntryPoint = "geo_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string GeoOut(IntPtr gs);
+            internal static partial IntPtr GeoOut(IntPtr gs, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "geog_from_hexewkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GeogFromHexewkb(string hexwkb);
@@ -5705,15 +5705,15 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "geom_dwithin", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool GeomDwithin(IntPtr gs1, IntPtr gs2, double tolerance);
+            internal static partial bool GeomDwithin(IntPtr gs1, IntPtr gs2, double dist);
 
             [LibraryImport(DllPath, EntryPoint = "geom_dwithin2d", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool GeomDwithin2d(IntPtr gs1, IntPtr gs2, double tolerance);
+            internal static partial bool GeomDwithin2d(IntPtr gs1, IntPtr gs2, double dist);
 
             [LibraryImport(DllPath, EntryPoint = "geom_dwithin3d", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool GeomDwithin3d(IntPtr gs1, IntPtr gs2, double tolerance);
+            internal static partial bool GeomDwithin3d(IntPtr gs1, IntPtr gs2, double dist);
 
             [LibraryImport(DllPath, EntryPoint = "geom_intersects", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -5728,7 +5728,7 @@ namespace MEOS.NET.Functions
             internal static partial bool GeomIntersects3d(IntPtr gs1, IntPtr gs2);
 
             [LibraryImport(DllPath, EntryPoint = "geom_relate", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string GeomRelate(IntPtr gs1, IntPtr gs2);
+            internal static partial IntPtr GeomRelate(IntPtr gs1, IntPtr gs2, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "geom_relate_pattern", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -5791,19 +5791,19 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr GeomsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "spatialset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string SpatialsetOut(IntPtr s, int maxdd);
+            internal static partial IntPtr SpatialsetOut(IntPtr s, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "spatialset_as_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string SpatialsetAsText(IntPtr set, int maxdd);
+            internal static partial IntPtr SpatialsetAsText(IntPtr set, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "spatialset_as_ewkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr SpatialsetAsEwkb(IntPtr s, byte variant, IntPtr size_out);
 
             [LibraryImport(DllPath, EntryPoint = "spatialset_as_ewkt", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string SpatialsetAsEwkt(IntPtr set, int maxdd);
+            internal static partial IntPtr SpatialsetAsEwkt(IntPtr set, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "spatialset_as_hexewkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string SpatialsetAsHexewkb(IntPtr s, byte variant, IntPtr size_out);
+            internal static partial IntPtr SpatialsetAsHexewkb(IntPtr s, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "geoset_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GeosetMake(IntPtr values, int count);
@@ -5878,10 +5878,10 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr StboxAsEwkb(IntPtr box, byte variant, IntPtr size_out);
 
             [LibraryImport(DllPath, EntryPoint = "stbox_as_hexewkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string StboxAsHexewkb(IntPtr box, byte variant, IntPtr size_out);
+            internal static partial IntPtr StboxAsHexewkb(IntPtr box, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "stbox_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string StboxAsHexwkb(IntPtr box, byte variant, IntPtr size_out);
+            internal static partial IntPtr StboxAsHexwkb(IntPtr box, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "stbox_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr StboxAsWkb(IntPtr box, byte variant, IntPtr size_out);
@@ -5896,7 +5896,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr StboxIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "stbox_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string StboxOut(IntPtr box, int maxdd);
+            internal static partial IntPtr StboxOut(IntPtr box, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "geo_timestamptz_to_stbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GeoTimestamptzToStbox(IntPtr gs, long t);
@@ -6171,7 +6171,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr StboxSortkey(IntPtr box, IntPtr size);
 
             [LibraryImport(DllPath, EntryPoint = "tspatial_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TspatialOut(IntPtr temp, int maxdd);
+            internal static partial IntPtr TspatialOut(IntPtr temp, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tgeogpoint_from_mfjson", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TgeogpointFromMfjson(string str);
@@ -6201,13 +6201,13 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TspatialAsEwkb(IntPtr temp, byte variant, IntPtr size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tspatial_as_ewkt", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TspatialAsEwkt(IntPtr temp, int maxdd);
+            internal static partial IntPtr TspatialAsEwkt(IntPtr temp, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tspatial_as_hexewkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TspatialAsHexewkb(IntPtr temp, byte variant, IntPtr size_out);
+            internal static partial IntPtr TspatialAsHexewkb(IntPtr temp, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tspatial_as_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TspatialAsText(IntPtr temp, int maxdd);
+            internal static partial IntPtr TspatialAsText(IntPtr temp, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tgeo_from_base_temp", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TgeoFromBaseTemp(IntPtr gs, IntPtr temp);
@@ -6282,6 +6282,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "tpoint_tfloat_to_geomeas", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool TpointTfloatToGeomeas(IntPtr tpoint, IntPtr measure, [MarshalAs(UnmanagedType.U1)] bool segmentize, IntPtr result);
+
+            [LibraryImport(DllPath, EntryPoint = "tpoint_to_geomeas", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TpointToGeomeas(IntPtr tpoint, [MarshalAs(UnmanagedType.U1)] bool segmentize);
 
             [LibraryImport(DllPath, EntryPoint = "tspatial_to_stbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TspatialToStbox(IntPtr temp);
@@ -7072,16 +7075,16 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr CbufferAsEwkb(IntPtr cb, byte variant, IntPtr size_out);
 
             [LibraryImport(DllPath, EntryPoint = "cbuffer_as_ewkt", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string CbufferAsEwkt(IntPtr cb, int maxdd);
+            internal static partial IntPtr CbufferAsEwkt(IntPtr cb, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "cbuffer_as_hexewkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string CbufferAsHexewkb(IntPtr cb, byte variant, IntPtr size_out);
+            internal static partial IntPtr CbufferAsHexewkb(IntPtr cb, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "cbuffer_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string CbufferAsHexwkb(IntPtr cb, byte variant, IntPtr size_out);
+            internal static partial IntPtr CbufferAsHexwkb(IntPtr cb, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "cbuffer_as_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string CbufferAsText(IntPtr cb, int maxdd);
+            internal static partial IntPtr CbufferAsText(IntPtr cb, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "cbuffer_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr CbufferAsWkb(IntPtr cb, byte variant, IntPtr size_out);
@@ -7096,7 +7099,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr CbufferIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "cbuffer_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string CbufferOut(IntPtr cb, int maxdd);
+            internal static partial IntPtr CbufferOut(IntPtr cb, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "cbuffer_copy", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr CbufferCopy(IntPtr cb);
@@ -7216,7 +7219,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr CbuffersetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "cbufferset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string CbuffersetOut(IntPtr s, int maxdd);
+            internal static partial IntPtr CbuffersetOut(IntPtr s, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "cbufferset_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr CbuffersetMake(IntPtr values, int count);
@@ -7755,7 +7758,7 @@ namespace MEOS.NET.Functions
             internal static partial ulong BigintToH3index(long i);
 
             [LibraryImport(DllPath, EntryPoint = "h3index_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string H3indexOut(ulong cell);
+            internal static partial IntPtr H3indexOut(ulong cell, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "h3_is_valid_cell", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -7839,7 +7842,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr H3indexAsWkb(ulong cell, byte variant, IntPtr size_out);
 
             [LibraryImport(DllPath, EntryPoint = "h3index_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string H3indexAsHexwkb(ulong cell, byte variant, IntPtr size_out);
+            internal static partial IntPtr H3indexAsHexwkb(ulong cell, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "h3index_get_resolution", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial uint H3indexGetResolution(ulong cell);
@@ -7869,7 +7872,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr Th3indexseqsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "th3index_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string Th3indexOut(IntPtr temp);
+            internal static partial IntPtr Th3indexOut(IntPtr temp, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "th3index_from_mfjson", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr Th3indexFromMfjson(string mfjson);
@@ -8036,7 +8039,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr H3indexsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "h3indexset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string H3indexsetOut(IntPtr s);
+            internal static partial IntPtr H3indexsetOut(IntPtr s, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "h3indexset_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr H3indexsetMake(IntPtr values, int count);
@@ -8205,19 +8208,19 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr SetIn(string str, int settype);
 
             [LibraryImport(DllPath, EntryPoint = "set_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string SetOut(IntPtr s, int maxdd);
+            internal static partial IntPtr SetOut(IntPtr s, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "span_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr SpanIn(string str, int spantype);
 
             [LibraryImport(DllPath, EntryPoint = "span_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string SpanOut(IntPtr s, int maxdd);
+            internal static partial IntPtr SpanOut(IntPtr s, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "spanset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr SpansetIn(string str, int spantype);
 
             [LibraryImport(DllPath, EntryPoint = "spanset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string SpansetOut(IntPtr ss, int maxdd);
+            internal static partial IntPtr SpansetOut(IntPtr ss, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "set_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr SetMake(IntPtr values, int count, int basetype, [MarshalAs(UnmanagedType.U1)] bool order);
@@ -8536,6 +8539,32 @@ namespace MEOS.NET.Functions
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool EnsureIndexJoinOp(int op);
 
+            [LibraryImport(DllPath, EntryPoint = "bbox_same_structure", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool BboxSameStructure(int bboxtype, IntPtr box1, IntPtr box2);
+
+            [LibraryImport(DllPath, EntryPoint = "ensure_index_op", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool EnsureIndexOp(int bboxtype, int op);
+
+            [LibraryImport(DllPath, EntryPoint = "index_op_is_valid", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool IndexOpIsValid(int bboxtype, int op, IntPtr box, IntPtr query);
+
+            [LibraryImport(DllPath, EntryPoint = "index_op_apply", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool IndexOpApply(int bboxtype, int op, IntPtr box, IntPtr query);
+
+            [LibraryImport(DllPath, EntryPoint = "index_query_project", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial void IndexQueryProject(int bboxtype, IntPtr query, IntPtr box, IntPtr result);
+
+            [LibraryImport(DllPath, EntryPoint = "index_distance_is_valid", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool IndexDistanceIsValid(int bboxtype, IntPtr box, IntPtr query);
+
+            [LibraryImport(DllPath, EntryPoint = "index_distance_apply", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial double IndexDistanceApply(int bboxtype, IntPtr box, IntPtr query);
+
             [LibraryImport(DllPath, EntryPoint = "ensure_index_result", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool EnsureIndexResult(IntPtr result);
@@ -8811,7 +8840,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TemporalIn(string str, int temptype);
 
             [LibraryImport(DllPath, EntryPoint = "temporal_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TemporalOut(IntPtr temp, int maxdd);
+            internal static partial IntPtr TemporalOut(IntPtr temp, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "temparr_out", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TemparrOut(IntPtr temparr, int count, int maxdd);
@@ -8841,7 +8870,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TinstantIn(string str, int temptype);
 
             [LibraryImport(DllPath, EntryPoint = "tinstant_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TinstantOut(IntPtr inst, int maxdd);
+            internal static partial IntPtr TinstantOut(IntPtr inst, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tbigintinst_from_mfjson", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TbigintinstFromMfjson(IntPtr mfjson);
@@ -8886,7 +8915,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TsequenceIn(string str, int temptype, int interp);
 
             [LibraryImport(DllPath, EntryPoint = "tsequence_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TsequenceOut(IntPtr seq, int maxdd);
+            internal static partial IntPtr TsequenceOut(IntPtr seq, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tsequenceset_from_mfjson", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TsequencesetFromMfjson(IntPtr mfjson, [MarshalAs(UnmanagedType.U1)] bool spatial, int srid, int temptype, int interp);
@@ -8895,7 +8924,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TsequencesetIn(string str, int temptype, int interp);
 
             [LibraryImport(DllPath, EntryPoint = "tsequenceset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TsequencesetOut(IntPtr ss, int maxdd);
+            internal static partial IntPtr TsequencesetOut(IntPtr ss, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "ttextinst_from_mfjson", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TtextinstFromMfjson(IntPtr mfjson);
@@ -9981,6 +10010,10 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "tgeometryseqset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TgeometryseqsetIn(string str);
 
+            [LibraryImport(DllPath, EntryPoint = "tpoint_tfloat_to_geomeas_intl", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool TpointTfloatToGeomeasIntl(IntPtr tpoint, IntPtr meas, [MarshalAs(UnmanagedType.U1)] bool segmentize, IntPtr result);
+
             [LibraryImport(DllPath, EntryPoint = "tgeo_scale_geo_intl", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TgeoScaleGeoIntl(IntPtr temp, IntPtr scale, IntPtr sorigin);
 
@@ -10191,7 +10224,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr JsonIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "json_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string JsonOut(IntPtr js);
+            internal static partial IntPtr JsonOut(IntPtr js, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "jsonb_from_text", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr JsonbFromText(IntPtr txt, [MarshalAs(UnmanagedType.U1)] bool unique_keys);
@@ -10200,7 +10233,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr JsonbIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "jsonb_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string JsonbOut(IntPtr jb);
+            internal static partial IntPtr JsonbOut(IntPtr jb, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "json_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr JsonMake(IntPtr keys_vals, int count);
@@ -10222,7 +10255,7 @@ namespace MEOS.NET.Functions
             internal static partial bool JsonbToBool(IntPtr jb);
 
             [LibraryImport(DllPath, EntryPoint = "jsonb_to_cstring", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string JsonbToCstring(IntPtr jb);
+            internal static partial IntPtr JsonbToCstring(IntPtr jb, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "jsonb_to_float4", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial float JsonbToFloat4(IntPtr jb);
@@ -10431,13 +10464,13 @@ namespace MEOS.NET.Functions
             internal static partial int JsonpathMemSize(IntPtr jp);
 
             [LibraryImport(DllPath, EntryPoint = "jsonpath_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string JsonpathOut(IntPtr jp);
+            internal static partial IntPtr JsonpathOut(IntPtr jp, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "jsonbset_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr JsonbsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "jsonbset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string JsonbsetOut(IntPtr s);
+            internal static partial IntPtr JsonbsetOut(IntPtr s, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "jsonbset_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr JsonbsetMake(IntPtr values, int count);
@@ -10498,7 +10531,10 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr JsonbsetExistsArray(IntPtr set, IntPtr keys, int count, [MarshalAs(UnmanagedType.U1)] bool any, IntPtr rescount);
 
             [LibraryImport(DllPath, EntryPoint = "jsonbset_set", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr JsonbsetSet(IntPtr set, IntPtr keys, int count, IntPtr newjb, [MarshalAs(UnmanagedType.U1)] bool create, IntPtr null_handle, [MarshalAs(UnmanagedType.U1)] bool lax);
+            internal static partial IntPtr JsonbsetSet(IntPtr set, IntPtr keys, int count, IntPtr newjb, [MarshalAs(UnmanagedType.U1)] bool create);
+
+            [LibraryImport(DllPath, EntryPoint = "jsonbset_set_lax", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr JsonbsetSetLax(IntPtr set, IntPtr keys, int count, IntPtr newjb, [MarshalAs(UnmanagedType.U1)] bool create, IntPtr null_handle);
 
             [LibraryImport(DllPath, EntryPoint = "jsonbset_to_alphanumset", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr JsonbsetToAlphanumset(IntPtr set, string key, int settype, int null_handle);
@@ -10560,6 +10596,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "jsonbset_path_match_intl", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr JsonbsetPathMatchIntl(IntPtr set, IntPtr jp, IntPtr vars, [MarshalAs(UnmanagedType.U1)] bool silent, [MarshalAs(UnmanagedType.U1)] bool tz, IntPtr count);
 
+            [LibraryImport(DllPath, EntryPoint = "jsonbset_set_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr JsonbsetSetIntl(IntPtr set, IntPtr keys, int count, IntPtr newjb, [MarshalAs(UnmanagedType.U1)] bool create, IntPtr null_handle, [MarshalAs(UnmanagedType.U1)] bool lax);
+
             [LibraryImport(DllPath, EntryPoint = "contained_jsonb_set", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool ContainedJsonbSet(IntPtr jb, IntPtr s);
@@ -10596,7 +10635,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TjsonbIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "tjsonb_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TjsonbOut(IntPtr temp);
+            internal static partial IntPtr TjsonbOut(IntPtr temp, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tjsonbinst_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TjsonbinstIn(string str);
@@ -10745,7 +10784,10 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TjsonbPretty(IntPtr temp);
 
             [LibraryImport(DllPath, EntryPoint = "tjsonb_set", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr TjsonbSet(IntPtr temp, IntPtr keys, int count, IntPtr newjb, [MarshalAs(UnmanagedType.U1)] bool create, IntPtr handle_null, [MarshalAs(UnmanagedType.U1)] bool lax);
+            internal static partial IntPtr TjsonbSet(IntPtr temp, IntPtr keys, int count, IntPtr newjb, [MarshalAs(UnmanagedType.U1)] bool create);
+
+            [LibraryImport(DllPath, EntryPoint = "tjsonb_set_lax", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TjsonbSetLax(IntPtr temp, IntPtr keys, int count, IntPtr newjb, [MarshalAs(UnmanagedType.U1)] bool create, IntPtr null_handle);
 
             [LibraryImport(DllPath, EntryPoint = "tjsonb_strip_nulls", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TjsonbStripNulls(IntPtr temp, [MarshalAs(UnmanagedType.U1)] bool strip_in_arrays);
@@ -10794,6 +10836,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "tjsonb_path_match_intl", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TjsonbPathMatchIntl(IntPtr temp, IntPtr jp, IntPtr vars, [MarshalAs(UnmanagedType.U1)] bool silent, [MarshalAs(UnmanagedType.U1)] bool tz);
+
+            [LibraryImport(DllPath, EntryPoint = "tjsonb_set_intl", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TjsonbSetIntl(IntPtr temp, IntPtr keys, int count, IntPtr newjb, [MarshalAs(UnmanagedType.U1)] bool create, IntPtr null_handle, [MarshalAs(UnmanagedType.U1)] bool lax);
 
             [LibraryImport(DllPath, EntryPoint = "tjsonb_at_value", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TjsonbAtValue(IntPtr temp, IntPtr jsb);
@@ -10853,16 +10898,16 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr NpointAsEwkb(IntPtr np, byte variant, IntPtr size_out);
 
             [LibraryImport(DllPath, EntryPoint = "npoint_as_ewkt", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string NpointAsEwkt(IntPtr np, int maxdd);
+            internal static partial IntPtr NpointAsEwkt(IntPtr np, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "npoint_as_hexewkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string NpointAsHexewkb(IntPtr np, byte variant, IntPtr size_out);
+            internal static partial IntPtr NpointAsHexewkb(IntPtr np, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "npoint_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string NpointAsHexwkb(IntPtr np, byte variant, IntPtr size_out);
+            internal static partial IntPtr NpointAsHexwkb(IntPtr np, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "npoint_as_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string NpointAsText(IntPtr np, int maxdd);
+            internal static partial IntPtr NpointAsText(IntPtr np, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "npoint_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NpointAsWkb(IntPtr np, byte variant, IntPtr size_out);
@@ -10877,13 +10922,13 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr NpointIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "npoint_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string NpointOut(IntPtr np, int maxdd);
+            internal static partial IntPtr NpointOut(IntPtr np, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "nsegment_as_hexewkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string NsegmentAsHexewkb(IntPtr ns, byte variant, IntPtr size_out);
+            internal static partial IntPtr NsegmentAsHexewkb(IntPtr ns, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "nsegment_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string NsegmentAsHexwkb(IntPtr ns, byte variant, IntPtr size_out);
+            internal static partial IntPtr NsegmentAsHexwkb(IntPtr ns, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "nsegment_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NsegmentAsWkb(IntPtr ns, byte variant, IntPtr size_out);
@@ -10898,16 +10943,16 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr NsegmentIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "nsegment_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string NsegmentOut(IntPtr ns, int maxdd);
+            internal static partial IntPtr NsegmentOut(IntPtr ns, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "nsegment_as_ewkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NsegmentAsEwkb(IntPtr ns, byte variant, IntPtr size_out);
 
             [LibraryImport(DllPath, EntryPoint = "nsegment_as_ewkt", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string NsegmentAsEwkt(IntPtr ns, int maxdd);
+            internal static partial IntPtr NsegmentAsEwkt(IntPtr ns, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "nsegment_as_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string NsegmentAsText(IntPtr ns, int maxdd);
+            internal static partial IntPtr NsegmentAsText(IntPtr ns, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "npoint_copy", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NpointCopy(IntPtr np);
@@ -11052,7 +11097,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr NpointsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "npointset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string NpointsetOut(IntPtr s, int maxdd);
+            internal static partial IntPtr NpointsetOut(IntPtr s, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "npointset_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NpointsetMake(IntPtr values, int count);
@@ -11115,7 +11160,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TnpointFromMfjson(string mfjson);
 
             [LibraryImport(DllPath, EntryPoint = "tnpoint_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TnpointOut(IntPtr temp, int maxdd);
+            internal static partial IntPtr TnpointOut(IntPtr temp, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tnpointinst_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TnpointinstMake(IntPtr np, long t);
@@ -11377,13 +11422,13 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr PcpointHexIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "pcpoint_hex_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PcpointHexOut(IntPtr pt, int maxdd);
+            internal static partial IntPtr PcpointHexOut(IntPtr pt, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "pcpoint_from_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PcpointFromHexwkb(string hexwkb);
 
             [LibraryImport(DllPath, EntryPoint = "pcpoint_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PcpointAsHexwkb(IntPtr pt);
+            internal static partial IntPtr PcpointAsHexwkb(IntPtr pt, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "pcpoint_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PcpointMake(uint pcid, IntPtr values, int count);
@@ -11496,13 +11541,13 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr PcpatchHexIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "pcpatch_hex_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PcpatchHexOut(IntPtr pa, int maxdd);
+            internal static partial IntPtr PcpatchHexOut(IntPtr pa, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "pcpatch_from_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PcpatchFromHexwkb(string hexwkb);
 
             [LibraryImport(DllPath, EntryPoint = "pcpatch_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PcpatchAsHexwkb(IntPtr pa);
+            internal static partial IntPtr PcpatchAsHexwkb(IntPtr pa, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "pcpatch_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PcpatchMake(IntPtr points, int count);
@@ -11568,7 +11613,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr PcpointsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "pcpointset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PcpointsetOut(IntPtr s, int maxdd);
+            internal static partial IntPtr PcpointsetOut(IntPtr s, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "pcpointset_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PcpointsetMake(IntPtr values, int count);
@@ -11622,7 +11667,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr PcpatchsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "pcpatchset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PcpatchsetOut(IntPtr s, int maxdd);
+            internal static partial IntPtr PcpatchsetOut(IntPtr s, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "pcpatchset_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PcpatchsetMake(IntPtr values, int count);
@@ -11676,10 +11721,10 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TpcboxAsEwkb(IntPtr box, byte variant, IntPtr size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tpcbox_as_hexewkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TpcboxAsHexewkb(IntPtr box, byte variant, IntPtr size_out);
+            internal static partial IntPtr TpcboxAsHexewkb(IntPtr box, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tpcbox_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TpcboxAsHexwkb(IntPtr box, byte variant, IntPtr size_out);
+            internal static partial IntPtr TpcboxAsHexwkb(IntPtr box, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tpcbox_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TpcboxAsWkb(IntPtr box, byte variant, IntPtr size_out);
@@ -11694,10 +11739,10 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TpcboxIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "tpcbox_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TpcboxOut(IntPtr box, int maxdd);
+            internal static partial IntPtr TpcboxOut(IntPtr box, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tpcbox_make", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr TpcboxMake([MarshalAs(UnmanagedType.U1)] bool hasx, [MarshalAs(UnmanagedType.U1)] bool hasz, [MarshalAs(UnmanagedType.U1)] bool hast, [MarshalAs(UnmanagedType.U1)] bool geodetic, uint pcid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, IntPtr period);
+            internal static partial IntPtr TpcboxMake([MarshalAs(UnmanagedType.U1)] bool hasx, [MarshalAs(UnmanagedType.U1)] bool hasz, [MarshalAs(UnmanagedType.U1)] bool geodetic, uint pcid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, IntPtr period);
 
             [LibraryImport(DllPath, EntryPoint = "tpcbox_copy", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TpcboxCopy(IntPtr box);
@@ -11904,7 +11949,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TpcpointIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "tpcpoint_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TpcpointOut(IntPtr temp);
+            internal static partial IntPtr TpcpointOut(IntPtr temp, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tpcpoint_from_mfjson", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TpcpointFromMfjson(string mfjson);
@@ -11913,7 +11958,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TpcpatchIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "tpcpatch_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TpcpatchOut(IntPtr temp);
+            internal static partial IntPtr TpcpatchOut(IntPtr temp, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tpcpatch_from_mfjson", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TpcpatchFromMfjson(string mfjson);
@@ -12396,6 +12441,15 @@ namespace MEOS.NET.Functions
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool OverafterTpointcloudTpointcloud(IntPtr temp1, IntPtr temp2);
 
+            [LibraryImport(DllPath, EntryPoint = "nad_tpcbox_tpcbox", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial double NadTpcboxTpcbox(IntPtr box1, IntPtr box2);
+
+            [LibraryImport(DllPath, EntryPoint = "nad_tpointcloud_tpcbox", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial double NadTpointcloudTpcbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, EntryPoint = "nad_tpointcloud_tpointcloud", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial double NadTpointcloudTpointcloud(IntPtr temp1, IntPtr temp2);
+
             [LibraryImport(DllPath, EntryPoint = "tpc_extent_transfn", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TpcExtentTransfn(IntPtr state, IntPtr temp);
 
@@ -12419,16 +12473,16 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr PoseAsEwkb(IntPtr pose, byte variant, IntPtr size_out);
 
             [LibraryImport(DllPath, EntryPoint = "pose_as_ewkt", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PoseAsEwkt(IntPtr pose, int maxdd);
+            internal static partial IntPtr PoseAsEwkt(IntPtr pose, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "pose_as_hexewkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PoseAsHexewkb(IntPtr pose, byte variant, IntPtr size_out);
+            internal static partial IntPtr PoseAsHexewkb(IntPtr pose, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "pose_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PoseAsHexwkb(IntPtr pose, byte variant, IntPtr size_out);
+            internal static partial IntPtr PoseAsHexwkb(IntPtr pose, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "pose_as_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PoseAsText(IntPtr pose, int maxdd);
+            internal static partial IntPtr PoseAsText(IntPtr pose, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "pose_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PoseAsWkb(IntPtr pose, byte variant, IntPtr size_out);
@@ -12446,28 +12500,28 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr PoseIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "pose_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PoseOut(IntPtr pose, int maxdd);
+            internal static partial IntPtr PoseOut(IntPtr pose, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "pose_from_geopose", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PoseFromGeopose(string json);
 
             [LibraryImport(DllPath, EntryPoint = "pose_as_geopose", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PoseAsGeopose(IntPtr pose, int conformance, int precision);
+            internal static partial IntPtr PoseAsGeopose(IntPtr pose, int conformance, int precision, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tpose_from_geopose", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TposeFromGeopose(string json);
 
             [LibraryImport(DllPath, EntryPoint = "tpose_as_geopose", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TposeAsGeopose(IntPtr temp, int conformance, int precision);
+            internal static partial IntPtr TposeAsGeopose(IntPtr temp, int conformance, int precision, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tpose_as_geopose_stream_header", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TposeAsGeoposeStreamHeader(IntPtr temp, int precision);
+            internal static partial IntPtr TposeAsGeoposeStreamHeader(IntPtr temp, int precision, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tpose_as_geopose_stream_element", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TposeAsGeoposeStreamElement(IntPtr temp, IntPtr inst, int precision);
+            internal static partial IntPtr TposeAsGeoposeStreamElement(IntPtr temp, IntPtr inst, int precision, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tpose_as_geopose_stream", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TposeAsGeoposeStream(IntPtr temp, int precision);
+            internal static partial IntPtr TposeAsGeoposeStream(IntPtr temp, int precision, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "geopose_frames", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GeoposeFrames(IntPtr count);
@@ -12476,7 +12530,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr GeoposeFrame(int frame_id);
 
             [LibraryImport(DllPath, EntryPoint = "geopose_frame_name", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string GeoposeFrameName(int frame_id);
+            internal static partial IntPtr GeoposeFrameName(int frame_id, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "geopose_frame_srid", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int GeoposeFrameSrid(int frame_id);
@@ -12642,7 +12696,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr PosesetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "poseset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PosesetOut(IntPtr s, int maxdd);
+            internal static partial IntPtr PosesetOut(IntPtr s, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "poseset_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PosesetMake(IntPtr values, int count);
@@ -12881,25 +12935,25 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr PosechainIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "posechain_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PosechainOut(IntPtr pc, int maxdd);
+            internal static partial IntPtr PosechainOut(IntPtr pc, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "posechain_as_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PosechainAsText(IntPtr pc, int maxdd);
+            internal static partial IntPtr PosechainAsText(IntPtr pc, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "posechain_as_ewkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PosechainAsEwkb(IntPtr pc, byte variant, IntPtr size_out);
 
             [LibraryImport(DllPath, EntryPoint = "posechain_as_ewkt", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PosechainAsEwkt(IntPtr pc, int maxdd);
+            internal static partial IntPtr PosechainAsEwkt(IntPtr pc, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "posechain_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PosechainAsWkb(IntPtr pc, byte variant, IntPtr size_out);
 
             [LibraryImport(DllPath, EntryPoint = "posechain_as_hexewkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PosechainAsHexewkb(IntPtr pc, byte variant, IntPtr size_out);
+            internal static partial IntPtr PosechainAsHexewkb(IntPtr pc, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "posechain_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PosechainAsHexwkb(IntPtr pc, byte variant, IntPtr size_out);
+            internal static partial IntPtr PosechainAsHexwkb(IntPtr pc, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "posechain_from_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PosechainFromWkb(IntPtr wkb, ulong size);
@@ -12980,10 +13034,10 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TposechainFromGeopose(string json);
 
             [LibraryImport(DllPath, EntryPoint = "tposechain_as_geopose", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TposechainAsGeopose(IntPtr temp, int precision);
+            internal static partial IntPtr TposechainAsGeopose(IntPtr temp, int precision, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tposechainarr_as_geopose", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TposechainarrAsGeopose(IntPtr temparr, int count, int precision);
+            internal static partial IntPtr TposechainarrAsGeopose(IntPtr temparr, int count, int precision, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "posechain_eq", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -13025,7 +13079,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr PosechainsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "posechainset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PosechainsetOut(IntPtr s, int maxdd);
+            internal static partial IntPtr PosechainsetOut(IntPtr s, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "posechainset_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PosechainsetMake(IntPtr values, int count);
@@ -13237,7 +13291,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TneTposechainPosechain(IntPtr temp, IntPtr posechain);
 
             [LibraryImport(DllPath, EntryPoint = "quadbin_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string QuadbinAsHexwkb(ulong cell, byte variant, IntPtr size_out);
+            internal static partial IntPtr QuadbinAsHexwkb(ulong cell, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "quadbin_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr QuadbinAsWkb(ulong cell, byte variant, IntPtr size_out);
@@ -13255,7 +13309,7 @@ namespace MEOS.NET.Functions
             internal static partial ulong BigintToQuadbin(long i);
 
             [LibraryImport(DllPath, EntryPoint = "quadbin_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string QuadbinOut(ulong cell);
+            internal static partial IntPtr QuadbinOut(ulong cell, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "quadbin_eq", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -13353,13 +13407,13 @@ namespace MEOS.NET.Functions
             internal static partial double QuadbinCellArea(ulong cell);
 
             [LibraryImport(DllPath, EntryPoint = "quadbin_index_to_string", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string QuadbinIndexToString(ulong index);
+            internal static partial IntPtr QuadbinIndexToString(ulong index, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "quadbin_string_to_index", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial ulong QuadbinStringToIndex(string str);
 
             [LibraryImport(DllPath, EntryPoint = "quadbin_cell_to_quadkey", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string QuadbinCellToQuadkey(ulong cell);
+            internal static partial IntPtr QuadbinCellToQuadkey(ulong cell, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "quadbin_grid_disk", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr QuadbinGridDisk(ulong origin, int k);
@@ -13386,7 +13440,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr QuadbinsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "quadbinset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string QuadbinsetOut(IntPtr s);
+            internal static partial IntPtr QuadbinsetOut(IntPtr s, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "quadbinset_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr QuadbinsetMake(IntPtr values, int count);
@@ -13446,7 +13500,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TquadbinseqsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "tquadbin_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TquadbinOut(IntPtr temp);
+            internal static partial IntPtr TquadbinOut(IntPtr temp, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "tquadbin_from_mfjson", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TquadbinFromMfjson(string mfjson);
@@ -13595,7 +13649,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr RaquetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "raquet_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string RaquetOut(IntPtr rq);
+            internal static partial IntPtr RaquetOut(IntPtr rq, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "raquet_from_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr RaquetFromWkb(IntPtr wkb, ulong size);
@@ -13607,7 +13661,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr RaquetAsWkb(IntPtr rq, byte variant, IntPtr size_out);
 
             [LibraryImport(DllPath, EntryPoint = "raquet_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string RaquetAsHexwkb(IntPtr rq, byte variant, IntPtr size_out);
+            internal static partial IntPtr RaquetAsHexwkb(IntPtr rq, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "raquet_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr RaquetMake(ulong quadbin, int width, int height, int pixtype, double nodata, [MarshalAs(UnmanagedType.U1)] bool has_nodata, IntPtr pixels, ulong pixels_size);
@@ -13631,7 +13685,7 @@ namespace MEOS.NET.Functions
             internal static partial int RaquetHeight(IntPtr rq);
 
             [LibraryImport(DllPath, EntryPoint = "raquet_band_pixel_type", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string RaquetBandPixelType(IntPtr rq);
+            internal static partial IntPtr RaquetBandPixelType(IntPtr rq, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "raquet_band_has_nodata_value", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -13663,7 +13717,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr RasterAsWkb(IntPtr rast, byte variant, IntPtr size_out);
 
             [LibraryImport(DllPath, EntryPoint = "raster_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string RasterAsHexwkb(IntPtr rast, byte variant, IntPtr size_out);
+            internal static partial IntPtr RasterAsHexwkb(IntPtr rast, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "raster_copy", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr RasterCopy(IntPtr rast);
@@ -13714,7 +13768,7 @@ namespace MEOS.NET.Functions
             internal static partial double RasterSkewY(IntPtr rast);
 
             [LibraryImport(DllPath, EntryPoint = "raster_band_pixel_type", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string RasterBandPixelType(IntPtr rast, int band);
+            internal static partial IntPtr RasterBandPixelType(IntPtr rast, int band, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "raster_band_has_nodata_value", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -13845,7 +13899,7 @@ namespace MEOS.NET.Functions
             internal static partial bool RasterSameAlignment(IntPtr rast1, IntPtr rast2);
 
             [LibraryImport(DllPath, EntryPoint = "raster_not_same_alignment_reason", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string RasterNotSameAlignmentReason(IntPtr rast1, IntPtr rast2);
+            internal static partial IntPtr RasterNotSameAlignmentReason(IntPtr rast1, IntPtr rast2, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "raster_same_alignment_combinefn", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr RasterSameAlignmentCombinefn(IntPtr state1, IntPtr state2);
@@ -13972,13 +14026,13 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TrgeometryFromMfjson(string mfjson);
 
             [LibraryImport(DllPath, EntryPoint = "trgeometry_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TrgeometryOut(IntPtr temp);
+            internal static partial IntPtr TrgeometryOut(IntPtr temp, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "trgeometry_as_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TrgeometryAsText(IntPtr temp, int maxdd);
+            internal static partial IntPtr TrgeometryAsText(IntPtr temp, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "trgeometry_as_ewkt", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TrgeometryAsEwkt(IntPtr temp, int maxdd);
+            internal static partial IntPtr TrgeometryAsEwkt(IntPtr temp, int maxdd, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "trgeometryinst_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TrgeometryinstMake(IntPtr geom, IntPtr pose, long t);
@@ -14397,7 +14451,7 @@ namespace MEOS.NET.Functions
             internal static partial int AdwithinTrgeometryTrgeometry(IntPtr temp1, IntPtr temp2, double dist);
 
             [LibraryImport(DllPath, EntryPoint = "s2cell_as_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string S2cellAsHexwkb(ulong cell, byte variant, IntPtr size_out);
+            internal static partial IntPtr S2cellAsHexwkb(ulong cell, byte variant, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "s2cell_as_wkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr S2cellAsWkb(ulong cell, byte variant, IntPtr size_out);
@@ -14415,7 +14469,7 @@ namespace MEOS.NET.Functions
             internal static partial ulong BigintToS2cell(long i);
 
             [LibraryImport(DllPath, EntryPoint = "s2cell_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string S2cellOut(ulong cell);
+            internal static partial IntPtr S2cellOut(ulong cell, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "s2cell_eq", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -14455,7 +14509,7 @@ namespace MEOS.NET.Functions
             internal static partial bool S2cellIsValidCell(ulong cell);
 
             [LibraryImport(DllPath, EntryPoint = "s2cell_cell_to_token", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string S2cellCellToToken(ulong cell);
+            internal static partial IntPtr S2cellCellToToken(ulong cell, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "s2cell_token_to_cell", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial ulong S2cellTokenToCell(string token);
@@ -14549,7 +14603,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr S2cellsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "s2cellset_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string S2cellsetOut(IntPtr s);
+            internal static partial IntPtr S2cellsetOut(IntPtr s, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "s2cellset_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr S2cellsetMake(IntPtr values, int count);
@@ -14609,7 +14663,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr Ts2cellseqsetIn(string str);
 
             [LibraryImport(DllPath, EntryPoint = "ts2cell_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string Ts2cellOut(IntPtr temp);
+            internal static partial IntPtr Ts2cellOut(IntPtr temp, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "ts2cell_from_mfjson", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr Ts2cellFromMfjson(string mfjson);
@@ -15584,7 +15638,7 @@ namespace MEOS.NET.Functions
             internal static partial int Int32Or(int num1, int num2);
 
             [LibraryImport(DllPath, EntryPoint = "int32_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string Int32Out(int num);
+            internal static partial IntPtr Int32Out(int num, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "int32_shl", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int Int32Shl(int num1, int num2);
@@ -15657,7 +15711,7 @@ namespace MEOS.NET.Functions
             internal static partial long Int64Or(long num1, long num2);
 
             [LibraryImport(DllPath, EntryPoint = "int64_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string Int64Out(long num);
+            internal static partial IntPtr Int64Out(long num, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "int64_shl", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial long Int64Shl(long num1, int num2);
@@ -16224,7 +16278,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr TimetzCopy(IntPtr timetz);
 
             [LibraryImport(DllPath, EntryPoint = "timetz_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string TimetzOut(IntPtr timetz);
+            internal static partial IntPtr TimetzOut(IntPtr timetz, out nuint size_out);
 
             [LibraryImport(DllPath, EntryPoint = "timetz_overlaps", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -16482,715 +16536,6 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "meos_pc_patch_deserialize", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr MeosPcPatchDeserialize(IntPtr serpatch, IntPtr schema);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_in", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericIn(string str, int typmod);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PgNumericOut(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_typmodin", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgNumericTypmodin(IntPtr tl, int n);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_typmodout", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PgNumericTypmodout(int typmod);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumeric(IntPtr num, int typmod);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_abs", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericAbs(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_uplus", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericUplus(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_uminus", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericUminus(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_sign", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericSign(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_round", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericRound(IntPtr num, int scale);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_trunc", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericTrunc(IntPtr num, int scale);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_ceil", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericCeil(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_floor", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericFloor(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_cmp", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgNumericCmp(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_eq", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgNumericEq(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_ne", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgNumericNe(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_gt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgNumericGt(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_ge", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgNumericGe(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_lt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgNumericLt(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_le", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgNumericLe(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_add", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericAdd(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_sub", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericSub(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_mul", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericMul(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_div", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericDiv(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_div_trunc", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericDivTrunc(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_mod", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericMod(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_inc", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericInc(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_smaller", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericSmaller(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_larger", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericLarger(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_gcd", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericGcd(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_lcm", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericLcm(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_fac", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericFac(long num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_sqrt", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericSqrt(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_exp", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericExp(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_ln", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericLn(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_log", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericLog(IntPtr num1, IntPtr num2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_scale", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgNumericScale(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_min_scale", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgNumericMinScale(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_numeric_trim_scale", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgNumericTrimScale(IntPtr num);
-
-            [LibraryImport(DllPath, EntryPoint = "meos_strtod", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial double MeosStrtod(string str, IntPtr endptr);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_float4_cmp", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgFloat4Cmp(float a, float b);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_float8_cmp", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgFloat8Cmp(double a, double b);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_cstring_to_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgCstringToText(string str);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_icu_unicode_version", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgIcuUnicodeVersion();
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_concat", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTextConcat(IntPtr textarr, int count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_concat_ws", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTextConcatWs(IntPtr textarr, int count, IntPtr sep);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_ge", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTextGe(IntPtr txt1, IntPtr txt2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_gt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTextGt(IntPtr txt1, IntPtr txt2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_larger", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTextLarger(IntPtr txt1, IntPtr txt2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_le", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTextLe(IntPtr txt1, IntPtr txt2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_left", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTextLeft(IntPtr txt, int n);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_lt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTextLt(IntPtr txt1, IntPtr txt2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_pattern_ge", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTextPatternGe(IntPtr txt1, IntPtr txt2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_pattern_gt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTextPatternGt(IntPtr txt1, IntPtr txt2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_pattern_le", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTextPatternLe(IntPtr txt1, IntPtr txt2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_pattern_lt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTextPatternLt(IntPtr txt1, IntPtr txt2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_reverse", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTextReverse(IntPtr txt);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_right", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTextRight(IntPtr txt, int n);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_smaller", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTextSmaller(IntPtr txt1, IntPtr txt2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_starts_with", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTextStartsWith(IntPtr txt1, IntPtr txt2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_substr", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTextSubstr(IntPtr txt, int start, int length);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_substr_no_len", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTextSubstrNoLen(IntPtr txt, int start);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_unicode_assigned", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgUnicodeAssigned(IntPtr txt);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_unicode_is_normalized", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgUnicodeIsNormalized(IntPtr txt, IntPtr fmt);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_unicode_normalize_func", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgUnicodeNormalizeFunc(IntPtr txt, IntPtr fmt);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_unicode_version", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgUnicodeVersion();
-
-            [LibraryImport(DllPath, EntryPoint = "pg_unistr", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgUnistr(IntPtr txt);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_text_to_cstring", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PgTextToCstring(IntPtr txt);
-
-            [LibraryImport(DllPath, EntryPoint = "bytea_copy", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr ByteaCopy(IntPtr ba);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_date_in", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgDateIn(string str);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_date_larger", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgDateLarger(int date1, int date2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_date_make", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgDateMake(int year, int mon, int mday);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_date_smaller", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgDateSmaller(int date1, int date2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_date_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PgDateOut(int date);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_cmp", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgTimeCmp(long time1, long time2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_eq", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTimeEq(long time1, long time2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_ge", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTimeGe(long time1, long time2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_gt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTimeGt(long time1, long time2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_hash", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial uint PgTimeHash(long time);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_hash_extended", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial ulong PgTimeHashExtended(long time, int seed);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_in", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimeIn(string str, int typmod);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_larger", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimeLarger(long time1, long time2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_le", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTimeLe(long time1, long time2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_lt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTimeLt(long time1, long time2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_ne", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTimeNe(long time1, long time2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PgTimeOut(long time);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_part", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial double PgTimePart(long time, IntPtr units);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_scale", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimeScale(long date, int typmod);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_time_smaller", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimeSmaller(long time1, long time2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_at_local", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTimetzAtLocal(IntPtr timetz);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_cmp", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgTimetzCmp(IntPtr timetz1, IntPtr timetz2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_eq", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTimetzEq(IntPtr timetz1, IntPtr timetz2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_ge", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTimetzGe(IntPtr timetz1, IntPtr timetz2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_gt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTimetzGt(IntPtr timetz1, IntPtr timetz2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_hash", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial uint PgTimetzHash(IntPtr timetz);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_hash_extended", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial ulong PgTimetzHashExtended(IntPtr timetz, long seed);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_in", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTimetzIn(string str, int typmod);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_izone", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTimetzIzone(IntPtr timetz, IntPtr zone);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_le", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTimetzLe(IntPtr timetz1, IntPtr timetz2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_lt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTimetzLt(IntPtr timetz1, IntPtr timetz2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_ne", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgTimetzNe(IntPtr timetz1, IntPtr timetz2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PgTimetzOut(IntPtr timetz);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_larger", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTimetzLarger(IntPtr timetz1, IntPtr timetz2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_part", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial double PgTimetzPart(IntPtr timetz, IntPtr units);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_scale", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTimetzScale(IntPtr timetz, int typmod);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_smaller", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTimetzSmaller(IntPtr timetz1, IntPtr timetz2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timetz_zone", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTimetzZone(IntPtr timetz, IntPtr zone);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_justify_days", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgIntervalJustifyDays(IntPtr interv);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_justify_hours", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgIntervalJustifyHours(IntPtr interv);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_justify_interval", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgIntervalJustifyInterval(IntPtr interv);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_age", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTimestampAge(long ts1, long ts2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_at_local", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestampAtLocal(long ts);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_bin", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestampBin(long ts, IntPtr stride, long origin);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_hash", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial uint PgTimestampHash(long ts);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_hash_extended", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial ulong PgTimestampHashExtended(long tstz, ulong seed);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_in", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestampIn(string str, int typmod);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_izone", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestampIzone(long ts, IntPtr zone);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_larger", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestampLarger(long ts1, long ts2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PgTimestampOut(long ts);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_part", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial double PgTimestampPart(long ts, IntPtr units);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_scale", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestampScale(long ts, int typmod);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_smaller", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestampSmaller(long ts1, long ts2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_trunc", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestampTrunc(long ts, IntPtr units);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamp_zone", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestampZone(long ts, IntPtr zone);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamptz_age", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgTimestamptzAge(long tstz1, long tstz2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamptz_bin", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestamptzBin(long tstz, IntPtr stride, long origin);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamptz_hash", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial uint PgTimestamptzHash(long tstz);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamptz_hash_extended", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial ulong PgTimestamptzHashExtended(long tstz, ulong seed);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamptz_in", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestamptzIn(string str, int typmod);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamptz_izone", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestamptzIzone(long tstz, IntPtr zone);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamptz_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PgTimestamptzOut(long tstz);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamptz_part", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial double PgTimestamptzPart(long tstz, IntPtr units);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamptz_scale", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestamptzScale(long tstz, int typmod);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamptz_trunc", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestamptzTrunc(long tstz, IntPtr units);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamptz_trunc_zone", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestamptzTruncZone(long tstz, IntPtr units, IntPtr zone);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamptz_zone", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestamptzZone(long tstz, IntPtr zone);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_timestamptz_at_local", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial long PgTimestamptzAtLocal(long tstz);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_cmp", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgIntervalCmp(IntPtr interv1, IntPtr interv2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_eq", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgIntervalEq(IntPtr interv1, IntPtr interv2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_ge", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgIntervalGe(IntPtr interv1, IntPtr interv2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_gt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgIntervalGt(IntPtr interv1, IntPtr interv2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_hash", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial uint PgIntervalHash(IntPtr interv);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_hash_extended", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial ulong PgIntervalHashExtended(IntPtr interv, ulong seed);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_in", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgIntervalIn(string str, int typmod);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_larger", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgIntervalLarger(IntPtr interv1, IntPtr interv2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_le", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgIntervalLe(IntPtr interv1, IntPtr interv2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_lt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgIntervalLt(IntPtr interv1, IntPtr interv2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_ne", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgIntervalNe(IntPtr interv1, IntPtr interv2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PgIntervalOut(IntPtr interv);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_part", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial double PgIntervalPart(IntPtr interv, IntPtr units);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_scale", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgIntervalScale(IntPtr interv, int typmod);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_smaller", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgIntervalSmaller(IntPtr interv1, IntPtr interv2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_interval_trunc", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgIntervalTrunc(IntPtr interv, IntPtr units);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_in", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonIn(string str);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PgJsonOut(IntPtr js);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_from_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbFromText(IntPtr txt, [MarshalAs(UnmanagedType.U1)] bool unique_keys);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_to_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbToText(IntPtr jb);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_in", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbIn(string str);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PgJsonbOut(IntPtr jb);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_make", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonMake(IntPtr keyvalarr, int count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_make_two_arg", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonMakeTwoArg(IntPtr keys, IntPtr values, int count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_copy", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbCopy(IntPtr jb);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_make", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbMake(IntPtr keys_vals, int count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_make_two_arg", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbMakeTwoArg(IntPtr keys, IntPtr values, int count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_array_elements", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonArrayElements(IntPtr js, IntPtr count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_array_elements_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonArrayElementsText(IntPtr js, IntPtr count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_array_length", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgJsonArrayLength(IntPtr js);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_each", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonEach(IntPtr js, IntPtr values, IntPtr count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_each_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonEachText(IntPtr js, IntPtr values, IntPtr count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_object_keys", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonObjectKeys(IntPtr js, IntPtr count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_typeof", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonTypeof(IntPtr js);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_array_elements", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbArrayElements(IntPtr jb, IntPtr count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_array_elements_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbArrayElementsText(IntPtr jb, IntPtr count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_array_length", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgJsonbArrayLength(IntPtr jb);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_cmp", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgJsonbCmp(IntPtr jb1, IntPtr jb2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_contained", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgJsonbContained(IntPtr jb1, IntPtr jb2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_contains", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgJsonbContains(IntPtr jb1, IntPtr jb2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_each", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbEach(IntPtr jb, IntPtr values, IntPtr count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_each_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbEachText(IntPtr jb, IntPtr values, IntPtr count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_eq", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgJsonbEq(IntPtr jb1, IntPtr jb2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_exists", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgJsonbExists(IntPtr jb, IntPtr key);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_exists_array", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgJsonbExistsArray(IntPtr jb, IntPtr keys_elems, int keys_len, [MarshalAs(UnmanagedType.U1)] bool any);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_ge", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgJsonbGe(IntPtr jb1, IntPtr jb2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_gt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgJsonbGt(IntPtr jb1, IntPtr jb2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_hash", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial uint PgJsonbHash(IntPtr jb);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_hash_extended", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial ulong PgJsonbHashExtended(IntPtr jb, ulong seed);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_object_keys", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbObjectKeys(IntPtr jb, IntPtr count);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_array_element", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonArrayElement(IntPtr js, int element);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_array_element_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonArrayElementText(IntPtr js, int element);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_extract_path", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonExtractPath(IntPtr js, IntPtr path_elems, int path_len);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_extract_path_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonExtractPathText(IntPtr js, IntPtr path_elems, int path_len);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_object_field", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonObjectField(IntPtr js, IntPtr key);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_object_field_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonObjectFieldText(IntPtr js, IntPtr key);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_json_strip_nulls", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonStripNulls(IntPtr js, [MarshalAs(UnmanagedType.U1)] bool strip_in_arrays);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_array_element", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbArrayElement(IntPtr jb, int element);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_array_element_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbArrayElementText(IntPtr jb, int element);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_concat", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbConcat(IntPtr jb1, IntPtr jb2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_delete", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbDelete(IntPtr jb, IntPtr key);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_delete_array", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbDeleteArray(IntPtr jb, IntPtr keys_elems, int keys_len);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_delete_index", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbDeleteIndex(IntPtr jb, int idx);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_delete_path", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbDeletePath(IntPtr jb, IntPtr path_elems, int path_len);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_extract_path", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbExtractPath(IntPtr jb, IntPtr path_elems, int path_len);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_extract_path_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbExtractPathText(IntPtr jb, IntPtr path_elems, int path_len);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_insert", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbInsert(IntPtr jb, IntPtr path_elems, int path_len, IntPtr newjb, [MarshalAs(UnmanagedType.U1)] bool after);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_object_field", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbObjectField(IntPtr jb, IntPtr key);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_object_field_text", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbObjectFieldText(IntPtr jb, IntPtr key);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_pretty", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbPretty(IntPtr jb);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_set", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbSet(IntPtr jb, IntPtr path_elems, int path_len, IntPtr newjb, [MarshalAs(UnmanagedType.U1)] bool create);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_set_lax", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbSetLax(IntPtr jb, IntPtr path_elems, int path_len, IntPtr newjb, [MarshalAs(UnmanagedType.U1)] bool create, IntPtr handle_null);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_strip_nulls", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbStripNulls(IntPtr jb, [MarshalAs(UnmanagedType.U1)] bool strip_in_arrays);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_le", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgJsonbLe(IntPtr jb1, IntPtr jb2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_lt", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgJsonbLt(IntPtr jb1, IntPtr jb2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_ne", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgJsonbNe(IntPtr jb1, IntPtr jb2);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonpath_in", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonpathIn(string str);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonpath_out", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial string PgJsonpathOut(IntPtr jp);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonpath_copy", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonpathCopy(IntPtr jp);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_path_exists", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int PgJsonbPathExists(IntPtr jb, IntPtr jp, IntPtr vars, [MarshalAs(UnmanagedType.U1)] bool silent, [MarshalAs(UnmanagedType.U1)] bool tz);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_path_match", StringMarshalling = StringMarshalling.Utf8)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            internal static partial bool PgJsonbPathMatch(IntPtr jb, IntPtr jp, IntPtr vars, [MarshalAs(UnmanagedType.U1)] bool silent, [MarshalAs(UnmanagedType.U1)] bool tz);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_path_query_array", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbPathQueryArray(IntPtr jb, IntPtr jp, IntPtr vars, [MarshalAs(UnmanagedType.U1)] bool silent, [MarshalAs(UnmanagedType.U1)] bool tz);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_path_query_first", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbPathQueryFirst(IntPtr jb, IntPtr jp, IntPtr vars, [MarshalAs(UnmanagedType.U1)] bool silent, [MarshalAs(UnmanagedType.U1)] bool tz);
-
-            [LibraryImport(DllPath, EntryPoint = "pg_jsonb_path_query_all", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr PgJsonbPathQueryAll(IntPtr jb, IntPtr jp, IntPtr vars, [MarshalAs(UnmanagedType.U1)] bool silent, [MarshalAs(UnmanagedType.U1)] bool tz, IntPtr count);
 
         }
     }

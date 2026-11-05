@@ -98,6 +98,9 @@ namespace MEOS.NET.Types
             }
         }
 
+        public Geo? ToGeomeas(bool segmentize)
+            => MEOSFactory.WrapGeo(Meos.TpointToGeomeas(this.Ptr, segmentize));
+
         public Geo? Trajectory(bool unary_union)
             => MEOSFactory.WrapGeo(Meos.TpointTrajectory(this.Ptr, unary_union));
 

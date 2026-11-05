@@ -161,7 +161,7 @@ namespace MEOS.NET.Types
         public Set? Pretty()
             => MEOSFactory.WrapSet(Meos.JsonbsetPretty(this.Ptr));
 
-        public Set? Set(Text[] keys, Jsonb newjb, bool create, Text null_handle, bool lax)
+        public Set? Set(Text[] keys, Jsonb newjb, bool create)
         {
             IntPtr[] _keysValues = new IntPtr[keys.Length];
             for (int i = 0; i < keys.Length; i++)
@@ -172,7 +172,26 @@ namespace MEOS.NET.Types
             GCHandle _keys = GCHandle.Alloc(_keysValues, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapSet(Meos.JsonbsetSet(this.Ptr, _keys.AddrOfPinnedObject(), keys.Length, newjb.Ptr, create, null_handle.Ptr, lax));
+                return MEOSFactory.WrapSet(Meos.JsonbsetSet(this.Ptr, _keys.AddrOfPinnedObject(), keys.Length, newjb.Ptr, create));
+            }
+            finally
+            {
+                _keys.Free();
+            }
+        }
+
+        public Set? SetLax(Text[] keys, Jsonb newjb, bool create, Text null_handle)
+        {
+            IntPtr[] _keysValues = new IntPtr[keys.Length];
+            for (int i = 0; i < keys.Length; i++)
+            {
+                _keysValues[i] = keys[i].Ptr;
+            }
+
+            GCHandle _keys = GCHandle.Alloc(_keysValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapSet(Meos.JsonbsetSetLax(this.Ptr, _keys.AddrOfPinnedObject(), keys.Length, newjb.Ptr, create, null_handle.Ptr));
             }
             finally
             {

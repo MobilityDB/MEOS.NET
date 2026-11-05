@@ -39,17 +39,7 @@ namespace MEOS.NET.Types
             => Meos.TspatialAsEwkt(this.Ptr, maxdd);
 
         public string AsHexEWKB(byte variant)
-        {
-            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
-            try
-            {
-                return Meos.TspatialAsHexewkb(this.Ptr, variant, _size_out);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(_size_out);
-            }
-        }
+            => Meos.TspatialAsHexewkb(this.Ptr, variant);
 
         public string AsText(int maxdd)
             => Meos.TspatialAsText(this.Ptr, maxdd);

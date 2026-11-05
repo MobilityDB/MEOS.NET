@@ -16,13 +16,61 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TrgeometryFromMfjson(mfjson));
 
         public static string TrgeometryOut(IntPtr temp)
-            => SafeExecution<string>(() => Native.TrgeometryOut(temp));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TrgeometryOut(temp, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string TrgeometryAsText(IntPtr temp, int maxdd)
-            => SafeExecution<string>(() => Native.TrgeometryAsText(temp, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TrgeometryAsText(temp, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string TrgeometryAsEwkt(IntPtr temp, int maxdd)
-            => SafeExecution<string>(() => Native.TrgeometryAsEwkt(temp, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TrgeometryAsEwkt(temp, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TrgeometryinstMake(IntPtr geom, IntPtr pose, long t)
             => SafeExecution<IntPtr>(() => Native.TrgeometryinstMake(geom, pose, t));

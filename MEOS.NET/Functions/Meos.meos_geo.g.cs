@@ -16,7 +16,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.Box3dIn(str));
 
         public static string Box3dOut(IntPtr box, int maxdd)
-            => SafeExecution<string>(() => Native.Box3dOut(box, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.Box3dOut(box, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr GboxMake(bool hasz, bool hasm, bool geodetic, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, double mmin, double mmax)
             => SafeExecution<IntPtr>(() => Native.GboxMake(hasz, hasm, geodetic, xmin, xmax, ymin, ymax, zmin, zmax, mmin, mmax));
@@ -25,22 +41,102 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.GboxIn(str));
 
         public static string GboxOut(IntPtr box, int maxdd)
-            => SafeExecution<string>(() => Native.GboxOut(box, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.GboxOut(box, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr GeoAsEwkb(IntPtr gs, string endian, IntPtr size)
             => SafeExecution<IntPtr>(() => Native.GeoAsEwkb(gs, endian, size));
 
         public static string GeoAsEwkt(IntPtr gs, int precision)
-            => SafeExecution<string>(() => Native.GeoAsEwkt(gs, precision));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.GeoAsEwkt(gs, precision, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string GeoAsGeojson(IntPtr gs, int option, int precision, string srs)
-            => SafeExecution<string>(() => Native.GeoAsGeojson(gs, option, precision, srs));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.GeoAsGeojson(gs, option, precision, srs, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string GeoAsHexewkb(IntPtr gs, string endian)
-            => SafeExecution<string>(() => Native.GeoAsHexewkb(gs, endian));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.GeoAsHexewkb(gs, endian, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string GeoAsText(IntPtr gs, int precision)
-            => SafeExecution<string>(() => Native.GeoAsText(gs, precision));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.GeoAsText(gs, precision, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr GeoFromEwkb(IntPtr wkb, ulong wkb_size, int srid)
             => SafeExecution<IntPtr>(() => Native.GeoFromEwkb(wkb, wkb_size, srid));
@@ -52,7 +148,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.GeoFromText(wkt, srid));
 
         public static string GeoOut(IntPtr gs)
-            => SafeExecution<string>(() => Native.GeoOut(gs));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.GeoOut(gs, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr GeogFromHexewkb(string hexwkb)
             => SafeExecution<IntPtr>(() => Native.GeogFromHexewkb(hexwkb));
@@ -312,14 +424,14 @@ namespace MEOS.NET.Functions
         public static bool GeomDisjoint2d(IntPtr gs1, IntPtr gs2)
             => SafeExecution<bool>(() => Native.GeomDisjoint2d(gs1, gs2));
 
-        public static bool GeomDwithin(IntPtr gs1, IntPtr gs2, double tolerance)
-            => SafeExecution<bool>(() => Native.GeomDwithin(gs1, gs2, tolerance));
+        public static bool GeomDwithin(IntPtr gs1, IntPtr gs2, double dist)
+            => SafeExecution<bool>(() => Native.GeomDwithin(gs1, gs2, dist));
 
-        public static bool GeomDwithin2d(IntPtr gs1, IntPtr gs2, double tolerance)
-            => SafeExecution<bool>(() => Native.GeomDwithin2d(gs1, gs2, tolerance));
+        public static bool GeomDwithin2d(IntPtr gs1, IntPtr gs2, double dist)
+            => SafeExecution<bool>(() => Native.GeomDwithin2d(gs1, gs2, dist));
 
-        public static bool GeomDwithin3d(IntPtr gs1, IntPtr gs2, double tolerance)
-            => SafeExecution<bool>(() => Native.GeomDwithin3d(gs1, gs2, tolerance));
+        public static bool GeomDwithin3d(IntPtr gs1, IntPtr gs2, double dist)
+            => SafeExecution<bool>(() => Native.GeomDwithin3d(gs1, gs2, dist));
 
         public static bool GeomIntersects(IntPtr gs1, IntPtr gs2)
             => SafeExecution<bool>(() => Native.GeomIntersects(gs1, gs2));
@@ -331,7 +443,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<bool>(() => Native.GeomIntersects3d(gs1, gs2));
 
         public static string GeomRelate(IntPtr gs1, IntPtr gs2)
-            => SafeExecution<string>(() => Native.GeomRelate(gs1, gs2));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.GeomRelate(gs1, gs2, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static bool GeomRelatePattern(IntPtr gs1, IntPtr gs2, string patt)
             => SafeExecution<bool>(() => Native.GeomRelatePattern(gs1, gs2, patt));
@@ -427,19 +555,83 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.GeomsetIn(str));
 
         public static string SpatialsetOut(IntPtr s, int maxdd)
-            => SafeExecution<string>(() => Native.SpatialsetOut(s, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.SpatialsetOut(s, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string SpatialsetAsText(IntPtr set, int maxdd)
-            => SafeExecution<string>(() => Native.SpatialsetAsText(set, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.SpatialsetAsText(set, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr SpatialsetAsEwkb(IntPtr s, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.SpatialsetAsEwkb(s, variant, size_out));
 
         public static string SpatialsetAsEwkt(IntPtr set, int maxdd)
-            => SafeExecution<string>(() => Native.SpatialsetAsEwkt(set, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.SpatialsetAsEwkt(set, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
 
-        public static string SpatialsetAsHexewkb(IntPtr s, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.SpatialsetAsHexewkb(s, variant, size_out));
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static string SpatialsetAsHexewkb(IntPtr s, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.SpatialsetAsHexewkb(s, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr GeosetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.GeosetMake(values, count));
@@ -522,11 +714,43 @@ namespace MEOS.NET.Functions
         public static IntPtr StboxAsEwkb(IntPtr box, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.StboxAsEwkb(box, variant, size_out));
 
-        public static string StboxAsHexewkb(IntPtr box, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.StboxAsHexewkb(box, variant, size_out));
+        public static string StboxAsHexewkb(IntPtr box, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.StboxAsHexewkb(box, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
 
-        public static string StboxAsHexwkb(IntPtr box, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.StboxAsHexwkb(box, variant, size_out));
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static string StboxAsHexwkb(IntPtr box, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.StboxAsHexwkb(box, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr StboxAsWkb(IntPtr box, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.StboxAsWkb(box, variant, size_out));
@@ -541,7 +765,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.StboxIn(str));
 
         public static string StboxOut(IntPtr box, int maxdd)
-            => SafeExecution<string>(() => Native.StboxOut(box, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.StboxOut(box, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr GeoTimestamptzToStbox(IntPtr gs, long t)
             => SafeExecution<IntPtr>(() => Native.GeoTimestamptzToStbox(gs, t));
@@ -794,7 +1034,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.StboxSortkey(box, size));
 
         public static string TspatialOut(IntPtr temp, int maxdd)
-            => SafeExecution<string>(() => Native.TspatialOut(temp, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TspatialOut(temp, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TgeogpointFromMfjson(string str)
             => SafeExecution<IntPtr>(() => Native.TgeogpointFromMfjson(str));
@@ -824,13 +1080,61 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TspatialAsEwkb(temp, variant, size_out));
 
         public static string TspatialAsEwkt(IntPtr temp, int maxdd)
-            => SafeExecution<string>(() => Native.TspatialAsEwkt(temp, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TspatialAsEwkt(temp, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
 
-        public static string TspatialAsHexewkb(IntPtr temp, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.TspatialAsHexewkb(temp, variant, size_out));
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static string TspatialAsHexewkb(IntPtr temp, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TspatialAsHexewkb(temp, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string TspatialAsText(IntPtr temp, int maxdd)
-            => SafeExecution<string>(() => Native.TspatialAsText(temp, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TspatialAsText(temp, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TgeoFromBaseTemp(IntPtr gs, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TgeoFromBaseTemp(gs, temp));
@@ -903,6 +1207,9 @@ namespace MEOS.NET.Functions
 
         public static bool TpointTfloatToGeomeas(IntPtr tpoint, IntPtr measure, bool segmentize, IntPtr result)
             => SafeExecution<bool>(() => Native.TpointTfloatToGeomeas(tpoint, measure, segmentize, result));
+
+        public static IntPtr TpointToGeomeas(IntPtr tpoint, bool segmentize)
+            => SafeExecution<IntPtr>(() => Native.TpointToGeomeas(tpoint, segmentize));
 
         public static IntPtr TspatialToStbox(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TspatialToStbox(temp));

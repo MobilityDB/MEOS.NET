@@ -32,19 +32,6 @@ namespace MEOS.NET.Types
         public int Join(SPTree sptree2, IndexSearchOp op, MeosArray result)
             => Meos.SptreeJoin(this.Ptr, sptree2.Ptr, (int) op, result.Ptr);
 
-        public bool Load(IntPtr boxes, long[] ids)
-        {
-            GCHandle _ids = GCHandle.Alloc(ids, GCHandleType.Pinned);
-            try
-            {
-                return Meos.SptreeLoad(this.Ptr, boxes, _ids.AddrOfPinnedObject(), ids.Length);
-            }
-            finally
-            {
-                _ids.Free();
-            }
-        }
-
         public long MemSize()
             => Meos.SptreeMemSize(this.Ptr);
 

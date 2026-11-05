@@ -556,6 +556,10 @@ class Generator:
         if length_out:
             out_params = [o for o in out_params
                           if codegen.csharp_param_name(o) != length_out]
+        # The flat wrapper of a string reads that length itself
+        # (#_emit_sized_string), so the call has no buffer to allocate here.
+        if codegen.string_size_out(f):
+            length_out = None
 
         # An out-parameter is a value MEOS answers, so every one of them is read
         # back and none appears in the C# signature.  A `bool` return alongside

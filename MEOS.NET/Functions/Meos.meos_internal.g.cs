@@ -58,19 +58,67 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.SetIn(str, settype));
 
         public static string SetOut(IntPtr s, int maxdd)
-            => SafeExecution<string>(() => Native.SetOut(s, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.SetOut(s, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr SpanIn(string str, int spantype)
             => SafeExecution<IntPtr>(() => Native.SpanIn(str, spantype));
 
         public static string SpanOut(IntPtr s, int maxdd)
-            => SafeExecution<string>(() => Native.SpanOut(s, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.SpanOut(s, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr SpansetIn(string str, int spantype)
             => SafeExecution<IntPtr>(() => Native.SpansetIn(str, spantype));
 
         public static string SpansetOut(IntPtr ss, int maxdd)
-            => SafeExecution<string>(() => Native.SpansetOut(ss, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.SpansetOut(ss, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr SetMake(IntPtr values, int count, int basetype, bool order)
             => SafeExecution<IntPtr>(() => Native.SetMake(values, count, basetype, order));
@@ -371,6 +419,27 @@ namespace MEOS.NET.Functions
         public static bool EnsureIndexJoinOp(int op)
             => SafeExecution<bool>(() => Native.EnsureIndexJoinOp(op));
 
+        public static bool BboxSameStructure(int bboxtype, IntPtr box1, IntPtr box2)
+            => SafeExecution<bool>(() => Native.BboxSameStructure(bboxtype, box1, box2));
+
+        public static bool EnsureIndexOp(int bboxtype, int op)
+            => SafeExecution<bool>(() => Native.EnsureIndexOp(bboxtype, op));
+
+        public static bool IndexOpIsValid(int bboxtype, int op, IntPtr box, IntPtr query)
+            => SafeExecution<bool>(() => Native.IndexOpIsValid(bboxtype, op, box, query));
+
+        public static bool IndexOpApply(int bboxtype, int op, IntPtr box, IntPtr query)
+            => SafeExecution<bool>(() => Native.IndexOpApply(bboxtype, op, box, query));
+
+        public static void IndexQueryProject(int bboxtype, IntPtr query, IntPtr box, IntPtr result)
+            => SafeExecution(() => Native.IndexQueryProject(bboxtype, query, box, result));
+
+        public static bool IndexDistanceIsValid(int bboxtype, IntPtr box, IntPtr query)
+            => SafeExecution<bool>(() => Native.IndexDistanceIsValid(bboxtype, box, query));
+
+        public static double IndexDistanceApply(int bboxtype, IntPtr box, IntPtr query)
+            => SafeExecution<double>(() => Native.IndexDistanceApply(bboxtype, box, query));
+
         public static bool EnsureIndexResult(IntPtr result)
             => SafeExecution<bool>(() => Native.EnsureIndexResult(result));
 
@@ -622,7 +691,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TemporalIn(str, temptype));
 
         public static string TemporalOut(IntPtr temp, int maxdd)
-            => SafeExecution<string>(() => Native.TemporalOut(temp, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalOut(temp, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TemparrOut(IntPtr temparr, int count, int maxdd)
             => SafeExecution<IntPtr>(() => Native.TemparrOut(temparr, count, maxdd));
@@ -652,7 +737,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TinstantIn(str, temptype));
 
         public static string TinstantOut(IntPtr inst, int maxdd)
-            => SafeExecution<string>(() => Native.TinstantOut(inst, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TinstantOut(inst, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TbigintinstFromMfjson(IntPtr mfjson)
             => SafeExecution<IntPtr>(() => Native.TbigintinstFromMfjson(mfjson));
@@ -697,7 +798,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TsequenceIn(str, temptype, interp));
 
         public static string TsequenceOut(IntPtr seq, int maxdd)
-            => SafeExecution<string>(() => Native.TsequenceOut(seq, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TsequenceOut(seq, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TsequencesetFromMfjson(IntPtr mfjson, bool spatial, int srid, int temptype, int interp)
             => SafeExecution<IntPtr>(() => Native.TsequencesetFromMfjson(mfjson, spatial, srid, temptype, interp));
@@ -706,7 +823,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TsequencesetIn(str, temptype, interp));
 
         public static string TsequencesetOut(IntPtr ss, int maxdd)
-            => SafeExecution<string>(() => Native.TsequencesetOut(ss, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TsequencesetOut(ss, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TtextinstFromMfjson(IntPtr mfjson)
             => SafeExecution<IntPtr>(() => Native.TtextinstFromMfjson(mfjson));

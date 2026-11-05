@@ -13,16 +13,64 @@ namespace MEOS.NET.Functions
             => SafeExecution<bool>(() => Native.BoolIn(str));
 
         public static string BoolOut(bool b)
-            => SafeExecution<string>(() => Native.BoolOut(b));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.BoolOut(b, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string Float8Out(double num, int maxdd)
-            => SafeExecution<string>(() => Native.Float8Out(num, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.Float8Out(num, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static int DateIn(string str)
             => SafeExecution<int>(() => Native.DateIn(str));
 
         public static string DateOut(int date)
-            => SafeExecution<string>(() => Native.DateOut(date));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.DateOut(date, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static int IntervalCmp(IntPtr interv1, IntPtr interv2)
             => SafeExecution<int>(() => Native.IntervalCmp(interv1, interv2));
@@ -31,25 +79,89 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.IntervalIn(str, typmod));
 
         public static string IntervalOut(IntPtr interv)
-            => SafeExecution<string>(() => Native.IntervalOut(interv));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.IntervalOut(interv, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static long TimeIn(string str, int typmod)
             => SafeExecution<long>(() => Native.TimeIn(str, typmod));
 
         public static string TimeOut(long time)
-            => SafeExecution<string>(() => Native.TimeOut(time));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TimeOut(time, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static long TimestampIn(string str, int typmod)
             => SafeExecution<long>(() => Native.TimestampIn(str, typmod));
 
         public static string TimestampOut(long ts)
-            => SafeExecution<string>(() => Native.TimestampOut(ts));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TimestampOut(ts, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static long TimestamptzIn(string str, int typmod)
             => SafeExecution<long>(() => Native.TimestamptzIn(str, typmod));
 
         public static string TimestamptzOut(long tstz)
-            => SafeExecution<string>(() => Native.TimestamptzOut(tstz));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TimestamptzOut(tstz, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr CstringToText(string str)
             => SafeExecution<IntPtr>(() => Native.CstringToText(str));
@@ -61,7 +173,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TextIn(str));
 
         public static string TextOut(IntPtr txt)
-            => SafeExecution<string>(() => Native.TextOut(txt));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TextOut(txt, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static int TextCmp(IntPtr txt1, IntPtr txt2, IntPtr collid)
             => SafeExecution<int>(() => Native.TextCmp(txt1, txt2, collid));
@@ -298,10 +426,42 @@ namespace MEOS.NET.Functions
             => SafeExecution<bool>(() => Native.MeosSetIntervalstyle(newval, extra));
 
         public static string MeosGetDatestyle()
-            => SafeExecution<string>(() => Native.MeosGetDatestyle());
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.MeosGetDatestyle(out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string MeosGetIntervalstyle()
-            => SafeExecution<string>(() => Native.MeosGetIntervalstyle());
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.MeosGetIntervalstyle(out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static void MeosSetSpatialRefSysCsv(string path)
             => SafeExecution(() => Native.MeosSetSpatialRefSysCsv(path));
@@ -316,22 +476,102 @@ namespace MEOS.NET.Functions
             => SafeExecution(() => Native.MeosFinalize());
 
         public static string MeosVersion()
-            => SafeExecution<string>(() => Native.MeosVersion());
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.MeosVersion(out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string MeosFullVersion()
-            => SafeExecution<string>(() => Native.MeosFullVersion());
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.MeosFullVersion(out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string MobilitydbVersion()
-            => SafeExecution<string>(() => Native.MobilitydbVersion());
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.MobilitydbVersion(out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string MobilitydbFullVersion()
-            => SafeExecution<string>(() => Native.MobilitydbFullVersion());
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.MobilitydbFullVersion(out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr BigintsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.BigintsetIn(str));
 
         public static string BigintsetOut(IntPtr set)
-            => SafeExecution<string>(() => Native.BigintsetOut(set));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.BigintsetOut(set, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr BigintspanExpand(IntPtr s, long value)
             => SafeExecution<IntPtr>(() => Native.BigintspanExpand(s, value));
@@ -340,37 +580,133 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.BigintspanIn(str));
 
         public static string BigintspanOut(IntPtr s)
-            => SafeExecution<string>(() => Native.BigintspanOut(s));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.BigintspanOut(s, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr BigintspansetIn(string str)
             => SafeExecution<IntPtr>(() => Native.BigintspansetIn(str));
 
         public static string BigintspansetOut(IntPtr ss)
-            => SafeExecution<string>(() => Native.BigintspansetOut(ss));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.BigintspansetOut(ss, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr DatesetIn(string str)
             => SafeExecution<IntPtr>(() => Native.DatesetIn(str));
 
         public static string DatesetOut(IntPtr s)
-            => SafeExecution<string>(() => Native.DatesetOut(s));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.DatesetOut(s, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr DatespanIn(string str)
             => SafeExecution<IntPtr>(() => Native.DatespanIn(str));
 
         public static string DatespanOut(IntPtr s)
-            => SafeExecution<string>(() => Native.DatespanOut(s));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.DatespanOut(s, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr DatespansetIn(string str)
             => SafeExecution<IntPtr>(() => Native.DatespansetIn(str));
 
         public static string DatespansetOut(IntPtr ss)
-            => SafeExecution<string>(() => Native.DatespansetOut(ss));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.DatespansetOut(ss, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr FloatsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.FloatsetIn(str));
 
         public static string FloatsetOut(IntPtr set, int maxdd)
-            => SafeExecution<string>(() => Native.FloatsetOut(set, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.FloatsetOut(set, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr FloatspanExpand(IntPtr s, double value)
             => SafeExecution<IntPtr>(() => Native.FloatspanExpand(s, value));
@@ -379,19 +715,67 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.FloatspanIn(str));
 
         public static string FloatspanOut(IntPtr s, int maxdd)
-            => SafeExecution<string>(() => Native.FloatspanOut(s, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.FloatspanOut(s, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr FloatspansetIn(string str)
             => SafeExecution<IntPtr>(() => Native.FloatspansetIn(str));
 
         public static string FloatspansetOut(IntPtr ss, int maxdd)
-            => SafeExecution<string>(() => Native.FloatspansetOut(ss, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.FloatspansetOut(ss, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr IntsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.IntsetIn(str));
 
         public static string IntsetOut(IntPtr set)
-            => SafeExecution<string>(() => Native.IntsetOut(set));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.IntsetOut(set, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr IntspanExpand(IntPtr s, int value)
             => SafeExecution<IntPtr>(() => Native.IntspanExpand(s, value));
@@ -400,16 +784,64 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.IntspanIn(str));
 
         public static string IntspanOut(IntPtr s)
-            => SafeExecution<string>(() => Native.IntspanOut(s));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.IntspanOut(s, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr IntspansetIn(string str)
             => SafeExecution<IntPtr>(() => Native.IntspansetIn(str));
 
         public static string IntspansetOut(IntPtr ss)
-            => SafeExecution<string>(() => Native.IntspansetOut(ss));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.IntspansetOut(ss, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
 
-        public static string SetAsHexwkb(IntPtr s, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.SetAsHexwkb(s, variant, size_out));
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static string SetAsHexwkb(IntPtr s, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.SetAsHexwkb(s, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr SetAsWkb(IntPtr s, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.SetAsWkb(s, variant, size_out));
@@ -420,8 +852,24 @@ namespace MEOS.NET.Functions
         public static IntPtr SetFromWkb(IntPtr wkb, ulong size)
             => SafeExecution<IntPtr>(() => Native.SetFromWkb(wkb, size));
 
-        public static string SpanAsHexwkb(IntPtr s, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.SpanAsHexwkb(s, variant, size_out));
+        public static string SpanAsHexwkb(IntPtr s, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.SpanAsHexwkb(s, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr SpanAsWkb(IntPtr s, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.SpanAsWkb(s, variant, size_out));
@@ -432,8 +880,24 @@ namespace MEOS.NET.Functions
         public static IntPtr SpanFromWkb(IntPtr wkb, ulong size)
             => SafeExecution<IntPtr>(() => Native.SpanFromWkb(wkb, size));
 
-        public static string SpansetAsHexwkb(IntPtr ss, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.SpansetAsHexwkb(ss, variant, size_out));
+        public static string SpansetAsHexwkb(IntPtr ss, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.SpansetAsHexwkb(ss, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr SpansetAsWkb(IntPtr ss, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.SpansetAsWkb(ss, variant, size_out));
@@ -448,25 +912,89 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TextsetIn(str));
 
         public static string TextsetOut(IntPtr set)
-            => SafeExecution<string>(() => Native.TextsetOut(set));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TextsetOut(set, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TstzsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.TstzsetIn(str));
 
         public static string TstzsetOut(IntPtr set)
-            => SafeExecution<string>(() => Native.TstzsetOut(set));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TstzsetOut(set, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TstzspanIn(string str)
             => SafeExecution<IntPtr>(() => Native.TstzspanIn(str));
 
         public static string TstzspanOut(IntPtr s)
-            => SafeExecution<string>(() => Native.TstzspanOut(s));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TstzspanOut(s, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TstzspansetIn(string str)
             => SafeExecution<IntPtr>(() => Native.TstzspansetIn(str));
 
         public static string TstzspansetOut(IntPtr ss)
-            => SafeExecution<string>(() => Native.TstzspansetOut(ss));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TstzspansetOut(ss, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr BigintsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.BigintsetMake(values, count));
@@ -2599,8 +3127,24 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static string TboxAsHexwkb(IntPtr box, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.TboxAsHexwkb(box, variant, size_out));
+        public static string TboxAsHexwkb(IntPtr box, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TboxAsHexwkb(box, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TboxAsWkb(IntPtr box, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.TboxAsWkb(box, variant, size_out));
@@ -2615,7 +3159,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TboxIn(str));
 
         public static string TboxOut(IntPtr box, int maxdd)
-            => SafeExecution<string>(() => Native.TboxOut(box, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TboxOut(box, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr FloatTimestamptzToTbox(double d, long t)
             => SafeExecution<IntPtr>(() => Native.FloatTimestamptzToTbox(d, t));
@@ -2635,8 +3195,8 @@ namespace MEOS.NET.Functions
         public static IntPtr BigintTstzspanToTbox(long i, IntPtr s)
             => SafeExecution<IntPtr>(() => Native.BigintTstzspanToTbox(i, s));
 
-        public static IntPtr NumspanTstzspanToTbox(IntPtr span, IntPtr s)
-            => SafeExecution<IntPtr>(() => Native.NumspanTstzspanToTbox(span, s));
+        public static IntPtr NumspanTstzspanToTbox(IntPtr s, IntPtr p)
+            => SafeExecution<IntPtr>(() => Native.NumspanTstzspanToTbox(s, p));
 
         public static IntPtr NumspanTimestamptzToTbox(IntPtr span, long t)
             => SafeExecution<IntPtr>(() => Native.NumspanTimestamptzToTbox(span, t));
@@ -2951,13 +3511,61 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TboolIn(str));
 
         public static string TboolOut(IntPtr temp)
-            => SafeExecution<string>(() => Native.TboolOut(temp));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TboolOut(temp, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
 
-        public static string TemporalAsHexwkb(IntPtr temp, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.TemporalAsHexwkb(temp, variant, size_out));
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static string TemporalAsHexwkb(IntPtr temp, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalAsHexwkb(temp, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string TemporalAsMfjson(IntPtr temp, int option, int flags, int precision, string srs)
-            => SafeExecution<string>(() => Native.TemporalAsMfjson(temp, option, flags, precision, srs));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalAsMfjson(temp, option, flags, precision, srs, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TemporalAsWkb(IntPtr temp, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.TemporalAsWkb(temp, variant, size_out));
@@ -2981,7 +3589,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TfloatIn(str));
 
         public static string TfloatOut(IntPtr temp, int maxdd)
-            => SafeExecution<string>(() => Native.TfloatOut(temp, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatOut(temp, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TintFromMfjson(string str)
             => SafeExecution<IntPtr>(() => Native.TintFromMfjson(str));
@@ -2996,10 +3620,42 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TbigintIn(str));
 
         public static string TintOut(IntPtr temp)
-            => SafeExecution<string>(() => Native.TintOut(temp));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TintOut(temp, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string TbigintOut(IntPtr temp)
-            => SafeExecution<string>(() => Native.TbigintOut(temp));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TbigintOut(temp, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TtextFromMfjson(string str)
             => SafeExecution<IntPtr>(() => Native.TtextFromMfjson(str));
@@ -3008,7 +3664,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TtextIn(str));
 
         public static string TtextOut(IntPtr temp)
-            => SafeExecution<string>(() => Native.TtextOut(temp));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TtextOut(temp, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TboolFromBaseTemp(bool b, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TboolFromBaseTemp(b, temp));

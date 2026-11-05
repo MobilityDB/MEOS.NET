@@ -13,16 +13,80 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.NpointAsEwkb(np, variant, size_out));
 
         public static string NpointAsEwkt(IntPtr np, int maxdd)
-            => SafeExecution<string>(() => Native.NpointAsEwkt(np, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.NpointAsEwkt(np, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
 
-        public static string NpointAsHexewkb(IntPtr np, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.NpointAsHexewkb(np, variant, size_out));
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
-        public static string NpointAsHexwkb(IntPtr np, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.NpointAsHexwkb(np, variant, size_out));
+        public static string NpointAsHexewkb(IntPtr np, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.NpointAsHexewkb(np, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static string NpointAsHexwkb(IntPtr np, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.NpointAsHexwkb(np, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string NpointAsText(IntPtr np, int maxdd)
-            => SafeExecution<string>(() => Native.NpointAsText(np, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.NpointAsText(np, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr NpointAsWkb(IntPtr np, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.NpointAsWkb(np, variant, size_out));
@@ -37,13 +101,61 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.NpointIn(str));
 
         public static string NpointOut(IntPtr np, int maxdd)
-            => SafeExecution<string>(() => Native.NpointOut(np, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.NpointOut(np, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
 
-        public static string NsegmentAsHexewkb(IntPtr ns, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.NsegmentAsHexewkb(ns, variant, size_out));
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
-        public static string NsegmentAsHexwkb(IntPtr ns, byte variant, IntPtr size_out)
-            => SafeExecution<string>(() => Native.NsegmentAsHexwkb(ns, variant, size_out));
+        public static string NsegmentAsHexewkb(IntPtr ns, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.NsegmentAsHexewkb(ns, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static string NsegmentAsHexwkb(IntPtr ns, byte variant)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.NsegmentAsHexwkb(ns, variant, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr NsegmentAsWkb(IntPtr ns, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.NsegmentAsWkb(ns, variant, size_out));
@@ -58,16 +170,64 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.NsegmentIn(str));
 
         public static string NsegmentOut(IntPtr ns, int maxdd)
-            => SafeExecution<string>(() => Native.NsegmentOut(ns, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.NsegmentOut(ns, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr NsegmentAsEwkb(IntPtr ns, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.NsegmentAsEwkb(ns, variant, size_out));
 
         public static string NsegmentAsEwkt(IntPtr ns, int maxdd)
-            => SafeExecution<string>(() => Native.NsegmentAsEwkt(ns, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.NsegmentAsEwkt(ns, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static string NsegmentAsText(IntPtr ns, int maxdd)
-            => SafeExecution<string>(() => Native.NsegmentAsText(ns, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.NsegmentAsText(ns, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr NpointCopy(IntPtr np)
             => SafeExecution<IntPtr>(() => Native.NpointCopy(np));
@@ -199,7 +359,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.NpointsetIn(str));
 
         public static string NpointsetOut(IntPtr s, int maxdd)
-            => SafeExecution<string>(() => Native.NpointsetOut(s, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.NpointsetOut(s, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr NpointsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.NpointsetMake(values, count));
@@ -271,7 +447,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TnpointFromMfjson(mfjson));
 
         public static string TnpointOut(IntPtr temp, int maxdd)
-            => SafeExecution<string>(() => Native.TnpointOut(temp, maxdd));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TnpointOut(temp, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TnpointinstMake(IntPtr np, long t)
             => SafeExecution<IntPtr>(() => Native.TnpointinstMake(np, t));

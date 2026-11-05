@@ -247,7 +247,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<int>(() => Native.Int32Or(num1, num2));
 
         public static string Int32Out(int num)
-            => SafeExecution<string>(() => Native.Int32Out(num));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.Int32Out(num, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static int Int32Shl(int num1, int num2)
             => SafeExecution<int>(() => Native.Int32Shl(num1, num2));
@@ -319,7 +335,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<long>(() => Native.Int64Or(num1, num2));
 
         public static string Int64Out(long num)
-            => SafeExecution<string>(() => Native.Int64Out(num));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.Int64Out(num, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static long Int64Shl(long num1, int num2)
             => SafeExecution<long>(() => Native.Int64Shl(num1, num2));

@@ -10,14 +10,14 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `91f8d676e789ac67c9c4fbfde6b6dbe25ceddbb5` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `78a82d4b1df606080eaad436fbb22d091d134836` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
 
 ## The flat surface — `tools/codegen.py`
 
-### parameter nullability — 4468
+### parameter nullability — 4317
 
 `shape.nullable` names the parameters a function accepts NULL for, and the catalog carries no field saying a parameter is required. A pointer parameter named in neither reaches the surface with its contract unstated: the wrapper takes it, and nothing says whether zero is an argument or a fault.
 
@@ -346,6 +346,7 @@ and `tools/objectgen.py`.  Do not edit.
 | bandstats_stddev | stats, result |
 | bandstats_sum | stats, result |
 | basetype_in | str, result |
+| bbox_same_structure | box1, box2 |
 | bbox_temporal_split_boxes | temp, count |
 | bbox_union_span_span | s1, s2, result |
 | bearing_point_point | gs1, gs2, result |
@@ -392,7 +393,7 @@ and `tools/objectgen.py`.  Do not edit.
 | bigintset_end_value | s |
 | bigintset_in | str |
 | bigintset_make | values |
-| bigintset_out | set |
+| bigintset_out | set, size_out |
 | bigintset_shift_scale | s |
 | bigintset_start_value | s |
 | bigintset_value_n | s, result |
@@ -401,7 +402,7 @@ and `tools/objectgen.py`.  Do not edit.
 | bigintspan_expand | s |
 | bigintspan_in | str |
 | bigintspan_lower | s |
-| bigintspan_out | s |
+| bigintspan_out | s, size_out |
 | bigintspan_set_floatspan | s1, s2 |
 | bigintspan_set_intspan | s1, s2 |
 | bigintspan_shift_scale | s |
@@ -412,20 +413,20 @@ and `tools/objectgen.py`.  Do not edit.
 | bigintspanset_bins | ss, count |
 | bigintspanset_in | str |
 | bigintspanset_lower | ss |
-| bigintspanset_out | ss |
+| bigintspanset_out | ss, size_out |
 | bigintspanset_shift_scale | ss |
 | bigintspanset_upper | ss |
 | bigintspanset_width | ss |
 | bool_in | str |
+| bool_out | size_out |
 | box3d_in | str |
-| box3d_out | box |
+| box3d_out | box, size_out |
 | box3d_to_stbox | box |
-| bytea_copy | ba |
 | cbuffer_as_ewkb | cb, size_out |
-| cbuffer_as_ewkt | cb |
+| cbuffer_as_ewkt | cb, size_out |
 | cbuffer_as_hexewkb | cb, size_out |
 | cbuffer_as_hexwkb | cb, size_out |
-| cbuffer_as_text | cb |
+| cbuffer_as_text | cb, size_out |
 | cbuffer_as_wkb | cb, size_out |
 | cbuffer_cmp | cb1, cb2 |
 | cbuffer_copy | cb |
@@ -442,7 +443,7 @@ and `tools/objectgen.py`.  Do not edit.
 | cbuffer_make | point |
 | cbuffer_mem_size | cb |
 | cbuffer_ne | cb1, cb2 |
-| cbuffer_out | cb |
+| cbuffer_out | cb, size_out |
 | cbuffer_point | cb |
 | cbuffer_radius | cb |
 | cbuffer_round | cb |
@@ -461,7 +462,7 @@ and `tools/objectgen.py`.  Do not edit.
 | cbufferset_end_value | s |
 | cbufferset_in | str |
 | cbufferset_make | values |
-| cbufferset_out | s |
+| cbufferset_out | s, size_out |
 | cbufferset_start_value | s |
 | cbufferset_value_n | s, result |
 | cbufferset_values | s, count |
@@ -598,11 +599,12 @@ and `tools/objectgen.py`.  Do not edit.
 | date_extract | units |
 | date_get_bin | duration |
 | date_in | str |
+| date_out | size_out |
 | date_timetz_to_timestamptz | timetz |
 | dateset_end_value | s |
 | dateset_in | str |
 | dateset_make | values |
-| dateset_out | s |
+| dateset_out | s, size_out |
 | dateset_shift_scale | s |
 | dateset_start_value | s |
 | dateset_to_tstzset | s |
@@ -613,7 +615,7 @@ and `tools/objectgen.py`.  Do not edit.
 | datespan_get_bin | duration |
 | datespan_in | str |
 | datespan_lower | s |
-| datespan_out | s |
+| datespan_out | s, size_out |
 | datespan_set_tstzspan | s1, s2 |
 | datespan_shift_scale | s |
 | datespan_to_tstzspan | s |
@@ -626,7 +628,7 @@ and `tools/objectgen.py`.  Do not edit.
 | datespanset_in | str |
 | datespanset_lower | ss |
 | datespanset_num_dates | ss |
-| datespanset_out | ss |
+| datespanset_out | ss, size_out |
 | datespanset_shift_scale | ss |
 | datespanset_start_date | ss |
 | datespanset_to_tstzspanset | ss |
@@ -922,6 +924,7 @@ and `tools/objectgen.py`.  Do not edit.
 | ever_ne_ttext_text | temp, txt |
 | float4_in | num |
 | float8_in | str |
+| float8_out | size_out |
 | float_set_tbox | box |
 | float_tstzspan_to_tbox | s |
 | floatset_ceil | s |
@@ -930,7 +933,7 @@ and `tools/objectgen.py`.  Do not edit.
 | floatset_floor | s |
 | floatset_in | str |
 | floatset_make | values |
-| floatset_out | set |
+| floatset_out | set, size_out |
 | floatset_radians | s |
 | floatset_shift_scale | s |
 | floatset_start_value | s |
@@ -944,7 +947,7 @@ and `tools/objectgen.py`.  Do not edit.
 | floatspan_floor | s |
 | floatspan_in | str |
 | floatspan_lower | s |
-| floatspan_out | s |
+| floatspan_out | s, size_out |
 | floatspan_radians | s |
 | floatspan_round | s |
 | floatspan_round_set | s, result |
@@ -961,7 +964,7 @@ and `tools/objectgen.py`.  Do not edit.
 | floatspanset_floor | ss |
 | floatspanset_in | str |
 | floatspanset_lower | ss |
-| floatspanset_out | ss |
+| floatspanset_out | ss, size_out |
 | floatspanset_radians | ss |
 | floatspanset_round | ss |
 | floatspanset_shift_scale | ss |
@@ -977,16 +980,16 @@ and `tools/objectgen.py`.  Do not edit.
 | front_tspatial_stbox | temp, box |
 | front_tspatial_tspatial | temp1, temp2 |
 | gbox_in | str |
-| gbox_out | box |
+| gbox_out | box, size_out |
 | gbox_set_stbox | box, result |
 | gbox_to_stbox | box |
 | geo_affine | gs |
 | geo_area | gs |
 | geo_as_ewkb | gs, size |
-| geo_as_ewkt | gs |
-| geo_as_geojson | gs |
-| geo_as_hexewkb | gs |
-| geo_as_text | gs |
+| geo_as_ewkt | gs, size_out |
+| geo_as_geojson | gs, size_out |
+| geo_as_hexewkb | gs, size_out |
+| geo_as_text | gs, size_out |
 | geo_centroid | gs |
 | geo_clip_linear_geom | line, gs |
 | geo_clip_subject | gs |
@@ -1019,7 +1022,7 @@ and `tools/objectgen.py`.  Do not edit.
 | geo_meos_coverage | gs |
 | geo_num_geos | gs |
 | geo_num_points | gs |
-| geo_out | gs |
+| geo_out | gs, size_out |
 | geo_perimeter | gs |
 | geo_pointarr | gs, count |
 | geo_points | gs |
@@ -1108,7 +1111,7 @@ and `tools/objectgen.py`.  Do not edit.
 | geom_minimum_bounding_radius | geom, radius |
 | geom_oriented_envelope | gs |
 | geom_perimeter | gs |
-| geom_relate | gs1, gs2 |
+| geom_relate | gs1, gs2, size_out |
 | geom_relate_pattern | gs1, gs2, patt |
 | geom_shortestline | gs1, gs2 |
 | geom_shortestline2d | gs1, gs2 |
@@ -1124,6 +1127,7 @@ and `tools/objectgen.py`.  Do not edit.
 | geometry_tpose_to_trgeometry | gs, temp |
 | geompoint_to_npoint | gs |
 | geomset_in | str |
+| geopose_frame_name | size_out |
 | geopose_frames | count |
 | geoset_end_value | s |
 | geoset_make | values |
@@ -1138,20 +1142,28 @@ and `tools/objectgen.py`.  Do not edit.
 | h3index_from_hexwkb | hexwkb |
 | h3index_from_wkb | wkb |
 | h3index_in | str |
+| h3index_out | size_out |
 | h3index_tstzspan_to_stbox | s |
 | h3indexset_cover_cells | cells |
 | h3indexset_end_value | s |
 | h3indexset_grid_disk | cells |
 | h3indexset_in | str |
 | h3indexset_make | values |
-| h3indexset_out | s |
+| h3indexset_out | s, size_out |
 | h3indexset_start_value | s |
 | h3indexset_value_n | s, result |
 | h3indexset_values | s, count |
+| index_distance_apply | box, query |
+| index_distance_is_valid | box, query |
+| index_op_apply | box, query |
+| index_op_is_valid | box, query |
+| index_query_project | query, box, result |
 | index_result_id | result, id |
 | int16_in | str |
 | int32_in | str |
+| int32_out | size_out |
 | int64_in | str |
+| int64_out | size_out |
 | int_set_tbox | box |
 | int_tstzspan_to_tbox | s |
 | inter_span_span | s1, s2, result |
@@ -1246,7 +1258,7 @@ and `tools/objectgen.py`.  Do not edit.
 | interval_lt | interv1, interv2 |
 | interval_ne | interv1, interv2 |
 | interval_negate | interv |
-| interval_out | interv |
+| interval_out | interv, size_out |
 | interval_part | interv, units |
 | interval_scale | interv |
 | interval_smaller | interv1, interv2 |
@@ -1255,7 +1267,7 @@ and `tools/objectgen.py`.  Do not edit.
 | intset_end_value | s |
 | intset_in | str |
 | intset_make | values |
-| intset_out | set |
+| intset_out | set, size_out |
 | intset_shift_scale | s |
 | intset_start_value | s |
 | intset_to_floatset | s |
@@ -1265,7 +1277,7 @@ and `tools/objectgen.py`.  Do not edit.
 | intspan_expand | s |
 | intspan_in | str |
 | intspan_lower | s |
-| intspan_out | s |
+| intspan_out | s, size_out |
 | intspan_set_bigintspan | s1, s2 |
 | intspan_set_floatspan | s1, s2 |
 | intspan_shift_scale | s |
@@ -1276,7 +1288,7 @@ and `tools/objectgen.py`.  Do not edit.
 | intspanset_bins | ss, count |
 | intspanset_in | str |
 | intspanset_lower | ss |
-| intspanset_out | ss |
+| intspanset_out | ss, size_out |
 | intspanset_shift_scale | ss |
 | intspanset_to_floatspanset | ss |
 | intspanset_upper | ss |
@@ -1296,7 +1308,7 @@ and `tools/objectgen.py`.  Do not edit.
 | json_object_field | js, key |
 | json_object_field_text | js, key |
 | json_object_keys | js, count |
-| json_out | js |
+| json_out | js, size_out |
 | json_strip_nulls | js |
 | json_typeof | js |
 | jsonb_array_element | jb |
@@ -1336,7 +1348,7 @@ and `tools/objectgen.py`.  Do not edit.
 | jsonb_object_field | jb, key |
 | jsonb_object_field_text | jb, key |
 | jsonb_object_keys | jb, count |
-| jsonb_out | jb |
+| jsonb_out | jb, size_out |
 | jsonb_path_exists | jb, jp, vars |
 | jsonb_path_match | jb, jp, vars |
 | jsonb_path_query_all | jb, jp, vars, count |
@@ -1347,7 +1359,7 @@ and `tools/objectgen.py`.  Do not edit.
 | jsonb_set_lax | jb, path_elems, handle_null |
 | jsonb_strip_nulls | jb |
 | jsonb_to_bool | jb |
-| jsonb_to_cstring | jb |
+| jsonb_to_cstring | jb, size_out |
 | jsonb_to_float4 | jb |
 | jsonb_to_float8 | jb |
 | jsonb_to_int16 | jb |
@@ -1377,7 +1389,7 @@ and `tools/objectgen.py`.  Do not edit.
 | jsonbset_object_field | set, key |
 | jsonbset_object_field_common | set, key |
 | jsonbset_object_field_text | set, key |
-| jsonbset_out | s |
+| jsonbset_out | s, size_out |
 | jsonbset_path_exists | set, jp, vars, count |
 | jsonbset_path_exists_intl | set, jp, vars, count |
 | jsonbset_path_match | set, jp, vars, count |
@@ -1385,7 +1397,9 @@ and `tools/objectgen.py`.  Do not edit.
 | jsonbset_path_query_array | set, jp, vars |
 | jsonbset_path_query_first | set, jp, vars |
 | jsonbset_pretty | set |
-| jsonbset_set | set, keys, newjb, null_handle |
+| jsonbset_set | set, keys, newjb |
+| jsonbset_set_intl | set, keys, newjb, null_handle |
+| jsonbset_set_lax | set, keys, null_handle |
 | jsonbset_start_value | s |
 | jsonbset_strip_nulls | set |
 | jsonbset_to_alphanumset | set, key |
@@ -1399,7 +1413,7 @@ and `tools/objectgen.py`.  Do not edit.
 | jsonpath_copy | jp |
 | jsonpath_in | str |
 | jsonpath_mem_size | jp |
-| jsonpath_out | jp |
+| jsonpath_out | jp, size_out |
 | left_bigint_set | s |
 | left_bigint_span | s |
 | left_bigint_spanset | ss |
@@ -1460,9 +1474,9 @@ and `tools/objectgen.py`.  Do not edit.
 | meos_array_reset | array |
 | meos_array_reset_free | array |
 | meos_error | format |
-| meos_initialize_allocator | malloc_fn, realloc_fn, free_fn |
-| meos_initialize_error_handler | err_handler |
-| meos_initialize_interrupt_handler | handler |
+| meos_full_version | size_out |
+| meos_get_datestyle | size_out |
+| meos_get_intervalstyle | size_out |
 | meos_initialize_timezone | name |
 | meos_pc_patch_deserialize | serpatch, schema |
 | meos_pc_patch_serialize | patch_in, userdata |
@@ -1481,8 +1495,8 @@ and `tools/objectgen.py`.  Do not edit.
 | meos_set_intervalstyle | newval |
 | meos_set_spatial_ref_sys_csv | path |
 | meos_set_ways_csv | path |
-| meos_strtod | str, endptr |
 | meos_typeof_hexwkb | hexwkb |
+| meos_version | size_out |
 | meosoper_from_string | name |
 | meostype_from_string | name |
 | mi_span_span | s1, s2, result |
@@ -1561,6 +1575,8 @@ and `tools/objectgen.py`.  Do not edit.
 | minus_value_set | s |
 | minus_value_span | s |
 | minus_value_spanset | ss |
+| mobilitydb_full_version | size_out |
+| mobilitydb_version | size_out |
 | mul_bigint_tbigint | tnumber |
 | mul_float8_interval | interv |
 | mul_float_raster | rast |
@@ -1612,7 +1628,10 @@ and `tools/objectgen.py`.  Do not edit.
 | nad_tnumber_numspan | temp, s |
 | nad_tnumber_tbox | temp, box |
 | nad_tnumber_tnumber | temp1, temp2 |
+| nad_tpcbox_tpcbox | box1, box2 |
 | nad_tpcpoint_geo | temp, gs |
+| nad_tpointcloud_tpcbox | temp, box |
+| nad_tpointcloud_tpointcloud | temp1, temp2 |
 | nad_tpose_geo | temp, gs |
 | nad_tpose_pose | temp, pose |
 | nad_tpose_stbox | temp, box |
@@ -1643,10 +1662,10 @@ and `tools/objectgen.py`.  Do not edit.
 | nai_trgeometry_tpoint | temp1, temp2 |
 | nai_trgeometry_trgeometry | temp1, temp2 |
 | npoint_as_ewkb | np, size_out |
-| npoint_as_ewkt | np |
+| npoint_as_ewkt | np, size_out |
 | npoint_as_hexewkb | np, size_out |
 | npoint_as_hexwkb | np, size_out |
-| npoint_as_text | np |
+| npoint_as_text | np, size_out |
 | npoint_as_wkb | np, size_out |
 | npoint_cmp | np1, np2 |
 | npoint_copy | np |
@@ -1661,7 +1680,7 @@ and `tools/objectgen.py`.  Do not edit.
 | npoint_le | np1, np2 |
 | npoint_lt | np1, np2 |
 | npoint_ne | np1, np2 |
-| npoint_out | np |
+| npoint_out | np, size_out |
 | npoint_position | np |
 | npoint_round | np |
 | npoint_route | np |
@@ -1676,16 +1695,16 @@ and `tools/objectgen.py`.  Do not edit.
 | npointset_end_value | s |
 | npointset_in | str |
 | npointset_make | values |
-| npointset_out | s |
+| npointset_out | s, size_out |
 | npointset_routes | s |
 | npointset_start_value | s |
 | npointset_value_n | s, result |
 | npointset_values | s, count |
 | nsegment_as_ewkb | ns, size_out |
-| nsegment_as_ewkt | ns |
+| nsegment_as_ewkt | ns, size_out |
 | nsegment_as_hexewkb | ns, size_out |
 | nsegment_as_hexwkb | ns, size_out |
-| nsegment_as_text | ns |
+| nsegment_as_text | ns, size_out |
 | nsegment_as_wkb | ns, size_out |
 | nsegment_cmp | ns1, ns2 |
 | nsegment_copy | ns |
@@ -1699,7 +1718,7 @@ and `tools/objectgen.py`.  Do not edit.
 | nsegment_le | ns1, ns2 |
 | nsegment_lt | ns1, ns2 |
 | nsegment_ne | ns1, ns2 |
-| nsegment_out | ns |
+| nsegment_out | ns, size_out |
 | nsegment_round | ns |
 | nsegment_route | ns |
 | nsegment_srid | ns |
@@ -1715,7 +1734,7 @@ and `tools/objectgen.py`.  Do not edit.
 | numspan_set_tbox | span, box |
 | numspan_shift_scale | s |
 | numspan_timestamptz_to_tbox | span |
-| numspan_tstzspan_to_tbox | span, s |
+| numspan_tstzspan_to_tbox | s, p |
 | numspan_width | s |
 | numspanset_shift_scale | ss |
 | numspanset_width | ss |
@@ -1933,7 +1952,7 @@ and `tools/objectgen.py`.  Do not edit.
 | overright_value_set | s |
 | overright_value_span | s |
 | overright_value_spanset | ss |
-| pcpatch_as_hexwkb | pa |
+| pcpatch_as_hexwkb | pa, size_out |
 | pcpatch_cmp | pa1, pa2 |
 | pcpatch_copy | pa |
 | pcpatch_eq | pa1, pa2 |
@@ -1944,7 +1963,7 @@ and `tools/objectgen.py`.  Do not edit.
 | pcpatch_hash | pa |
 | pcpatch_hash_extended | pa |
 | pcpatch_hex_in | str |
-| pcpatch_hex_out | pa |
+| pcpatch_hex_out | pa, size_out |
 | pcpatch_le | pa1, pa2 |
 | pcpatch_lt | pa1, pa2 |
 | pcpatch_make | points |
@@ -1961,11 +1980,11 @@ and `tools/objectgen.py`.  Do not edit.
 | pcpatchset_end_value | s |
 | pcpatchset_in | str |
 | pcpatchset_make | values |
-| pcpatchset_out | s |
+| pcpatchset_out | s, size_out |
 | pcpatchset_start_value | s |
 | pcpatchset_value_n | s, result |
 | pcpatchset_values | s, count |
-| pcpoint_as_hexwkb | pt |
+| pcpoint_as_hexwkb | pt, size_out |
 | pcpoint_cmp | pt1, pt2 |
 | pcpoint_copy | pt |
 | pcpoint_eq | pt1, pt2 |
@@ -1980,7 +1999,7 @@ and `tools/objectgen.py`.  Do not edit.
 | pcpoint_hash | pt |
 | pcpoint_hash_extended | pt |
 | pcpoint_hex_in | str |
-| pcpoint_hex_out | pt |
+| pcpoint_hex_out | pt, size_out |
 | pcpoint_le | pt1, pt2 |
 | pcpoint_lt | pt1, pt2 |
 | pcpoint_make | values |
@@ -1992,203 +2011,21 @@ and `tools/objectgen.py`.  Do not edit.
 | pcpointset_end_value | s |
 | pcpointset_in | str |
 | pcpointset_make | values |
-| pcpointset_out | s |
+| pcpointset_out | s, size_out |
 | pcpointset_start_value | s |
 | pcpointset_value_n | s, result |
 | pcpointset_values | s, count |
-| pg_cstring_to_text | str |
-| pg_date_in | str |
-| pg_interval_cmp | interv1, interv2 |
-| pg_interval_eq | interv1, interv2 |
-| pg_interval_ge | interv1, interv2 |
-| pg_interval_gt | interv1, interv2 |
-| pg_interval_hash | interv |
-| pg_interval_hash_extended | interv |
-| pg_interval_in | str |
-| pg_interval_justify_days | interv |
-| pg_interval_justify_hours | interv |
-| pg_interval_justify_interval | interv |
-| pg_interval_larger | interv1, interv2 |
-| pg_interval_le | interv1, interv2 |
-| pg_interval_lt | interv1, interv2 |
-| pg_interval_ne | interv1, interv2 |
-| pg_interval_out | interv |
-| pg_interval_part | interv, units |
-| pg_interval_scale | interv |
-| pg_interval_smaller | interv1, interv2 |
-| pg_interval_trunc | interv, units |
-| pg_json_array_element | js |
-| pg_json_array_element_text | js |
-| pg_json_array_elements | js, count |
-| pg_json_array_elements_text | js, count |
-| pg_json_array_length | js |
-| pg_json_each | js, values, count |
-| pg_json_each_text | js, values, count |
-| pg_json_extract_path | js, path_elems |
-| pg_json_extract_path_text | js, path_elems |
-| pg_json_in | str |
-| pg_json_make | keyvalarr |
-| pg_json_make_two_arg | keys, values |
-| pg_json_object_field | js, key |
-| pg_json_object_field_text | js, key |
-| pg_json_object_keys | js, count |
-| pg_json_out | js |
-| pg_json_strip_nulls | js |
-| pg_json_typeof | js |
-| pg_jsonb_array_element | jb |
-| pg_jsonb_array_element_text | jb |
-| pg_jsonb_array_elements | jb, count |
-| pg_jsonb_array_elements_text | jb, count |
-| pg_jsonb_array_length | jb |
-| pg_jsonb_cmp | jb1, jb2 |
-| pg_jsonb_concat | jb1, jb2 |
-| pg_jsonb_contained | jb1, jb2 |
-| pg_jsonb_contains | jb1, jb2 |
-| pg_jsonb_copy | jb |
-| pg_jsonb_delete | jb, key |
-| pg_jsonb_delete_array | jb, keys_elems |
-| pg_jsonb_delete_index | jb |
-| pg_jsonb_delete_path | jb, path_elems |
-| pg_jsonb_each | jb, values, count |
-| pg_jsonb_each_text | jb, values, count |
-| pg_jsonb_eq | jb1, jb2 |
-| pg_jsonb_exists | jb, key |
-| pg_jsonb_exists_array | jb, keys_elems |
-| pg_jsonb_extract_path | jb, path_elems |
-| pg_jsonb_extract_path_text | jb, path_elems |
-| pg_jsonb_from_text | txt |
-| pg_jsonb_ge | jb1, jb2 |
-| pg_jsonb_gt | jb1, jb2 |
-| pg_jsonb_hash | jb |
-| pg_jsonb_hash_extended | jb |
-| pg_jsonb_in | str |
-| pg_jsonb_insert | jb, path_elems, newjb |
-| pg_jsonb_le | jb1, jb2 |
-| pg_jsonb_lt | jb1, jb2 |
-| pg_jsonb_make | keys_vals |
-| pg_jsonb_make_two_arg | keys, values |
-| pg_jsonb_ne | jb1, jb2 |
-| pg_jsonb_object_field | jb, key |
-| pg_jsonb_object_field_text | jb, key |
-| pg_jsonb_object_keys | jb, count |
-| pg_jsonb_out | jb |
-| pg_jsonb_path_exists | jb, jp, vars |
-| pg_jsonb_path_match | jb, jp, vars |
-| pg_jsonb_path_query_all | jb, jp, vars, count |
-| pg_jsonb_path_query_array | jb, jp, vars |
-| pg_jsonb_path_query_first | jb, jp, vars |
-| pg_jsonb_pretty | jb |
-| pg_jsonb_set | jb, path_elems, newjb |
-| pg_jsonb_set_lax | jb, path_elems, newjb, handle_null |
-| pg_jsonb_strip_nulls | jb |
-| pg_jsonb_to_text | jb |
-| pg_jsonpath_copy | jp |
-| pg_jsonpath_in | str |
-| pg_jsonpath_out | jp |
-| pg_numeric | num |
-| pg_numeric_abs | num |
-| pg_numeric_add | num1, num2 |
-| pg_numeric_ceil | num |
-| pg_numeric_cmp | num1, num2 |
-| pg_numeric_div | num1, num2 |
-| pg_numeric_div_trunc | num1, num2 |
-| pg_numeric_eq | num1, num2 |
-| pg_numeric_exp | num |
-| pg_numeric_floor | num |
-| pg_numeric_gcd | num1, num2 |
-| pg_numeric_ge | num1, num2 |
-| pg_numeric_gt | num1, num2 |
-| pg_numeric_in | str |
-| pg_numeric_inc | num |
-| pg_numeric_larger | num1, num2 |
-| pg_numeric_lcm | num1, num2 |
-| pg_numeric_le | num1, num2 |
-| pg_numeric_ln | num |
-| pg_numeric_log | num1, num2 |
-| pg_numeric_lt | num1, num2 |
-| pg_numeric_min_scale | num |
-| pg_numeric_mod | num1, num2 |
-| pg_numeric_mul | num1, num2 |
-| pg_numeric_ne | num1, num2 |
-| pg_numeric_out | num |
-| pg_numeric_round | num |
-| pg_numeric_scale | num |
-| pg_numeric_sign | num |
-| pg_numeric_smaller | num1, num2 |
-| pg_numeric_sqrt | num |
-| pg_numeric_sub | num1, num2 |
-| pg_numeric_trim_scale | num |
-| pg_numeric_trunc | num |
-| pg_numeric_typmodin | tl |
-| pg_numeric_uminus | num |
-| pg_numeric_uplus | num |
-| pg_text_concat | textarr |
-| pg_text_concat_ws | textarr, sep |
-| pg_text_ge | txt1, txt2 |
-| pg_text_gt | txt1, txt2 |
-| pg_text_larger | txt1, txt2 |
-| pg_text_le | txt1, txt2 |
-| pg_text_left | txt |
-| pg_text_lt | txt1, txt2 |
-| pg_text_pattern_ge | txt1, txt2 |
-| pg_text_pattern_gt | txt1, txt2 |
-| pg_text_pattern_le | txt1, txt2 |
-| pg_text_pattern_lt | txt1, txt2 |
-| pg_text_reverse | txt |
-| pg_text_right | txt |
-| pg_text_smaller | txt1, txt2 |
-| pg_text_starts_with | txt1, txt2 |
-| pg_text_substr | txt |
-| pg_text_substr_no_len | txt |
-| pg_text_to_cstring | txt |
-| pg_time_in | str |
-| pg_time_part | units |
-| pg_timestamp_bin | stride |
-| pg_timestamp_in | str |
-| pg_timestamp_izone | zone |
-| pg_timestamp_part | units |
-| pg_timestamp_trunc | units |
-| pg_timestamp_zone | zone |
-| pg_timestamptz_bin | stride |
-| pg_timestamptz_in | str |
-| pg_timestamptz_izone | zone |
-| pg_timestamptz_part | units |
-| pg_timestamptz_trunc | units |
-| pg_timestamptz_trunc_zone | units, zone |
-| pg_timestamptz_zone | zone |
-| pg_timetz_at_local | timetz |
-| pg_timetz_cmp | timetz1, timetz2 |
-| pg_timetz_eq | timetz1, timetz2 |
-| pg_timetz_ge | timetz1, timetz2 |
-| pg_timetz_gt | timetz1, timetz2 |
-| pg_timetz_hash | timetz |
-| pg_timetz_hash_extended | timetz |
-| pg_timetz_in | str |
-| pg_timetz_izone | timetz, zone |
-| pg_timetz_larger | timetz1, timetz2 |
-| pg_timetz_le | timetz1, timetz2 |
-| pg_timetz_lt | timetz1, timetz2 |
-| pg_timetz_ne | timetz1, timetz2 |
-| pg_timetz_out | timetz |
-| pg_timetz_part | timetz, units |
-| pg_timetz_scale | timetz |
-| pg_timetz_smaller | timetz1, timetz2 |
-| pg_timetz_zone | timetz, zone |
-| pg_unicode_assigned | txt |
-| pg_unicode_is_normalized | txt, fmt |
-| pg_unicode_normalize_func | txt, fmt |
-| pg_unistr | txt |
 | plus_time_interval | interv |
 | plus_timetz_interval | timetz, interv |
 | point_round | gs |
 | pose_angular_distance | pose1, pose2 |
 | pose_apply_geo | pose, body |
 | pose_as_ewkb | pose, size_out |
-| pose_as_ewkt | pose |
-| pose_as_geopose | pose |
+| pose_as_ewkt | pose, size_out |
+| pose_as_geopose | pose, size_out |
 | pose_as_hexewkb | pose, size_out |
 | pose_as_hexwkb | pose, size_out |
-| pose_as_text | pose |
+| pose_as_text | pose, size_out |
 | pose_as_wkb | pose, size_out |
 | pose_cmp | pose1, pose2 |
 | pose_compose | body, frame |
@@ -2213,7 +2050,7 @@ and `tools/objectgen.py`.  Do not edit.
 | pose_mem_size | pose |
 | pose_ne | pose1, pose2 |
 | pose_normalize | pose |
-| pose_out | pose |
+| pose_out | pose, size_out |
 | pose_pitch | pose |
 | pose_quaternion | pose, count |
 | pose_roll | pose |
@@ -2234,10 +2071,10 @@ and `tools/objectgen.py`.  Do not edit.
 | posearr_round | posearr |
 | posechain_append | pc, pose |
 | posechain_as_ewkb | pc, size_out |
-| posechain_as_ewkt | pc |
+| posechain_as_ewkt | pc, size_out |
 | posechain_as_hexewkb | pc, size_out |
 | posechain_as_hexwkb | pc, size_out |
-| posechain_as_text | pc |
+| posechain_as_text | pc, size_out |
 | posechain_as_wkb | pc, size_out |
 | posechain_cmp | pc1, pc2 |
 | posechain_copy | pc |
@@ -2256,7 +2093,7 @@ and `tools/objectgen.py`.  Do not edit.
 | posechain_mem_size | pc |
 | posechain_ne | pc1, pc2 |
 | posechain_num_poses | pc |
-| posechain_out | pc |
+| posechain_out | pc, size_out |
 | posechain_pose_n | pc |
 | posechain_poses | pc, count |
 | posechain_prefix_pose | pc |
@@ -2276,14 +2113,14 @@ and `tools/objectgen.py`.  Do not edit.
 | posechainset_end_value | s |
 | posechainset_in | str |
 | posechainset_make | values |
-| posechainset_out | s |
+| posechainset_out | s, size_out |
 | posechainset_start_value | s |
 | posechainset_value_n | s, result |
 | posechainset_values | s, count |
 | poseset_end_value | s |
 | poseset_in | str |
 | poseset_make | values |
-| poseset_out | s |
+| poseset_out | s, size_out |
 | poseset_start_value | s |
 | poseset_value_n | s, result |
 | poseset_values | s, count |
@@ -2291,11 +2128,14 @@ and `tools/objectgen.py`.  Do not edit.
 | quadbin_as_wkb | size_out |
 | quadbin_cell_sibling | direction |
 | quadbin_cell_to_children | count |
+| quadbin_cell_to_quadkey | size_out |
 | quadbin_cell_to_tile | count |
 | quadbin_from_hexwkb | hexwkb |
 | quadbin_from_wkb | wkb |
 | quadbin_in | str |
+| quadbin_index_to_string | size_out |
 | quadbin_k_ring | count |
+| quadbin_out | size_out |
 | quadbin_string_to_index | str |
 | quadbin_tstzspan_to_stbox | s |
 | quadbinset_compact_cells | cells |
@@ -2304,7 +2144,7 @@ and `tools/objectgen.py`.  Do not edit.
 | quadbinset_grid_disk | cells |
 | quadbinset_in | str |
 | quadbinset_make | values |
-| quadbinset_out | s |
+| quadbinset_out | s, size_out |
 | quadbinset_start_value | s |
 | quadbinset_uncompact_cells | cells |
 | quadbinset_value_n | s, result |
@@ -2313,7 +2153,7 @@ and `tools/objectgen.py`.  Do not edit.
 | raquet_as_wkb | rq, size_out |
 | raquet_band_has_nodata_value | rq |
 | raquet_band_nodata_value | rq, result |
-| raquet_band_pixel_type | rq |
+| raquet_band_pixel_type | rq, size_out |
 | raquet_cmp | rq1, rq2 |
 | raquet_copy | rq |
 | raquet_eq | rq1, rq2 |
@@ -2330,7 +2170,7 @@ and `tools/objectgen.py`.  Do not edit.
 | raquet_make | pixels |
 | raquet_mem_size | rq |
 | raquet_ne | rq1, rq2 |
-| raquet_out | rq |
+| raquet_out | rq, size_out |
 | raquet_pixels | rq, size_out |
 | raquet_pixtype_from_string | str |
 | raquet_quadbin | rq |
@@ -2346,7 +2186,7 @@ and `tools/objectgen.py`.  Do not edit.
 | raster_at_value_gdal | traj, path, vspan |
 | raster_band_has_nodata_value | rast |
 | raster_band_nodata_value | rast, result |
-| raster_band_pixel_type | rast |
+| raster_band_pixel_type | rast, size_out |
 | raster_band_pixels | rast, size_out |
 | raster_clip | rast, gs |
 | raster_copy | rast |
@@ -2360,11 +2200,11 @@ and `tools/objectgen.py`.  Do not edit.
 | raster_mem_size | rast |
 | raster_minus_value | traj, rast, vspan |
 | raster_minus_value_gdal | traj, path, vspan |
-| raster_not_same_alignment_reason | rast1, rast2 |
+| raster_not_same_alignment_reason | rast1, rast2, size_out |
 | raster_num_bands | rast |
 | raster_pixel_as_points | rast, count |
 | raster_reclass | rast, expr, pixeltype |
-| raster_rescale | rast |
+| raster_rescale | rast, algorithm |
 | raster_same_alignment | rast1, rast2 |
 | raster_scale_x | rast |
 | raster_scale_y | rast |
@@ -2379,13 +2219,13 @@ and `tools/objectgen.py`.  Do not edit.
 | raster_tile_value_quadbin | traj, pixels |
 | raster_to_stbox | rast |
 | raster_tpi | rast, pixeltype |
-| raster_transform | rast |
-| raster_transform_pipeline | rast, pipelinestr |
-| raster_transform_raster | rast, alignto |
+| raster_transform | rast, algorithm |
+| raster_transform_pipeline | rast, pipelinestr, algorithm |
+| raster_transform_raster | rast, alignto, algorithm |
 | raster_tri | rast, pixeltype |
 | raster_upper_left_x | rast |
 | raster_upper_left_y | rast |
-| raster_value | traj, rast |
+| raster_value | traj, rast, resample |
 | raster_value_count | rast, count |
 | raster_value_gdal | traj, path |
 | raster_width | rast |
@@ -2460,10 +2300,12 @@ and `tools/objectgen.py`.  Do not edit.
 | s2cell_as_hexwkb | size_out |
 | s2cell_as_wkb | size_out |
 | s2cell_cell_to_children | count |
+| s2cell_cell_to_token | size_out |
 | s2cell_edge_neighbors | count |
 | s2cell_from_hexwkb | hexwkb |
 | s2cell_from_wkb | wkb |
 | s2cell_in | str |
+| s2cell_out | size_out |
 | s2cell_token_to_cell | token |
 | s2cell_tstzspan_to_stbox | s |
 | s2cellset_compact_cells | cells |
@@ -2471,7 +2313,7 @@ and `tools/objectgen.py`.  Do not edit.
 | s2cellset_end_value | s |
 | s2cellset_in | str |
 | s2cellset_make | values |
-| s2cellset_out | s |
+| s2cellset_out | s, size_out |
 | s2cellset_start_value | s |
 | s2cellset_uncompact_cells | cells |
 | s2cellset_value_n | s, result |
@@ -2527,7 +2369,7 @@ and `tools/objectgen.py`.  Do not edit.
 | set_mem_size | s |
 | set_ne | s1, s2 |
 | set_num_values | s |
-| set_out | s |
+| set_out | s, size_out |
 | set_round | s |
 | set_set_span | s, result |
 | set_set_subspan | s, result |
@@ -2592,7 +2434,7 @@ and `tools/objectgen.py`.  Do not edit.
 | span_lower_inc | s |
 | span_lt | s1, s2 |
 | span_ne | s1, s2 |
-| span_out | s |
+| span_out | s, size_out |
 | span_overlaps | s1, s2 |
 | span_overleft | s1, s2 |
 | span_overright | s1, s2 |
@@ -2629,7 +2471,7 @@ and `tools/objectgen.py`.  Do not edit.
 | spanset_mem_size | ss |
 | spanset_ne | ss1, ss2 |
 | spanset_num_spans | ss |
-| spanset_out | ss |
+| spanset_out | ss, size_out |
 | spanset_sortkey | ss, size |
 | spanset_sortkey_intl | ss, size |
 | spanset_span | ss |
@@ -2647,10 +2489,10 @@ and `tools/objectgen.py`.  Do not edit.
 | spansetstate_serialize | state, size_out |
 | spatial_set_stbox | result |
 | spatialset_as_ewkb | s, size_out |
-| spatialset_as_ewkt | set |
+| spatialset_as_ewkt | set, size_out |
 | spatialset_as_hexewkb | s, size_out |
-| spatialset_as_text | set |
-| spatialset_out | s |
+| spatialset_as_text | set, size_out |
+| spatialset_out | s, size_out |
 | spatialset_set_srid | s |
 | spatialset_set_stbox | set, result |
 | spatialset_srid | s |
@@ -2714,7 +2556,7 @@ and `tools/objectgen.py`.  Do not edit.
 | stbox_lt | box1, box2 |
 | stbox_nad | box1, box2 |
 | stbox_ne | box1, box2 |
-| stbox_out | box |
+| stbox_out | box, size_out |
 | stbox_overabove | box1, box2 |
 | stbox_overafter | box1, box2 |
 | stbox_overback | box1, box2 |
@@ -2786,7 +2628,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tbigint_max_value | temp |
 | tbigint_min_value | temp |
 | tbigint_minus_value | temp |
-| tbigint_out | temp |
+| tbigint_out | temp, size_out |
 | tbigint_scale_value | temp |
 | tbigint_shift_scale_value | temp |
 | tbigint_shift_value | temp |
@@ -2830,7 +2672,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tbool_from_mfjson | str |
 | tbool_in | str |
 | tbool_minus_value | temp |
-| tbool_out | temp |
+| tbool_out | temp, size_out |
 | tbool_start_value | temp |
 | tbool_tand_combinefn | state1, state2 |
 | tbool_to_tint | temp |
@@ -2878,7 +2720,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tbox_left | box1, box2 |
 | tbox_lt | box1, box2 |
 | tbox_ne | box1, box2 |
-| tbox_out | box |
+| tbox_out | box, size_out |
 | tbox_overafter | box1, box2 |
 | tbox_overbefore | box1, box2 |
 | tbox_overlaps | box1, box2 |
@@ -3025,7 +2867,7 @@ and `tools/objectgen.py`.  Do not edit.
 | temporal_append_tinstant | temp, inst |
 | temporal_append_tsequence | temp, seq |
 | temporal_as_hexwkb | temp, size_out |
-| temporal_as_mfjson | temp |
+| temporal_as_mfjson | temp, size_out |
 | temporal_as_tinstant | temp |
 | temporal_as_tsequence | temp |
 | temporal_as_tsequenceset | temp |
@@ -3103,7 +2945,7 @@ and `tools/objectgen.py`.  Do not edit.
 | temporal_num_instants | temp |
 | temporal_num_sequences | temp |
 | temporal_num_timestamps | temp |
-| temporal_out | temp |
+| temporal_out | temp, size_out |
 | temporal_restart | temp |
 | temporal_restrict_minmax | temp |
 | temporal_restrict_timestamptz | temp |
@@ -3129,7 +2971,7 @@ and `tools/objectgen.py`.  Do not edit.
 | temporal_simplify_max_dist | temp |
 | temporal_simplify_min_dist | temp |
 | temporal_simplify_min_tdelta | temp, mint |
-| temporal_skiplist_splice | list, values, func |
+| temporal_skiplist_splice | list, values |
 | temporal_sortkey | temp, size |
 | temporal_sortkey_intl | temp, size |
 | temporal_spans | temp, count |
@@ -3226,7 +3068,7 @@ and `tools/objectgen.py`.  Do not edit.
 | text_lt | txt1, txt2 |
 | text_ne | txt1, txt2 |
 | text_octetlen | txt |
-| text_out | txt |
+| text_out | txt, size_out |
 | text_overlay | txt1, txt2 |
 | text_overlay_no_len | txt1, txt2 |
 | text_pattern_ge | txt1, txt2 |
@@ -3258,7 +3100,7 @@ and `tools/objectgen.py`.  Do not edit.
 | textset_initcap | s |
 | textset_lower | s |
 | textset_make | values |
-| textset_out | set |
+| textset_out | set, size_out |
 | textset_start_value | s |
 | textset_to_jsonbset | s |
 | textset_upper | s |
@@ -3279,7 +3121,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tfloat_max_value | temp |
 | tfloat_min_value | temp |
 | tfloat_minus_value | temp |
-| tfloat_out | temp |
+| tfloat_out | temp, size_out |
 | tfloat_radians | temp |
 | tfloat_scale_value | temp |
 | tfloat_shift_scale_value | temp |
@@ -3481,7 +3323,7 @@ and `tools/objectgen.py`.  Do not edit.
 | th3index_is_valid_vertex | temp |
 | th3index_local_ij_to_cell | origin, coord |
 | th3index_minus_value | temp |
-| th3index_out | temp |
+| th3index_out | temp, size_out |
 | th3index_start_value | temp |
 | th3index_to_tbigint | temp |
 | th3index_to_tgeogpoint | temp |
@@ -3502,11 +3344,13 @@ and `tools/objectgen.py`.  Do not edit.
 | th3indexseqset_make | sequences |
 | time_extract | units |
 | time_in | str |
+| time_out | size_out |
 | time_part | units |
 | timestamp_bin | stride |
 | timestamp_extract | units |
 | timestamp_in | str |
 | timestamp_izone | zone |
+| timestamp_out | size_out |
 | timestamp_part | units |
 | timestamp_trunc | units |
 | timestamp_zone | zone |
@@ -3516,6 +3360,7 @@ and `tools/objectgen.py`.  Do not edit.
 | timestamptz_in | str |
 | timestamptz_izone | zone |
 | timestamptz_make_at_timezone | zone |
+| timestamptz_out | size_out |
 | timestamptz_part | units |
 | timestamptz_set_stbox | result |
 | timestamptz_set_tbox | box |
@@ -3539,7 +3384,7 @@ and `tools/objectgen.py`.  Do not edit.
 | timetz_le | timetz1, timetz2 |
 | timetz_lt | timetz1, timetz2 |
 | timetz_ne | timetz1, timetz2 |
-| timetz_out | timetz |
+| timetz_out | timetz, size_out |
 | timetz_overlaps | ts1, te1, ts2, te2 |
 | timetz_part | timetz, units |
 | timetz_scale | timetz |
@@ -3560,7 +3405,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tinstant_insts | inst, count |
 | tinstant_merge | inst1, inst2 |
 | tinstant_merge_array | instants |
-| tinstant_out | inst |
+| tinstant_out | inst, size_out |
 | tinstant_restrict_timestamptz | inst |
 | tinstant_restrict_tstzset | inst, s |
 | tinstant_restrict_tstzspan | inst, period |
@@ -3586,7 +3431,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tint_max_value | temp |
 | tint_min_value | temp |
 | tint_minus_value | temp |
-| tint_out | temp |
+| tint_out | temp, size_out |
 | tint_scale_value | temp |
 | tint_shift_scale_value | temp |
 | tint_shift_value | temp |
@@ -3661,7 +3506,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tjsonb_object_field | temp, key |
 | tjsonb_object_field_common | temp, key |
 | tjsonb_object_field_text | temp, key |
-| tjsonb_out | temp |
+| tjsonb_out | temp, size_out |
 | tjsonb_path_exists | temp, jp, vars |
 | tjsonb_path_exists_intl | temp, jp, vars |
 | tjsonb_path_match | temp, jp, vars |
@@ -3669,7 +3514,9 @@ and `tools/objectgen.py`.  Do not edit.
 | tjsonb_path_query_array | temp, jp, vars |
 | tjsonb_path_query_first | temp, jp, vars |
 | tjsonb_pretty | temp |
-| tjsonb_set | temp, keys, handle_null |
+| tjsonb_set | temp, keys, newjb |
+| tjsonb_set_intl | temp, keys, newjb, null_handle |
+| tjsonb_set_lax | temp, keys, null_handle |
 | tjsonb_start_value | temp |
 | tjsonb_strip_nulls | temp |
 | tjsonb_to_tbigint | temp, key |
@@ -3773,7 +3620,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tnpoint_minus_npoint | temp, np |
 | tnpoint_minus_npointset | temp, s |
 | tnpoint_minus_stbox | temp, box |
-| tnpoint_out | temp |
+| tnpoint_out | temp, size_out |
 | tnpoint_positions | temp, count |
 | tnpoint_route | temp |
 | tnpoint_routes | temp |
@@ -3872,7 +3719,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tpcbox_le | box1, box2 |
 | tpcbox_lt | box1, box2 |
 | tpcbox_ne | box1, box2 |
-| tpcbox_out | box |
+| tpcbox_out | box, size_out |
 | tpcbox_pcid | box |
 | tpcbox_round | box |
 | tpcbox_set_srid | box |
@@ -3897,7 +3744,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tpcpatch_in | str |
 | tpcpatch_minus_value | temp, pa |
 | tpcpatch_npoints | temp |
-| tpcpatch_out | temp |
+| tpcpatch_out | temp, size_out |
 | tpcpatch_pcid | temp |
 | tpcpatch_start_npoints | temp |
 | tpcpatch_start_value | temp |
@@ -3921,7 +3768,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tpcpoint_from_mfjson | mfjson |
 | tpcpoint_in | str |
 | tpcpoint_minus_value | temp, pt |
-| tpcpoint_out | temp |
+| tpcpoint_out | temp, size_out |
 | tpcpoint_pcid | temp |
 | tpcpoint_start_value | temp |
 | tpcpoint_to_tgeompoint | temp |
@@ -3964,6 +3811,8 @@ and `tools/objectgen.py`.  Do not edit.
 | tpoint_minus_value | temp, gs |
 | tpoint_speed | temp |
 | tpoint_tfloat_to_geomeas | tpoint, measure, result |
+| tpoint_tfloat_to_geomeas_intl | tpoint, meas, result |
+| tpoint_to_geomeas | tpoint |
 | tpoint_trajectory | temp |
 | tpoint_twcentroid | temp |
 | tpointinst_make | gs |
@@ -3986,10 +3835,10 @@ and `tools/objectgen.py`.  Do not edit.
 | tpointseqset_twcentroid | ss |
 | tpose_angular_speed | temp |
 | tpose_apply_geo | temp, body |
-| tpose_as_geopose | temp |
-| tpose_as_geopose_stream | temp |
-| tpose_as_geopose_stream_element | temp, inst |
-| tpose_as_geopose_stream_header | temp |
+| tpose_as_geopose | temp, size_out |
+| tpose_as_geopose_stream | temp, size_out |
+| tpose_as_geopose_stream_element | temp, inst, size_out |
+| tpose_as_geopose_stream_header | temp, size_out |
 | tpose_at_elevation | temp, s |
 | tpose_at_geom | temp, gs |
 | tpose_at_pose | temp, pose |
@@ -4025,7 +3874,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tpose_value_n | temp, result |
 | tpose_values | temp, count |
 | tpose_yaw | temp |
-| tposechain_as_geopose | temp |
+| tposechain_as_geopose | temp, size_out |
 | tposechain_at_value | temp, pc |
 | tposechain_end_value | temp |
 | tposechain_from_base_temp | pc, temp |
@@ -4046,7 +3895,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tposechain_value_at_timestamptz | temp, result |
 | tposechain_value_n | temp, result |
 | tposechain_values | temp, count |
-| tposechainarr_as_geopose | temparr |
+| tposechainarr_as_geopose | temparr, size_out |
 | tposechaininst_make | pc |
 | tposechainseq_from_base_tstzset | pc, s |
 | tposechainseq_from_base_tstzspan | pc, s |
@@ -4063,7 +3912,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tquadbin_grid_distance | origin, dest |
 | tquadbin_in | str |
 | tquadbin_minus_value | temp |
-| tquadbin_out | temp |
+| tquadbin_out | temp, size_out |
 | tquadbin_start_value | temp |
 | tquadbin_to_tbigint | temp |
 | tquadbin_unnest | temp, values, count |
@@ -4083,8 +3932,8 @@ and `tools/objectgen.py`.  Do not edit.
 | trgeometry_angular_speed | temp |
 | trgeometry_append_tinstant | temp, inst |
 | trgeometry_append_tsequence | temp, seq |
-| trgeometry_as_ewkt | temp |
-| trgeometry_as_text | temp |
+| trgeometry_as_ewkt | temp, size_out |
+| trgeometry_as_text | temp, size_out |
 | trgeometry_as_tinstant | temp |
 | trgeometry_as_tsequence | temp |
 | trgeometry_as_tsequenceset | temp |
@@ -4123,7 +3972,7 @@ and `tools/objectgen.py`.  Do not edit.
 | trgeometry_minus_tstzspanset | temp, ss |
 | trgeometry_minus_value | temp, pose |
 | trgeometry_minus_values | temp, s |
-| trgeometry_out | temp |
+| trgeometry_out | temp, size_out |
 | trgeometry_pitch | temp |
 | trgeometry_points | temp |
 | trgeometry_restrict_timestamptz | temp |
@@ -4175,7 +4024,7 @@ and `tools/objectgen.py`.  Do not edit.
 | ts2cell_grid_distance | origin, dest |
 | ts2cell_in | str |
 | ts2cell_minus_value | temp |
-| ts2cell_out | temp |
+| ts2cell_out | temp, size_out |
 | ts2cell_start_value | temp |
 | ts2cell_to_tbigint | temp |
 | ts2cell_unnest | temp, values, count |
@@ -4227,7 +4076,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tsequence_merge_array | sequences |
 | tsequence_min_inst_p | seq |
 | tsequence_min_val | seq |
-| tsequence_out | seq |
+| tsequence_out | seq, size_out |
 | tsequence_restart | seq |
 | tsequence_restrict_tstzspan | seq, s |
 | tsequence_restrict_tstzspanset | seq, ss |
@@ -4284,7 +4133,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tsequenceset_min_val | ss |
 | tsequenceset_num_instants | ss |
 | tsequenceset_num_timestamps | ss |
-| tsequenceset_out | ss |
+| tsequenceset_out | ss, size_out |
 | tsequenceset_restart | ss |
 | tsequenceset_restrict_minmax | ss |
 | tsequenceset_restrict_timestamptz | ss |
@@ -4311,10 +4160,10 @@ and `tools/objectgen.py`.  Do not edit.
 | tsequenceset_value_n_p | ss, result |
 | tsequenceset_values_p | ss, count |
 | tspatial_as_ewkb | temp, size_out |
-| tspatial_as_ewkt | temp |
+| tspatial_as_ewkt | temp, size_out |
 | tspatial_as_hexewkb | temp, size_out |
-| tspatial_as_text | temp |
-| tspatial_out | temp |
+| tspatial_as_text | temp, size_out |
+| tspatial_out | temp, size_out |
 | tspatial_set_srid | temp |
 | tspatial_set_stbox | temp, result |
 | tspatial_srid | temp |
@@ -4330,7 +4179,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tstzset_end_value | s |
 | tstzset_in | str |
 | tstzset_make | values |
-| tstzset_out | set |
+| tstzset_out | set, size_out |
 | tstzset_scale | s, duration |
 | tstzset_set_stbox | s, result |
 | tstzset_set_tbox | s, box |
@@ -4349,7 +4198,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tstzspan_get_bin | duration |
 | tstzspan_in | str |
 | tstzspan_lower | s |
-| tstzspan_out | s |
+| tstzspan_out | s, size_out |
 | tstzspan_scale | s, duration |
 | tstzspan_set_datespan | s1, s2 |
 | tstzspan_set_stbox | s, result |
@@ -4367,7 +4216,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tstzspanset_in | str |
 | tstzspanset_lower | ss |
 | tstzspanset_num_timestamps | ss |
-| tstzspanset_out | ss |
+| tstzspanset_out | ss, size_out |
 | tstzspanset_scale | ss, duration |
 | tstzspanset_set_stbox | s, result |
 | tstzspanset_shift | ss, shift |
@@ -4390,7 +4239,7 @@ and `tools/objectgen.py`.  Do not edit.
 | ttext_max_value | temp |
 | ttext_min_value | temp |
 | ttext_minus_value | temp, txt |
-| ttext_out | temp |
+| ttext_out | temp, size_out |
 | ttext_start_value | temp |
 | ttext_to_tjsonb | temp |
 | ttext_unnest | temp, values, count |
@@ -4492,22 +4341,36 @@ and `tools/objectgen.py`.  Do not edit.
 | unistr | txt |
 | value_set_span | s |
 
-### unreadable return — 3
+### unreadable return — 10
 
 A pointer answer whose pointed-to type no emitted function accepts. The caller receives an address and the catalog names nothing this binding reaches that renders it, operates on it or takes it back.
 
 | function | api | pointed-to type |
 | --- | --- | --- |
+| date_extract | public | struct NumericData |
 | geopose_frame | public | GeoPoseFrame |
 | geopose_frames | public | GeoPoseFrame |
+| interval_extract | public | struct NumericData |
+| jsonb_to_numeric | public | struct NumericData |
 | meos_proj_get_context | internal | struct pj_ctx |
+| time_extract | public | struct NumericData |
+| timestamp_extract | public | struct NumericData |
+| timestamptz_extract | public | struct NumericData |
+| timetz_extract | public | struct NumericData |
 
-### unmapped C type — 3
+### unmapped C type — 10
 
 A type crossing the boundary by value that the C# mapping does not name. It reaches the surface as an opaque pointer, which reads an address where the ABI passes a value.
 
 | function | site | type |
 | --- | --- | --- |
+| meos_initialize_allocator | parameter free_fn | meos_free_fn |
+| meos_initialize_allocator | parameter malloc_fn | meos_malloc_fn |
+| meos_initialize_allocator | parameter realloc_fn | meos_realloc_fn |
+| meos_initialize_error_handler | parameter err_handler | error_handler_fn |
+| meos_initialize_interrupt_handler | parameter handler | interrupt_handler_fn |
+| skiplist_splice | parameter func | datum_func2 |
+| temporal_skiplist_splice | parameter func | datum_func2 |
 | text_cmp | parameter collid | Oid |
 | text_hash | parameter collid | Oid |
 | text_hash_extended | parameter collid | Oid |
@@ -4603,7 +4466,7 @@ The function takes a type no class stands for and no marshalling rule reads, so 
 | SpanSet | make | argument spans is an array of Span, which has no class |
 | TH3Index | valueAtTimestamptz | argument result of type uint64_t * needs marshalling |
 | TH3Index | valueN | argument result of type uint64_t * needs marshalling |
-| TPoint | asMvtgeom | argument gsarr of type GSERIALIZED ** needs marshalling |
+| TPoint | asMVTGeom | argument gsarr of type GSERIALIZED ** needs marshalling |
 | TQuadbin | valueAtTimestamptz | argument result of type uint64_t * needs marshalling |
 | TQuadbin | valueN | argument result of type uint64_t * needs marshalling |
 | TS2Cell | valueAtTimestamptz | argument result of type uint64_t * needs marshalling |

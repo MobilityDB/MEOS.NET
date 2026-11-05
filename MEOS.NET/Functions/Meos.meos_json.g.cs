@@ -13,7 +13,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.JsonIn(str));
 
         public static string JsonOut(IntPtr js)
-            => SafeExecution<string>(() => Native.JsonOut(js));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonOut(js, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr JsonbFromText(IntPtr txt, bool unique_keys)
             => SafeExecution<IntPtr>(() => Native.JsonbFromText(txt, unique_keys));
@@ -22,7 +38,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.JsonbIn(str));
 
         public static string JsonbOut(IntPtr jb)
-            => SafeExecution<string>(() => Native.JsonbOut(jb));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbOut(jb, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr JsonMake(IntPtr keys_vals, int count)
             => SafeExecution<IntPtr>(() => Native.JsonMake(keys_vals, count));
@@ -43,7 +75,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<bool>(() => Native.JsonbToBool(jb));
 
         public static string JsonbToCstring(IntPtr jb)
-            => SafeExecution<string>(() => Native.JsonbToCstring(jb));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbToCstring(jb, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static float JsonbToFloat4(IntPtr jb)
             => SafeExecution<float>(() => Native.JsonbToFloat4(jb));
@@ -409,13 +457,45 @@ namespace MEOS.NET.Functions
             => SafeExecution<int>(() => Native.JsonpathMemSize(jp));
 
         public static string JsonpathOut(IntPtr jp)
-            => SafeExecution<string>(() => Native.JsonpathOut(jp));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonpathOut(jp, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr JsonbsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.JsonbsetIn(str));
 
         public static string JsonbsetOut(IntPtr s)
-            => SafeExecution<string>(() => Native.JsonbsetOut(s));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbsetOut(s, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr JsonbsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.JsonbsetMake(values, count));
@@ -498,8 +578,11 @@ namespace MEOS.NET.Functions
         public static IntPtr JsonbsetExistsArray(IntPtr set, IntPtr keys, int count, bool any, IntPtr rescount)
             => SafeExecution<IntPtr>(() => Native.JsonbsetExistsArray(set, keys, count, any, rescount));
 
-        public static IntPtr JsonbsetSet(IntPtr set, IntPtr keys, int count, IntPtr newjb, bool create, IntPtr null_handle, bool lax)
-            => SafeExecution<IntPtr>(() => Native.JsonbsetSet(set, keys, count, newjb, create, null_handle, lax));
+        public static IntPtr JsonbsetSet(IntPtr set, IntPtr keys, int count, IntPtr newjb, bool create)
+            => SafeExecution<IntPtr>(() => Native.JsonbsetSet(set, keys, count, newjb, create));
+
+        public static IntPtr JsonbsetSetLax(IntPtr set, IntPtr keys, int count, IntPtr newjb, bool create, IntPtr null_handle)
+            => SafeExecution<IntPtr>(() => Native.JsonbsetSetLax(set, keys, count, newjb, create, null_handle));
 
         public static IntPtr JsonbsetToAlphanumset(IntPtr set, string key, int settype, int null_handle)
             => SafeExecution<IntPtr>(() => Native.JsonbsetToAlphanumset(set, key, settype, null_handle));
@@ -609,6 +692,9 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
+        public static IntPtr JsonbsetSetIntl(IntPtr set, IntPtr keys, int count, IntPtr newjb, bool create, IntPtr null_handle, bool lax)
+            => SafeExecution<IntPtr>(() => Native.JsonbsetSetIntl(set, keys, count, newjb, create, null_handle, lax));
+
         public static bool ContainedJsonbSet(IntPtr jb, IntPtr s)
             => SafeExecution<bool>(() => Native.ContainedJsonbSet(jb, s));
 
@@ -643,7 +729,23 @@ namespace MEOS.NET.Functions
             => SafeExecution<IntPtr>(() => Native.TjsonbIn(str));
 
         public static string TjsonbOut(IntPtr temp)
-            => SafeExecution<string>(() => Native.TjsonbOut(temp));
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TjsonbOut(temp, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TjsonbinstIn(string str)
             => SafeExecution<IntPtr>(() => Native.TjsonbinstIn(str));
@@ -822,8 +924,11 @@ namespace MEOS.NET.Functions
         public static IntPtr TjsonbPretty(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TjsonbPretty(temp));
 
-        public static IntPtr TjsonbSet(IntPtr temp, IntPtr keys, int count, IntPtr newjb, bool create, IntPtr handle_null, bool lax)
-            => SafeExecution<IntPtr>(() => Native.TjsonbSet(temp, keys, count, newjb, create, handle_null, lax));
+        public static IntPtr TjsonbSet(IntPtr temp, IntPtr keys, int count, IntPtr newjb, bool create)
+            => SafeExecution<IntPtr>(() => Native.TjsonbSet(temp, keys, count, newjb, create));
+
+        public static IntPtr TjsonbSetLax(IntPtr temp, IntPtr keys, int count, IntPtr newjb, bool create, IntPtr null_handle)
+            => SafeExecution<IntPtr>(() => Native.TjsonbSetLax(temp, keys, count, newjb, create, null_handle));
 
         public static IntPtr TjsonbStripNulls(IntPtr temp, bool strip_in_arrays)
             => SafeExecution<IntPtr>(() => Native.TjsonbStripNulls(temp, strip_in_arrays));
@@ -872,6 +977,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TjsonbPathMatchIntl(IntPtr temp, IntPtr jp, IntPtr vars, bool silent, bool tz)
             => SafeExecution<IntPtr>(() => Native.TjsonbPathMatchIntl(temp, jp, vars, silent, tz));
+
+        public static IntPtr TjsonbSetIntl(IntPtr temp, IntPtr keys, int count, IntPtr newjb, bool create, IntPtr null_handle, bool lax)
+            => SafeExecution<IntPtr>(() => Native.TjsonbSetIntl(temp, keys, count, newjb, create, null_handle, lax));
 
         public static IntPtr TjsonbAtValue(IntPtr temp, IntPtr jsb)
             => SafeExecution<IntPtr>(() => Native.TjsonbAtValue(temp, jsb));

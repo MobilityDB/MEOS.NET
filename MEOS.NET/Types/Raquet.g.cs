@@ -19,17 +19,7 @@ namespace MEOS.NET.Types
             => this.Out();
 
         public string AsHexWKB(byte variant)
-        {
-            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
-            try
-            {
-                return Meos.RaquetAsHexwkb(this.Ptr, variant, _size_out);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(_size_out);
-            }
-        }
+            => Meos.RaquetAsHexwkb(this.Ptr, variant);
 
         public string AsText()
             => this.Out();
