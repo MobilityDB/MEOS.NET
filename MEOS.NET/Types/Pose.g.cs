@@ -150,6 +150,9 @@ namespace MEOS.NET.Types
         public STBox? TimestamptzToStbox(DateTime t)
             => MEOSFactory.WrapSTBox(Meos.PoseTimestamptzToStbox(this.Ptr, MEOSConvert.ToTimestampTz(t)));
 
+        public Geo? ToGeog()
+            => MEOSFactory.WrapGeo(Meos.PoseToGeog(this.Ptr));
+
         public Geo? ToPoint()
             => MEOSFactory.WrapGeo(Meos.PoseToPoint(this.Ptr));
 

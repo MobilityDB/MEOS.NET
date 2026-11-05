@@ -498,6 +498,9 @@ namespace MEOS.NET.Functions
         public static IntPtr PcpatchToTpcbox(IntPtr pa)
             => SafeExecution<IntPtr>(() => Native.PcpatchToTpcbox(pa));
 
+        public static IntPtr TpointcloudToTpcbox(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TpointcloudToTpcbox(temp));
+
         public static bool TpcboxHasx(IntPtr box)
             => SafeExecution<bool>(() => Native.TpcboxHasx(box));
 

@@ -116,6 +116,9 @@ namespace MEOS.NET.Types
         public Geo? EndValue()
             => MEOSFactory.WrapGeo(Meos.TrgeometryEndValue(this.Ptr));
 
+        public Temporal? Force2d()
+            => MEOSFactory.WrapTemporal(Meos.TrgeometryForce2d(this.Ptr));
+
         public Geo? Geom()
             => MEOSFactory.WrapGeo(Meos.TrgeometryGeom(this.Ptr));
 
