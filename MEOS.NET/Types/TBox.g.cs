@@ -706,6 +706,9 @@ namespace MEOS.NET.Types
         public static TBox? FromNumspanTimestamptz(Span span, DateTime t)
             => MEOSFactory.WrapTBox(Meos.NumspanTimestamptzToTbox(span.Ptr, MEOSConvert.ToTimestampTz(t)));
 
+        public static TBox? FromNumspanTstzspan(Span s, Span p)
+            => MEOSFactory.WrapTBox(Meos.NumspanTstzspanToTbox(s.Ptr, p.Ptr));
+
         public static TBox? FromText(string str)
             => TBox.In(str);
 

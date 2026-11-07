@@ -220,6 +220,42 @@ namespace MEOS.NET.Types
         public ulong Value()
             => Meos.Th3indexValue(this.Ptr);
 
+        public ulong? ValueAtTimestamptz(DateTime t, bool strict)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.Th3indexValueAtTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<ulong>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public ulong? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.Th3indexValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<ulong>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public ulong[] Values()
             => Meos.Th3indexValues(this.Ptr);
 

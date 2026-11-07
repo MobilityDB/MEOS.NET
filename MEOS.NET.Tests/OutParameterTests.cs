@@ -20,6 +20,31 @@ namespace MEOS.NET.Tests
         }
 
         [TestMethod]
+        public void ATemporalH3IndexAnswersTheCellsItHolds()
+        {
+            // th3index_value_n and th3index_value_at_timestamptz write an
+            // H3Index, a uint64_t, through their result pointer.
+            TH3Index cells = (TH3Index)TH3Index.In(
+                "[831c02fffffffff@2001-01-01, 831c00fffffffff@2001-01-02]")!;
+            DateTime second = new DateTime(2001, 1, 2, 0, 0, 0, DateTimeKind.Utc);
+
+            Assert.AreEqual(0x831c02fffffffffUL, cells.ValueN(1));
+            Assert.AreEqual(0x831c00fffffffffUL, cells.ValueN(2));
+            Assert.IsNull(cells.ValueN(3));
+            Assert.AreEqual(0x831c00fffffffffUL, cells.ValueAtTimestamptz(second, true));
+        }
+
+        [TestMethod]
+        public void AnH3IndexSetAnswersTheCellsItHolds()
+        {
+            // h3indexset_value_n, over a set MEOS keeps in ascending order.
+            H3IndexSet set = (H3IndexSet)H3IndexSet.In("{831c02fffffffff, 831c00fffffffff}")!;
+
+            Assert.AreEqual(0x831c00fffffffffUL, set.ValueN(1));
+            Assert.AreEqual(0x831c02fffffffffUL, set.ValueN(2));
+        }
+
+        [TestMethod]
         public void ABoxAnswersNullForABoundItDoesNotHave()
         {
             TBox box = TBox.In("TBOX T([2024-12-06, 2024-12-08])")!;

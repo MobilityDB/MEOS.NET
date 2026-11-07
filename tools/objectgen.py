@@ -483,6 +483,24 @@ class Generator:
             return (f"{struct}[]", f"MEOSConvert.ToStructArray<{struct}>($)")
         return None
 
+    def scalar_out_reader(self, pointee: str, where: str) -> tuple[str, int, str] | None:
+        """The reader for a scalar MEOS writes through a pointer, from the C#
+        type and width codegen.py gives the scalar (#scalar_cs, #scalar_bytes),
+        so a typedef the catalog resolves reads as what it resolves to:
+        `H3Index *` is a `uint64_t *` and reads as a `ulong`. The spellings
+        OUT_PARAM_READERS converts — a timestamp, a date — keep their reader."""
+        if not pointee.endswith(" *"):
+            return None
+        base = pointee[:-2].strip()
+        try:
+            cs_type = codegen.scalar_cs(base, where)
+            size = codegen.scalar_bytes(base, where)
+        except codegen.UnmappedType:
+            return None
+        if cs_type is None or not size or cs_type == "bool":
+            return None
+        return (cs_type, size, f"Marshal.PtrToStructure<{cs_type}>({{0}})")
+
     def wrapped_out_reader(self, pointee: str) -> tuple[str, int, str] | None:
         """The reader for a value MEOS writes through a pointer to a pointer.
 
@@ -689,7 +707,9 @@ class Generator:
             pointee = clean(next(
                 (p["canonical"] for p in f.get("params", [])
                  if p["name"] == name), ""))
-            reader = OUT_PARAM_READERS.get(pointee) or self.wrapped_out_reader(pointee)
+            reader = (OUT_PARAM_READERS.get(pointee)
+                      or self.wrapped_out_reader(pointee)
+                      or self.scalar_out_reader(pointee, f"{fname} parameter {name}"))
             if reader:
                 result_outs.append((codegen.csharp_param_name(name), reader))
         answers_existence = clean(f["returnType"]["canonical"]) == "bool" and result_outs

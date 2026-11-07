@@ -160,6 +160,42 @@ namespace MEOS.NET.Types
         public ulong Value()
             => Meos.Ts2cellValue(this.Ptr);
 
+        public ulong? ValueAtTimestamptz(DateTime t, bool strict)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.Ts2cellValueAtTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<ulong>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public ulong? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.Ts2cellValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<ulong>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public ulong[] Values()
             => Meos.Ts2cellValues(this.Ptr);
 
