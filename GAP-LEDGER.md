@@ -4428,27 +4428,18 @@ The function answers a type no class stands for and no scalar, value struct or a
 | Raster | pixelAsPoints | return Pixel * needs wrapping |
 | Temporal | toTaggstate | return SkipList * needs wrapping |
 
-### argument needs a class — 15
+### argument needs a class — 6
 
 The function takes a type no class stands for and no marshalling rule reads, so there is nothing for a caller to pass.
 
 | class | member | what is missing |
 | --- | --- | --- |
 | CbufferSet | make | argument values is an array of Cbuffer, which has no class |
-| H3IndexSet | valueN | argument result of type uint64_t * needs marshalling |
 | NpointSet | make | argument values is an array of Npoint, which has no class |
 | Pcschema | fromDims | argument dims of type PCDimensionSpec * needs marshalling |
 | Pcschema | registerDims | argument dims of type PCDimensionSpec * needs marshalling |
-| QuadbinSet | valueN | argument result of type uint64_t * needs marshalling |
-| S2CellSet | valueN | argument result of type uint64_t * needs marshalling |
 | SpanSet | make | argument spans is an array of Span, which has no class |
-| TH3Index | valueAtTimestamptz | argument result of type uint64_t * needs marshalling |
-| TH3Index | valueN | argument result of type uint64_t * needs marshalling |
 | TPoint | asMVTGeom | argument gsarr of type GSERIALIZED ** needs marshalling |
-| TQuadbin | valueAtTimestamptz | argument result of type uint64_t * needs marshalling |
-| TQuadbin | valueN | argument result of type uint64_t * needs marshalling |
-| TS2Cell | valueAtTimestamptz | argument result of type uint64_t * needs marshalling |
-| TS2Cell | valueN | argument result of type uint64_t * needs marshalling |
 
 ### overloads of one C# signature — 0
 

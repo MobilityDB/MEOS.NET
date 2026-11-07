@@ -445,9 +445,6 @@ namespace MEOS.NET.Types
         public SpanSet? Minus(TsTzSpanSet ss)
             => MEOSFactory.WrapSpanSet(Meos.MinusSpanSpanset(this.Ptr, ss.Ptr));
 
-        public TBox? Numspan(TsTzSpan p)
-            => MEOSFactory.WrapTBox(Meos.NumspanTstzspanToTbox(this.Ptr, p.Ptr));
-
         public string Out()
             => Meos.TstzspanOut(this.Ptr);
 

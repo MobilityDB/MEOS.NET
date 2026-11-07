@@ -81,6 +81,24 @@ namespace MEOS.NET.Types
         public Set? Union(S2CellSet s2)
             => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
+        public ulong? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.S2cellsetValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<ulong>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public ulong[] Values()
             => Meos.S2cellsetValues(this.Ptr);
 

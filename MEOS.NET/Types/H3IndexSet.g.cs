@@ -78,6 +78,24 @@ namespace MEOS.NET.Types
         public Set? Union(H3IndexSet s2)
             => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
+        public ulong? ValueN(int n)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.H3indexsetValueN(this.Ptr, n, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<ulong>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
         public ulong[] Values()
             => Meos.H3indexsetValues(this.Ptr);
 
