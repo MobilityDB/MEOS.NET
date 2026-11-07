@@ -14,8 +14,32 @@ namespace MEOS.NET.Types
     {
         internal Temporal(IntPtr ptr) : base(ptr) { }
 
+        public bool Adjacent(TsTzSpan s)
+            => Meos.AdjacentTemporalTstzspan(this.Ptr, s.Ptr);
+
+        public bool After(TsTzSpan s)
+            => Meos.AfterTemporalTstzspan(this.Ptr, s.Ptr);
+
         public Temporal? AfterTimestamptz(DateTime t, bool strict)
             => MEOSFactory.WrapTemporal(Meos.TemporalAfterTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict));
+
+        public int AlwaysEq(Temporal temp2)
+            => Meos.AlwaysEqTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int AlwaysGe(Temporal temp2)
+            => Meos.AlwaysGeTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int AlwaysGt(Temporal temp2)
+            => Meos.AlwaysGtTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int AlwaysLe(Temporal temp2)
+            => Meos.AlwaysLeTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int AlwaysLt(Temporal temp2)
+            => Meos.AlwaysLtTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int AlwaysNe(Temporal temp2)
+            => Meos.AlwaysNeTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public Temporal? AppendTinstant(Temporal inst, InterpType interp, double maxdist, Interval maxt, bool expand)
         {
@@ -97,11 +121,20 @@ namespace MEOS.NET.Types
         public string? BasetypeName()
             => Meos.TemporalBasetypeName(this.Ptr);
 
+        public bool Before(TsTzSpan s)
+            => Meos.BeforeTemporalTstzspan(this.Ptr, s.Ptr);
+
         public Temporal? BeforeTimestamptz(DateTime t, bool strict)
             => MEOSFactory.WrapTemporal(Meos.TemporalBeforeTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t), strict));
 
         public int Cmp(Temporal temp2)
             => Meos.TemporalCmp(this.Ptr, temp2.Ptr);
+
+        public bool Contained(TsTzSpan s)
+            => Meos.ContainedTemporalTstzspan(this.Ptr, s.Ptr);
+
+        public bool Contains(TsTzSpan s)
+            => Meos.ContainsTemporalTstzspan(this.Ptr, s.Ptr);
 
         public Temporal? Copy()
             => MEOSFactory.WrapTemporal(Meos.TemporalCopy(this.Ptr));
@@ -141,6 +174,24 @@ namespace MEOS.NET.Types
 
         public bool Eq(Temporal temp2)
             => Meos.TemporalEq(this.Ptr, temp2.Ptr);
+
+        public int EverEq(Temporal temp2)
+            => Meos.EverEqTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int EverGe(Temporal temp2)
+            => Meos.EverGeTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int EverGt(Temporal temp2)
+            => Meos.EverGtTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int EverLe(Temporal temp2)
+            => Meos.EverLeTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int EverLt(Temporal temp2)
+            => Meos.EverLtTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int EverNe(Temporal temp2)
+            => Meos.EverNeTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public Temporal? ExtKalmanFilter(double gate, double q, double variance, bool to_drop)
             => MEOSFactory.WrapTemporal(Meos.TemporalExtKalmanFilter(this.Ptr, gate, q, variance, to_drop));
@@ -235,8 +286,20 @@ namespace MEOS.NET.Types
         public int NumTimestamps()
             => Meos.TemporalNumTimestamps(this.Ptr);
 
+        public bool Overafter(TsTzSpan s)
+            => Meos.OverafterTemporalTstzspan(this.Ptr, s.Ptr);
+
+        public bool Overbefore(TsTzSpan s)
+            => Meos.OverbeforeTemporalTstzspan(this.Ptr, s.Ptr);
+
+        public bool Overlaps(TsTzSpan s)
+            => Meos.OverlapsTemporalTstzspan(this.Ptr, s.Ptr);
+
         public Temporal? Round(int maxdd)
             => MEOSFactory.WrapTemporal(Meos.TemporalRound(this.Ptr, maxdd));
+
+        public bool Same(TsTzSpan s)
+            => Meos.SameTemporalTstzspan(this.Ptr, s.Ptr);
 
         public Temporal? ScaleTime(Interval duration)
         {
@@ -388,6 +451,15 @@ namespace MEOS.NET.Types
         public string? Subtype()
             => Meos.TemporalSubtype(this.Ptr);
 
+        public Temporal? Teq(Temporal temp2)
+            => MEOSFactory.WrapTemporal(Meos.TeqTemporalTemporal(this.Ptr, temp2.Ptr));
+
+        public Temporal? Tge(Temporal temp2)
+            => MEOSFactory.WrapTemporal(Meos.TgeTemporalTemporal(this.Ptr, temp2.Ptr));
+
+        public Temporal? Tgt(Temporal temp2)
+            => MEOSFactory.WrapTemporal(Meos.TgtTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public SpanSet? Time()
             => MEOSFactory.WrapSpanSet(Meos.TemporalTime(this.Ptr));
 
@@ -441,6 +513,15 @@ namespace MEOS.NET.Types
                 Marshal.FreeHGlobal(_result);
             }
         }
+
+        public Temporal? Tle(Temporal temp2)
+            => MEOSFactory.WrapTemporal(Meos.TleTemporalTemporal(this.Ptr, temp2.Ptr));
+
+        public Temporal? Tlt(Temporal temp2)
+            => MEOSFactory.WrapTemporal(Meos.TltTemporalTemporal(this.Ptr, temp2.Ptr));
+
+        public Temporal? Tne(Temporal temp2)
+            => MEOSFactory.WrapTemporal(Meos.TneTemporalTemporal(this.Ptr, temp2.Ptr));
 
         public Span? ToTstzspan()
             => MEOSFactory.WrapSpan(Meos.TemporalToTstzspan(this.Ptr));

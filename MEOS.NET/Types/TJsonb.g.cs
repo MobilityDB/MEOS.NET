@@ -18,6 +18,18 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public int AlwaysEq(Jsonb jb)
+            => Meos.AlwaysEqTjsonbJsonb(this.Ptr, jb.Ptr);
+
+        public int AlwaysEq(TJsonb temp2)
+            => Meos.AlwaysEqTjsonbTjsonb(this.Ptr, temp2.Ptr);
+
+        public int AlwaysNe(Jsonb jb)
+            => Meos.AlwaysNeTjsonbJsonb(this.Ptr, jb.Ptr);
+
+        public int AlwaysNe(TJsonb temp2)
+            => Meos.AlwaysNeTjsonbTjsonb(this.Ptr, temp2.Ptr);
+
         public Temporal? ArrayElement(int idx, NullHandleType null_handle)
             => MEOSFactory.WrapTemporal(Meos.TjsonbArrayElement(this.Ptr, idx, (int) null_handle));
 
@@ -32,6 +44,18 @@ namespace MEOS.NET.Types
 
         public Temporal? AtValue(Jsonb jsb)
             => MEOSFactory.WrapTemporal(Meos.TjsonbAtValue(this.Ptr, jsb.Ptr));
+
+        public Temporal? Concat(Jsonb jb, bool invert)
+            => MEOSFactory.WrapTemporal(Meos.ConcatTjsonbJsonb(this.Ptr, jb.Ptr, invert));
+
+        public Temporal? Concat(TJsonb temp2)
+            => MEOSFactory.WrapTemporal(Meos.ConcatTjsonbTjsonb(this.Ptr, temp2.Ptr));
+
+        public Temporal? Contains(Jsonb jb, bool invert)
+            => MEOSFactory.WrapTemporal(Meos.ContainsTjsonbJsonb(this.Ptr, jb.Ptr, invert));
+
+        public Temporal? Contains(TJsonb temp2)
+            => MEOSFactory.WrapTemporal(Meos.ContainsTjsonbTjsonb(this.Ptr, temp2.Ptr));
 
         public Temporal? Delete(Text key)
             => MEOSFactory.WrapTemporal(Meos.TjsonbDelete(this.Ptr, key.Ptr));
@@ -79,6 +103,18 @@ namespace MEOS.NET.Types
 
         public Jsonb? EndValue()
             => MEOSFactory.WrapJsonb(Meos.TjsonbEndValue(this.Ptr));
+
+        public int EverEq(Jsonb jb)
+            => Meos.EverEqTjsonbJsonb(this.Ptr, jb.Ptr);
+
+        public int EverEq(TJsonb temp2)
+            => Meos.EverEqTjsonbTjsonb(this.Ptr, temp2.Ptr);
+
+        public int EverNe(Jsonb jb)
+            => Meos.EverNeTjsonbJsonb(this.Ptr, jb.Ptr);
+
+        public int EverNe(TJsonb temp2)
+            => Meos.EverNeTjsonbTjsonb(this.Ptr, temp2.Ptr);
 
         public Temporal? Exists(Text key)
             => MEOSFactory.WrapTemporal(Meos.TjsonbExists(this.Ptr, key.Ptr));
@@ -267,6 +303,12 @@ namespace MEOS.NET.Types
 
         public Temporal? StripNulls(bool strip_in_arrays)
             => MEOSFactory.WrapTemporal(Meos.TjsonbStripNulls(this.Ptr, strip_in_arrays));
+
+        public Temporal? Teq(Jsonb jb)
+            => MEOSFactory.WrapTemporal(Meos.TeqTjsonbJsonb(this.Ptr, jb.Ptr));
+
+        public Temporal? Tne(Jsonb jb)
+            => MEOSFactory.WrapTemporal(Meos.TneTjsonbJsonb(this.Ptr, jb.Ptr));
 
         public Temporal? ToTbigint(string key, NullHandleType null_handle)
             => MEOSFactory.WrapTemporal(Meos.TjsonbToTbigint(this.Ptr, key, (int) null_handle));

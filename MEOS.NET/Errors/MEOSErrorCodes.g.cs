@@ -15,7 +15,7 @@ namespace MEOS.NET.Errors
         /// <summary>Internal type error (<c>MEOS_ERR_INTERNAL_TYPE_ERROR</c>).</summary>
         InternalTypeError = 2,
 
-        /// <summary>Internal out of range error (<c>MEOS_ERR_VALUE_OUT_OF_RANGE</c>).</summary>
+        /// <summary>Numeric value out of range (<c>MEOS_ERR_VALUE_OUT_OF_RANGE</c>).</summary>
         ValueOutOfRange = 3,
 
         /// <summary>Internal division by zero error (<c>MEOS_ERR_DIVISION_BY_ZERO</c>).</summary>
@@ -86,6 +86,9 @@ namespace MEOS.NET.Errors
 
         /// <summary>Regular expression error (<c>MEOS_ERR_INVALID_REGULAR_EXPRESSION</c>).</summary>
         InvalidRegularExpression = 29,
+
+        /// <summary>Date or time value out of range (<c>MEOS_ERR_DATETIME_OUT_OF_RANGE</c>).</summary>
+        DatetimeOutOfRange = 30,
 
     }
 }

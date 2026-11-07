@@ -18,14 +18,29 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Contains(Cbuffer cb)
+            => Meos.ContainsSetCbuffer(this.Ptr, cb.Ptr);
+
+        public double Distance(CbufferSet s2)
+            => Meos.DistanceCbuffersetCbufferset(this.Ptr, s2.Ptr);
+
         public Cbuffer? EndValue()
             => MEOSFactory.WrapCbuffer(Meos.CbuffersetEndValue(this.Ptr));
+
+        public Set? Intersection(Cbuffer cb)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetCbuffer(this.Ptr, cb.Ptr));
+
+        public Set? Minus(Cbuffer cb)
+            => MEOSFactory.WrapSet(Meos.MinusSetCbuffer(this.Ptr, cb.Ptr));
 
         public new string Out(int maxdd)
             => Meos.CbuffersetOut(this.Ptr, maxdd);
 
         public Cbuffer? StartValue()
             => MEOSFactory.WrapCbuffer(Meos.CbuffersetStartValue(this.Ptr));
+
+        public Set? Union(Cbuffer cb)
+            => MEOSFactory.WrapSet(Meos.UnionSetCbuffer(this.Ptr, cb.Ptr));
 
         public Cbuffer? ValueN(int n)
         {

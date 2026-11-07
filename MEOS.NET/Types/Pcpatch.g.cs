@@ -18,6 +18,12 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.HexOut(15);
 
+        public int AlwaysEq(TPcpatch temp)
+            => Meos.AlwaysEqPcpatchTpcpatch(this.Ptr, temp.Ptr);
+
+        public int AlwaysNe(TPcpatch temp)
+            => Meos.AlwaysNePcpatchTpcpatch(this.Ptr, temp.Ptr);
+
         public string AsHexWKB()
             => Meos.PcpatchAsHexwkb(this.Ptr);
 
@@ -27,11 +33,20 @@ namespace MEOS.NET.Types
         public int Cmp(Pcpatch pa2)
             => Meos.PcpatchCmp(this.Ptr, pa2.Ptr);
 
+        public bool Contained(PcpatchSet s)
+            => Meos.ContainedPcpatchSet(this.Ptr, s.Ptr);
+
         public Pcpatch? Copy()
             => MEOSFactory.WrapPcpatch(Meos.PcpatchCopy(this.Ptr));
 
         public bool Eq(Pcpatch pa2)
             => Meos.PcpatchEq(this.Ptr, pa2.Ptr);
+
+        public int EverEq(TPcpatch temp)
+            => Meos.EverEqPcpatchTpcpatch(this.Ptr, temp.Ptr);
+
+        public int EverNe(TPcpatch temp)
+            => Meos.EverNePcpatchTpcpatch(this.Ptr, temp.Ptr);
 
         public bool Ge(Pcpatch pa2)
             => Meos.PcpatchGe(this.Ptr, pa2.Ptr);
@@ -51,6 +66,9 @@ namespace MEOS.NET.Types
         public string HexOut(int maxdd)
             => Meos.PcpatchHexOut(this.Ptr, maxdd);
 
+        public Set? Intersection(PcpatchSet s)
+            => MEOSFactory.WrapSet(Meos.IntersectionPcpatchSet(this.Ptr, s.Ptr));
+
         public bool Le(Pcpatch pa2)
             => Meos.PcpatchLe(this.Ptr, pa2.Ptr);
 
@@ -59,6 +77,9 @@ namespace MEOS.NET.Types
 
         public int MemSize()
             => Meos.PcpatchMemSize(this.Ptr);
+
+        public Set? Minus(PcpatchSet s)
+            => MEOSFactory.WrapSet(Meos.MinusPcpatchSet(this.Ptr, s.Ptr));
 
         public bool Ne(Pcpatch pa2)
             => Meos.PcpatchNe(this.Ptr, pa2.Ptr);
@@ -72,6 +93,12 @@ namespace MEOS.NET.Types
         public Pcpoint?[] Points()
             => MEOSFactory.WrapPcpointArray(Meos.PcpatchPoints(this.Ptr));
 
+        public Temporal? Teq(TPcpatch temp)
+            => MEOSFactory.WrapTemporal(Meos.TeqPcpatchTpcpatch(this.Ptr, temp.Ptr));
+
+        public Temporal? Tne(TPcpatch temp)
+            => MEOSFactory.WrapTemporal(Meos.TnePcpatchTpcpatch(this.Ptr, temp.Ptr));
+
         public Geo? ToGeom()
             => MEOSFactory.WrapGeo(Meos.PcpatchToGeom(this.Ptr));
 
@@ -80,6 +107,9 @@ namespace MEOS.NET.Types
 
         public TPCBox? ToTpcbox()
             => MEOSFactory.WrapTPCBox(Meos.PcpatchToTpcbox(this.Ptr));
+
+        public Set? Union(PcpatchSet s)
+            => MEOSFactory.WrapSet(Meos.UnionPcpatchSet(this.Ptr, s.Ptr));
 
         public static Pcpatch? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapPcpatch(Meos.PcpatchFromHexwkb(hexwkb));

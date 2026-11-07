@@ -10,7 +10,7 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `acae48bc72afde2b54fb85d681da0d42eaab800f` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `e58cec061d938862a122321a84d0186fd22c0a69` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
@@ -4449,5 +4449,35 @@ The function takes a type no class stands for and no marshalling rule reads, so 
 | TQuadbin | valueN | argument result of type uint64_t * needs marshalling |
 | TS2Cell | valueAtTimestamptz | argument result of type uint64_t * needs marshalling |
 | TS2Cell | valueN | argument result of type uint64_t * needs marshalling |
+
+### overloads of one C# signature — 0
+
+Several operators the model gives one class and one name take the same parameter types, so C# cannot tell their overloads apart and emitting one would answer the others' calls with the wrong function.
+
+None in this run.
+
+### signature taken by a method — 0
+
+An operator takes the name and parameter types of a method the model gives the same class, so the two cannot both be members of it.
+
+None in this run.
+
+### takes an inherited member's calls — 11
+
+An operator takes the name of a member of an ancestor and parameter types that member's arguments convert to, and C# reaches an ancestor's member only where none of the class applies, so emitting it would answer the ancestor's calls on the class with another function.
+
+| class | member | what is missing |
+| --- | --- | --- |
+| TH3Index | Teq | teq_th3index_th3index: Teq(Temporal) would take the calls of Teq(Temporal), a member of an ancestor of TH3Index |
+| TH3Index | Tne | tne_th3index_th3index: Tne(Temporal) would take the calls of Tne(Temporal), a member of an ancestor of TH3Index |
+| TNumber | Adjacent | adjacent_tnumber_numspan: Adjacent(Span) would take the calls of Adjacent(TsTzSpan), a member of an ancestor of TNumber |
+| TNumber | Contained | contained_tnumber_numspan: Contained(Span) would take the calls of Contained(TsTzSpan), a member of an ancestor of TNumber |
+| TNumber | Contains | contains_tnumber_numspan: Contains(Span) would take the calls of Contains(TsTzSpan), a member of an ancestor of TNumber |
+| TNumber | Overlaps | overlaps_tnumber_numspan: Overlaps(Span) would take the calls of Overlaps(TsTzSpan), a member of an ancestor of TNumber |
+| TNumber | Same | same_tnumber_numspan: Same(Span) would take the calls of Same(TsTzSpan), a member of an ancestor of TNumber |
+| TQuadbin | Teq | teq_tquadbin_tquadbin: Teq(Temporal) would take the calls of Teq(Temporal), a member of an ancestor of TQuadbin |
+| TQuadbin | Tne | tne_tquadbin_tquadbin: Tne(Temporal) would take the calls of Tne(Temporal), a member of an ancestor of TQuadbin |
+| TS2Cell | Teq | teq_ts2cell_ts2cell: Teq(Temporal) would take the calls of Teq(Temporal), a member of an ancestor of TS2Cell |
+| TS2Cell | Tne | tne_ts2cell_ts2cell: Tne(Temporal) would take the calls of Tne(Temporal), a member of an ancestor of TS2Cell |
 
 <!-- gap-ledger:end object layer -->

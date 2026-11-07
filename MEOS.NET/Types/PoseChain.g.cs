@@ -18,6 +18,12 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public int AlwaysEq(TPoseChain temp)
+            => Meos.AlwaysEqPosechainTposechain(this.Ptr, temp.Ptr);
+
+        public int AlwaysNe(TPoseChain temp)
+            => Meos.AlwaysNePosechainTposechain(this.Ptr, temp.Ptr);
+
         public PoseChain? Append(Pose pose)
             => MEOSFactory.WrapPoseChain(Meos.PosechainAppend(this.Ptr, pose.Ptr));
 
@@ -78,14 +84,32 @@ namespace MEOS.NET.Types
         public int Cmp(PoseChain pc2)
             => Meos.PosechainCmp(this.Ptr, pc2.Ptr);
 
+        public bool Contained(PoseChainSet s)
+            => Meos.ContainedPosechainSet(this.Ptr, s.Ptr);
+
         public PoseChain? Copy()
             => MEOSFactory.WrapPoseChain(Meos.PosechainCopy(this.Ptr));
+
+        public double Distance(Geo gs)
+            => Meos.DistancePosechainGeo(this.Ptr, gs.Ptr);
+
+        public double Distance(PoseChain pc2)
+            => Meos.DistancePosechainPosechain(this.Ptr, pc2.Ptr);
+
+        public double Distance(STBox box)
+            => Meos.DistancePosechainStbox(this.Ptr, box.Ptr);
 
         public Pose? EndPose()
             => MEOSFactory.WrapPose(Meos.PosechainEndPose(this.Ptr));
 
         public bool Eq(PoseChain pc2)
             => Meos.PosechainEq(this.Ptr, pc2.Ptr);
+
+        public int EverEq(TPoseChain temp)
+            => Meos.EverEqPosechainTposechain(this.Ptr, temp.Ptr);
+
+        public int EverNe(TPoseChain temp)
+            => Meos.EverNePosechainTposechain(this.Ptr, temp.Ptr);
 
         public bool Ge(PoseChain pc2)
             => Meos.PosechainGe(this.Ptr, pc2.Ptr);
@@ -99,6 +123,9 @@ namespace MEOS.NET.Types
         public ulong HashExtended(ulong seed)
             => Meos.PosechainHashExtended(this.Ptr, seed);
 
+        public Set? Intersection(PoseChainSet s)
+            => MEOSFactory.WrapSet(Meos.IntersectionPosechainSet(this.Ptr, s.Ptr));
+
         public bool Le(PoseChain pc2)
             => Meos.PosechainLe(this.Ptr, pc2.Ptr);
 
@@ -107,6 +134,9 @@ namespace MEOS.NET.Types
 
         public int MemSize()
             => Meos.PosechainMemSize(this.Ptr);
+
+        public Set? Minus(PoseChainSet s)
+            => MEOSFactory.WrapSet(Meos.MinusPosechainSet(this.Ptr, s.Ptr));
 
         public bool Ne(PoseChain pc2)
             => Meos.PosechainNe(this.Ptr, pc2.Ptr);
@@ -138,8 +168,14 @@ namespace MEOS.NET.Types
         public Pose? StartPose()
             => MEOSFactory.WrapPose(Meos.PosechainStartPose(this.Ptr));
 
+        public Temporal? Teq(TPoseChain temp)
+            => MEOSFactory.WrapTemporal(Meos.TeqPosechainTposechain(this.Ptr, temp.Ptr));
+
         public STBox? TimestamptzToStbox(DateTime t)
             => MEOSFactory.WrapSTBox(Meos.PosechainTimestamptzToStbox(this.Ptr, MEOSConvert.ToTimestampTz(t)));
+
+        public Temporal? Tne(TPoseChain temp)
+            => MEOSFactory.WrapTemporal(Meos.TnePosechainTposechain(this.Ptr, temp.Ptr));
 
         public Geo? ToPoint()
             => MEOSFactory.WrapGeo(Meos.PosechainToPoint(this.Ptr));
@@ -161,6 +197,9 @@ namespace MEOS.NET.Types
 
         public STBox? TstzspanToStbox(Span s)
             => MEOSFactory.WrapSTBox(Meos.PosechainTstzspanToStbox(this.Ptr, s.Ptr));
+
+        public Set? Union(PoseChainSet s)
+            => MEOSFactory.WrapSet(Meos.UnionPosechainSet(this.Ptr, s.Ptr));
 
         public static PoseChain? FromEWKB(byte[] wkb)
             => PoseChain.FromWKB(wkb);

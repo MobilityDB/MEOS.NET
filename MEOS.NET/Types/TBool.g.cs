@@ -18,6 +18,12 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public int AlwaysEq(bool b)
+            => Meos.AlwaysEqTboolBool(this.Ptr, b);
+
+        public int AlwaysNe(bool b)
+            => Meos.AlwaysNeTboolBool(this.Ptr, b);
+
         public string AsText()
             => this.Out();
 
@@ -27,17 +33,68 @@ namespace MEOS.NET.Types
         public bool EndValue()
             => Meos.TboolEndValue(this.Ptr);
 
+        public int EverEq(bool b)
+            => Meos.EverEqTboolBool(this.Ptr, b);
+
+        public int EverNe(bool b)
+            => Meos.EverNeTboolBool(this.Ptr, b);
+
         public Temporal? MinusValue(bool b)
             => MEOSFactory.WrapTemporal(Meos.TboolMinusValue(this.Ptr, b));
 
         public string Out()
             => Meos.TboolOut(this.Ptr);
 
+        public int RalwaysEq(bool b)
+            => Meos.AlwaysEqBoolTbool(b, this.Ptr);
+
+        public int RalwaysNe(bool b)
+            => Meos.AlwaysNeBoolTbool(b, this.Ptr);
+
+        public int ReverEq(bool b)
+            => Meos.EverEqBoolTbool(b, this.Ptr);
+
+        public int ReverNe(bool b)
+            => Meos.EverNeBoolTbool(b, this.Ptr);
+
+        public Temporal? Rtand(bool b)
+            => MEOSFactory.WrapTemporal(Meos.TandBoolTbool(b, this.Ptr));
+
+        public Temporal? Rteq(bool b)
+            => MEOSFactory.WrapTemporal(Meos.TeqBoolTbool(b, this.Ptr));
+
+        public Temporal? Rtne(bool b)
+            => MEOSFactory.WrapTemporal(Meos.TneBoolTbool(b, this.Ptr));
+
+        public Temporal? Rtor(bool b)
+            => MEOSFactory.WrapTemporal(Meos.TorBoolTbool(b, this.Ptr));
+
         public bool StartValue()
             => Meos.TboolStartValue(this.Ptr);
 
+        public Temporal? Tand(bool b)
+            => MEOSFactory.WrapTemporal(Meos.TandTboolBool(this.Ptr, b));
+
+        public Temporal? Tand(TBool temp2)
+            => MEOSFactory.WrapTemporal(Meos.TandTboolTbool(this.Ptr, temp2.Ptr));
+
+        public Temporal? Teq(bool b)
+            => MEOSFactory.WrapTemporal(Meos.TeqTboolBool(this.Ptr, b));
+
+        public Temporal? Tne(bool b)
+            => MEOSFactory.WrapTemporal(Meos.TneTboolBool(this.Ptr, b));
+
+        public Temporal? Tnot()
+            => MEOSFactory.WrapTemporal(Meos.TnotTbool(this.Ptr));
+
         public Temporal? ToTint()
             => MEOSFactory.WrapTemporal(Meos.TboolToTint(this.Ptr));
+
+        public Temporal? Tor(bool b)
+            => MEOSFactory.WrapTemporal(Meos.TorTboolBool(this.Ptr, b));
+
+        public Temporal? Tor(TBool temp2)
+            => MEOSFactory.WrapTemporal(Meos.TorTboolTbool(this.Ptr, temp2.Ptr));
 
         public (SpanSet?[], bool[]) Unnest()
         {

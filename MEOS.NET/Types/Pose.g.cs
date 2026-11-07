@@ -18,6 +18,12 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public int AlwaysEq(TPose temp)
+            => Meos.AlwaysEqPoseTpose(this.Ptr, temp.Ptr);
+
+        public int AlwaysNe(TPose temp)
+            => Meos.AlwaysNePoseTpose(this.Ptr, temp.Ptr);
+
         public double AngularDistance(Pose pose2)
             => Meos.PoseAngularDistance(this.Ptr, pose2.Ptr);
 
@@ -90,11 +96,29 @@ namespace MEOS.NET.Types
         public Temporal? ComposeTpose(Temporal frame)
             => MEOSFactory.WrapTemporal(Meos.PoseComposeTpose(this.Ptr, frame.Ptr));
 
+        public bool Contained(PoseSet s)
+            => Meos.ContainedPoseSet(this.Ptr, s.Ptr);
+
         public Pose? Copy()
             => MEOSFactory.WrapPose(Meos.PoseCopy(this.Ptr));
 
+        public double Distance(Geo gs)
+            => Meos.DistancePoseGeo(this.Ptr, gs.Ptr);
+
+        public double Distance(Pose pose2)
+            => Meos.DistancePosePose(this.Ptr, pose2.Ptr);
+
+        public double Distance(STBox box)
+            => Meos.DistancePoseStbox(this.Ptr, box.Ptr);
+
         public bool Eq(Pose pose2)
             => Meos.PoseEq(this.Ptr, pose2.Ptr);
+
+        public int EverEq(TPose temp)
+            => Meos.EverEqPoseTpose(this.Ptr, temp.Ptr);
+
+        public int EverNe(TPose temp)
+            => Meos.EverNePoseTpose(this.Ptr, temp.Ptr);
 
         public bool Ge(Pose pose2)
             => Meos.PoseGe(this.Ptr, pose2.Ptr);
@@ -108,6 +132,9 @@ namespace MEOS.NET.Types
         public ulong HashExtended(ulong seed)
             => Meos.PoseHashExtended(this.Ptr, seed);
 
+        public Set? Intersection(PoseSet s)
+            => MEOSFactory.WrapSet(Meos.IntersectionPoseSet(this.Ptr, s.Ptr));
+
         public Pose? Inverse()
             => MEOSFactory.WrapPose(Meos.PoseInverse(this.Ptr));
 
@@ -119,6 +146,9 @@ namespace MEOS.NET.Types
 
         public int MemSize()
             => Meos.PoseMemSize(this.Ptr);
+
+        public Set? Minus(PoseSet s)
+            => MEOSFactory.WrapSet(Meos.MinusPoseSet(this.Ptr, s.Ptr));
 
         public bool Ne(Pose pose2)
             => Meos.PoseNe(this.Ptr, pose2.Ptr);
@@ -147,8 +177,14 @@ namespace MEOS.NET.Types
         public Pose? SetSRID(int srid)
             => MEOSFactory.WrapPose(Meos.PoseSetSrid(this.Ptr, srid));
 
+        public Temporal? Teq(TPose temp)
+            => MEOSFactory.WrapTemporal(Meos.TeqPoseTpose(this.Ptr, temp.Ptr));
+
         public STBox? TimestamptzToStbox(DateTime t)
             => MEOSFactory.WrapSTBox(Meos.PoseTimestamptzToStbox(this.Ptr, MEOSConvert.ToTimestampTz(t)));
+
+        public Temporal? Tne(TPose temp)
+            => MEOSFactory.WrapTemporal(Meos.TnePoseTpose(this.Ptr, temp.Ptr));
 
         public Geo? ToGeog()
             => MEOSFactory.WrapGeo(Meos.PoseToGeog(this.Ptr));
@@ -173,6 +209,9 @@ namespace MEOS.NET.Types
 
         public STBox? TstzspanToStbox(Span s)
             => MEOSFactory.WrapSTBox(Meos.PoseTstzspanToStbox(this.Ptr, s.Ptr));
+
+        public Set? Union(PoseSet s)
+            => MEOSFactory.WrapSet(Meos.UnionPoseSet(this.Ptr, s.Ptr));
 
         public double Yaw()
             => Meos.PoseYaw(this.Ptr);

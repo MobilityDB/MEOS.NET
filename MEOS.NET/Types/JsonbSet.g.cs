@@ -30,6 +30,12 @@ namespace MEOS.NET.Types
         public string AsText()
             => this.Out();
 
+        public Set? Concat(Jsonb jb, bool invert)
+            => MEOSFactory.WrapSet(Meos.ConcatJsonbsetJsonb(this.Ptr, jb.Ptr, invert));
+
+        public bool Contains(Jsonb jb)
+            => Meos.ContainsSetJsonb(this.Ptr, jb.Ptr);
+
         public Set? Delete(Text key)
             => MEOSFactory.WrapSet(Meos.JsonbsetDelete(this.Ptr, key.Ptr));
 
@@ -137,6 +143,12 @@ namespace MEOS.NET.Types
             }
         }
 
+        public Set? Intersection(Jsonb jb)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetJsonb(this.Ptr, jb.Ptr));
+
+        public Set? Minus(Jsonb jb)
+            => MEOSFactory.WrapSet(Meos.MinusSetJsonb(this.Ptr, jb.Ptr));
+
         public Set? ObjectField(Text key, NullHandleType null_handle)
             => MEOSFactory.WrapSet(Meos.JsonbsetObjectField(this.Ptr, key.Ptr, (int) null_handle));
 
@@ -222,6 +234,9 @@ namespace MEOS.NET.Types
 
         public Set? ToTextsetKey(string key, NullHandleType null_handle)
             => MEOSFactory.WrapSet(Meos.JsonbsetToTextsetKey(this.Ptr, key, (int) null_handle));
+
+        public Set? Union(Jsonb jb)
+            => MEOSFactory.WrapSet(Meos.UnionSetJsonb(this.Ptr, jb.Ptr));
 
         public Jsonb? ValueN(int n)
         {

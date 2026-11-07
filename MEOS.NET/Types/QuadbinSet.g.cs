@@ -21,23 +21,50 @@ namespace MEOS.NET.Types
         public Set? CompactCells()
             => MEOSFactory.WrapSet(Meos.QuadbinsetCompactCells(this.Ptr));
 
+        public bool Contains(ulong cell)
+            => Meos.ContainsSetQuadbin(this.Ptr, cell);
+
         public Set? CoverCells(int resolution)
             => MEOSFactory.WrapSet(Meos.QuadbinsetCoverCells(this.Ptr, resolution));
 
         public ulong EndValue()
             => Meos.QuadbinsetEndValue(this.Ptr);
 
+        public int EverEq(TQuadbin tqb)
+            => Meos.EverEqQuadbinsetTquadbin(this.Ptr, tqb.Ptr);
+
         public Set? GridDisk(int k)
             => MEOSFactory.WrapSet(Meos.QuadbinsetGridDisk(this.Ptr, k));
 
+        public Set? Intersection(ulong cell)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetQuadbin(this.Ptr, cell));
+
+        public Set? Minus(ulong cell)
+            => MEOSFactory.WrapSet(Meos.MinusSetQuadbin(this.Ptr, cell));
+
         public string Out()
             => Meos.QuadbinsetOut(this.Ptr);
+
+        public bool Rcontained(ulong cell)
+            => Meos.ContainedQuadbinSet(cell, this.Ptr);
+
+        public Set? Rintersection(ulong cell)
+            => MEOSFactory.WrapSet(Meos.IntersectionQuadbinSet(cell, this.Ptr));
+
+        public Set? Rminus(ulong cell)
+            => MEOSFactory.WrapSet(Meos.MinusQuadbinSet(cell, this.Ptr));
+
+        public Set? Runion(ulong cell)
+            => MEOSFactory.WrapSet(Meos.UnionQuadbinSet(cell, this.Ptr));
 
         public ulong StartValue()
             => Meos.QuadbinsetStartValue(this.Ptr);
 
         public Set? UncompactCells(int resolution)
             => MEOSFactory.WrapSet(Meos.QuadbinsetUncompactCells(this.Ptr, resolution));
+
+        public Set? Union(ulong cell)
+            => MEOSFactory.WrapSet(Meos.UnionSetQuadbin(this.Ptr, cell));
 
         public ulong[] Values()
             => Meos.QuadbinsetValues(this.Ptr);
@@ -50,6 +77,9 @@ namespace MEOS.NET.Types
 
         public static Set? FromHexEWKB(string hexwkb)
             => Set.FromHexWKB(hexwkb);
+
+        public static Set? FromQuadbin(ulong cell)
+            => MEOSFactory.WrapSet(Meos.QuadbinToSet(cell));
 
         public static Set? FromText(string str)
             => QuadbinSet.In(str);

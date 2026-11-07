@@ -18,14 +18,44 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public int AlwaysEq(Pcpoint pt)
+            => Meos.AlwaysEqTpcpointPcpoint(this.Ptr, pt.Ptr);
+
+        public int AlwaysEq(TPcpoint temp2)
+            => Meos.AlwaysEqTpcpointTpcpoint(this.Ptr, temp2.Ptr);
+
+        public int AlwaysNe(Pcpoint pt)
+            => Meos.AlwaysNeTpcpointPcpoint(this.Ptr, pt.Ptr);
+
+        public int AlwaysNe(TPcpoint temp2)
+            => Meos.AlwaysNeTpcpointTpcpoint(this.Ptr, temp2.Ptr);
+
         public Temporal? AtValue(Pcpoint pt)
             => MEOSFactory.WrapTemporal(Meos.TpcpointAtValue(this.Ptr, pt.Ptr));
+
+        public bool Eintersects(Geo gs)
+            => Meos.EintersectsTpcpointGeo(this.Ptr, gs.Ptr);
 
         public Pcpoint? EndValue()
             => MEOSFactory.WrapPcpoint(Meos.TpcpointEndValue(this.Ptr));
 
+        public int EverEq(Pcpoint pt)
+            => Meos.EverEqTpcpointPcpoint(this.Ptr, pt.Ptr);
+
+        public int EverEq(TPcpoint temp2)
+            => Meos.EverEqTpcpointTpcpoint(this.Ptr, temp2.Ptr);
+
+        public int EverNe(Pcpoint pt)
+            => Meos.EverNeTpcpointPcpoint(this.Ptr, pt.Ptr);
+
+        public int EverNe(TPcpoint temp2)
+            => Meos.EverNeTpcpointTpcpoint(this.Ptr, temp2.Ptr);
+
         public Temporal? MinusValue(Pcpoint pt)
             => MEOSFactory.WrapTemporal(Meos.TpcpointMinusValue(this.Ptr, pt.Ptr));
+
+        public double Nad(Geo gs)
+            => Meos.NadTpcpointGeo(this.Ptr, gs.Ptr);
 
         public string Out()
             => Meos.TpcpointOut(this.Ptr);
@@ -35,6 +65,12 @@ namespace MEOS.NET.Types
 
         public Pcpoint? StartValue()
             => MEOSFactory.WrapPcpoint(Meos.TpcpointStartValue(this.Ptr));
+
+        public Temporal? Teq(Pcpoint pt)
+            => MEOSFactory.WrapTemporal(Meos.TeqTpcpointPcpoint(this.Ptr, pt.Ptr));
+
+        public Temporal? Tne(Pcpoint pt)
+            => MEOSFactory.WrapTemporal(Meos.TneTpcpointPcpoint(this.Ptr, pt.Ptr));
 
         public Temporal? ToTgeompoint()
             => MEOSFactory.WrapTemporal(Meos.TpcpointToTgeompoint(this.Ptr));

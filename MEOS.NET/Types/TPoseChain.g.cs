@@ -18,6 +18,18 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public int AlwaysEq(PoseChain posechain)
+            => Meos.AlwaysEqTposechainPosechain(this.Ptr, posechain.Ptr);
+
+        public int AlwaysEq(TPoseChain temp2)
+            => Meos.AlwaysEqTposechainTposechain(this.Ptr, temp2.Ptr);
+
+        public int AlwaysNe(PoseChain posechain)
+            => Meos.AlwaysNeTposechainPosechain(this.Ptr, posechain.Ptr);
+
+        public int AlwaysNe(TPoseChain temp2)
+            => Meos.AlwaysNeTposechainTposechain(this.Ptr, temp2.Ptr);
+
         public string AsGeopose(int precision)
             => Meos.TposechainAsGeopose(this.Ptr, precision);
 
@@ -27,8 +39,41 @@ namespace MEOS.NET.Types
         public PoseChain? EndValue()
             => MEOSFactory.WrapPoseChain(Meos.TposechainEndValue(this.Ptr));
 
+        public int EverEq(PoseChain posechain)
+            => Meos.EverEqTposechainPosechain(this.Ptr, posechain.Ptr);
+
+        public int EverEq(TPoseChain temp2)
+            => Meos.EverEqTposechainTposechain(this.Ptr, temp2.Ptr);
+
+        public int EverNe(PoseChain posechain)
+            => Meos.EverNeTposechainPosechain(this.Ptr, posechain.Ptr);
+
+        public int EverNe(TPoseChain temp2)
+            => Meos.EverNeTposechainTposechain(this.Ptr, temp2.Ptr);
+
         public Temporal? MinusValue(PoseChain pc)
             => MEOSFactory.WrapTemporal(Meos.TposechainMinusValue(this.Ptr, pc.Ptr));
+
+        public double Nad(Geo gs)
+            => Meos.NadTposechainGeo(this.Ptr, gs.Ptr);
+
+        public double Nad(PoseChain pc)
+            => Meos.NadTposechainPosechain(this.Ptr, pc.Ptr);
+
+        public double Nad(STBox box)
+            => Meos.NadTposechainStbox(this.Ptr, box.Ptr);
+
+        public double Nad(TPoseChain temp2)
+            => Meos.NadTposechainTposechain(this.Ptr, temp2.Ptr);
+
+        public Temporal? Nai(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.NaiTposechainGeo(this.Ptr, gs.Ptr));
+
+        public Temporal? Nai(PoseChain pc)
+            => MEOSFactory.WrapTemporal(Meos.NaiTposechainPosechain(this.Ptr, pc.Ptr));
+
+        public Temporal? Nai(TPoseChain temp2)
+            => MEOSFactory.WrapTemporal(Meos.NaiTposechainTposechain(this.Ptr, temp2.Ptr));
 
         public int NumPoses()
             => Meos.TposechainNumPoses(this.Ptr);
@@ -45,8 +90,32 @@ namespace MEOS.NET.Types
         public Temporal? RotateZ(double angle)
             => MEOSFactory.WrapTemporal(Meos.TposechainRotateZ(this.Ptr, angle));
 
+        public Geo? Shortestline(Geo gs)
+            => MEOSFactory.WrapGeo(Meos.ShortestlineTposechainGeo(this.Ptr, gs.Ptr));
+
+        public Geo? Shortestline(PoseChain pc)
+            => MEOSFactory.WrapGeo(Meos.ShortestlineTposechainPosechain(this.Ptr, pc.Ptr));
+
+        public Geo? Shortestline(TPoseChain temp2)
+            => MEOSFactory.WrapGeo(Meos.ShortestlineTposechainTposechain(this.Ptr, temp2.Ptr));
+
         public PoseChain? StartValue()
             => MEOSFactory.WrapPoseChain(Meos.TposechainStartValue(this.Ptr));
+
+        public Temporal? Tdistance(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TdistanceTposechainGeo(this.Ptr, gs.Ptr));
+
+        public Temporal? Tdistance(PoseChain pc)
+            => MEOSFactory.WrapTemporal(Meos.TdistanceTposechainPosechain(this.Ptr, pc.Ptr));
+
+        public Temporal? Tdistance(TPoseChain temp2)
+            => MEOSFactory.WrapTemporal(Meos.TdistanceTposechainTposechain(this.Ptr, temp2.Ptr));
+
+        public Temporal? Teq(PoseChain posechain)
+            => MEOSFactory.WrapTemporal(Meos.TeqTposechainPosechain(this.Ptr, posechain.Ptr));
+
+        public Temporal? Tne(PoseChain posechain)
+            => MEOSFactory.WrapTemporal(Meos.TneTposechainPosechain(this.Ptr, posechain.Ptr));
 
         public Temporal? ToTpose()
             => MEOSFactory.WrapTemporal(Meos.TposechainToTpose(this.Ptr));

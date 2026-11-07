@@ -18,6 +18,15 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public int Atouches(Geometry gs)
+            => Meos.AtouchesTpointGeo(this.Ptr, gs.Ptr);
+
+        public Temporal? Bearing(TGeomPoint temp2)
+            => MEOSFactory.WrapTemporal(Meos.BearingTpointTpoint(this.Ptr, temp2.Ptr));
+
+        public int Etouches(Geometry gs)
+            => Meos.EtouchesTpointGeo(this.Ptr, gs.Ptr);
+
         public (Temporal?[], ulong[]) H3indexSplit(int resolution, bool border_inc)
         {
             var _answered = Meos.TgeompointH3indexSplit(this.Ptr, resolution, border_inc);

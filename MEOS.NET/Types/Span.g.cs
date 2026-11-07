@@ -14,6 +14,12 @@ namespace MEOS.NET.Types
     {
         internal Span(IntPtr ptr) : base(ptr) { }
 
+        public bool Adjacent(Span s2)
+            => Meos.AdjacentSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Adjacent(SpanSet ss)
+            => Meos.AdjacentSpanSpanset(this.Ptr, ss.Ptr);
+
         public string AsHexWKB(byte variant)
             => Meos.SpanAsHexwkb(this.Ptr, variant);
 
@@ -41,6 +47,18 @@ namespace MEOS.NET.Types
         public int Cmp(Span s2)
             => Meos.SpanCmp(this.Ptr, s2.Ptr);
 
+        public bool Contained(Span s2)
+            => Meos.ContainedSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Contained(SpanSet ss)
+            => Meos.ContainedSpanSpanset(this.Ptr, ss.Ptr);
+
+        public bool Contains(Span s2)
+            => Meos.ContainsSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Contains(SpanSet ss)
+            => Meos.ContainsSpanSpanset(this.Ptr, ss.Ptr);
+
         public Span? Copy()
             => MEOSFactory.WrapSpan(Meos.SpanCopy(this.Ptr));
 
@@ -59,8 +77,20 @@ namespace MEOS.NET.Types
         public ulong HashExtended(ulong seed)
             => Meos.SpanHashExtended(this.Ptr, seed);
 
+        public Span? Intersection(Span s2)
+            => MEOSFactory.WrapSpan(Meos.IntersectionSpanSpan(this.Ptr, s2.Ptr));
+
+        public SpanSet? Intersection(SpanSet ss)
+            => MEOSFactory.WrapSpanSet(Meos.IntersectionSpanSpanset(this.Ptr, ss.Ptr));
+
         public bool Le(Span s2)
             => Meos.SpanLe(this.Ptr, s2.Ptr);
+
+        public bool Left(Span s2)
+            => Meos.LeftSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Left(SpanSet ss)
+            => Meos.LeftSpanSpanset(this.Ptr, ss.Ptr);
 
         public bool LowerInc()
             => Meos.SpanLowerInc(this.Ptr);
@@ -68,8 +98,41 @@ namespace MEOS.NET.Types
         public bool Lt(Span s2)
             => Meos.SpanLt(this.Ptr, s2.Ptr);
 
+        public SpanSet? Minus(Span s2)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpanSpan(this.Ptr, s2.Ptr));
+
+        public SpanSet? Minus(SpanSet ss)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpanSpanset(this.Ptr, ss.Ptr));
+
         public bool Ne(Span s2)
             => Meos.SpanNe(this.Ptr, s2.Ptr);
+
+        public bool Overlaps(Span s2)
+            => Meos.OverlapsSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Overlaps(SpanSet ss)
+            => Meos.OverlapsSpanSpanset(this.Ptr, ss.Ptr);
+
+        public bool Overleft(Span s2)
+            => Meos.OverleftSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Overleft(SpanSet ss)
+            => Meos.OverleftSpanSpanset(this.Ptr, ss.Ptr);
+
+        public bool Overright(Span s2)
+            => Meos.OverrightSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Overright(SpanSet ss)
+            => Meos.OverrightSpanSpanset(this.Ptr, ss.Ptr);
+
+        public bool Right(Span s2)
+            => Meos.RightSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Right(SpanSet ss)
+            => Meos.RightSpanSpanset(this.Ptr, ss.Ptr);
+
+        public bool Same(Span s2)
+            => Meos.SameSpanSpan(this.Ptr, s2.Ptr);
 
         public byte[]? Sortkey()
         {
@@ -97,6 +160,12 @@ namespace MEOS.NET.Types
 
         public TBox? ToTbox()
             => MEOSFactory.WrapTBox(Meos.SpanToTbox(this.Ptr));
+
+        public SpanSet? Union(Span s2)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpanSpan(this.Ptr, s2.Ptr));
+
+        public SpanSet? Union(SpanSet ss)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpanSpanset(this.Ptr, ss.Ptr));
 
         public bool UpperInc()
             => Meos.SpanUpperInc(this.Ptr);

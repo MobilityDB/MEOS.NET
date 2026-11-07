@@ -74,6 +74,17 @@ struct starts with the Temporal header, so a `TInstant *` or `TSequence *`
 return is a `Temporal` at the surface whose runtime class is the concrete
 one.
 
+The operators the model assigns a class (`classes.<C>.operators`) are
+built the same way, one overload of the method their `ooName` names:
+`ever_eq_tfloat_float` is `TFloat.EverEq(double)` beside the inherited
+`Temporal.EverEq(Temporal)`. An operator reflected onto its right operand
+(`receiver: right`, `sub_float_tfloat` is `TFloat.Rsub`) is called on its
+second parameter, and the other operand is typed as the `otherClass` the
+model instantiates it to where that class is below the one its C type maps
+to. An overload C# could not tell from another one of the class, or one that
+would take the calls of an ancestor's member, is recorded in `GAP-LEDGER.md`
+rather than emitted.
+
 A method whose marshalling the layer does not emit — a `GSERIALIZED *`
 geometry, an `Interval *`, a counted array argument, a scalar
 out-parameter — is reported by `--report` and left to the raw binding, which

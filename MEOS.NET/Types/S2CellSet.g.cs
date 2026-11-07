@@ -21,20 +21,47 @@ namespace MEOS.NET.Types
         public Set? CompactCells()
             => MEOSFactory.WrapSet(Meos.S2cellsetCompactCells(this.Ptr));
 
+        public bool Contains(ulong cell)
+            => Meos.ContainsSetS2cell(this.Ptr, cell);
+
         public Set? CoverCells(int resolution)
             => MEOSFactory.WrapSet(Meos.S2cellsetCoverCells(this.Ptr, resolution));
 
         public ulong EndValue()
             => Meos.S2cellsetEndValue(this.Ptr);
 
+        public int EverEq(TS2Cell temp)
+            => Meos.EverEqS2cellsetTs2cell(this.Ptr, temp.Ptr);
+
+        public Set? Intersection(ulong cell)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetS2cell(this.Ptr, cell));
+
+        public Set? Minus(ulong cell)
+            => MEOSFactory.WrapSet(Meos.MinusSetS2cell(this.Ptr, cell));
+
         public string Out()
             => Meos.S2cellsetOut(this.Ptr);
+
+        public bool Rcontained(ulong cell)
+            => Meos.ContainedS2cellSet(cell, this.Ptr);
+
+        public Set? Rintersection(ulong cell)
+            => MEOSFactory.WrapSet(Meos.IntersectionS2cellSet(cell, this.Ptr));
+
+        public Set? Rminus(ulong cell)
+            => MEOSFactory.WrapSet(Meos.MinusS2cellSet(cell, this.Ptr));
+
+        public Set? Runion(ulong cell)
+            => MEOSFactory.WrapSet(Meos.UnionS2cellSet(cell, this.Ptr));
 
         public ulong StartValue()
             => Meos.S2cellsetStartValue(this.Ptr);
 
         public Set? UncompactCells(int resolution)
             => MEOSFactory.WrapSet(Meos.S2cellsetUncompactCells(this.Ptr, resolution));
+
+        public Set? Union(ulong cell)
+            => MEOSFactory.WrapSet(Meos.UnionSetS2cell(this.Ptr, cell));
 
         public ulong[] Values()
             => Meos.S2cellsetValues(this.Ptr);
@@ -47,6 +74,9 @@ namespace MEOS.NET.Types
 
         public static Set? FromHexEWKB(string hexwkb)
             => Set.FromHexWKB(hexwkb);
+
+        public static Set? FromS2cell(ulong cell)
+            => MEOSFactory.WrapSet(Meos.S2cellToSet(cell));
 
         public static Set? FromText(string str)
             => S2CellSet.In(str);

@@ -14,14 +14,32 @@ namespace MEOS.NET.Types
     {
         internal GeoSet(IntPtr ptr) : base(ptr) { }
 
+        public bool Contains(Geo gs)
+            => Meos.ContainsSetGeo(this.Ptr, gs.Ptr);
+
+        public double Distance(GeoSet s2, bool spheroid)
+            => Meos.DistanceGeosetGeoset(this.Ptr, s2.Ptr, spheroid);
+
+        public double Distance(Geo gs, bool spheroid)
+            => Meos.DistanceSetGeo(this.Ptr, gs.Ptr, spheroid);
+
         public Geo? EndValue()
             => MEOSFactory.WrapGeo(Meos.GeosetEndValue(this.Ptr));
+
+        public Set? Intersection(Geo gs)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetGeo(this.Ptr, gs.Ptr));
+
+        public Set? Minus(Geo gs)
+            => MEOSFactory.WrapSet(Meos.MinusSetGeo(this.Ptr, gs.Ptr));
 
         public Geo? StartValue()
             => MEOSFactory.WrapGeo(Meos.GeosetStartValue(this.Ptr));
 
         public Geo? ToGeo()
             => MEOSFactory.WrapGeo(Meos.GeosetToGeo(this.Ptr));
+
+        public Set? Union(Geo gs)
+            => MEOSFactory.WrapSet(Meos.UnionSetGeo(this.Ptr, gs.Ptr));
 
         public Geo? ValueN(int n)
         {

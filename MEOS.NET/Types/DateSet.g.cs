@@ -18,14 +18,65 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public bool After(DateOnly d)
+            => Meos.AfterSetDate(this.Ptr, MEOSConvert.ToDateADT(d));
+
         public string AsText()
             => this.Out();
+
+        public bool Before(DateOnly d)
+            => Meos.BeforeSetDate(this.Ptr, MEOSConvert.ToDateADT(d));
+
+        public bool Contains(DateOnly d)
+            => Meos.ContainsSetDate(this.Ptr, MEOSConvert.ToDateADT(d));
+
+        public int Distance(DateSet s2)
+            => Meos.DistanceDatesetDateset(this.Ptr, s2.Ptr);
+
+        public int Distance(DateOnly d)
+            => Meos.DistanceSetDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
         public DateOnly EndValue()
             => MEOSConvert.ToDateOnly(Meos.DatesetEndValue(this.Ptr));
 
+        public Set? Intersection(DateOnly d)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetDate(this.Ptr, MEOSConvert.ToDateADT(d)));
+
+        public Set? Minus(DateOnly d)
+            => MEOSFactory.WrapSet(Meos.MinusSetDate(this.Ptr, MEOSConvert.ToDateADT(d)));
+
         public string Out()
             => Meos.DatesetOut(this.Ptr);
+
+        public bool Overafter(DateOnly d)
+            => Meos.OverafterSetDate(this.Ptr, MEOSConvert.ToDateADT(d));
+
+        public bool Overbefore(DateOnly d)
+            => Meos.OverbeforeSetDate(this.Ptr, MEOSConvert.ToDateADT(d));
+
+        public bool Rafter(DateOnly d)
+            => Meos.AfterDateSet(MEOSConvert.ToDateADT(d), this.Ptr);
+
+        public bool Rbefore(DateOnly d)
+            => Meos.BeforeDateSet(MEOSConvert.ToDateADT(d), this.Ptr);
+
+        public bool Rcontained(DateOnly d)
+            => Meos.ContainedDateSet(MEOSConvert.ToDateADT(d), this.Ptr);
+
+        public Set? Rintersection(DateOnly d)
+            => MEOSFactory.WrapSet(Meos.IntersectionDateSet(MEOSConvert.ToDateADT(d), this.Ptr));
+
+        public Set? Rminus(DateOnly d)
+            => MEOSFactory.WrapSet(Meos.MinusDateSet(MEOSConvert.ToDateADT(d), this.Ptr));
+
+        public bool Roverafter(DateOnly d)
+            => Meos.OverafterDateSet(MEOSConvert.ToDateADT(d), this.Ptr);
+
+        public bool Roverbefore(DateOnly d)
+            => Meos.OverbeforeDateSet(MEOSConvert.ToDateADT(d), this.Ptr);
+
+        public Set? Runion(DateOnly d)
+            => MEOSFactory.WrapSet(Meos.UnionDateSet(MEOSConvert.ToDateADT(d), this.Ptr));
 
         public Set? ShiftScale(int shift, int width, bool hasshift, bool haswidth)
             => MEOSFactory.WrapSet(Meos.DatesetShiftScale(this.Ptr, shift, width, hasshift, haswidth));
@@ -35,6 +86,9 @@ namespace MEOS.NET.Types
 
         public Set? ToTstzset()
             => MEOSFactory.WrapSet(Meos.DatesetToTstzset(this.Ptr));
+
+        public Set? Union(DateOnly d)
+            => MEOSFactory.WrapSet(Meos.UnionSetDate(this.Ptr, MEOSConvert.ToDateADT(d)));
 
         public DateOnly? ValueN(int n)
         {
@@ -56,6 +110,9 @@ namespace MEOS.NET.Types
 
         public int[] Values()
             => Meos.DatesetValues(this.Ptr);
+
+        public static Set? FromDate(DateOnly d)
+            => MEOSFactory.WrapSet(Meos.DateToSet(MEOSConvert.ToDateADT(d)));
 
         public static Set? FromText(string str)
             => DateSet.In(str);

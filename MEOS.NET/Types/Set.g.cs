@@ -41,6 +41,12 @@ namespace MEOS.NET.Types
         public int Cmp(Set s2)
             => Meos.SetCmp(this.Ptr, s2.Ptr);
 
+        public bool Contained(Set s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
+        public bool Contains(Set s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
+
         public Set? Copy()
             => MEOSFactory.WrapSet(Meos.SetCopy(this.Ptr));
 
@@ -59,8 +65,14 @@ namespace MEOS.NET.Types
         public ulong HashExtended(ulong seed)
             => Meos.SetHashExtended(this.Ptr, seed);
 
+        public Set? Intersection(Set s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
         public bool Le(Set s2)
             => Meos.SetLe(this.Ptr, s2.Ptr);
+
+        public bool Left(Set s2)
+            => Meos.LeftSetSet(this.Ptr, s2.Ptr);
 
         public bool Lt(Set s2)
             => Meos.SetLt(this.Ptr, s2.Ptr);
@@ -68,11 +80,26 @@ namespace MEOS.NET.Types
         public int MemSize()
             => Meos.SetMemSize(this.Ptr);
 
+        public Set? Minus(Set s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
+
         public bool Ne(Set s2)
             => Meos.SetNe(this.Ptr, s2.Ptr);
 
         public int NumValues()
             => Meos.SetNumValues(this.Ptr);
+
+        public bool Overlaps(Set s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
+
+        public bool Overleft(Set s2)
+            => Meos.OverleftSetSet(this.Ptr, s2.Ptr);
+
+        public bool Overright(Set s2)
+            => Meos.OverrightSetSet(this.Ptr, s2.Ptr);
+
+        public bool Right(Set s2)
+            => Meos.RightSetSet(this.Ptr, s2.Ptr);
 
         public Set? Round(int maxdd)
             => MEOSFactory.WrapSet(Meos.SetRound(this.Ptr, maxdd));
@@ -115,6 +142,9 @@ namespace MEOS.NET.Types
 
         public TBox? ToTbox()
             => MEOSFactory.WrapTBox(Meos.SetToTbox(this.Ptr));
+
+        public Set? Union(Set s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public static Set? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapSet(Meos.SetFromHexwkb(hexwkb));

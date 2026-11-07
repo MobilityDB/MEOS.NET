@@ -241,8 +241,8 @@ namespace MEOS.NET.Functions
         public static IntPtr NsegmentMake(long rid, double pos1, double pos2)
             => SafeExecution<IntPtr>(() => Native.NsegmentMake(rid, pos1, pos2));
 
-        public static IntPtr GeompointToNpoint(IntPtr gs)
-            => SafeExecution<IntPtr>(() => Native.GeompointToNpoint(gs));
+        public static IntPtr GeompointToNpoint(IntPtr gs, double tolerance)
+            => SafeExecution<IntPtr>(() => Native.GeompointToNpoint(gs, tolerance));
 
         public static IntPtr GeomToNsegment(IntPtr gs)
             => SafeExecution<IntPtr>(() => Native.GeomToNsegment(gs));

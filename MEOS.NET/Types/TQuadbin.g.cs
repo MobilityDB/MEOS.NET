@@ -18,6 +18,18 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public int AlwaysEq(ulong cell)
+            => Meos.AlwaysEqTquadbinQuadbin(this.Ptr, cell);
+
+        public int AlwaysEq(TQuadbin temp2)
+            => Meos.AlwaysEqTquadbinTquadbin(this.Ptr, temp2.Ptr);
+
+        public int AlwaysNe(ulong cell)
+            => Meos.AlwaysNeTquadbinQuadbin(this.Ptr, cell);
+
+        public int AlwaysNe(TQuadbin temp2)
+            => Meos.AlwaysNeTquadbinTquadbin(this.Ptr, temp2.Ptr);
+
         public Temporal? AtValue(ulong cell)
             => MEOSFactory.WrapTemporal(Meos.TquadbinAtValue(this.Ptr, cell));
 
@@ -26,6 +38,21 @@ namespace MEOS.NET.Types
 
         public ulong EndValue()
             => Meos.TquadbinEndValue(this.Ptr);
+
+        public int EverEq(QuadbinSet cells)
+            => Meos.EverEqTquadbinQuadbinset(this.Ptr, cells.Ptr);
+
+        public int EverEq(ulong cell)
+            => Meos.EverEqTquadbinQuadbin(this.Ptr, cell);
+
+        public int EverEq(TQuadbin temp2)
+            => Meos.EverEqTquadbinTquadbin(this.Ptr, temp2.Ptr);
+
+        public int EverNe(ulong cell)
+            => Meos.EverNeTquadbinQuadbin(this.Ptr, cell);
+
+        public int EverNe(TQuadbin temp2)
+            => Meos.EverNeTquadbinTquadbin(this.Ptr, temp2.Ptr);
 
         public Temporal? GridDistance(Temporal dest)
             => MEOSFactory.WrapTemporal(Meos.TquadbinGridDistance(this.Ptr, dest.Ptr));
@@ -36,8 +63,32 @@ namespace MEOS.NET.Types
         public string Out()
             => Meos.TquadbinOut(this.Ptr);
 
+        public int RalwaysEq(ulong cell)
+            => Meos.AlwaysEqQuadbinTquadbin(cell, this.Ptr);
+
+        public int RalwaysNe(ulong cell)
+            => Meos.AlwaysNeQuadbinTquadbin(cell, this.Ptr);
+
+        public int ReverEq(ulong cell)
+            => Meos.EverEqQuadbinTquadbin(cell, this.Ptr);
+
+        public int ReverNe(ulong cell)
+            => Meos.EverNeQuadbinTquadbin(cell, this.Ptr);
+
+        public Temporal? Rteq(ulong cell)
+            => MEOSFactory.WrapTemporal(Meos.TeqQuadbinTquadbin(cell, this.Ptr));
+
+        public Temporal? Rtne(ulong cell)
+            => MEOSFactory.WrapTemporal(Meos.TneQuadbinTquadbin(cell, this.Ptr));
+
         public ulong StartValue()
             => Meos.TquadbinStartValue(this.Ptr);
+
+        public Temporal? Teq(ulong cell)
+            => MEOSFactory.WrapTemporal(Meos.TeqTquadbinQuadbin(this.Ptr, cell));
+
+        public Temporal? Tne(ulong cell)
+            => MEOSFactory.WrapTemporal(Meos.TneTquadbinQuadbin(this.Ptr, cell));
 
         public Temporal? ToTbigint()
             => MEOSFactory.WrapTemporal(Meos.TquadbinToTbigint(this.Ptr));

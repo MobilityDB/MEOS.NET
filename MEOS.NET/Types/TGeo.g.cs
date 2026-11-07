@@ -14,8 +14,38 @@ namespace MEOS.NET.Types
     {
         internal TGeo(IntPtr ptr) : base(ptr) { }
 
+        public int Adisjoint(Geo gs)
+            => Meos.AdisjointTgeoGeo(this.Ptr, gs.Ptr);
+
+        public int Adisjoint(TGeo temp2)
+            => Meos.AdisjointTgeoTgeo(this.Ptr, temp2.Ptr);
+
+        public int Adwithin(Geometry gs, double dist, bool spheroid)
+            => Meos.AdwithinTgeoGeo(this.Ptr, gs.Ptr, dist, spheroid);
+
+        public int Adwithin(TGeo temp2, double dist, bool spheroid)
+            => Meos.AdwithinTgeoTgeo(this.Ptr, temp2.Ptr, dist, spheroid);
+
         public Temporal? Affine(double a, double b, double c, double d, double e, double f, double g, double h, double i, double xoff, double yoff, double zoff)
             => MEOSFactory.WrapTemporal(Meos.TgeoAffine(this.Ptr, a, b, c, d, e, f, g, h, i, xoff, yoff, zoff));
+
+        public int Aintersects(Geo gs)
+            => Meos.AintersectsTgeoGeo(this.Ptr, gs.Ptr);
+
+        public int Aintersects(TGeo temp2)
+            => Meos.AintersectsTgeoTgeo(this.Ptr, temp2.Ptr);
+
+        public int AlwaysEq(Geo gs)
+            => Meos.AlwaysEqTgeoGeo(this.Ptr, gs.Ptr);
+
+        public int AlwaysEq(TGeo temp2)
+            => Meos.AlwaysEqTgeoTgeo(this.Ptr, temp2.Ptr);
+
+        public int AlwaysNe(Geo gs)
+            => Meos.AlwaysNeTgeoGeo(this.Ptr, gs.Ptr);
+
+        public int AlwaysNe(TGeo temp2)
+            => Meos.AlwaysNeTgeoTgeo(this.Ptr, temp2.Ptr);
 
         public Temporal? AtGeom(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.TgeoAtGeom(this.Ptr, gs.Ptr));
@@ -32,8 +62,38 @@ namespace MEOS.NET.Types
         public Geo? ConvexHull()
             => MEOSFactory.WrapGeo(Meos.TgeoConvexHull(this.Ptr));
 
+        public int Edisjoint(Geo gs)
+            => Meos.EdisjointTgeoGeo(this.Ptr, gs.Ptr);
+
+        public int Edisjoint(TGeo temp2)
+            => Meos.EdisjointTgeoTgeo(this.Ptr, temp2.Ptr);
+
+        public int Edwithin(Geo gs, double dist, bool spheroid)
+            => Meos.EdwithinTgeoGeo(this.Ptr, gs.Ptr, dist, spheroid);
+
+        public int Edwithin(TSpatial temp2, double dist, bool spheroid)
+            => Meos.EdwithinTgeoTgeo(this.Ptr, temp2.Ptr, dist, spheroid);
+
+        public int Eintersects(Geo gs)
+            => Meos.EintersectsTgeoGeo(this.Ptr, gs.Ptr);
+
+        public int Eintersects(TSpatial temp2)
+            => Meos.EintersectsTgeoTgeo(this.Ptr, temp2.Ptr);
+
         public Geo? EndValue()
             => MEOSFactory.WrapGeo(Meos.TgeoEndValue(this.Ptr));
+
+        public int EverEq(Geo gs)
+            => Meos.EverEqTgeoGeo(this.Ptr, gs.Ptr);
+
+        public int EverEq(TGeo temp2)
+            => Meos.EverEqTgeoTgeo(this.Ptr, temp2.Ptr);
+
+        public int EverNe(Geo gs)
+            => Meos.EverNeTgeoGeo(this.Ptr, gs.Ptr);
+
+        public int EverNe(TGeo temp2)
+            => Meos.EverNeTgeoTgeo(this.Ptr, temp2.Ptr);
 
         public Temporal? Force2d()
             => MEOSFactory.WrapTemporal(Meos.TgeoForce2d(this.Ptr));
@@ -49,6 +109,21 @@ namespace MEOS.NET.Types
 
         public Temporal? MinusValue(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.TgeoMinusValue(this.Ptr, gs.Ptr));
+
+        public double Nad(Geo gs, bool spheroid)
+            => Meos.NadTgeoGeo(this.Ptr, gs.Ptr, spheroid);
+
+        public double Nad(STBox box, bool spheroid)
+            => Meos.NadTgeoStbox(this.Ptr, box.Ptr, spheroid);
+
+        public double Nad(TGeo temp2, bool spheroid)
+            => Meos.NadTgeoTgeo(this.Ptr, temp2.Ptr, spheroid);
+
+        public Temporal? Nai(Geo gs, bool spheroid)
+            => MEOSFactory.WrapTemporal(Meos.NaiTgeoGeo(this.Ptr, gs.Ptr, spheroid));
+
+        public Temporal? Nai(TGeo temp2, bool spheroid)
+            => MEOSFactory.WrapTemporal(Meos.NaiTgeoTgeo(this.Ptr, temp2.Ptr, spheroid));
 
         public Temporal? Rotate(double angle, double x0, double y0)
             => MEOSFactory.WrapTemporal(Meos.TgeoRotate(this.Ptr, angle, x0, y0));
@@ -73,6 +148,12 @@ namespace MEOS.NET.Types
 
         public Temporal? ScaleGeoOrigin(Geo scale, Geo sorigin)
             => MEOSFactory.WrapTemporal(Meos.TgeoScaleGeoOrigin(this.Ptr, scale.Ptr, sorigin.Ptr));
+
+        public Geo? Shortestline(Geo gs, bool spheroid)
+            => MEOSFactory.WrapGeo(Meos.ShortestlineTgeoGeo(this.Ptr, gs.Ptr, spheroid));
+
+        public Geo? Shortestline(TGeo temp2, bool spheroid)
+            => MEOSFactory.WrapGeo(Meos.ShortestlineTgeoTgeo(this.Ptr, temp2.Ptr, spheroid));
 
         public STBox?[] SpaceBoxes(double xsize, double ysize, double zsize, Geo sorigin, bool bitmatrix, bool border_inc)
             => MEOSFactory.WrapSTBoxArray(Meos.TgeoSpaceBoxes(this.Ptr, xsize, ysize, zsize, sorigin.Ptr, bitmatrix, border_inc));
@@ -126,6 +207,27 @@ namespace MEOS.NET.Types
         public STBox?[] Stboxes()
             => MEOSFactory.WrapSTBoxArray(Meos.TgeoStboxes(this.Ptr));
 
+        public Temporal? Tdisjoint(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TdisjointTgeoGeo(this.Ptr, gs.Ptr));
+
+        public Temporal? Tdisjoint(TGeo temp2)
+            => MEOSFactory.WrapTemporal(Meos.TdisjointTgeoTgeo(this.Ptr, temp2.Ptr));
+
+        public Temporal? Tdistance(Geo gs, bool spheroid)
+            => MEOSFactory.WrapTemporal(Meos.TdistanceTgeoGeo(this.Ptr, gs.Ptr, spheroid));
+
+        public Temporal? Tdistance(TGeo temp2, bool spheroid)
+            => MEOSFactory.WrapTemporal(Meos.TdistanceTgeoTgeo(this.Ptr, temp2.Ptr, spheroid));
+
+        public Temporal? Tdwithin(Geo gs, double dist, bool spheroid)
+            => MEOSFactory.WrapTemporal(Meos.TdwithinTgeoGeo(this.Ptr, gs.Ptr, dist, spheroid));
+
+        public Temporal? Tdwithin(TGeo temp2, double dist, bool spheroid)
+            => MEOSFactory.WrapTemporal(Meos.TdwithinTgeoTgeo(this.Ptr, temp2.Ptr, dist, spheroid));
+
+        public Temporal? Teq(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TeqTgeoGeo(this.Ptr, gs.Ptr));
+
         public STBox?[] TimeBoxes(Interval duration, DateTime torigin, bool bitmatrix, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
@@ -140,6 +242,15 @@ namespace MEOS.NET.Types
             }
         }
 
+        public Temporal? Tintersects(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TintersectsTgeoGeo(this.Ptr, gs.Ptr));
+
+        public Temporal? Tintersects(TGeo temp2)
+            => MEOSFactory.WrapTemporal(Meos.TintersectsTgeoTgeo(this.Ptr, temp2.Ptr));
+
+        public Temporal? Tne(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TneTgeoGeo(this.Ptr, gs.Ptr));
+
         public Temporal? Translate(double deltax, double deltay, double deltaz)
             => MEOSFactory.WrapTemporal(Meos.TgeoTranslate(this.Ptr, deltax, deltay, deltaz));
 
@@ -148,6 +259,9 @@ namespace MEOS.NET.Types
 
         public Geo? TraversedArea(bool unary_union)
             => MEOSFactory.WrapGeo(Meos.TgeoTraversedArea(this.Ptr, unary_union));
+
+        public Temporal? Ttouches(Geometry gs)
+            => MEOSFactory.WrapTemporal(Meos.TtouchesTgeoGeo(this.Ptr, gs.Ptr));
 
         public (SpanSet?[], Geo?[]) Unnest()
         {
