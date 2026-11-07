@@ -18,14 +18,29 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Contains(Pose pose)
+            => Meos.ContainsSetPose(this.Ptr, pose.Ptr);
+
+        public double Distance(PoseSet s2)
+            => Meos.DistancePosesetPoseset(this.Ptr, s2.Ptr);
+
         public Pose? EndValue()
             => MEOSFactory.WrapPose(Meos.PosesetEndValue(this.Ptr));
+
+        public Set? Intersection(Pose pose)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetPose(this.Ptr, pose.Ptr));
+
+        public Set? Minus(Pose pose)
+            => MEOSFactory.WrapSet(Meos.MinusSetPose(this.Ptr, pose.Ptr));
 
         public new string Out(int maxdd)
             => Meos.PosesetOut(this.Ptr, maxdd);
 
         public Pose? StartValue()
             => MEOSFactory.WrapPose(Meos.PosesetStartValue(this.Ptr));
+
+        public Set? Union(Pose pose)
+            => MEOSFactory.WrapSet(Meos.UnionSetPose(this.Ptr, pose.Ptr));
 
         public Pose? ValueN(int n)
         {

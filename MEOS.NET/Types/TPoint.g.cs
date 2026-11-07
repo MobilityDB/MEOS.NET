@@ -29,6 +29,9 @@ namespace MEOS.NET.Types
         public Temporal? Azimuth()
             => MEOSFactory.WrapTemporal(Meos.TpointAzimuth(this.Ptr));
 
+        public Temporal? Bearing(Geo gs, bool invert)
+            => MEOSFactory.WrapTemporal(Meos.BearingTpointPoint(this.Ptr, gs.Ptr, invert));
+
         public Temporal? CumulativeLength(bool spheroid)
             => MEOSFactory.WrapTemporal(Meos.TpointCumulativeLength(this.Ptr, spheroid));
 
@@ -109,6 +112,9 @@ namespace MEOS.NET.Types
 
         public new static Temporal? FromBaseTemp(Geo gs, Temporal temp)
             => MEOSFactory.WrapTemporal(Meos.TpointFromBaseTemp(gs.Ptr, temp.Ptr));
+
+        public static Temporal? FromGeomeas(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.GeomeasToTpoint(gs.Ptr));
 
     }
 }

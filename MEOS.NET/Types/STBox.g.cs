@@ -18,6 +18,24 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out(15);
 
+        public bool Above(STBox box2)
+            => Meos.AboveStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Above(TSpatial temp)
+            => Meos.AboveStboxTspatial(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(STBox box2)
+            => Meos.AdjacentStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Adjacent(TSpatial temp)
+            => Meos.AdjacentStboxTspatial(this.Ptr, temp.Ptr);
+
+        public bool After(STBox box2)
+            => Meos.AfterStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool After(TSpatial temp)
+            => Meos.AfterStboxTspatial(this.Ptr, temp.Ptr);
+
         public double Area(bool spheroid)
             => Meos.StboxArea(this.Ptr, spheroid);
 
@@ -72,8 +90,38 @@ namespace MEOS.NET.Types
             }
         }
 
+        public bool Back(STBox box2)
+            => Meos.BackStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Back(TSpatial temp)
+            => Meos.BackStboxTspatial(this.Ptr, temp.Ptr);
+
+        public bool Before(STBox box2)
+            => Meos.BeforeStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Before(TSpatial temp)
+            => Meos.BeforeStboxTspatial(this.Ptr, temp.Ptr);
+
+        public bool Below(STBox box2)
+            => Meos.BelowStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Below(TSpatial temp)
+            => Meos.BelowStboxTspatial(this.Ptr, temp.Ptr);
+
         public int Cmp(STBox box2)
             => Meos.StboxCmp(this.Ptr, box2.Ptr);
+
+        public bool Contained(STBox box2)
+            => Meos.ContainedStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Contained(TSpatial temp)
+            => Meos.ContainedStboxTspatial(this.Ptr, temp.Ptr);
+
+        public bool Contains(STBox box2)
+            => Meos.ContainsStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Contains(TSpatial temp)
+            => Meos.ContainsStboxTspatial(this.Ptr, temp.Ptr);
 
         public STBox? Copy()
             => MEOSFactory.WrapSTBox(Meos.StboxCopy(this.Ptr));
@@ -97,6 +145,12 @@ namespace MEOS.NET.Types
                 Marshal.FreeHGlobal(_interv);
             }
         }
+
+        public bool Front(STBox box2)
+            => Meos.FrontStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Front(TSpatial temp)
+            => Meos.FrontStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Ge(STBox box2)
             => Meos.StboxGe(this.Ptr, box2.Ptr);
@@ -122,14 +176,32 @@ namespace MEOS.NET.Types
         public bool Hasz()
             => Meos.StboxHasz(this.Ptr);
 
+        public STBox? Intersection(STBox box2)
+            => MEOSFactory.WrapSTBox(Meos.IntersectionStboxStbox(this.Ptr, box2.Ptr));
+
         public bool Isgeodetic()
             => Meos.StboxIsgeodetic(this.Ptr);
 
         public bool Le(STBox box2)
             => Meos.StboxLe(this.Ptr, box2.Ptr);
 
+        public bool Left(STBox box2)
+            => Meos.LeftStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Left(TSpatial temp)
+            => Meos.LeftStboxTspatial(this.Ptr, temp.Ptr);
+
         public bool Lt(STBox box2)
             => Meos.StboxLt(this.Ptr, box2.Ptr);
+
+        public double Nad(Geo gs, bool spheroid)
+            => Meos.NadStboxGeo(this.Ptr, gs.Ptr, spheroid);
+
+        public double Nad(STBox box2, bool spheroid)
+            => Meos.NadStboxStbox(this.Ptr, box2.Ptr, spheroid);
+
+        public double Nad(Temporal temp)
+            => Meos.NadStboxTrgeometry(this.Ptr, temp.Ptr);
 
         public bool Ne(STBox box2)
             => Meos.StboxNe(this.Ptr, box2.Ptr);
@@ -137,17 +209,83 @@ namespace MEOS.NET.Types
         public string Out(int maxdd)
             => Meos.StboxOut(this.Ptr, maxdd);
 
+        public bool Overabove(STBox box2)
+            => Meos.OveraboveStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Overabove(TSpatial temp)
+            => Meos.OveraboveStboxTspatial(this.Ptr, temp.Ptr);
+
+        public bool Overafter(STBox box2)
+            => Meos.OverafterStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Overafter(TSpatial temp)
+            => Meos.OverafterStboxTspatial(this.Ptr, temp.Ptr);
+
+        public bool Overback(STBox box2)
+            => Meos.OverbackStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Overback(TSpatial temp)
+            => Meos.OverbackStboxTspatial(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(STBox box2)
+            => Meos.OverbeforeStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Overbefore(TSpatial temp)
+            => Meos.OverbeforeStboxTspatial(this.Ptr, temp.Ptr);
+
+        public bool Overbelow(STBox box2)
+            => Meos.OverbelowStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Overbelow(TSpatial temp)
+            => Meos.OverbelowStboxTspatial(this.Ptr, temp.Ptr);
+
+        public bool Overfront(STBox box2)
+            => Meos.OverfrontStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Overfront(TSpatial temp)
+            => Meos.OverfrontStboxTspatial(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(STBox box2)
+            => Meos.OverlapsStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Overlaps(TSpatial temp)
+            => Meos.OverlapsStboxTspatial(this.Ptr, temp.Ptr);
+
+        public bool Overleft(STBox box2)
+            => Meos.OverleftStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Overleft(TSpatial temp)
+            => Meos.OverleftStboxTspatial(this.Ptr, temp.Ptr);
+
+        public bool Overright(STBox box2)
+            => Meos.OverrightStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Overright(TSpatial temp)
+            => Meos.OverrightStboxTspatial(this.Ptr, temp.Ptr);
+
         public double Perimeter(bool spheroid)
             => Meos.StboxPerimeter(this.Ptr, spheroid);
 
         public STBox?[] QuadSplit()
             => MEOSFactory.WrapSTBoxArray(Meos.StboxQuadSplit(this.Ptr));
 
+        public bool Right(STBox box2)
+            => Meos.RightStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Right(TSpatial temp)
+            => Meos.RightStboxTspatial(this.Ptr, temp.Ptr);
+
         public STBox? Round(int maxdd)
             => MEOSFactory.WrapSTBox(Meos.StboxRound(this.Ptr, maxdd));
 
         public int SRID()
             => Meos.StboxSrid(this.Ptr);
+
+        public bool Same(STBox box2)
+            => Meos.SameStboxStbox(this.Ptr, box2.Ptr);
+
+        public bool Same(TSpatial temp)
+            => Meos.SameStboxTspatial(this.Ptr, temp.Ptr);
 
         public STBox? ScaleTime(Interval duration)
         {
@@ -342,6 +480,9 @@ namespace MEOS.NET.Types
         public STBox? TransformPipeline(string pipelinestr, int srid, bool is_forward)
             => MEOSFactory.WrapSTBox(Meos.StboxTransformPipeline(this.Ptr, pipelinestr, srid, is_forward));
 
+        public STBox? Union(STBox box2, bool strict)
+            => MEOSFactory.WrapSTBox(Meos.UnionStboxStbox(this.Ptr, box2.Ptr, strict));
+
         public double Volume()
             => Meos.StboxVolume(this.Ptr);
 
@@ -453,8 +594,45 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static STBox? FromBox3d(BOX3D box)
+        {
+            IntPtr _box = Marshal.AllocHGlobal(Marshal.SizeOf<BOX3D>());
+            try
+            {
+                Marshal.StructureToPtr(box, _box, false);
+                return MEOSFactory.WrapSTBox(Meos.Box3dToStbox(_box));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_box);
+            }
+        }
+
         public static STBox? FromEWKB(byte[] wkb)
             => STBox.FromWKB(wkb);
+
+        public static STBox? FromGbox(GBOX box)
+        {
+            IntPtr _box = Marshal.AllocHGlobal(Marshal.SizeOf<GBOX>());
+            try
+            {
+                Marshal.StructureToPtr(box, _box, false);
+                return MEOSFactory.WrapSTBox(Meos.GboxToStbox(_box));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_box);
+            }
+        }
+
+        public static STBox? FromH3index(ulong cell)
+            => MEOSFactory.WrapSTBox(Meos.H3indexToStbox(cell));
+
+        public static STBox? FromH3indexTimestamptz(ulong cell, DateTime t)
+            => MEOSFactory.WrapSTBox(Meos.H3indexTimestamptzToStbox(cell, MEOSConvert.ToTimestampTz(t)));
+
+        public static STBox? FromH3indexTstzspan(ulong cell, Span s)
+            => MEOSFactory.WrapSTBox(Meos.H3indexTstzspanToStbox(cell, s.Ptr));
 
         public static STBox? FromHexEWKB(string hexwkb)
             => STBox.FromHexWKB(hexwkb);
@@ -462,8 +640,29 @@ namespace MEOS.NET.Types
         public static STBox? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapSTBox(Meos.StboxFromHexwkb(hexwkb));
 
+        public static STBox? FromQuadbin(ulong cell)
+            => MEOSFactory.WrapSTBox(Meos.QuadbinToStbox(cell));
+
+        public static STBox? FromQuadbinTimestamptz(ulong cell, DateTime t)
+            => MEOSFactory.WrapSTBox(Meos.QuadbinTimestamptzToStbox(cell, MEOSConvert.ToTimestampTz(t)));
+
+        public static STBox? FromQuadbinTstzspan(ulong cell, Span s)
+            => MEOSFactory.WrapSTBox(Meos.QuadbinTstzspanToStbox(cell, s.Ptr));
+
+        public static STBox? FromS2cell(ulong cell)
+            => MEOSFactory.WrapSTBox(Meos.S2cellToStbox(cell));
+
+        public static STBox? FromS2cellTimestamptz(ulong cell, DateTime t)
+            => MEOSFactory.WrapSTBox(Meos.S2cellTimestamptzToStbox(cell, MEOSConvert.ToTimestampTz(t)));
+
+        public static STBox? FromS2cellTstzspan(ulong cell, Span s)
+            => MEOSFactory.WrapSTBox(Meos.S2cellTstzspanToStbox(cell, s.Ptr));
+
         public static STBox? FromText(string str)
             => STBox.In(str);
+
+        public static STBox? FromTimestamptz(DateTime t)
+            => MEOSFactory.WrapSTBox(Meos.TimestamptzToStbox(MEOSConvert.ToTimestampTz(t)));
 
         public static STBox? FromWKB(byte[] wkb)
         {

@@ -21,17 +21,83 @@ namespace MEOS.NET.Types
         public string AsText()
             => this.Out();
 
+        public bool ContainedRid(TNpoint temp)
+            => Meos.ContainedRidBigintsetTnpoint(this.Ptr, temp.Ptr);
+
+        public bool Contains(long i)
+            => Meos.ContainsSetBigint(this.Ptr, i);
+
+        public bool ContainsRid(TNpoint temp)
+            => Meos.ContainsRidBigintsetTnpoint(this.Ptr, temp.Ptr);
+
+        public long Distance(BigIntSet s2)
+            => Meos.DistanceBigintsetBigintset(this.Ptr, s2.Ptr);
+
+        public long Distance(long i)
+            => Meos.DistanceSetBigint(this.Ptr, i);
+
         public long EndValue()
             => Meos.BigintsetEndValue(this.Ptr);
 
+        public Set? Intersection(long i)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetBigint(this.Ptr, i));
+
+        public bool Left(long i)
+            => Meos.LeftSetBigint(this.Ptr, i);
+
+        public Set? Minus(long i)
+            => MEOSFactory.WrapSet(Meos.MinusSetBigint(this.Ptr, i));
+
         public string Out()
             => Meos.BigintsetOut(this.Ptr);
+
+        public bool OverlapsRid(TNpoint temp)
+            => Meos.OverlapsRidBigintsetTnpoint(this.Ptr, temp.Ptr);
+
+        public bool Overleft(long i)
+            => Meos.OverleftSetBigint(this.Ptr, i);
+
+        public bool Overright(long i)
+            => Meos.OverrightSetBigint(this.Ptr, i);
+
+        public bool Rcontained(long i)
+            => Meos.ContainedBigintSet(i, this.Ptr);
+
+        public bool Right(long i)
+            => Meos.RightSetBigint(this.Ptr, i);
+
+        public Set? Rintersection(long i)
+            => MEOSFactory.WrapSet(Meos.IntersectionBigintSet(i, this.Ptr));
+
+        public bool Rleft(long i)
+            => Meos.LeftBigintSet(i, this.Ptr);
+
+        public Set? Rminus(long i)
+            => MEOSFactory.WrapSet(Meos.MinusBigintSet(i, this.Ptr));
+
+        public bool Roverleft(long i)
+            => Meos.OverleftBigintSet(i, this.Ptr);
+
+        public bool Roverright(long i)
+            => Meos.OverrightBigintSet(i, this.Ptr);
+
+        public bool Rright(long i)
+            => Meos.RightBigintSet(i, this.Ptr);
+
+        public Set? Runion(long i)
+            => MEOSFactory.WrapSet(Meos.UnionBigintSet(i, this.Ptr));
+
+        public bool SameRid(TNpoint temp)
+            => Meos.SameRidBigintsetTnpoint(this.Ptr, temp.Ptr);
 
         public Set? ShiftScale(long shift, long width, bool hasshift, bool haswidth)
             => MEOSFactory.WrapSet(Meos.BigintsetShiftScale(this.Ptr, shift, width, hasshift, haswidth));
 
         public long StartValue()
             => Meos.BigintsetStartValue(this.Ptr);
+
+        public Set? Union(long i)
+            => MEOSFactory.WrapSet(Meos.UnionSetBigint(this.Ptr, i));
 
         public long? ValueN(int n)
         {
@@ -53,6 +119,9 @@ namespace MEOS.NET.Types
 
         public long[] Values()
             => Meos.BigintsetValues(this.Ptr);
+
+        public static Set? FromBigint(long i)
+            => MEOSFactory.WrapSet(Meos.BigintToSet(i));
 
         public static Set? FromText(string str)
             => BigIntSet.In(str);

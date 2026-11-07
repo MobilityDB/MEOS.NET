@@ -18,8 +18,20 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public int Adisjoint(TGeo temp)
+            => Meos.AdisjointGeoTgeo(this.Ptr, temp.Ptr);
+
         public Geo? Affine(double a, double b, double c, double d, double e, double f, double g, double h, double i, double xoff, double yoff, double zoff)
             => MEOSFactory.WrapGeo(Meos.GeoAffine(this.Ptr, a, b, c, d, e, f, g, h, i, xoff, yoff, zoff));
+
+        public int Aintersects(TGeo temp)
+            => Meos.AintersectsGeoTgeo(this.Ptr, temp.Ptr);
+
+        public int AlwaysEq(TGeo temp)
+            => Meos.AlwaysEqGeoTgeo(this.Ptr, temp.Ptr);
+
+        public int AlwaysNe(TGeo temp)
+            => Meos.AlwaysNeGeoTgeo(this.Ptr, temp.Ptr);
 
         public double Area(bool spheroid)
             => Meos.GeoArea(this.Ptr, spheroid);
@@ -60,17 +72,38 @@ namespace MEOS.NET.Types
         public Geo? Centroid(bool spheroid)
             => MEOSFactory.WrapGeo(Meos.GeoCentroid(this.Ptr, spheroid));
 
+        public bool Contained(GeoSet s)
+            => Meos.ContainedGeoSet(this.Ptr, s.Ptr);
+
         public Geo? Copy()
             => MEOSFactory.WrapGeo(Meos.GeoCopy(this.Ptr));
 
         public double Distance(Geo gs2, bool spheroid)
             => Meos.GeoDistance(this.Ptr, gs2.Ptr, spheroid);
 
+        public int Edisjoint(TGeo temp)
+            => Meos.EdisjointGeoTgeo(this.Ptr, temp.Ptr);
+
+        public int Edwithin(TSpatial temp, double dist, bool spheroid)
+            => Meos.EdwithinGeoTgeo(this.Ptr, temp.Ptr, dist, spheroid);
+
+        public int Eintersects(TSpatial temp)
+            => Meos.EintersectsGeoTgeo(this.Ptr, temp.Ptr);
+
         public int Equals(Geo gs2)
             => Meos.GeoEquals(this.Ptr, gs2.Ptr);
 
+        public int EverEq(TGeo temp)
+            => Meos.EverEqGeoTgeo(this.Ptr, temp.Ptr);
+
+        public int EverNe(TGeo temp)
+            => Meos.EverNeGeoTgeo(this.Ptr, temp.Ptr);
+
         public Geo? GeoN(int n)
             => MEOSFactory.WrapGeo(Meos.GeoGeoN(this.Ptr, n));
+
+        public Set? Intersection(GeoSet s)
+            => MEOSFactory.WrapSet(Meos.IntersectionGeoSet(this.Ptr, s.Ptr));
 
         public bool IsEmpty()
             => Meos.GeoIsEmpty(this.Ptr);
@@ -83,6 +116,9 @@ namespace MEOS.NET.Types
 
         public int MemSize()
             => Meos.GeoMemSize(this.Ptr);
+
+        public Set? Minus(GeoSet s)
+            => MEOSFactory.WrapSet(Meos.MinusGeoSet(this.Ptr, s.Ptr));
 
         public int NumGeos()
             => Meos.GeoNumGeos(this.Ptr);
@@ -156,8 +192,23 @@ namespace MEOS.NET.Types
         public STBox?[] Stboxes()
             => MEOSFactory.WrapSTBoxArray(Meos.GeoStboxes(this.Ptr));
 
+        public Temporal? Tdisjoint(TGeo temp)
+            => MEOSFactory.WrapTemporal(Meos.TdisjointGeoTgeo(this.Ptr, temp.Ptr));
+
+        public Temporal? Tdwithin(TGeo temp, double dist, bool spheroid)
+            => MEOSFactory.WrapTemporal(Meos.TdwithinGeoTgeo(this.Ptr, temp.Ptr, dist, spheroid));
+
+        public Temporal? Teq(TGeo temp)
+            => MEOSFactory.WrapTemporal(Meos.TeqGeoTgeo(this.Ptr, temp.Ptr));
+
         public STBox? TimestamptzToStbox(DateTime t)
             => MEOSFactory.WrapSTBox(Meos.GeoTimestamptzToStbox(this.Ptr, MEOSConvert.ToTimestampTz(t)));
+
+        public Temporal? Tintersects(TGeo temp)
+            => MEOSFactory.WrapTemporal(Meos.TintersectsGeoTgeo(this.Ptr, temp.Ptr));
+
+        public Temporal? Tne(TGeo temp)
+            => MEOSFactory.WrapTemporal(Meos.TneGeoTgeo(this.Ptr, temp.Ptr));
 
         public ulong ToH3indexCell(int resolution)
             => Meos.GeoToH3indexCell(this.Ptr, resolution);
@@ -197,6 +248,9 @@ namespace MEOS.NET.Types
 
         public STBox? TstzspanToStbox(Span s)
             => MEOSFactory.WrapSTBox(Meos.GeoTstzspanToStbox(this.Ptr, s.Ptr));
+
+        public Set? Union(GeoSet s)
+            => MEOSFactory.WrapSet(Meos.UnionGeoSet(this.Ptr, s.Ptr));
 
         public static uint[] ClusterDbscan(Geo[] geoms, double tolerance, int minpoints)
         {

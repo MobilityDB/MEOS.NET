@@ -18,14 +18,26 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Contains(Pcpoint pt)
+            => Meos.ContainsSetPcpoint(this.Ptr, pt.Ptr);
+
         public Pcpoint? EndValue()
             => MEOSFactory.WrapPcpoint(Meos.PcpointsetEndValue(this.Ptr));
+
+        public Set? Intersection(Pcpoint pt)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetPcpoint(this.Ptr, pt.Ptr));
+
+        public Set? Minus(Pcpoint pt)
+            => MEOSFactory.WrapSet(Meos.MinusSetPcpoint(this.Ptr, pt.Ptr));
 
         public new string Out(int maxdd)
             => Meos.PcpointsetOut(this.Ptr, maxdd);
 
         public Pcpoint? StartValue()
             => MEOSFactory.WrapPcpoint(Meos.PcpointsetStartValue(this.Ptr));
+
+        public Set? Union(Pcpoint pt)
+            => MEOSFactory.WrapSet(Meos.UnionSetPcpoint(this.Ptr, pt.Ptr));
 
         public Pcpoint? ValueN(int n)
         {

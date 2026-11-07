@@ -18,6 +18,12 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.HexOut(15);
 
+        public int AlwaysEq(TPcpoint temp)
+            => Meos.AlwaysEqPcpointTpcpoint(this.Ptr, temp.Ptr);
+
+        public int AlwaysNe(TPcpoint temp)
+            => Meos.AlwaysNePcpointTpcpoint(this.Ptr, temp.Ptr);
+
         public string AsHexWKB()
             => Meos.PcpointAsHexwkb(this.Ptr);
 
@@ -27,11 +33,20 @@ namespace MEOS.NET.Types
         public int Cmp(Pcpoint pt2)
             => Meos.PcpointCmp(this.Ptr, pt2.Ptr);
 
+        public bool Contained(PcpointSet s)
+            => Meos.ContainedPcpointSet(this.Ptr, s.Ptr);
+
         public Pcpoint? Copy()
             => MEOSFactory.WrapPcpoint(Meos.PcpointCopy(this.Ptr));
 
         public bool Eq(Pcpoint pt2)
             => Meos.PcpointEq(this.Ptr, pt2.Ptr);
+
+        public int EverEq(TPcpoint temp)
+            => Meos.EverEqPcpointTpcpoint(this.Ptr, temp.Ptr);
+
+        public int EverNe(TPcpoint temp)
+            => Meos.EverNePcpointTpcpoint(this.Ptr, temp.Ptr);
 
         public bool Ge(Pcpoint pt2)
             => Meos.PcpointGe(this.Ptr, pt2.Ptr);
@@ -123,6 +138,9 @@ namespace MEOS.NET.Types
         public string HexOut(int maxdd)
             => Meos.PcpointHexOut(this.Ptr, maxdd);
 
+        public Set? Intersection(PcpointSet s)
+            => MEOSFactory.WrapSet(Meos.IntersectionPcpointSet(this.Ptr, s.Ptr));
+
         public bool Le(Pcpoint pt2)
             => Meos.PcpointLe(this.Ptr, pt2.Ptr);
 
@@ -132,14 +150,26 @@ namespace MEOS.NET.Types
         public int MemSize()
             => Meos.PcpointMemSize(this.Ptr);
 
+        public Set? Minus(PcpointSet s)
+            => MEOSFactory.WrapSet(Meos.MinusPcpointSet(this.Ptr, s.Ptr));
+
         public bool Ne(Pcpoint pt2)
             => Meos.PcpointNe(this.Ptr, pt2.Ptr);
+
+        public Temporal? Teq(TPcpoint temp)
+            => MEOSFactory.WrapTemporal(Meos.TeqPcpointTpcpoint(this.Ptr, temp.Ptr));
+
+        public Temporal? Tne(TPcpoint temp)
+            => MEOSFactory.WrapTemporal(Meos.TnePcpointTpcpoint(this.Ptr, temp.Ptr));
 
         public Set? ToSet()
             => MEOSFactory.WrapSet(Meos.PcpointToSet(this.Ptr));
 
         public TPCBox? ToTpcbox()
             => MEOSFactory.WrapTPCBox(Meos.PcpointToTpcbox(this.Ptr));
+
+        public Set? Union(PcpointSet s)
+            => MEOSFactory.WrapSet(Meos.UnionPcpointSet(this.Ptr, s.Ptr));
 
         public static Pcpoint? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapPcpoint(Meos.PcpointFromHexwkb(hexwkb));

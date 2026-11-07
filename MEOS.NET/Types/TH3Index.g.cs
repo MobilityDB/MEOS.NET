@@ -18,6 +18,18 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public int AlwaysEq(ulong cell)
+            => Meos.AlwaysEqTh3indexH3index(this.Ptr, cell);
+
+        public int AlwaysEq(TH3Index temp2)
+            => Meos.AlwaysEqTh3indexTh3index(this.Ptr, temp2.Ptr);
+
+        public int AlwaysNe(ulong cell)
+            => Meos.AlwaysNeTh3indexH3index(this.Ptr, cell);
+
+        public int AlwaysNe(TH3Index temp2)
+            => Meos.AlwaysNeTh3indexTh3index(this.Ptr, temp2.Ptr);
+
         public Temporal? AreNeighborCells(Temporal dest)
             => MEOSFactory.WrapTemporal(Meos.Th3indexAreNeighborCells(this.Ptr, dest.Ptr));
 
@@ -57,6 +69,21 @@ namespace MEOS.NET.Types
         public ulong EndValue()
             => Meos.Th3indexEndValue(this.Ptr);
 
+        public int EverEq(ulong cell)
+            => Meos.EverEqTh3indexH3index(this.Ptr, cell);
+
+        public int EverEq(TH3Index temp2)
+            => Meos.EverEqTh3indexTh3index(this.Ptr, temp2.Ptr);
+
+        public int EverEq(H3IndexSet cells)
+            => Meos.EverEqTh3indexH3indexset(this.Ptr, cells.Ptr);
+
+        public int EverNe(ulong cell)
+            => Meos.EverNeTh3indexH3index(this.Ptr, cell);
+
+        public int EverNe(TH3Index temp2)
+            => Meos.EverNeTh3indexTh3index(this.Ptr, temp2.Ptr);
+
         public Temporal? GetBaseCellNumber()
             => MEOSFactory.WrapTemporal(Meos.Th3indexGetBaseCellNumber(this.Ptr));
 
@@ -90,8 +117,32 @@ namespace MEOS.NET.Types
         public string Out()
             => Meos.Th3indexOut(this.Ptr);
 
+        public int RalwaysEq(ulong cell)
+            => Meos.AlwaysEqH3indexTh3index(cell, this.Ptr);
+
+        public int RalwaysNe(ulong cell)
+            => Meos.AlwaysNeH3indexTh3index(cell, this.Ptr);
+
+        public int ReverEq(ulong cell)
+            => Meos.EverEqH3indexTh3index(cell, this.Ptr);
+
+        public int ReverNe(ulong cell)
+            => Meos.EverNeH3indexTh3index(cell, this.Ptr);
+
+        public Temporal? Rteq(ulong cell)
+            => MEOSFactory.WrapTemporal(Meos.TeqH3indexTh3index(cell, this.Ptr));
+
+        public Temporal? Rtne(ulong cell)
+            => MEOSFactory.WrapTemporal(Meos.TneH3indexTh3index(cell, this.Ptr));
+
         public ulong StartValue()
             => Meos.Th3indexStartValue(this.Ptr);
+
+        public Temporal? Teq(ulong cell)
+            => MEOSFactory.WrapTemporal(Meos.TeqTh3indexH3index(this.Ptr, cell));
+
+        public Temporal? Tne(ulong cell)
+            => MEOSFactory.WrapTemporal(Meos.TneTh3indexH3index(this.Ptr, cell));
 
         public Temporal? ToTbigint()
             => MEOSFactory.WrapTemporal(Meos.Th3indexToTbigint(this.Ptr));

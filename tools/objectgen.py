@@ -51,6 +51,18 @@ DEFERRAL_KINDS: dict[str, str] = {
     "argument needs a class":
         "The function takes a type no class stands for and no marshalling rule "
         "reads, so there is nothing for a caller to pass.",
+    "overloads of one C# signature":
+        "Several operators the model gives one class and one name take the same "
+        "parameter types, so C# cannot tell their overloads apart and emitting "
+        "one would answer the others' calls with the wrong function.",
+    "signature taken by a method":
+        "An operator takes the name and parameter types of a method the model "
+        "gives the same class, so the two cannot both be members of it.",
+    "takes an inherited member's calls":
+        "An operator takes the name of a member of an ancestor and parameter "
+        "types that member's arguments convert to, and C# reaches an ancestor's "
+        "member only where none of the class applies, so emitting it would "
+        "answer the ancestor's calls on the class with another function.",
 }
 
 GENERATOR_VERSION = "0.1.0"
@@ -235,6 +247,14 @@ class Model:
             if best is None or self._depth(name) < self._depth(best):
                 self.wrap_root[ct] = name
 
+    def ancestors(self, cls: str) -> list[str]:
+        """The classes above this one, nearest first."""
+        out, parent = [], self.parent.get(cls)
+        while parent and parent not in out:
+            out.append(parent)
+            parent = self.parent.get(parent)
+        return out
+
     def companion_families(self) -> list[str]:
         """The companion hierarchies the model carries, in its own order."""
         return [k for k in self.om["companions"] if not k.startswith("_")]
@@ -327,6 +347,28 @@ class Method:
         return bool(self.structs or self.arrays or self.scalar_arrays
                     or self.out_params or self.length_out or self.parallel
                     or (self.ret.startswith("(") and self.ret.endswith(")")))
+
+
+# The C# language's implicit numeric conversions (C# spec, section "Implicit
+# numeric conversions"): a value of the key's type reaches a parameter of any
+# type in its set without a cast.
+IMPLICIT_NUMERIC = {
+    "sbyte": {"short", "int", "long", "float", "double", "decimal"},
+    "byte": {"short", "ushort", "int", "uint", "long", "ulong", "float",
+             "double", "decimal"},
+    "short": {"int", "long", "float", "double", "decimal"},
+    "ushort": {"int", "uint", "long", "ulong", "float", "double", "decimal"},
+    "int": {"long", "float", "double", "decimal"},
+    "uint": {"long", "ulong", "float", "double", "decimal"},
+    "long": {"float", "double", "decimal"},
+    "ulong": {"float", "double", "decimal"},
+    "float": {"double"},
+}
+
+
+def signature_of(method: Method) -> tuple[str, ...]:
+    """What C# tells two methods of one name apart by: their parameter types."""
+    return tuple(t for t, _ in method.params)
 
 
 class Generator:
@@ -538,13 +580,32 @@ class Generator:
                    for a in input_arrays}
         recv_ctype = self.m.ctype.get(cls)
 
+        # The receiver is the parameter the method is called on: the first, or
+        # the second for an operator the model reflects onto its right operand
+        # (`receiver: right`, `sub_float_tfloat` is `TFloat.Rsub`).
+        operator = entry.get("role") == "operator"
+        at = 1 if entry.get("receiver") == "right" else 0
         params = list(wrapper_params)
         static = True
         args: list[str] = []
-        if params and clean(c_by_name.get(params[0][1], "")) == f"{recv_ctype} *":
+        if (len(params) > at
+                and clean(c_by_name.get(params[at][1], "")) == f"{recv_ctype} *"):
             static = False
-            args.append("this.Ptr")
-            params = params[1:]
+            params = params[:at] + params[at + 1:]
+        elif operator:
+            received = (clean(c_by_name.get(params[at][1], ""))
+                        if len(params) > at else "nothing")
+            self.defer(cls, oo, "argument needs a class",
+                       f"{fname} takes its receiver as {received}, "
+                       f"which is no {cls}")
+            return None
+        # The other operand of an operator, typed as the class its SQL
+        # signatures instantiate it to (`otherClass`), where that class is below
+        # the one its C type maps to: `acontains_geo_tcbuffer` takes a TCbuffer
+        # rather than any Temporal, so the overloads of one name differ in what
+        # they take as they do in SQL.
+        other = (wrapper_params[1 - at][1]
+                 if operator and len(wrapper_params) > 1 else None)
 
         # A `size_t *` out-parameter states the LENGTH of the buffer the call
         # answers. It leaves the C# signature — a byte array and a string each
@@ -672,11 +733,20 @@ class Generator:
                            f"argument {pname} of type "
                            f"{clean(c_by_name.get(pname, cs_type))} needs marshalling")
                 return None
-            sig.append((mapped[0], pname))
+            typed = mapped[0]
+            refined = entry.get("otherClass")
+            if (pname == other and refined and refined != typed
+                    and typed in self.m.ancestors(refined)):
+                typed = refined
+            sig.append((typed, pname))
             args.append(mapped[1])
             if mapped[1] == scratch(pname) and self.value_struct(c_by_name.get(pname, "")):
                 structs.append((pname, mapped[0]))
 
+        if not static:
+            # Every other parameter gave the call one argument in its own place,
+            # so the receiver's goes back where the wrapper takes it.
+            args.insert(at, "this.Ptr")
         call = f"Meos.{codegen.public_name(fname)}({', '.join(args)})"
         outs = [(name, size, reader.format(scratch(name)))
                 for name, (_t, size, reader) in result_outs]
@@ -691,6 +761,71 @@ class Generator:
                       arrays, outs, structs, scalar_arrays, length_out,
                       ret_type == "byte[]?",
                       [names for names in count_of.values() if len(names) > 1])
+
+    def operator_methods(self, cls: str, methods: list[Method]) -> list[Method]:
+        """The operators the model assigns the class (`classes.<C>.operators`,
+        the receiver-typed rule of MEOS-API's parser/object_model.py), each one
+        overload of the method its `ooName` names, built as #method_for builds
+        any method. C# chooses among overloads by what they take, so one name
+        covers every operand type the model gives it: `TFloat.EverEq(double)`
+        beside `TFloat.EverEq(TFloat)`.
+
+        Two overloads C# cannot tell apart — the same parameter types, among the
+        operators or against a method of the class — are deferred together:
+        emitting one would answer the other's call with the wrong function. So is
+        an operator an ancestor's member of its name would be called through: C#
+        considers an ancestor's members only where no member of the class
+        applies, so an overload taking the ancestor's parameter types, or types
+        they convert to, answers the ancestor's calls with another function —
+        `TNumber.Contains(Span)` would take every `Contains(TsTzSpan)` call that
+        `Temporal` answers."""
+        built = []
+        for entry in self.m.om["classes"].get(cls, {}).get("operators", []):
+            if entry.get("ooExclude"):
+                continue
+            method = self.method_for(cls, entry)
+            if method is not None:
+                built.append((entry["function"], method))
+        taken = {(m.name, signature_of(m)) for m in methods}
+        inherited = self.inherited_names(cls)
+        same: dict[tuple, list] = defaultdict(list)
+        for fname, method in built:
+            same[(method.name, signature_of(method))].append((fname, method))
+        out = []
+        for (name, types), group in same.items():
+            shown = f"{name}({', '.join(types)})"
+            if len(group) > 1:
+                fnames = [f for f, _m in group]
+                for fname, _m in group:
+                    self.defer(cls, name, "overloads of one C# signature",
+                               f"{fname}: {shown} is also "
+                               + ", ".join(f for f in fnames if f != fname))
+                continue
+            if (name, types) in taken:
+                self.defer(cls, name, "signature taken by a method",
+                           f"{group[0][0]}: {shown} is a method of {cls}")
+                continue
+            captured = next(
+                (theirs for n, theirs in sorted(inherited)
+                 if n == name and len(theirs) == len(types)
+                 and all(self.converts(a, b) for a, b in zip(theirs, types))),
+                None)
+            if captured is not None:
+                self.defer(cls, name, "takes an inherited member's calls",
+                           f"{group[0][0]}: {shown} would take the calls of "
+                           f"{name}({', '.join(captured)}), a member of an "
+                           f"ancestor of {cls}")
+                continue
+            out.append(group[0][1])
+        return out
+
+    def converts(self, given: str, taken: str) -> bool:
+        """Whether C# passes an argument of type `given` to a parameter of type
+        `taken` without a cast: the same type, a class to one of its ancestors,
+        or a widening of one number to another (C# spec, implicit numeric
+        conversions)."""
+        return (given == taken or taken in self.m.ancestors(given)
+                or taken in IMPLICIT_NUMERIC.get(given, ()))
 
     def inherited_names(self, cls: str) -> set[tuple]:
         names: set[tuple] = set()
@@ -716,8 +851,10 @@ class Generator:
         self.static_functions.update({f: (cls, m) for f, m in paired if m and m.static})
         portable = self.portable_methods(cls, methods, functions)
         methods += portable
+        operators = self.operator_methods(cls, methods)
+        methods += operators
         methods.sort(key=lambda m: (m.static, m.name))
-        self.emitted += len(portable)
+        self.emitted += len(portable) + len(operators)
 
         # A method hides a base one only when the signature matches too, so the
         # `new` keyword is keyed on the whole signature: on the name alone C#

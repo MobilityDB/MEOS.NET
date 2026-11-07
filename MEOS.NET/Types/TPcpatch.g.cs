@@ -18,6 +18,18 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public int AlwaysEq(Pcpatch pa)
+            => Meos.AlwaysEqTpcpatchPcpatch(this.Ptr, pa.Ptr);
+
+        public int AlwaysEq(TPcpatch temp2)
+            => Meos.AlwaysEqTpcpatchTpcpatch(this.Ptr, temp2.Ptr);
+
+        public int AlwaysNe(Pcpatch pa)
+            => Meos.AlwaysNeTpcpatchPcpatch(this.Ptr, pa.Ptr);
+
+        public int AlwaysNe(TPcpatch temp2)
+            => Meos.AlwaysNeTpcpatchTpcpatch(this.Ptr, temp2.Ptr);
+
         public Temporal? AtValue(Pcpatch pa)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchAtValue(this.Ptr, pa.Ptr));
 
@@ -26,6 +38,18 @@ namespace MEOS.NET.Types
 
         public Pcpatch? EndValue()
             => MEOSFactory.WrapPcpatch(Meos.TpcpatchEndValue(this.Ptr));
+
+        public int EverEq(Pcpatch pa)
+            => Meos.EverEqTpcpatchPcpatch(this.Ptr, pa.Ptr);
+
+        public int EverEq(TPcpatch temp2)
+            => Meos.EverEqTpcpatchTpcpatch(this.Ptr, temp2.Ptr);
+
+        public int EverNe(Pcpatch pa)
+            => Meos.EverNeTpcpatchPcpatch(this.Ptr, pa.Ptr);
+
+        public int EverNe(TPcpatch temp2)
+            => Meos.EverNeTpcpatchTpcpatch(this.Ptr, temp2.Ptr);
 
         public Temporal? MinusValue(Pcpatch pa)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchMinusValue(this.Ptr, pa.Ptr));
@@ -58,6 +82,12 @@ namespace MEOS.NET.Types
                 Marshal.FreeHGlobal(_maxt);
             }
         }
+
+        public Temporal? Teq(Pcpatch pa)
+            => MEOSFactory.WrapTemporal(Meos.TeqTpcpatchPcpatch(this.Ptr, pa.Ptr));
+
+        public Temporal? Tne(Pcpatch pa)
+            => MEOSFactory.WrapTemporal(Meos.TneTpcpatchPcpatch(this.Ptr, pa.Ptr));
 
         public Temporal? ToTgeometry()
             => MEOSFactory.WrapTemporal(Meos.TpcpatchToTgeometry(this.Ptr));

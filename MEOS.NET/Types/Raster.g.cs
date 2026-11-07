@@ -14,6 +14,12 @@ namespace MEOS.NET.Types
     {
         internal Raster(IntPtr ptr) : base(ptr) { }
 
+        public Raster? Add(double d)
+            => MEOSFactory.WrapRaster(Meos.AddRasterFloat(this.Ptr, d));
+
+        public Raster? Add(Raster rast2)
+            => MEOSFactory.WrapRaster(Meos.AddRasterRaster(this.Ptr, rast2.Ptr));
+
         public Raster? AddBand(int index, string pixeltype, double initialvalue, double nodataval, bool has_nodata)
             => MEOSFactory.WrapRaster(Meos.RasterAddBand(this.Ptr, index, pixeltype, initialvalue, nodataval, has_nodata));
 
@@ -107,6 +113,12 @@ namespace MEOS.NET.Types
         public Raster? Copy()
             => MEOSFactory.WrapRaster(Meos.RasterCopy(this.Ptr));
 
+        public Raster? Div(double d)
+            => MEOSFactory.WrapRaster(Meos.DivRasterFloat(this.Ptr, d));
+
+        public Raster? Div(Raster rast2)
+            => MEOSFactory.WrapRaster(Meos.DivRasterRaster(this.Ptr, rast2.Ptr));
+
         public (double[], bool[]) DumpValues(int band, bool exclude_nodata)
         {
             var _answered = Meos.RasterDumpValues(this.Ptr, band, exclude_nodata);
@@ -123,17 +135,35 @@ namespace MEOS.NET.Types
         public int MemSize()
             => Meos.RasterMemSize(this.Ptr);
 
+        public Raster? Mul(double d)
+            => MEOSFactory.WrapRaster(Meos.MulRasterFloat(this.Ptr, d));
+
+        public Raster? Mul(Raster rast2)
+            => MEOSFactory.WrapRaster(Meos.MulRasterRaster(this.Ptr, rast2.Ptr));
+
         public string NotSameAlignmentReason(Raster rast2)
             => Meos.RasterNotSameAlignmentReason(this.Ptr, rast2.Ptr);
 
         public int NumBands()
             => Meos.RasterNumBands(this.Ptr);
 
+        public Raster? Radd(double d)
+            => MEOSFactory.WrapRaster(Meos.AddFloatRaster(d, this.Ptr));
+
+        public Raster? Rdiv(double d)
+            => MEOSFactory.WrapRaster(Meos.DivFloatRaster(d, this.Ptr));
+
         public Raster? Reclass(int band, string expr, string pixeltype, bool has_nodata, double nodataval)
             => MEOSFactory.WrapRaster(Meos.RasterReclass(this.Ptr, band, expr, pixeltype, has_nodata, nodataval));
 
         public Raster? Rescale(double scale_x, double scale_y, string algorithm, double max_err)
             => MEOSFactory.WrapRaster(Meos.RasterRescale(this.Ptr, scale_x, scale_y, algorithm, max_err));
+
+        public Raster? Rmul(double d)
+            => MEOSFactory.WrapRaster(Meos.MulFloatRaster(d, this.Ptr));
+
+        public Raster? Rsub(double d)
+            => MEOSFactory.WrapRaster(Meos.SubFloatRaster(d, this.Ptr));
 
         public int SRID()
             => Meos.RasterSrid(this.Ptr);
@@ -178,6 +208,12 @@ namespace MEOS.NET.Types
 
         public Raster? Slope(int band, Raster customextent, string pixeltype, string units, double scale, bool interpolate_nodata)
             => MEOSFactory.WrapRaster(Meos.RasterSlope(this.Ptr, band, customextent.Ptr, pixeltype, units, scale, interpolate_nodata));
+
+        public Raster? Sub(double d)
+            => MEOSFactory.WrapRaster(Meos.SubRasterFloat(this.Ptr, d));
+
+        public Raster? Sub(Raster rast2)
+            => MEOSFactory.WrapRaster(Meos.SubRasterRaster(this.Ptr, rast2.Ptr));
 
         public BandStats? SummaryStats(int band, bool exclude_nodata)
             => MEOSConvert.ToStruct<BandStats>(Meos.RasterSummaryStats(this.Ptr, band, exclude_nodata));

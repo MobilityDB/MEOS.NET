@@ -18,8 +18,35 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public bool Adjacent(DateTime t)
+            => Meos.AdjacentSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
+
+        public bool Adjacent(TBox box)
+            => Meos.AdjacentTstzspanTbox(this.Ptr, box.Ptr);
+
+        public bool Adjacent(Temporal temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(DateTime t)
+            => Meos.AfterSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
+
+        public bool After(TBox box)
+            => Meos.AfterTstzspanTbox(this.Ptr, box.Ptr);
+
+        public bool After(Temporal temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
         public string AsText()
             => this.Out();
+
+        public bool Before(DateTime t)
+            => Meos.BeforeSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
+
+        public bool Before(TBox box)
+            => Meos.BeforeTstzspanTbox(this.Ptr, box.Ptr);
+
+        public bool Before(Temporal temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public Span?[] Bins(Interval duration, DateTime torigin, bool border_inc)
         {
@@ -34,6 +61,27 @@ namespace MEOS.NET.Types
                 Marshal.FreeHGlobal(_duration);
             }
         }
+
+        public bool Contained(TBox box)
+            => Meos.ContainedTstzspanTbox(this.Ptr, box.Ptr);
+
+        public bool Contained(Temporal temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(DateTime t)
+            => Meos.ContainsSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
+
+        public bool Contains(TBox box)
+            => Meos.ContainsTstzspanTbox(this.Ptr, box.Ptr);
+
+        public bool Contains(Temporal temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public Interval? Distance(DateTime t)
+            => MEOSConvert.ToStruct<Interval>(Meos.DistanceSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
+
+        public Interval? Distance(TsTzSpan s2)
+            => MEOSConvert.ToStruct<Interval>(Meos.DistanceTstzspanTstzspan(this.Ptr, s2.Ptr));
 
         public Interval? Duration()
             => MEOSConvert.ToStruct<Interval>(Meos.TstzspanDuration(this.Ptr));
@@ -52,11 +100,77 @@ namespace MEOS.NET.Types
             }
         }
 
+        public Span? Intersection(DateTime t)
+            => MEOSFactory.WrapSpan(Meos.IntersectionSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
+
         public DateTime Lower()
             => MEOSConvert.ToDateTime(Meos.TstzspanLower(this.Ptr));
 
+        public SpanSet? Minus(DateTime t)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
+
+        public TBox? Numspan(TsTzSpan p)
+            => MEOSFactory.WrapTBox(Meos.NumspanTstzspanToTbox(this.Ptr, p.Ptr));
+
         public string Out()
             => Meos.TstzspanOut(this.Ptr);
+
+        public bool Overafter(DateTime t)
+            => Meos.OverafterSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
+
+        public bool Overafter(TBox box)
+            => Meos.OverafterTstzspanTbox(this.Ptr, box.Ptr);
+
+        public bool Overafter(Temporal temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(DateTime t)
+            => Meos.OverbeforeSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
+
+        public bool Overbefore(TBox box)
+            => Meos.OverbeforeTstzspanTbox(this.Ptr, box.Ptr);
+
+        public bool Overbefore(Temporal temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TBox box)
+            => Meos.OverlapsTstzspanTbox(this.Ptr, box.Ptr);
+
+        public bool Overlaps(Temporal temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Radjacent(DateTime t)
+            => Meos.AdjacentTimestamptzSpan(MEOSConvert.ToTimestampTz(t), this.Ptr);
+
+        public bool Rafter(DateTime t)
+            => Meos.AfterTimestamptzSpan(MEOSConvert.ToTimestampTz(t), this.Ptr);
+
+        public bool Rbefore(DateTime t)
+            => Meos.BeforeTimestamptzSpan(MEOSConvert.ToTimestampTz(t), this.Ptr);
+
+        public bool Rcontained(DateTime t)
+            => Meos.ContainedTimestamptzSpan(MEOSConvert.ToTimestampTz(t), this.Ptr);
+
+        public Span? Rintersection(DateTime t)
+            => MEOSFactory.WrapSpan(Meos.IntersectionTimestamptzSpan(MEOSConvert.ToTimestampTz(t), this.Ptr));
+
+        public SpanSet? Rminus(DateTime t)
+            => MEOSFactory.WrapSpanSet(Meos.MinusTimestamptzSpan(MEOSConvert.ToTimestampTz(t), this.Ptr));
+
+        public bool Roverafter(DateTime t)
+            => Meos.OverafterTimestamptzSpan(MEOSConvert.ToTimestampTz(t), this.Ptr);
+
+        public bool Roverbefore(DateTime t)
+            => Meos.OverbeforeTimestamptzSpan(MEOSConvert.ToTimestampTz(t), this.Ptr);
+
+        public SpanSet? Runion(DateTime t)
+            => MEOSFactory.WrapSpanSet(Meos.UnionTimestamptzSpan(MEOSConvert.ToTimestampTz(t), this.Ptr));
+
+        public bool Same(TBox box)
+            => Meos.SameTstzspanTbox(this.Ptr, box.Ptr);
+
+        public bool Same(Temporal temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public Span? Scale(Interval duration)
         {
@@ -123,11 +237,17 @@ namespace MEOS.NET.Types
             }
         }
 
+        public SpanSet? Union(DateTime t)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
+
         public DateTime Upper()
             => MEOSConvert.ToDateTime(Meos.TstzspanUpper(this.Ptr));
 
         public static Span? FromText(string str)
             => TsTzSpan.In(str);
+
+        public static Span? FromTimestamptz(DateTime t)
+            => MEOSFactory.WrapSpan(Meos.TimestamptzToSpan(MEOSConvert.ToTimestampTz(t)));
 
         public static Span? GetBin(DateTime t, Interval duration, DateTime torigin)
         {

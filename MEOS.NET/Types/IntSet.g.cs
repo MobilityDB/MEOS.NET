@@ -21,11 +21,62 @@ namespace MEOS.NET.Types
         public string AsText()
             => this.Out();
 
+        public bool Contains(int i)
+            => Meos.ContainsSetInt(this.Ptr, i);
+
+        public int Distance(IntSet s2)
+            => Meos.DistanceIntsetIntset(this.Ptr, s2.Ptr);
+
+        public int Distance(int i)
+            => Meos.DistanceSetInt(this.Ptr, i);
+
         public int EndValue()
             => Meos.IntsetEndValue(this.Ptr);
 
+        public Set? Intersection(int i)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetInt(this.Ptr, i));
+
+        public bool Left(int i)
+            => Meos.LeftSetInt(this.Ptr, i);
+
+        public Set? Minus(int i)
+            => MEOSFactory.WrapSet(Meos.MinusSetInt(this.Ptr, i));
+
         public string Out()
             => Meos.IntsetOut(this.Ptr);
+
+        public bool Overleft(int i)
+            => Meos.OverleftSetInt(this.Ptr, i);
+
+        public bool Overright(int i)
+            => Meos.OverrightSetInt(this.Ptr, i);
+
+        public bool Rcontained(int i)
+            => Meos.ContainedIntSet(i, this.Ptr);
+
+        public bool Right(int i)
+            => Meos.RightSetInt(this.Ptr, i);
+
+        public Set? Rintersection(int i)
+            => MEOSFactory.WrapSet(Meos.IntersectionIntSet(i, this.Ptr));
+
+        public bool Rleft(int i)
+            => Meos.LeftIntSet(i, this.Ptr);
+
+        public Set? Rminus(int i)
+            => MEOSFactory.WrapSet(Meos.MinusIntSet(i, this.Ptr));
+
+        public bool Roverleft(int i)
+            => Meos.OverleftIntSet(i, this.Ptr);
+
+        public bool Roverright(int i)
+            => Meos.OverrightIntSet(i, this.Ptr);
+
+        public bool Rright(int i)
+            => Meos.RightIntSet(i, this.Ptr);
+
+        public Set? Runion(int i)
+            => MEOSFactory.WrapSet(Meos.UnionIntSet(i, this.Ptr));
 
         public Set? ShiftScale(int shift, int width, bool hasshift, bool haswidth)
             => MEOSFactory.WrapSet(Meos.IntsetShiftScale(this.Ptr, shift, width, hasshift, haswidth));
@@ -35,6 +86,9 @@ namespace MEOS.NET.Types
 
         public Set? ToFloatset()
             => MEOSFactory.WrapSet(Meos.IntsetToFloatset(this.Ptr));
+
+        public Set? Union(int i)
+            => MEOSFactory.WrapSet(Meos.UnionSetInt(this.Ptr, i));
 
         public int? ValueN(int n)
         {
@@ -56,6 +110,9 @@ namespace MEOS.NET.Types
 
         public int[] Values()
             => Meos.IntsetValues(this.Ptr);
+
+        public static Set? FromInt(int i)
+            => MEOSFactory.WrapSet(Meos.IntToSet(i));
 
         public static Set? FromText(string str)
             => IntSet.In(str);

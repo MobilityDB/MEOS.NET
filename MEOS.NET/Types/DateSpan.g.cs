@@ -18,8 +18,17 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public bool Adjacent(DateOnly d)
+            => Meos.AdjacentSpanDate(this.Ptr, MEOSConvert.ToDateADT(d));
+
+        public bool After(DateOnly d)
+            => Meos.AfterSpanDate(this.Ptr, MEOSConvert.ToDateADT(d));
+
         public string AsText()
             => this.Out();
+
+        public bool Before(DateOnly d)
+            => Meos.BeforeSpanDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
         public Span?[] Bins(Interval duration, DateOnly torigin, bool border_inc)
         {
@@ -35,14 +44,62 @@ namespace MEOS.NET.Types
             }
         }
 
+        public bool Contains(DateOnly d)
+            => Meos.ContainsSpanDate(this.Ptr, MEOSConvert.ToDateADT(d));
+
+        public int Distance(DateSpan s2)
+            => Meos.DistanceDatespanDatespan(this.Ptr, s2.Ptr);
+
+        public int Distance(DateOnly d)
+            => Meos.DistanceSpanDate(this.Ptr, MEOSConvert.ToDateADT(d));
+
         public Interval? Duration()
             => MEOSConvert.ToStruct<Interval>(Meos.DatespanDuration(this.Ptr));
+
+        public Span? Intersection(DateOnly d)
+            => MEOSFactory.WrapSpan(Meos.IntersectionSpanDate(this.Ptr, MEOSConvert.ToDateADT(d)));
 
         public DateOnly Lower()
             => MEOSConvert.ToDateOnly(Meos.DatespanLower(this.Ptr));
 
+        public SpanSet? Minus(DateOnly d)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpanDate(this.Ptr, MEOSConvert.ToDateADT(d)));
+
         public string Out()
             => Meos.DatespanOut(this.Ptr);
+
+        public bool Overafter(DateOnly d)
+            => Meos.OverafterSpanDate(this.Ptr, MEOSConvert.ToDateADT(d));
+
+        public bool Overbefore(DateOnly d)
+            => Meos.OverbeforeSpanDate(this.Ptr, MEOSConvert.ToDateADT(d));
+
+        public bool Radjacent(DateOnly d)
+            => Meos.AdjacentDateSpan(MEOSConvert.ToDateADT(d), this.Ptr);
+
+        public bool Rafter(DateOnly d)
+            => Meos.AfterDateSpan(MEOSConvert.ToDateADT(d), this.Ptr);
+
+        public bool Rbefore(DateOnly d)
+            => Meos.BeforeDateSpan(MEOSConvert.ToDateADT(d), this.Ptr);
+
+        public bool Rcontained(DateOnly d)
+            => Meos.ContainedDateSpan(MEOSConvert.ToDateADT(d), this.Ptr);
+
+        public Span? Rintersection(DateOnly d)
+            => MEOSFactory.WrapSpan(Meos.IntersectionDateSpan(MEOSConvert.ToDateADT(d), this.Ptr));
+
+        public SpanSet? Rminus(DateOnly d)
+            => MEOSFactory.WrapSpanSet(Meos.MinusDateSpan(MEOSConvert.ToDateADT(d), this.Ptr));
+
+        public bool Roverafter(DateOnly d)
+            => Meos.OverafterDateSpan(MEOSConvert.ToDateADT(d), this.Ptr);
+
+        public bool Roverbefore(DateOnly d)
+            => Meos.OverbeforeDateSpan(MEOSConvert.ToDateADT(d), this.Ptr);
+
+        public SpanSet? Runion(DateOnly d)
+            => MEOSFactory.WrapSpanSet(Meos.UnionDateSpan(MEOSConvert.ToDateADT(d), this.Ptr));
 
         public Span? ShiftScale(int shift, int width, bool hasshift, bool haswidth)
             => MEOSFactory.WrapSpan(Meos.DatespanShiftScale(this.Ptr, shift, width, hasshift, haswidth));
@@ -50,8 +107,14 @@ namespace MEOS.NET.Types
         public Span? ToTstzspan()
             => MEOSFactory.WrapSpan(Meos.DatespanToTstzspan(this.Ptr));
 
+        public SpanSet? Union(DateOnly d)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpanDate(this.Ptr, MEOSConvert.ToDateADT(d)));
+
         public DateOnly Upper()
             => MEOSConvert.ToDateOnly(Meos.DatespanUpper(this.Ptr));
+
+        public static Span? FromDate(DateOnly d)
+            => MEOSFactory.WrapSpan(Meos.DateToSpan(MEOSConvert.ToDateADT(d)));
 
         public static Span? FromText(string str)
             => DateSpan.In(str);

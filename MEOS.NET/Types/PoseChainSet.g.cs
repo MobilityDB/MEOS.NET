@@ -18,14 +18,29 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Contains(PoseChain pc)
+            => Meos.ContainsSetPosechain(this.Ptr, pc.Ptr);
+
+        public double Distance(PoseChainSet s2)
+            => Meos.DistancePosechainsetPosechainset(this.Ptr, s2.Ptr);
+
         public PoseChain? EndValue()
             => MEOSFactory.WrapPoseChain(Meos.PosechainsetEndValue(this.Ptr));
+
+        public Set? Intersection(PoseChain pc)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetPosechain(this.Ptr, pc.Ptr));
+
+        public Set? Minus(PoseChain pc)
+            => MEOSFactory.WrapSet(Meos.MinusSetPosechain(this.Ptr, pc.Ptr));
 
         public new string Out(int maxdd)
             => Meos.PosechainsetOut(this.Ptr, maxdd);
 
         public PoseChain? StartValue()
             => MEOSFactory.WrapPoseChain(Meos.PosechainsetStartValue(this.Ptr));
+
+        public Set? Union(PoseChain pc)
+            => MEOSFactory.WrapSet(Meos.UnionSetPosechain(this.Ptr, pc.Ptr));
 
         public PoseChain? ValueN(int n)
         {

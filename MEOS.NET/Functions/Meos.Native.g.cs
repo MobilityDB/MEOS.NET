@@ -10973,7 +10973,7 @@ namespace MEOS.NET.Functions
             internal static partial IntPtr NsegmentMake(long rid, double pos1, double pos2);
 
             [LibraryImport(DllPath, EntryPoint = "geompoint_to_npoint", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr GeompointToNpoint(IntPtr gs);
+            internal static partial IntPtr GeompointToNpoint(IntPtr gs, double tolerance);
 
             [LibraryImport(DllPath, EntryPoint = "geom_to_nsegment", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GeomToNsegment(IntPtr gs);

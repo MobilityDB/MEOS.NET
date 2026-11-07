@@ -18,6 +18,18 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public int AlwaysEq(Pose pose)
+            => Meos.AlwaysEqTposePose(this.Ptr, pose.Ptr);
+
+        public int AlwaysEq(TPose temp2)
+            => Meos.AlwaysEqTposeTpose(this.Ptr, temp2.Ptr);
+
+        public int AlwaysNe(Pose pose)
+            => Meos.AlwaysNeTposePose(this.Ptr, pose.Ptr);
+
+        public int AlwaysNe(TPose temp2)
+            => Meos.AlwaysNeTposeTpose(this.Ptr, temp2.Ptr);
+
         public Temporal? AngularSpeed()
             => MEOSFactory.WrapTemporal(Meos.TposeAngularSpeed(this.Ptr));
 
@@ -57,6 +69,18 @@ namespace MEOS.NET.Types
         public Pose? EndValue()
             => MEOSFactory.WrapPose(Meos.TposeEndValue(this.Ptr));
 
+        public int EverEq(Pose pose)
+            => Meos.EverEqTposePose(this.Ptr, pose.Ptr);
+
+        public int EverEq(TPose temp2)
+            => Meos.EverEqTposeTpose(this.Ptr, temp2.Ptr);
+
+        public int EverNe(Pose pose)
+            => Meos.EverNeTposePose(this.Ptr, pose.Ptr);
+
+        public int EverNe(TPose temp2)
+            => Meos.EverNeTposeTpose(this.Ptr, temp2.Ptr);
+
         public Temporal? Force2d()
             => MEOSFactory.WrapTemporal(Meos.TposeForce2d(this.Ptr));
 
@@ -77,6 +101,27 @@ namespace MEOS.NET.Types
 
         public Temporal? MinusStbox(STBox box, bool border_inc)
             => MEOSFactory.WrapTemporal(Meos.TposeMinusStbox(this.Ptr, box.Ptr, border_inc));
+
+        public double Nad(Geo gs)
+            => Meos.NadTposeGeo(this.Ptr, gs.Ptr);
+
+        public double Nad(Pose pose)
+            => Meos.NadTposePose(this.Ptr, pose.Ptr);
+
+        public double Nad(STBox box)
+            => Meos.NadTposeStbox(this.Ptr, box.Ptr);
+
+        public double Nad(TPose temp2)
+            => Meos.NadTposeTpose(this.Ptr, temp2.Ptr);
+
+        public Temporal? Nai(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.NaiTposeGeo(this.Ptr, gs.Ptr));
+
+        public Temporal? Nai(Pose pose)
+            => MEOSFactory.WrapTemporal(Meos.NaiTposePose(this.Ptr, pose.Ptr));
+
+        public Temporal? Nai(TPose temp2)
+            => MEOSFactory.WrapTemporal(Meos.NaiTposeTpose(this.Ptr, temp2.Ptr));
 
         public Temporal? Pitch()
             => MEOSFactory.WrapTemporal(Meos.TposePitch(this.Ptr));
@@ -99,11 +144,35 @@ namespace MEOS.NET.Types
         public Temporal? RotateZ(double angle)
             => MEOSFactory.WrapTemporal(Meos.TposeRotateZ(this.Ptr, angle));
 
+        public Geo? Shortestline(Geo gs)
+            => MEOSFactory.WrapGeo(Meos.ShortestlineTposeGeo(this.Ptr, gs.Ptr));
+
+        public Geo? Shortestline(Pose pose)
+            => MEOSFactory.WrapGeo(Meos.ShortestlineTposePose(this.Ptr, pose.Ptr));
+
+        public Geo? Shortestline(TPose temp2)
+            => MEOSFactory.WrapGeo(Meos.ShortestlineTposeTpose(this.Ptr, temp2.Ptr));
+
         public Temporal? Speed()
             => MEOSFactory.WrapTemporal(Meos.TposeSpeed(this.Ptr));
 
         public Pose? StartValue()
             => MEOSFactory.WrapPose(Meos.TposeStartValue(this.Ptr));
+
+        public Temporal? Tdistance(Pose pose)
+            => MEOSFactory.WrapTemporal(Meos.TdistanceTposePose(this.Ptr, pose.Ptr));
+
+        public Temporal? Tdistance(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.TdistanceTposeGeo(this.Ptr, gs.Ptr));
+
+        public Temporal? Tdistance(TPose temp2)
+            => MEOSFactory.WrapTemporal(Meos.TdistanceTposeTpose(this.Ptr, temp2.Ptr));
+
+        public Temporal? Teq(Pose pose)
+            => MEOSFactory.WrapTemporal(Meos.TeqTposePose(this.Ptr, pose.Ptr));
+
+        public Temporal? Tne(Pose pose)
+            => MEOSFactory.WrapTemporal(Meos.TneTposePose(this.Ptr, pose.Ptr));
 
         public Temporal? ToTpoint()
             => MEOSFactory.WrapTemporal(Meos.TposeToTpoint(this.Ptr));

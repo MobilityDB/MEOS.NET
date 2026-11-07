@@ -18,6 +18,12 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public int AlwaysEq(TJsonb temp)
+            => Meos.AlwaysEqJsonbTjsonb(this.Ptr, temp.Ptr);
+
+        public int AlwaysNe(TJsonb temp)
+            => Meos.AlwaysNeJsonbTjsonb(this.Ptr, temp.Ptr);
+
         public Jsonb? ArrayElement(int element)
             => MEOSFactory.WrapJsonb(Meos.JsonbArrayElement(this.Ptr, element));
 
@@ -44,6 +50,9 @@ namespace MEOS.NET.Types
 
         public bool Contained(Jsonb jb2)
             => Meos.JsonbContained(this.Ptr, jb2.Ptr);
+
+        public bool Contained(JsonbSet s)
+            => Meos.ContainedJsonbSet(this.Ptr, s.Ptr);
 
         public bool Contains(Jsonb jb2)
             => Meos.JsonbContains(this.Ptr, jb2.Ptr);
@@ -111,6 +120,12 @@ namespace MEOS.NET.Types
 
         public bool Eq(Jsonb jb2)
             => Meos.JsonbEq(this.Ptr, jb2.Ptr);
+
+        public int EverEq(TJsonb temp)
+            => Meos.EverEqJsonbTjsonb(this.Ptr, temp.Ptr);
+
+        public int EverNe(TJsonb temp)
+            => Meos.EverNeJsonbTjsonb(this.Ptr, temp.Ptr);
 
         public bool Exists(Text key)
             => Meos.JsonbExists(this.Ptr, key.Ptr);
@@ -203,6 +218,9 @@ namespace MEOS.NET.Types
             }
         }
 
+        public Set? Intersection(JsonbSet s)
+            => MEOSFactory.WrapSet(Meos.IntersectionJsonbSet(this.Ptr, s.Ptr));
+
         public bool Le(Jsonb jb2)
             => Meos.JsonbLe(this.Ptr, jb2.Ptr);
 
@@ -211,6 +229,9 @@ namespace MEOS.NET.Types
 
         public int MemSize()
             => Meos.JsonbMemSize(this.Ptr);
+
+        public Set? Minus(JsonbSet s)
+            => MEOSFactory.WrapSet(Meos.MinusJsonbSet(this.Ptr, s.Ptr));
 
         public bool Ne(Jsonb jb2)
             => Meos.JsonbNe(this.Ptr, jb2.Ptr);
@@ -286,6 +307,12 @@ namespace MEOS.NET.Types
         public Jsonb? StripNulls(bool strip_in_arrays)
             => MEOSFactory.WrapJsonb(Meos.JsonbStripNulls(this.Ptr, strip_in_arrays));
 
+        public Temporal? Teq(TJsonb temp)
+            => MEOSFactory.WrapTemporal(Meos.TeqJsonbTjsonb(this.Ptr, temp.Ptr));
+
+        public Temporal? Tne(TJsonb temp)
+            => MEOSFactory.WrapTemporal(Meos.TneJsonbTjsonb(this.Ptr, temp.Ptr));
+
         public bool ToBool()
             => Meos.JsonbToBool(this.Ptr);
 
@@ -312,6 +339,9 @@ namespace MEOS.NET.Types
 
         public Text? ToText()
             => MEOSFactory.WrapText(Meos.JsonbToText(this.Ptr));
+
+        public Set? Union(JsonbSet s)
+            => MEOSFactory.WrapSet(Meos.UnionJsonbSet(this.Ptr, s.Ptr));
 
         public static Jsonb? FromText(Text txt, bool unique_keys)
             => MEOSFactory.WrapJsonb(Meos.JsonbFromText(txt.Ptr, unique_keys));

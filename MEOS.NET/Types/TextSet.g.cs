@@ -21,23 +21,50 @@ namespace MEOS.NET.Types
         public string AsText()
             => this.Out();
 
+        public bool Contains(Text t)
+            => Meos.ContainsSetText(this.Ptr, t.Ptr);
+
         public Text? EndValue()
             => MEOSFactory.WrapText(Meos.TextsetEndValue(this.Ptr));
 
         public Set? Initcap()
             => MEOSFactory.WrapSet(Meos.TextsetInitcap(this.Ptr));
 
+        public Set? Intersection(Text txt)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetText(this.Ptr, txt.Ptr));
+
+        public bool Left(Text txt)
+            => Meos.LeftSetText(this.Ptr, txt.Ptr);
+
         public Set? Lower()
             => MEOSFactory.WrapSet(Meos.TextsetLower(this.Ptr));
+
+        public Set? Minus(Text txt)
+            => MEOSFactory.WrapSet(Meos.MinusSetText(this.Ptr, txt.Ptr));
 
         public string Out()
             => Meos.TextsetOut(this.Ptr);
 
+        public bool Overleft(Text txt)
+            => Meos.OverleftSetText(this.Ptr, txt.Ptr);
+
+        public bool Overright(Text txt)
+            => Meos.OverrightSetText(this.Ptr, txt.Ptr);
+
+        public bool Right(Text txt)
+            => Meos.RightSetText(this.Ptr, txt.Ptr);
+
         public Text? StartValue()
             => MEOSFactory.WrapText(Meos.TextsetStartValue(this.Ptr));
 
+        public Set? Textcat(Text txt)
+            => MEOSFactory.WrapSet(Meos.TextcatTextsetText(this.Ptr, txt.Ptr));
+
         public Set? ToJsonbset()
             => MEOSFactory.WrapSet(Meos.TextsetToJsonbset(this.Ptr));
+
+        public Set? Union(Text txt)
+            => MEOSFactory.WrapSet(Meos.UnionSetText(this.Ptr, txt.Ptr));
 
         public Set? Upper()
             => MEOSFactory.WrapSet(Meos.TextsetUpper(this.Ptr));

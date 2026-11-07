@@ -54,6 +54,7 @@ namespace MEOS.NET.Errors
                 27 => new MEOSGEOJSONOutputException(level, MEOSErrorCodes.GEOJSONOutput, message),
                 28 => new MEOSSQLJSONErrorException(level, MEOSErrorCodes.SQLJSONError, message),
                 29 => new MEOSInvalidRegularExpressionException(level, MEOSErrorCodes.InvalidRegularExpression, message),
+                30 => new MEOSDatetimeOutOfRangeException(level, MEOSErrorCodes.DatetimeOutOfRange, message),
                 // A code this binding does not name is still an error MEOS
                 // raised, so it reaches the caller rather than being dropped.
                 _ => new MEOSInternalErrorException(
