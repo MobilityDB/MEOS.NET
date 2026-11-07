@@ -10226,6 +10226,12 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "tpointseqset_twcentroid", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TpointseqsetTwcentroid(IntPtr ss);
 
+            [LibraryImport(DllPath, EntryPoint = "numeric_in", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr NumericIn(string str, int typmod);
+
+            [LibraryImport(DllPath, EntryPoint = "numeric_out", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr NumericOut(IntPtr num, out nuint size_out);
+
             [LibraryImport(DllPath, EntryPoint = "json_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr JsonIn(string str);
 

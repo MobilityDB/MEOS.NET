@@ -180,6 +180,15 @@ namespace MEOS.NET.Types
         public bool Eq(TBox box2)
             => Meos.TboxEq(this.Ptr, box2.Ptr);
 
+        public TBox? ExpandBigint(long i)
+            => MEOSFactory.WrapTBox(Meos.TbigintboxExpand(this.Ptr, i));
+
+        public TBox? ExpandFloat(double d)
+            => MEOSFactory.WrapTBox(Meos.TfloatboxExpand(this.Ptr, d));
+
+        public TBox? ExpandInt(int i)
+            => MEOSFactory.WrapTBox(Meos.TintboxExpand(this.Ptr, i));
+
         public TBox? ExpandTime(Interval interv)
         {
             IntPtr _interv = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
@@ -448,6 +457,15 @@ namespace MEOS.NET.Types
             }
         }
 
+        public TBox? ShiftScaleBigint(long shift, long width, bool hasshift, bool haswidth)
+            => MEOSFactory.WrapTBox(Meos.TbigintboxShiftScale(this.Ptr, shift, width, hasshift, haswidth));
+
+        public TBox? ShiftScaleFloat(double shift, double width, bool hasshift, bool haswidth)
+            => MEOSFactory.WrapTBox(Meos.TfloatboxShiftScale(this.Ptr, shift, width, hasshift, haswidth));
+
+        public TBox? ShiftScaleInt(int shift, int width, bool hasshift, bool haswidth)
+            => MEOSFactory.WrapTBox(Meos.TintboxShiftScale(this.Ptr, shift, width, hasshift, haswidth));
+
         public TBox? ShiftScaleTime(Interval shift, Interval duration)
         {
             IntPtr _shift = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
@@ -507,6 +525,48 @@ namespace MEOS.NET.Types
             {
                 Marshal.StructureToPtr(duration, _duration, false);
                 return MEOSFactory.WrapTBoxArray(Meos.TboxTimeTiles(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), border_inc));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public TBox?[] TimeTilesBigint(Interval duration, DateTime torigin, bool border_inc)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapTBoxArray(Meos.TbigintboxTimeTiles(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), border_inc));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public TBox?[] TimeTilesFloat(Interval duration, DateTime torigin, bool border_inc)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapTBoxArray(Meos.TfloatboxTimeTiles(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), border_inc));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public TBox?[] TimeTilesInt(Interval duration, DateTime torigin, bool border_inc)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapTBoxArray(Meos.TintboxTimeTiles(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), border_inc));
             }
             finally
             {
@@ -600,6 +660,57 @@ namespace MEOS.NET.Types
 
         public TBox? Union(TBox box2, bool strict)
             => MEOSFactory.WrapTBox(Meos.UnionTboxTbox(this.Ptr, box2.Ptr, strict));
+
+        public TBox?[] ValueTilesBigint(long vsize, long vorigin, bool border_inc)
+            => MEOSFactory.WrapTBoxArray(Meos.TbigintboxValueTiles(this.Ptr, vsize, vorigin, border_inc));
+
+        public TBox?[] ValueTilesFloat(double vsize, double vorigin, bool border_inc)
+            => MEOSFactory.WrapTBoxArray(Meos.TfloatboxValueTiles(this.Ptr, vsize, vorigin, border_inc));
+
+        public TBox?[] ValueTilesInt(int vsize, int vorigin, bool border_inc)
+            => MEOSFactory.WrapTBoxArray(Meos.TintboxValueTiles(this.Ptr, vsize, vorigin, border_inc));
+
+        public TBox?[] ValueTimeTilesBigint(long vsize, Interval duration, long vorigin, DateTime torigin, bool border_inc)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapTBoxArray(Meos.TbigintboxValueTimeTiles(this.Ptr, vsize, _duration, vorigin, MEOSConvert.ToTimestampTz(torigin), border_inc));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public TBox?[] ValueTimeTilesFloat(double vsize, Interval duration, double vorigin, DateTime torigin, bool border_inc)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapTBoxArray(Meos.TfloatboxValueTimeTiles(this.Ptr, vsize, _duration, vorigin, MEOSConvert.ToTimestampTz(torigin), border_inc));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
+
+        public TBox?[] ValueTimeTilesInt(int vsize, Interval duration, int vorigin, DateTime torigin, bool border_inc)
+        {
+            IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(duration, _duration, false);
+                return MEOSFactory.WrapTBoxArray(Meos.TintboxValueTimeTiles(this.Ptr, vsize, _duration, vorigin, MEOSConvert.ToTimestampTz(torigin), border_inc));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_duration);
+            }
+        }
 
         public double? Xmax()
         {

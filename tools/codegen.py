@@ -166,6 +166,20 @@ STRUCTS: dict[str, dict] = {}
 STRUCT_NAMES: set[str] = set()
 
 
+def projected(f: dict) -> bool:
+    """Whether a catalog function is part of the surface this binding projects.
+
+    The catalog marks the declarations that reach MEOS from a project it
+    vendors — pgPointCloud's `pc_api.h` and `hashtable.h`, PostgreSQL's
+    `pg_numeric.h` — and those are that project's API rather than MEOS's, so
+    they stay out. Where MEOS documents one as its own public API (`api` is
+    `public`: `numeric_in` and `numeric_out`, which libmeos exports), it is
+    MEOS's surface like any other. The flat surface and the object layer read
+    this one predicate, so the layer never builds on a wrapper the flat
+    surface does not write."""
+    return not f.get("vendored") or f.get("api") == "public"
+
+
 def configure(idl: dict) -> None:
     """Take from the catalog the type facts the mapping below reads."""
     if "typedefs" not in idl:
@@ -190,7 +204,7 @@ def configure(idl: dict) -> None:
                idl.get("objectModel", {}).get("classes", {}).values()
                if c.get("cType")}
     for f in idl.get("functions", []):
-        if f.get("vendored"):
+        if not projected(f):
             continue
         for spot in [f["returnType"]] + list(f.get("params", [])):
             canonical = _bare(spot["canonical"])
@@ -690,6 +704,13 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
         ret_type = ret_pieces[0]
     else:
         ret_type = "(" + ", ".join(ret_pieces) + ")"
+    # A `bool` beside the out-arrays is MEOS saying whether it answered any:
+    # `tpoint_as_mvtgeom` answers false for a trip with no representation in
+    # the tile and writes nothing, so the wrapper answers null there rather
+    # than reading a count MEOS never wrote.
+    answers_found = not array_ret and csharp_return_type(f) == "bool"
+    if answers_found:
+        ret_type += "?"
 
     user_params = ", ".join(sig_params)
     ext_args = ", ".join(ext_call_args)
@@ -708,6 +729,12 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
         rt = csharp_return_type(f)
         if rt == "void":
             lines.append(f"                SafeExecution(() => Native.{public_name(name)}({ext_args}));")
+        elif answers_found:
+            lines.append(f"                if (!SafeExecution<bool>(() => Native.{public_name(name)}({ext_args})))")
+            lines.append("                {")
+            lines.append("                    return null;")
+            lines.append("                }")
+            lines.append("")
         else:
             lines.append(f"                SafeExecution<{rt}>(() => Native.{public_name(name)}({ext_args}));")
     lines.append(f"                int _n = Marshal.ReadInt32(_count_{count_param});")
@@ -1073,7 +1100,7 @@ def survey(funcs: list[dict], idl: dict) -> None:
     classed = {c.get("cType") for c in
                idl.get("objectModel", {}).get("classes", {}).values()}
     # Every emitted function is a route back into MEOS, internal ones included:
-    # the flat surface wraps the whole non-vendored catalog, so a type one of
+    # the flat surface wraps the whole projected catalog, so a type one of
     # them takes is a type a caller of this binding can hand back.
     accepted: set[str] = set()
     named: set[str] = set()
@@ -1117,12 +1144,8 @@ def main(idl_path: str, dll_path: str = DLL_PATH) -> None:
     configure(idl)
     LEDGER = gapledger.Ledger("flat surface", "The flat surface — `tools/codegen.py`")
     _declare_kinds(LEDGER)
-    # A binding projects MEOS's own surface. The catalog marks the declarations
-    # that reach it from a project MEOS vendors — pgPointCloud's `pc_api.h` and
-    # `hashtable.h`, PostgreSQL's `pg_numeric.h` — and those are that project's
-    # API, not MEOS's: 150 of them, every one internal, and the only three the
-    # built library does not export at all.
-    funcs = [f for f in idl["functions"] if not f.get("vendored")]
+    # A binding projects MEOS's own surface (#projected).
+    funcs = [f for f in idl["functions"] if projected(f)]
     repo_root = Path(__file__).resolve().parent.parent
     out_dir = repo_root / "MEOS.NET" / "Functions"
     struct_dir = repo_root / "MEOS.NET" / "Structures"
