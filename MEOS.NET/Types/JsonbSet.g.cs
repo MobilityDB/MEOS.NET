@@ -92,6 +92,25 @@ namespace MEOS.NET.Types
         public bool[] Exists(Text key)
             => Meos.JsonbsetExists(this.Ptr, key.Ptr);
 
+        public bool[] ExistsArray(Text[] keys, bool any)
+        {
+            IntPtr[] _keysValues = new IntPtr[keys.Length];
+            for (int i = 0; i < keys.Length; i++)
+            {
+                _keysValues[i] = keys[i].Ptr;
+            }
+
+            GCHandle _keys = GCHandle.Alloc(_keysValues, GCHandleType.Pinned);
+            try
+            {
+                return Meos.JsonbsetExistsArray(this.Ptr, _keys.AddrOfPinnedObject(), keys.Length, any);
+            }
+            finally
+            {
+                _keys.Free();
+            }
+        }
+
         public Set? ExtractPath(Text[] path_elems, NullHandleType null_handle)
         {
             IntPtr[] _path_elemsValues = new IntPtr[path_elems.Length];

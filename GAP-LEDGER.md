@@ -10,14 +10,14 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `e5a5170a925684b84af9fd543958c2c46f8a6f95` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `cc5cf1950abfa84a876849f4f3e67cc6a22b3711` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
 
 ## The flat surface — `tools/codegen.py`
 
-### parameter nullability — 4323
+### parameter nullability — 4325
 
 `shape.nullable` names the parameters a function accepts NULL for, and the catalog carries no field saying a parameter is required. A pointer parameter named in neither reaches the surface with its contract unstated: the wrapper takes it, and nothing says whether zero is an argument or a fault.
 
@@ -1728,6 +1728,8 @@ and `tools/objectgen.py`.  Do not edit.
 | null_handle_type_from_string | str |
 | number_set_tbox | box |
 | number_tstzspan_to_tbox | s |
+| numeric_in | str |
+| numeric_out | num, size_out |
 | numset_set_tbox | s, box |
 | numset_shift_scale | s |
 | numspan_expand | s |
@@ -4347,22 +4349,15 @@ and `tools/objectgen.py`.  Do not edit.
 | unistr | txt |
 | value_set_span | s |
 
-### unreadable return — 10
+### unreadable return — 3
 
 A pointer answer whose pointed-to type no emitted function accepts. The caller receives an address and the catalog names nothing this binding reaches that renders it, operates on it or takes it back.
 
 | function | api | pointed-to type |
 | --- | --- | --- |
-| date_extract | public | NumericData |
 | geopose_frame | public | GeoPoseFrame |
 | geopose_frames | public | GeoPoseFrame |
-| interval_extract | public | NumericData |
-| jsonb_to_numeric | public | NumericData |
 | meos_proj_get_context | internal | pj_ctx |
-| time_extract | public | NumericData |
-| timestamp_extract | public | NumericData |
-| timestamptz_extract | public | NumericData |
-| timetz_extract | public | NumericData |
 
 ### array element type — 1
 
@@ -4378,13 +4373,11 @@ An `arrayReturn` whose length the catalog states in a way this generator reads n
 
 None in this run.
 
-### output array length — 1
+### output array length — 0
 
 An `outputArrays` parameter with no length source, so the count of what the callee wrote is unstated.
 
-| function | what is missing | emitted instead |
-| --- | --- | --- |
-| tpoint_as_mvtgeom | outputArrays names no lengthFrom and there is no arrayReturn to take one from | the raw pointers, for the caller to size and read |
+None in this run.
 
 ### value text I/O — 5
 
@@ -4416,19 +4409,17 @@ The flat surface emits no wrapper for the function, so the layer has no signatur
 
 None in this run.
 
-### return needs a class — 5
+### return needs a class — 3
 
 The function answers a type no class stands for and no scalar, value struct or array rule reads, so there is nothing to hand back.
 
 | class | member | what is missing |
 | --- | --- | --- |
-| Jsonb | toNumeric | return NumericData * needs wrapping |
-| JsonbSet | existsArray | return bool * needs wrapping |
 | Raster | dumpAsPolygons | return GeomVal * needs wrapping |
 | Raster | pixelAsPoints | return Pixel * needs wrapping |
-| Temporal | toTaggstate | return SkipList * needs wrapping |
+| TPoint | asMVTGeom | return bool needs wrapping |
 
-### argument needs a class — 6
+### argument needs a class — 5
 
 The function takes a type no class stands for and no marshalling rule reads, so there is nothing for a caller to pass.
 
@@ -4439,7 +4430,6 @@ The function takes a type no class stands for and no marshalling rule reads, so 
 | Pcschema | fromDims | argument dims of type PCDimensionSpec * needs marshalling |
 | Pcschema | registerDims | argument dims of type PCDimensionSpec * needs marshalling |
 | SpanSet | make | argument spans is an array of Span, which has no class |
-| TPoint | asMVTGeom | argument gsarr of type GSERIALIZED ** needs marshalling |
 
 ### overloads of one C# signature — 0
 

@@ -1698,7 +1698,7 @@ def main() -> int:
     codegen.configure(idl)
     # Populate codegen.SIGNATURES: the object layer calls the wrappers codegen.py
     # emits, so it reads their signatures from the same run that decides them.
-    codegen.gen_exposed_functions(idl["functions"])
+    codegen.gen_exposed_functions([f for f in idl["functions"] if codegen.projected(f)])
 
     model = Model(idl)
     gen = Generator(model)

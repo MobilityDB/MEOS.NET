@@ -6,9 +6,10 @@ using MEOS.NET.Types;
 namespace MEOS.NET.Tests
 {
     /// <summary>
-    /// A MEOS function that answers through output pointers the catalog gives no
-    /// length for is passed through as it is declared: the caller hands it the
-    /// pointers and reads back what MEOS wrote through each.
+    /// A MEOS function that answers a value through one output pointer and an
+    /// array through another, counted by a third, hands back the array and takes
+    /// the pointer it writes the value through; where MEOS says it answers
+    /// nothing, the array is null.
     /// </summary>
     [TestClass]
     public class OutputPointerTests : MeosTest
@@ -23,33 +24,43 @@ namespace MEOS.NET.Tests
             STBox bounds = STBox.In("STBOX XT(((0,0),(10,10)),[2000-01-01, 2000-01-04])")!;
 
             IntPtr geom = Marshal.AllocHGlobal(IntPtr.Size);
-            IntPtr times = Marshal.AllocHGlobal(IntPtr.Size);
-            IntPtr count = Marshal.AllocHGlobal(sizeof(int));
             try
             {
-                Assert.IsTrue(Meos.TpointAsMvtgeom(trip.Ptr, bounds.Ptr, 4096, 0, true,
-                    geom, times, count));
+                long[]? times = Meos.TpointAsMvtgeom(trip.Ptr, bounds.Ptr, 4096, 0, true, geom);
 
                 // The geometry is a GSERIALIZED the geometry functions read.
                 StringAssert.StartsWith(Meos.GeoAsText(Marshal.ReadIntPtr(geom), 6), "LINESTRING");
 
-                // The times are an array of exactly count timestamps, in order.
-                int n = Marshal.ReadInt32(count);
-                Assert.IsTrue(n > 0, $"count was {n}");
-                IntPtr moments = Marshal.ReadIntPtr(times);
-                long previous = long.MinValue;
-                for (int i = 0; i < n; i++)
+                // The times are the array MEOS counted, in order.
+                Assert.IsNotNull(times);
+                Assert.IsTrue(times!.Length > 0, $"count was {times.Length}");
+                for (int i = 1; i < times.Length; i++)
                 {
-                    long moment = Marshal.ReadInt64(moments, i * sizeof(long));
-                    Assert.IsTrue(moment > previous, $"timestamp {i} is out of order");
-                    previous = moment;
+                    Assert.IsTrue(times[i] > times[i - 1], $"timestamp {i} is out of order");
                 }
             }
             finally
             {
                 Marshal.FreeHGlobal(geom);
-                Marshal.FreeHGlobal(times);
-                Marshal.FreeHGlobal(count);
+            }
+        }
+
+        [TestMethod]
+        public void AnMvtGeometryOutsideTheTileIsNull()
+        {
+            // tpoint_as_mvtgeom answers false for a trip with no representation
+            // in the tile, and writes neither the geometry nor the times.
+            Temporal trip = TGeomPoint.In(Trip)!;
+            STBox bounds = STBox.In("STBOX XT(((100,100),(110,110)),[2000-01-01, 2000-01-04])")!;
+
+            IntPtr geom = Marshal.AllocHGlobal(IntPtr.Size);
+            try
+            {
+                Assert.IsNull(Meos.TpointAsMvtgeom(trip.Ptr, bounds.Ptr, 4096, 0, true, geom));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(geom);
             }
         }
     }

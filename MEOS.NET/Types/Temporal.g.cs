@@ -523,6 +523,9 @@ namespace MEOS.NET.Types
         public Temporal? Tne(Temporal temp2)
             => MEOSFactory.WrapTemporal(Meos.TneTemporalTemporal(this.Ptr, temp2.Ptr));
 
+        public SkipList? ToTaggstate()
+            => MEOSFactory.WrapSkipList(Meos.TemporalToTaggstate(this.Ptr));
+
         public Span? ToTstzspan()
             => MEOSFactory.WrapSpan(Meos.TemporalToTstzspan(this.Ptr));
 

@@ -1202,8 +1202,29 @@ namespace MEOS.NET.Functions
         public static IntPtr TgeompointToTgeometry(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TgeompointToTgeometry(temp));
 
-        public static bool TpointAsMvtgeom(IntPtr temp, IntPtr bounds, int extent, int buffer, bool clip_geom, IntPtr gsarr, IntPtr timesarr, IntPtr count)
-            => SafeExecution<bool>(() => Native.TpointAsMvtgeom(temp, bounds, extent, buffer, clip_geom, gsarr, timesarr, count));
+        public static long[]? TpointAsMvtgeom(IntPtr temp, IntPtr bounds, int extent, int buffer, bool clip_geom, IntPtr gsarr)
+        {
+            IntPtr _out_timesarr = Marshal.AllocHGlobal(IntPtr.Size);
+            IntPtr _count_count = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                if (!SafeExecution<bool>(() => Native.TpointAsMvtgeom(temp, bounds, extent, buffer, clip_geom, gsarr, _out_timesarr, _count_count)))
+                {
+                    return null;
+                }
+
+                int _n = Marshal.ReadInt32(_count_count);
+                IntPtr __out_timesarr_arr = Marshal.ReadIntPtr(_out_timesarr);
+                long[] __out_timesarr_out = new long[_n];
+                Marshal.Copy(__out_timesarr_arr, __out_timesarr_out, 0, _n);
+                return __out_timesarr_out;
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(_out_timesarr);
+            Marshal.FreeHGlobal(_count_count);
+            }
+        }
 
         public static bool TpointTfloatToGeomeas(IntPtr tpoint, IntPtr measure, bool segmentize, IntPtr result)
             => SafeExecution<bool>(() => Native.TpointTfloatToGeomeas(tpoint, measure, segmentize, result));

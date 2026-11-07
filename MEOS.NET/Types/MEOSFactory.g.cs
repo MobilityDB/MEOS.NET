@@ -185,6 +185,30 @@ namespace MEOS.NET.Types
             return wrapped;
         }
 
+        /// <summary>The value at <paramref name="ptr"/> as the Numeric
+        /// class the model gives its runtime type.</summary>
+        public static Numeric? WrapNumeric(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new Numeric(ptr);
+        }
+
+        /// <summary>Every element of a C array of Numeric pointers, wrapped.</summary>
+        public static Numeric?[] WrapNumericArray(IntPtr[] ptrs)
+        {
+            Numeric?[] wrapped = new Numeric?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapNumeric(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
         /// <summary>The value at <paramref name="ptr"/> as the Pcschema
         /// class the model gives its runtime type.</summary>
         public static Pcschema? WrapPcschema(IntPtr ptr)
@@ -514,6 +538,30 @@ namespace MEOS.NET.Types
             for (int i = 0; i < ptrs.Length; i++)
             {
                 wrapped[i] = WrapSet(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
+        /// <summary>The value at <paramref name="ptr"/> as the SkipList
+        /// class the model gives its runtime type.</summary>
+        public static SkipList? WrapSkipList(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new SkipList(ptr);
+        }
+
+        /// <summary>Every element of a C array of SkipList pointers, wrapped.</summary>
+        public static SkipList?[] WrapSkipListArray(IntPtr[] ptrs)
+        {
+            SkipList?[] wrapped = new SkipList?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapSkipList(ptrs[i]);
             }
 
             return wrapped;

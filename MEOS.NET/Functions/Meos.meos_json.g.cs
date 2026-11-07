@@ -575,8 +575,20 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr JsonbsetExistsArray(IntPtr set, IntPtr keys, int count, bool any, IntPtr rescount)
-            => SafeExecution<IntPtr>(() => Native.JsonbsetExistsArray(set, keys, count, any, rescount));
+        public static bool[] JsonbsetExistsArray(IntPtr set, IntPtr keys, int count, bool any)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbsetExistsArray(set, keys, count, any, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                bool[] _out = new bool[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = Marshal.ReadByte(_p, _i) != 0; }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
 
         public static IntPtr JsonbsetSet(IntPtr set, IntPtr keys, int count, IntPtr newjb, bool create)
             => SafeExecution<IntPtr>(() => Native.JsonbsetSet(set, keys, count, newjb, create));
