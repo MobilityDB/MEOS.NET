@@ -10,7 +10,7 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `3ef02e46aac6b4223ffb6178b60ff70e9b7a7caf` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `e5a5170a925684b84af9fd543958c2c46f8a6f95` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
@@ -4462,16 +4462,10 @@ An operator takes the name and parameter types of a method the model gives the s
 
 None in this run.
 
-### takes an inherited member's calls — 5
+### takes an inherited member's calls — 0
 
-An operator takes the name of a member of an ancestor and parameter types that member's arguments convert to, and C# reaches an ancestor's member only where none of the class applies, so emitting it would answer the ancestor's calls on the class with another function.
+An operator takes the name and parameter types of a member of an ancestor, a second function for one call, or would take the calls of an ancestor's member the layer does not emit and so cannot declare again beside it.
 
-| class | member | what is missing |
-| --- | --- | --- |
-| TNumber | Adjacent | adjacent_tnumber_numspan: Adjacent(Span) would take the calls of Adjacent(TsTzSpan), a member of an ancestor of TNumber |
-| TNumber | Contained | contained_tnumber_numspan: Contained(Span) would take the calls of Contained(TsTzSpan), a member of an ancestor of TNumber |
-| TNumber | Contains | contains_tnumber_numspan: Contains(Span) would take the calls of Contains(TsTzSpan), a member of an ancestor of TNumber |
-| TNumber | Overlaps | overlaps_tnumber_numspan: Overlaps(Span) would take the calls of Overlaps(TsTzSpan), a member of an ancestor of TNumber |
-| TNumber | Same | same_tnumber_numspan: Same(Span) would take the calls of Same(TsTzSpan), a member of an ancestor of TNumber |
+None in this run.
 
 <!-- gap-ledger:end object layer -->

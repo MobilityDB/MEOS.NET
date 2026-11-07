@@ -85,8 +85,16 @@ to. Each pair of an operator's `instantiations` that narrows the other
 operand is a member of the pair's receiver class, calling the same C function:
 `contains_tnumber_numspan` is `TFloat.Contains(FloatSpan)` and
 `TInt.Contains(IntSpan)`. A pair a class's own operator already takes the
-arguments of is that operator. An overload C# could not tell from another one of the class, or one that
-would take the calls of an ancestor's member, is recorded in `GAP-LEDGER.md`
+arguments of is that operator.
+
+C# looks at an ancestor's members only where none of the class applies, so an
+overload taking types an ancestor's arguments convert to would take that
+ancestor member's calls. The class then declares the ancestor's member again,
+calling the same function, and C# prefers it as the closer match:
+`TNumber.Contains(Span)` calls `contains_tnumber_numspan` and the
+`TNumber.Contains(TsTzSpan)` beside it calls `contains_temporal_tstzspan`.
+An overload C# could not tell from another one of the class, or one taking the
+very parameter types of an ancestor's member, is recorded in `GAP-LEDGER.md`
 rather than emitted.
 
 A method whose marshalling the layer does not emit — a `GSERIALIZED *`
