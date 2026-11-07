@@ -21,6 +21,12 @@ namespace MEOS.NET.Types
         public bool Adjacent(DateTime t)
             => Meos.AdjacentSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
+        public bool Adjacent(TsTzSpan s)
+            => Meos.AdjacentSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Adjacent(TsTzSpanSet ss2)
+            => Meos.AdjacentSpansetSpanset(this.Ptr, ss2.Ptr);
+
         public bool After(DateTime t)
             => Meos.AfterSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
@@ -44,8 +50,20 @@ namespace MEOS.NET.Types
             }
         }
 
+        public bool Contained(TsTzSpan s)
+            => Meos.ContainedSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Contained(TsTzSpanSet ss2)
+            => Meos.ContainedSpansetSpanset(this.Ptr, ss2.Ptr);
+
         public bool Contains(DateTime t)
             => Meos.ContainsSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
+
+        public bool Contains(TsTzSpan s)
+            => Meos.ContainsSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Contains(TsTzSpanSet ss2)
+            => Meos.ContainsSpansetSpanset(this.Ptr, ss2.Ptr);
 
         public Interval? Distance(DateTime t)
             => MEOSConvert.ToStruct<Interval>(Meos.DistanceSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
@@ -65,11 +83,29 @@ namespace MEOS.NET.Types
         public SpanSet? Intersection(DateTime t)
             => MEOSFactory.WrapSpanSet(Meos.IntersectionSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
 
+        public SpanSet? Intersection(TsTzSpan s)
+            => MEOSFactory.WrapSpanSet(Meos.IntersectionSpansetSpan(this.Ptr, s.Ptr));
+
+        public SpanSet? Intersection(TsTzSpanSet ss2)
+            => MEOSFactory.WrapSpanSet(Meos.IntersectionSpansetSpanset(this.Ptr, ss2.Ptr));
+
+        public bool Left(TsTzSpan s)
+            => Meos.LeftSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Left(TsTzSpanSet ss2)
+            => Meos.LeftSpansetSpanset(this.Ptr, ss2.Ptr);
+
         public DateTime Lower()
             => MEOSConvert.ToDateTime(Meos.TstzspansetLower(this.Ptr));
 
         public SpanSet? Minus(DateTime t)
             => MEOSFactory.WrapSpanSet(Meos.MinusSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
+
+        public SpanSet? Minus(TsTzSpan s)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpansetSpan(this.Ptr, s.Ptr));
+
+        public SpanSet? Minus(TsTzSpanSet ss2)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpansetSpanset(this.Ptr, ss2.Ptr));
 
         public int NumTimestamps()
             => Meos.TstzspansetNumTimestamps(this.Ptr);
@@ -83,6 +119,24 @@ namespace MEOS.NET.Types
         public bool Overbefore(DateTime t)
             => Meos.OverbeforeSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
+        public bool Overlaps(TsTzSpan s)
+            => Meos.OverlapsSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Overlaps(TsTzSpanSet ss2)
+            => Meos.OverlapsSpansetSpanset(this.Ptr, ss2.Ptr);
+
+        public bool Overleft(TsTzSpan s)
+            => Meos.OverleftSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Overleft(TsTzSpanSet ss2)
+            => Meos.OverleftSpansetSpanset(this.Ptr, ss2.Ptr);
+
+        public bool Overright(TsTzSpan s)
+            => Meos.OverrightSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Overright(TsTzSpanSet ss2)
+            => Meos.OverrightSpansetSpanset(this.Ptr, ss2.Ptr);
+
         public bool Radjacent(DateTime t)
             => Meos.AdjacentTimestamptzSpanset(MEOSConvert.ToTimestampTz(t), this.Ptr);
 
@@ -94,6 +148,12 @@ namespace MEOS.NET.Types
 
         public bool Rcontained(DateTime t)
             => Meos.ContainedTimestamptzSpanset(MEOSConvert.ToTimestampTz(t), this.Ptr);
+
+        public bool Right(TsTzSpan s)
+            => Meos.RightSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Right(TsTzSpanSet ss2)
+            => Meos.RightSpansetSpanset(this.Ptr, ss2.Ptr);
 
         public SpanSet? Rintersection(DateTime t)
             => MEOSFactory.WrapSpanSet(Meos.IntersectionTimestamptzSpanset(MEOSConvert.ToTimestampTz(t), this.Ptr));
@@ -201,6 +261,12 @@ namespace MEOS.NET.Types
 
         public SpanSet? Union(DateTime t)
             => MEOSFactory.WrapSpanSet(Meos.UnionSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
+
+        public SpanSet? Union(TsTzSpan s)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpansetSpan(this.Ptr, s.Ptr));
+
+        public SpanSet? Union(TsTzSpanSet ss2)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpansetSpanset(this.Ptr, ss2.Ptr));
 
         public DateTime Upper()
             => MEOSConvert.ToDateTime(Meos.TstzspansetUpper(this.Ptr));

@@ -27,8 +27,14 @@ namespace MEOS.NET.Types
         public bool Before(DateOnly d)
             => Meos.BeforeSetDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
+        public bool Contained(DateSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(DateOnly d)
             => Meos.ContainsSetDate(this.Ptr, MEOSConvert.ToDateADT(d));
+
+        public bool Contains(DateSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public int Distance(DateSet s2)
             => Meos.DistanceDatesetDateset(this.Ptr, s2.Ptr);
@@ -42,8 +48,17 @@ namespace MEOS.NET.Types
         public Set? Intersection(DateOnly d)
             => MEOSFactory.WrapSet(Meos.IntersectionSetDate(this.Ptr, MEOSConvert.ToDateADT(d)));
 
+        public Set? Intersection(DateSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
+        public bool Left(DateSet s2)
+            => Meos.LeftSetSet(this.Ptr, s2.Ptr);
+
         public Set? Minus(DateOnly d)
             => MEOSFactory.WrapSet(Meos.MinusSetDate(this.Ptr, MEOSConvert.ToDateADT(d)));
+
+        public Set? Minus(DateSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
 
         public string Out()
             => Meos.DatesetOut(this.Ptr);
@@ -54,6 +69,15 @@ namespace MEOS.NET.Types
         public bool Overbefore(DateOnly d)
             => Meos.OverbeforeSetDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
+        public bool Overlaps(DateSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
+
+        public bool Overleft(DateSet s2)
+            => Meos.OverleftSetSet(this.Ptr, s2.Ptr);
+
+        public bool Overright(DateSet s2)
+            => Meos.OverrightSetSet(this.Ptr, s2.Ptr);
+
         public bool Rafter(DateOnly d)
             => Meos.AfterDateSet(MEOSConvert.ToDateADT(d), this.Ptr);
 
@@ -62,6 +86,9 @@ namespace MEOS.NET.Types
 
         public bool Rcontained(DateOnly d)
             => Meos.ContainedDateSet(MEOSConvert.ToDateADT(d), this.Ptr);
+
+        public bool Right(DateSet s2)
+            => Meos.RightSetSet(this.Ptr, s2.Ptr);
 
         public Set? Rintersection(DateOnly d)
             => MEOSFactory.WrapSet(Meos.IntersectionDateSet(MEOSConvert.ToDateADT(d), this.Ptr));
@@ -89,6 +116,9 @@ namespace MEOS.NET.Types
 
         public Set? Union(DateOnly d)
             => MEOSFactory.WrapSet(Meos.UnionSetDate(this.Ptr, MEOSConvert.ToDateADT(d)));
+
+        public Set? Union(DateSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public DateOnly? ValueN(int n)
         {

@@ -198,7 +198,34 @@ class Model:
         self.meostype: dict[str, str] = {}      # class -> its MeosType constant
         self.subtype_of: dict[str, str] = {}    # concrete class -> template subtype
         self.wrap_root: dict[str, str] = {}     # C struct -> the class it wraps as
+        # class -> the operator entries an `instantiations` pair names it the
+        # receiver of (#_instantiate).
+        self.instantiated: dict[str, list[dict]] = defaultdict(list)
         self._build()
+        self._instantiate()
+
+    def _instantiate(self) -> None:
+        """One operator entry per pair of classes an entry's `instantiations`
+        name, assigned to the pair's receiver class with the pair's other class.
+
+        The entry itself stands on the class common to its receivers and types
+        its other operand as the class common to theirs, which loses which goes
+        with which: `contains_tnumber_numspan` is `TNumber.contains` with a
+        Span, and each pair is the member that keeps it, `TFloat.contains` with
+        a FloatSpan, calling the same C function. A pair is a member only where
+        it narrows the other operand: one that keeps the entry's other class is
+        a call the receiver class already inherits."""
+        for owner, spec in self.om["classes"].items():
+            for entry in spec.get("operators", []):
+                for pair in entry.get("instantiations") or []:
+                    receiver, other = pair["receiverClass"], pair["otherClass"]
+                    # A pair with the entry's own other class narrows only the
+                    # receiver, and the receiver class inherits the entry.
+                    if other == entry.get("otherClass"):
+                        continue
+                    member = {k: v for k, v in entry.items() if k != "instantiations"}
+                    member["otherClass"] = other
+                    self.instantiated[receiver].append(member)
 
     def _build(self) -> None:
         lattice = self.om["lattice"]
@@ -387,6 +414,8 @@ class Generator:
         # reader an ancestor carries (`Temporal.FromWKB`).
         self.static_functions: dict[str, tuple[str, Method]] = {}
         self.emitted = 0
+        # Instantiated pairs a class's own operator already answers.
+        self.restated = 0
         self.ledger = gapledger.Ledger(
             "object layer", "The object layer — `tools/objectgen.py`")
         for kind, missing in DEFERRAL_KINDS.items():
@@ -786,6 +815,21 @@ class Generator:
             method = self.method_for(cls, entry)
             if method is not None:
                 built.append((entry["function"], method))
+        # A pair an ancestor's operator is instantiated to (#_instantiate) is a
+        # member derived from that operator, never a second function for a call
+        # the class already answers: where the class's own operators take the
+        # same arguments, theirs is the member the model assigns it.
+        own = {(m.name, signature_of(m)) for _f, m in built}
+        for entry in self.m.instantiated.get(cls, []):
+            if entry.get("ooExclude"):
+                continue
+            method = self.method_for(cls, entry)
+            if method is None:
+                continue
+            if (method.name, signature_of(method)) in own:
+                self.restated += 1
+                continue
+            built.append((entry["function"], method))
         taken = {(m.name, signature_of(m)) for m in methods}
         inherited = self.inherited_names(cls)
         same: dict[tuple, list] = defaultdict(list)

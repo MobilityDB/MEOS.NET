@@ -21,8 +21,14 @@ namespace MEOS.NET.Types
         public string AsText()
             => this.Out();
 
+        public bool Contained(IntSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(int i)
             => Meos.ContainsSetInt(this.Ptr, i);
+
+        public bool Contains(IntSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public int Distance(IntSet s2)
             => Meos.DistanceIntsetIntset(this.Ptr, s2.Ptr);
@@ -36,26 +42,47 @@ namespace MEOS.NET.Types
         public Set? Intersection(int i)
             => MEOSFactory.WrapSet(Meos.IntersectionSetInt(this.Ptr, i));
 
+        public Set? Intersection(IntSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
         public bool Left(int i)
             => Meos.LeftSetInt(this.Ptr, i);
+
+        public bool Left(IntSet s2)
+            => Meos.LeftSetSet(this.Ptr, s2.Ptr);
 
         public Set? Minus(int i)
             => MEOSFactory.WrapSet(Meos.MinusSetInt(this.Ptr, i));
 
+        public Set? Minus(IntSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
+
         public string Out()
             => Meos.IntsetOut(this.Ptr);
+
+        public bool Overlaps(IntSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
         public bool Overleft(int i)
             => Meos.OverleftSetInt(this.Ptr, i);
 
+        public bool Overleft(IntSet s2)
+            => Meos.OverleftSetSet(this.Ptr, s2.Ptr);
+
         public bool Overright(int i)
             => Meos.OverrightSetInt(this.Ptr, i);
+
+        public bool Overright(IntSet s2)
+            => Meos.OverrightSetSet(this.Ptr, s2.Ptr);
 
         public bool Rcontained(int i)
             => Meos.ContainedIntSet(i, this.Ptr);
 
         public bool Right(int i)
             => Meos.RightSetInt(this.Ptr, i);
+
+        public bool Right(IntSet s2)
+            => Meos.RightSetSet(this.Ptr, s2.Ptr);
 
         public Set? Rintersection(int i)
             => MEOSFactory.WrapSet(Meos.IntersectionIntSet(i, this.Ptr));
@@ -89,6 +116,9 @@ namespace MEOS.NET.Types
 
         public Set? Union(int i)
             => MEOSFactory.WrapSet(Meos.UnionSetInt(this.Ptr, i));
+
+        public Set? Union(IntSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public int? ValueN(int n)
         {

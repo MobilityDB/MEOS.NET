@@ -18,8 +18,14 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Contained(PcpatchSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(Pcpatch pa)
             => Meos.ContainsSetPcpatch(this.Ptr, pa.Ptr);
+
+        public bool Contains(PcpatchSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public Pcpatch? EndValue()
             => MEOSFactory.WrapPcpatch(Meos.PcpatchsetEndValue(this.Ptr));
@@ -27,17 +33,29 @@ namespace MEOS.NET.Types
         public Set? Intersection(Pcpatch pa)
             => MEOSFactory.WrapSet(Meos.IntersectionSetPcpatch(this.Ptr, pa.Ptr));
 
+        public Set? Intersection(PcpatchSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
         public Set? Minus(Pcpatch pa)
             => MEOSFactory.WrapSet(Meos.MinusSetPcpatch(this.Ptr, pa.Ptr));
 
+        public Set? Minus(PcpatchSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
+
         public new string Out(int maxdd)
             => Meos.PcpatchsetOut(this.Ptr, maxdd);
+
+        public bool Overlaps(PcpatchSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
         public Pcpatch? StartValue()
             => MEOSFactory.WrapPcpatch(Meos.PcpatchsetStartValue(this.Ptr));
 
         public Set? Union(Pcpatch pa)
             => MEOSFactory.WrapSet(Meos.UnionSetPcpatch(this.Ptr, pa.Ptr));
+
+        public Set? Union(PcpatchSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public Pcpatch? ValueN(int n)
         {

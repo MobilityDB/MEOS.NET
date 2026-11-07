@@ -30,6 +30,24 @@ namespace MEOS.NET.Types
         public bool Adjacent(TNumber temp)
             => Meos.AdjacentTboxTnumber(this.Ptr, temp.Ptr);
 
+        public bool Adjacent(BigIntSpan s)
+            => Meos.AdjacentTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Adjacent(FloatSpan s)
+            => Meos.AdjacentTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Adjacent(IntSpan s)
+            => Meos.AdjacentTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Adjacent(TBigint temp)
+            => Meos.AdjacentTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TFloat temp)
+            => Meos.AdjacentTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TInt temp)
+            => Meos.AdjacentTboxTnumber(this.Ptr, temp.Ptr);
+
         public bool After(TBox box2)
             => Meos.AfterTboxTbox(this.Ptr, box2.Ptr);
 
@@ -37,6 +55,15 @@ namespace MEOS.NET.Types
             => Meos.AfterTboxTstzspan(this.Ptr, s.Ptr);
 
         public bool After(TNumber temp)
+            => Meos.AfterTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool After(TBigint temp)
+            => Meos.AfterTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool After(TFloat temp)
+            => Meos.AfterTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool After(TInt temp)
             => Meos.AfterTboxTnumber(this.Ptr, temp.Ptr);
 
         public string AsHexWKB(byte variant)
@@ -75,6 +102,15 @@ namespace MEOS.NET.Types
         public bool Before(TNumber temp)
             => Meos.BeforeTboxTnumber(this.Ptr, temp.Ptr);
 
+        public bool Before(TBigint temp)
+            => Meos.BeforeTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Before(TFloat temp)
+            => Meos.BeforeTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Before(TInt temp)
+            => Meos.BeforeTboxTnumber(this.Ptr, temp.Ptr);
+
         public int Cmp(TBox box2)
             => Meos.TboxCmp(this.Ptr, box2.Ptr);
 
@@ -90,6 +126,24 @@ namespace MEOS.NET.Types
         public bool Contained(TNumber temp)
             => Meos.ContainedTboxTnumber(this.Ptr, temp.Ptr);
 
+        public bool Contained(BigIntSpan s)
+            => Meos.ContainedTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Contained(FloatSpan s)
+            => Meos.ContainedTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Contained(IntSpan s)
+            => Meos.ContainedTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Contained(TBigint temp)
+            => Meos.ContainedTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Contained(TFloat temp)
+            => Meos.ContainedTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Contained(TInt temp)
+            => Meos.ContainedTboxTnumber(this.Ptr, temp.Ptr);
+
         public bool Contains(TBox box2)
             => Meos.ContainsTboxTbox(this.Ptr, box2.Ptr);
 
@@ -100,6 +154,24 @@ namespace MEOS.NET.Types
             => Meos.ContainsTboxTstzspan(this.Ptr, s.Ptr);
 
         public bool Contains(TNumber temp)
+            => Meos.ContainsTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Contains(BigIntSpan s)
+            => Meos.ContainsTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Contains(FloatSpan s)
+            => Meos.ContainsTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Contains(IntSpan s)
+            => Meos.ContainsTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Contains(TBigint temp)
+            => Meos.ContainsTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Contains(TFloat temp)
+            => Meos.ContainsTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Contains(TInt temp)
             => Meos.ContainsTboxTnumber(this.Ptr, temp.Ptr);
 
         public TBox? Copy()
@@ -155,6 +227,24 @@ namespace MEOS.NET.Types
         public bool Left(TNumber temp)
             => Meos.LeftTboxTnumber(this.Ptr, temp.Ptr);
 
+        public bool Left(BigIntSpan s)
+            => Meos.LeftTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Left(FloatSpan s)
+            => Meos.LeftTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Left(IntSpan s)
+            => Meos.LeftTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Left(TBigint temp)
+            => Meos.LeftTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Left(TFloat temp)
+            => Meos.LeftTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Left(TInt temp)
+            => Meos.LeftTboxTnumber(this.Ptr, temp.Ptr);
+
         public bool Lt(TBox box2)
             => Meos.TboxLt(this.Ptr, box2.Ptr);
 
@@ -173,6 +263,15 @@ namespace MEOS.NET.Types
         public bool Overafter(TNumber temp)
             => Meos.OverafterTboxTnumber(this.Ptr, temp.Ptr);
 
+        public bool Overafter(TBigint temp)
+            => Meos.OverafterTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TFloat temp)
+            => Meos.OverafterTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TInt temp)
+            => Meos.OverafterTboxTnumber(this.Ptr, temp.Ptr);
+
         public bool Overbefore(TBox box2)
             => Meos.OverbeforeTboxTbox(this.Ptr, box2.Ptr);
 
@@ -180,6 +279,15 @@ namespace MEOS.NET.Types
             => Meos.OverbeforeTboxTstzspan(this.Ptr, s.Ptr);
 
         public bool Overbefore(TNumber temp)
+            => Meos.OverbeforeTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TBigint temp)
+            => Meos.OverbeforeTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TFloat temp)
+            => Meos.OverbeforeTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TInt temp)
             => Meos.OverbeforeTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Overlaps(TBox box2)
@@ -194,6 +302,24 @@ namespace MEOS.NET.Types
         public bool Overlaps(TNumber temp)
             => Meos.OverlapsTboxTnumber(this.Ptr, temp.Ptr);
 
+        public bool Overlaps(BigIntSpan s)
+            => Meos.OverlapsTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Overlaps(FloatSpan s)
+            => Meos.OverlapsTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Overlaps(IntSpan s)
+            => Meos.OverlapsTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Overlaps(TBigint temp)
+            => Meos.OverlapsTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TFloat temp)
+            => Meos.OverlapsTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TInt temp)
+            => Meos.OverlapsTboxTnumber(this.Ptr, temp.Ptr);
+
         public bool Overleft(TBox box2)
             => Meos.OverleftTboxTbox(this.Ptr, box2.Ptr);
 
@@ -201,6 +327,24 @@ namespace MEOS.NET.Types
             => Meos.OverleftTboxNumspan(this.Ptr, s.Ptr);
 
         public bool Overleft(TNumber temp)
+            => Meos.OverleftTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Overleft(BigIntSpan s)
+            => Meos.OverleftTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Overleft(FloatSpan s)
+            => Meos.OverleftTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Overleft(IntSpan s)
+            => Meos.OverleftTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Overleft(TBigint temp)
+            => Meos.OverleftTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Overleft(TFloat temp)
+            => Meos.OverleftTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Overleft(TInt temp)
             => Meos.OverleftTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Overright(TBox box2)
@@ -212,6 +356,24 @@ namespace MEOS.NET.Types
         public bool Overright(TNumber temp)
             => Meos.OverrightTboxTnumber(this.Ptr, temp.Ptr);
 
+        public bool Overright(BigIntSpan s)
+            => Meos.OverrightTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Overright(FloatSpan s)
+            => Meos.OverrightTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Overright(IntSpan s)
+            => Meos.OverrightTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Overright(TBigint temp)
+            => Meos.OverrightTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Overright(TFloat temp)
+            => Meos.OverrightTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Overright(TInt temp)
+            => Meos.OverrightTboxTnumber(this.Ptr, temp.Ptr);
+
         public bool Right(TBox box2)
             => Meos.RightTboxTbox(this.Ptr, box2.Ptr);
 
@@ -219,6 +381,24 @@ namespace MEOS.NET.Types
             => Meos.RightTboxNumspan(this.Ptr, s.Ptr);
 
         public bool Right(TNumber temp)
+            => Meos.RightTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Right(BigIntSpan s)
+            => Meos.RightTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Right(FloatSpan s)
+            => Meos.RightTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Right(IntSpan s)
+            => Meos.RightTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Right(TBigint temp)
+            => Meos.RightTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Right(TFloat temp)
+            => Meos.RightTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Right(TInt temp)
             => Meos.RightTboxTnumber(this.Ptr, temp.Ptr);
 
         public TBox? Round(int maxdd)
@@ -234,6 +414,24 @@ namespace MEOS.NET.Types
             => Meos.SameTboxTstzspan(this.Ptr, s.Ptr);
 
         public bool Same(TNumber temp)
+            => Meos.SameTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Same(BigIntSpan s)
+            => Meos.SameTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Same(FloatSpan s)
+            => Meos.SameTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Same(IntSpan s)
+            => Meos.SameTboxNumspan(this.Ptr, s.Ptr);
+
+        public bool Same(TBigint temp)
+            => Meos.SameTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Same(TFloat temp)
+            => Meos.SameTboxTnumber(this.Ptr, temp.Ptr);
+
+        public bool Same(TInt temp)
             => Meos.SameTboxTnumber(this.Ptr, temp.Ptr);
 
         public TBox? ScaleTime(Interval duration)

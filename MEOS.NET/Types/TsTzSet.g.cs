@@ -27,8 +27,14 @@ namespace MEOS.NET.Types
         public bool Before(DateTime t)
             => Meos.BeforeSetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
+        public bool Contained(TsTzSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(DateTime t)
             => Meos.ContainsSetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
+
+        public bool Contains(TsTzSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public Interval? Distance(DateTime t)
             => MEOSConvert.ToStruct<Interval>(Meos.DistanceSetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
@@ -42,8 +48,17 @@ namespace MEOS.NET.Types
         public Set? Intersection(DateTime t)
             => MEOSFactory.WrapSet(Meos.IntersectionSetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
 
+        public Set? Intersection(TsTzSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
+        public bool Left(TsTzSet s2)
+            => Meos.LeftSetSet(this.Ptr, s2.Ptr);
+
         public Set? Minus(DateTime t)
             => MEOSFactory.WrapSet(Meos.MinusSetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
+
+        public Set? Minus(TsTzSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
 
         public string Out()
             => Meos.TstzsetOut(this.Ptr);
@@ -54,6 +69,15 @@ namespace MEOS.NET.Types
         public bool Overbefore(DateTime t)
             => Meos.OverbeforeSetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
+        public bool Overlaps(TsTzSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
+
+        public bool Overleft(TsTzSet s2)
+            => Meos.OverleftSetSet(this.Ptr, s2.Ptr);
+
+        public bool Overright(TsTzSet s2)
+            => Meos.OverrightSetSet(this.Ptr, s2.Ptr);
+
         public bool Rafter(DateTime t)
             => Meos.AfterTimestamptzSet(MEOSConvert.ToTimestampTz(t), this.Ptr);
 
@@ -62,6 +86,9 @@ namespace MEOS.NET.Types
 
         public bool Rcontained(DateTime t)
             => Meos.ContainedTimestamptzSet(MEOSConvert.ToTimestampTz(t), this.Ptr);
+
+        public bool Right(TsTzSet s2)
+            => Meos.RightSetSet(this.Ptr, s2.Ptr);
 
         public Set? Rintersection(DateTime t)
             => MEOSFactory.WrapSet(Meos.IntersectionTimestamptzSet(MEOSConvert.ToTimestampTz(t), this.Ptr));
@@ -148,6 +175,9 @@ namespace MEOS.NET.Types
 
         public Set? Union(DateTime t)
             => MEOSFactory.WrapSet(Meos.UnionSetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
+
+        public Set? Union(TsTzSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public DateTime? ValueN(int n)
         {

@@ -111,6 +111,12 @@ namespace MEOS.NET.Types
         public double Distance(STBox box)
             => Meos.DistancePoseStbox(this.Ptr, box.Ptr);
 
+        public double Distance(Geography gs)
+            => Meos.DistancePoseGeo(this.Ptr, gs.Ptr);
+
+        public double Distance(Geometry gs)
+            => Meos.DistancePoseGeo(this.Ptr, gs.Ptr);
+
         public bool Eq(Pose pose2)
             => Meos.PoseEq(this.Ptr, pose2.Ptr);
 

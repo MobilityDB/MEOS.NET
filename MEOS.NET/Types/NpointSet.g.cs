@@ -18,8 +18,14 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Contained(NpointSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(Npoint np)
             => Meos.ContainsSetNpoint(this.Ptr, np.Ptr);
+
+        public bool Contains(NpointSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public double Distance(NpointSet s2)
             => Meos.DistanceNpointsetNpointset(this.Ptr, s2.Ptr);
@@ -30,11 +36,20 @@ namespace MEOS.NET.Types
         public Set? Intersection(Npoint np)
             => MEOSFactory.WrapSet(Meos.IntersectionSetNpoint(this.Ptr, np.Ptr));
 
+        public Set? Intersection(NpointSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
         public Set? Minus(Npoint np)
             => MEOSFactory.WrapSet(Meos.MinusSetNpoint(this.Ptr, np.Ptr));
 
+        public Set? Minus(NpointSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
+
         public new string Out(int maxdd)
             => Meos.NpointsetOut(this.Ptr, maxdd);
+
+        public bool Overlaps(NpointSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
         public Set? Routes()
             => MEOSFactory.WrapSet(Meos.NpointsetRoutes(this.Ptr));
@@ -44,6 +59,9 @@ namespace MEOS.NET.Types
 
         public Set? Union(Npoint np)
             => MEOSFactory.WrapSet(Meos.UnionSetNpoint(this.Ptr, np.Ptr));
+
+        public Set? Union(NpointSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public Npoint? ValueN(int n)
         {

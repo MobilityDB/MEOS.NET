@@ -67,6 +67,33 @@ namespace MEOS.NET.Tests
         }
 
         [TestMethod]
+        public void ContainsOnATemporalFloatTakesAFloatSpan()
+        {
+            // contains_tnumber_numspan, a member of TNumber whose SQL signatures
+            // pair a tfloat with a floatspan, instantiated onto TFloat.
+            FloatSpan inside = (FloatSpan)FloatSpan.In("[1.5, 2.5]")!;
+            FloatSpan outside = (FloatSpan)FloatSpan.In("[5.0, 6.0]")!;
+
+            Assert.IsTrue(Rising().Contains(inside));
+            Assert.IsFalse(Rising().Contains(outside));
+        }
+
+        [TestMethod]
+        public void TemporalEqualityOfTwoH3IndexesTakesAnH3Index()
+        {
+            // teq_th3index_th3index, which SQL does not declare: its other
+            // operand is the TH3Index its type token names.
+            TH3Index cells = (TH3Index)TH3Index.In(
+                "[831c02fffffffff@2001-01-01, 831c00fffffffff@2001-01-02]")!;
+            TH3Index first = (TH3Index)TH3Index.In("831c02fffffffff@2001-01-01")!;
+
+            // The overload is TH3Index's own, not the inherited Teq(Temporal).
+            Assert.AreEqual(typeof(TH3Index),
+                typeof(TH3Index).GetMethod("Teq", new[] { typeof(TH3Index) })?.DeclaringType);
+            Assert.AreEqual("t@2001-01-01 00:00:00+00", cells.Teq(first)!.ToString());
+        }
+
+        [TestMethod]
         public void FromFloatBuildsTheBoxOfThatValue()
         {
             // float_to_tbox.

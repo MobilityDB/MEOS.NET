@@ -24,8 +24,14 @@ namespace MEOS.NET.Types
         public Set? Ceil()
             => MEOSFactory.WrapSet(Meos.FloatsetCeil(this.Ptr));
 
+        public bool Contained(FloatSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(double d)
             => Meos.ContainsSetFloat(this.Ptr, d);
+
+        public bool Contains(FloatSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public Set? Degrees(bool normalize)
             => MEOSFactory.WrapSet(Meos.FloatsetDegrees(this.Ptr, normalize));
@@ -45,20 +51,38 @@ namespace MEOS.NET.Types
         public Set? Intersection(double d)
             => MEOSFactory.WrapSet(Meos.IntersectionSetFloat(this.Ptr, d));
 
+        public Set? Intersection(FloatSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
         public bool Left(double d)
             => Meos.LeftSetFloat(this.Ptr, d);
+
+        public bool Left(FloatSet s2)
+            => Meos.LeftSetSet(this.Ptr, s2.Ptr);
 
         public Set? Minus(double d)
             => MEOSFactory.WrapSet(Meos.MinusSetFloat(this.Ptr, d));
 
+        public Set? Minus(FloatSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
+
         public string Out(int maxdd)
             => Meos.FloatsetOut(this.Ptr, maxdd);
+
+        public bool Overlaps(FloatSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
         public bool Overleft(double d)
             => Meos.OverleftSetFloat(this.Ptr, d);
 
+        public bool Overleft(FloatSet s2)
+            => Meos.OverleftSetSet(this.Ptr, s2.Ptr);
+
         public bool Overright(double d)
             => Meos.OverrightSetFloat(this.Ptr, d);
+
+        public bool Overright(FloatSet s2)
+            => Meos.OverrightSetSet(this.Ptr, s2.Ptr);
 
         public Set? Radians()
             => MEOSFactory.WrapSet(Meos.FloatsetRadians(this.Ptr));
@@ -68,6 +92,9 @@ namespace MEOS.NET.Types
 
         public bool Right(double d)
             => Meos.RightSetFloat(this.Ptr, d);
+
+        public bool Right(FloatSet s2)
+            => Meos.RightSetSet(this.Ptr, s2.Ptr);
 
         public Set? Rintersection(double d)
             => MEOSFactory.WrapSet(Meos.IntersectionFloatSet(d, this.Ptr));
@@ -101,6 +128,9 @@ namespace MEOS.NET.Types
 
         public Set? Union(double d)
             => MEOSFactory.WrapSet(Meos.UnionSetFloat(this.Ptr, d));
+
+        public Set? Union(FloatSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public double? ValueN(int n)
         {

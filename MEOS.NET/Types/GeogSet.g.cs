@@ -18,6 +18,42 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Contained(GeogSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
+        public bool Contains(GeogSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
+
+        public bool Contains(Geography gs)
+            => Meos.ContainsSetGeo(this.Ptr, gs.Ptr);
+
+        public double Distance(GeogSet s2, bool spheroid)
+            => Meos.DistanceGeosetGeoset(this.Ptr, s2.Ptr, spheroid);
+
+        public double Distance(Geography gs, bool spheroid)
+            => Meos.DistanceSetGeo(this.Ptr, gs.Ptr, spheroid);
+
+        public Set? Intersection(GeogSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
+        public Set? Intersection(Geography gs)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetGeo(this.Ptr, gs.Ptr));
+
+        public Set? Minus(GeogSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
+
+        public Set? Minus(Geography gs)
+            => MEOSFactory.WrapSet(Meos.MinusSetGeo(this.Ptr, gs.Ptr));
+
+        public bool Overlaps(GeogSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
+
+        public Set? Union(GeogSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
+
+        public Set? Union(Geography gs)
+            => MEOSFactory.WrapSet(Meos.UnionSetGeo(this.Ptr, gs.Ptr));
+
         public static Set? FromEWKB(byte[] wkb)
             => Set.FromWKB(wkb);
 

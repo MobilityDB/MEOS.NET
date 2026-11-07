@@ -21,23 +21,53 @@ namespace MEOS.NET.Types
         public Temporal? Add(int i)
             => MEOSFactory.WrapTemporal(Meos.AddTintInt(this.Ptr, i));
 
+        public Temporal? Add(TInt tnumber2)
+            => MEOSFactory.WrapTemporal(Meos.AddTnumberTnumber(this.Ptr, tnumber2.Ptr));
+
+        public bool Adjacent(IntSpan s)
+            => Meos.AdjacentTnumberNumspan(this.Ptr, s.Ptr);
+
+        public bool Adjacent(TInt temp2)
+            => Meos.AdjacentTnumberTnumber(this.Ptr, temp2.Ptr);
+
+        public bool After(TInt temp2)
+            => Meos.AfterTnumberTnumber(this.Ptr, temp2.Ptr);
+
         public int AlwaysEq(int i)
             => Meos.AlwaysEqTintInt(this.Ptr, i);
+
+        public int AlwaysEq(TInt temp2)
+            => Meos.AlwaysEqTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public int AlwaysGe(int i)
             => Meos.AlwaysGeTintInt(this.Ptr, i);
 
+        public int AlwaysGe(TInt temp2)
+            => Meos.AlwaysGeTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int AlwaysGt(int i)
             => Meos.AlwaysGtTintInt(this.Ptr, i);
+
+        public int AlwaysGt(TInt temp2)
+            => Meos.AlwaysGtTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public int AlwaysLe(int i)
             => Meos.AlwaysLeTintInt(this.Ptr, i);
 
+        public int AlwaysLe(TInt temp2)
+            => Meos.AlwaysLeTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int AlwaysLt(int i)
             => Meos.AlwaysLtTintInt(this.Ptr, i);
 
+        public int AlwaysLt(TInt temp2)
+            => Meos.AlwaysLtTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int AlwaysNe(int i)
             => Meos.AlwaysNeTintInt(this.Ptr, i);
+
+        public int AlwaysNe(TInt temp2)
+            => Meos.AlwaysNeTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public string AsText()
             => this.Out();
@@ -45,8 +75,26 @@ namespace MEOS.NET.Types
         public Temporal? AtValue(int i)
             => MEOSFactory.WrapTemporal(Meos.TintAtValue(this.Ptr, i));
 
+        public bool Before(TInt temp2)
+            => Meos.BeforeTnumberTnumber(this.Ptr, temp2.Ptr);
+
+        public bool Contained(IntSpan s)
+            => Meos.ContainedTnumberNumspan(this.Ptr, s.Ptr);
+
+        public bool Contained(TInt temp2)
+            => Meos.ContainedTnumberTnumber(this.Ptr, temp2.Ptr);
+
+        public bool Contains(IntSpan s)
+            => Meos.ContainsTnumberNumspan(this.Ptr, s.Ptr);
+
+        public bool Contains(TInt temp2)
+            => Meos.ContainsTnumberTnumber(this.Ptr, temp2.Ptr);
+
         public Temporal? Div(int i)
             => MEOSFactory.WrapTemporal(Meos.DivTintInt(this.Ptr, i));
+
+        public Temporal? Div(TInt tnumber2)
+            => MEOSFactory.WrapTemporal(Meos.DivTnumberTnumber(this.Ptr, tnumber2.Ptr));
 
         public int EndValue()
             => Meos.TintEndValue(this.Ptr);
@@ -54,20 +102,44 @@ namespace MEOS.NET.Types
         public int EverEq(int i)
             => Meos.EverEqTintInt(this.Ptr, i);
 
+        public int EverEq(TInt temp2)
+            => Meos.EverEqTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int EverGe(int i)
             => Meos.EverGeTintInt(this.Ptr, i);
+
+        public int EverGe(TInt temp2)
+            => Meos.EverGeTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public int EverGt(int i)
             => Meos.EverGtTintInt(this.Ptr, i);
 
+        public int EverGt(TInt temp2)
+            => Meos.EverGtTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int EverLe(int i)
             => Meos.EverLeTintInt(this.Ptr, i);
+
+        public int EverLe(TInt temp2)
+            => Meos.EverLeTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public int EverLt(int i)
             => Meos.EverLtTintInt(this.Ptr, i);
 
+        public int EverLt(TInt temp2)
+            => Meos.EverLtTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int EverNe(int i)
             => Meos.EverNeTintInt(this.Ptr, i);
+
+        public int EverNe(TInt temp2)
+            => Meos.EverNeTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool Left(IntSpan s)
+            => Meos.LeftTnumberNumspan(this.Ptr, s.Ptr);
+
+        public bool Left(TInt temp2)
+            => Meos.LeftTnumberTnumber(this.Ptr, temp2.Ptr);
 
         public int MaxValue()
             => Meos.TintMaxValue(this.Ptr);
@@ -80,6 +152,9 @@ namespace MEOS.NET.Types
 
         public Temporal? Mul(int i)
             => MEOSFactory.WrapTemporal(Meos.MulTintInt(this.Ptr, i));
+
+        public Temporal? Mul(TInt tnumber2)
+            => MEOSFactory.WrapTemporal(Meos.MulTnumberTnumber(this.Ptr, tnumber2.Ptr));
 
         public int Nad(int i)
             => Meos.NadTintInt(this.Ptr, i);
@@ -95,6 +170,30 @@ namespace MEOS.NET.Types
 
         public string Out()
             => Meos.TintOut(this.Ptr);
+
+        public bool Overafter(TInt temp2)
+            => Meos.OverafterTnumberTnumber(this.Ptr, temp2.Ptr);
+
+        public bool Overbefore(TInt temp2)
+            => Meos.OverbeforeTnumberTnumber(this.Ptr, temp2.Ptr);
+
+        public bool Overlaps(IntSpan s)
+            => Meos.OverlapsTnumberNumspan(this.Ptr, s.Ptr);
+
+        public bool Overlaps(TInt temp2)
+            => Meos.OverlapsTnumberTnumber(this.Ptr, temp2.Ptr);
+
+        public bool Overleft(IntSpan s)
+            => Meos.OverleftTnumberNumspan(this.Ptr, s.Ptr);
+
+        public bool Overleft(TInt temp2)
+            => Meos.OverleftTnumberTnumber(this.Ptr, temp2.Ptr);
+
+        public bool Overright(IntSpan s)
+            => Meos.OverrightTnumberNumspan(this.Ptr, s.Ptr);
+
+        public bool Overright(TInt temp2)
+            => Meos.OverrightTnumberTnumber(this.Ptr, temp2.Ptr);
 
         public Temporal? Radd(int i)
             => MEOSFactory.WrapTemporal(Meos.AddIntTint(i, this.Ptr));
@@ -138,6 +237,12 @@ namespace MEOS.NET.Types
         public int ReverNe(int i)
             => Meos.EverNeIntTint(i, this.Ptr);
 
+        public bool Right(IntSpan s)
+            => Meos.RightTnumberNumspan(this.Ptr, s.Ptr);
+
+        public bool Right(TInt temp2)
+            => Meos.RightTnumberTnumber(this.Ptr, temp2.Ptr);
+
         public Temporal? Rmul(int i)
             => MEOSFactory.WrapTemporal(Meos.MulIntTint(i, this.Ptr));
 
@@ -162,6 +267,12 @@ namespace MEOS.NET.Types
         public Temporal? Rtne(int i)
             => MEOSFactory.WrapTemporal(Meos.TneIntTint(i, this.Ptr));
 
+        public bool Same(IntSpan s)
+            => Meos.SameTnumberNumspan(this.Ptr, s.Ptr);
+
+        public bool Same(TInt temp2)
+            => Meos.SameTnumberTnumber(this.Ptr, temp2.Ptr);
+
         public Temporal? ScaleValue(int width)
             => MEOSFactory.WrapTemporal(Meos.TintScaleValue(this.Ptr, width));
 
@@ -177,17 +288,32 @@ namespace MEOS.NET.Types
         public Temporal? Sub(int i)
             => MEOSFactory.WrapTemporal(Meos.SubTintInt(this.Ptr, i));
 
+        public Temporal? Sub(TInt tnumber2)
+            => MEOSFactory.WrapTemporal(Meos.SubTnumberTnumber(this.Ptr, tnumber2.Ptr));
+
         public Temporal? Tdistance(int i)
             => MEOSFactory.WrapTemporal(Meos.TdistanceTintInt(this.Ptr, i));
+
+        public Temporal? Tdistance(TInt temp2)
+            => MEOSFactory.WrapTemporal(Meos.TdistanceTnumberTnumber(this.Ptr, temp2.Ptr));
 
         public Temporal? Teq(int i)
             => MEOSFactory.WrapTemporal(Meos.TeqTintInt(this.Ptr, i));
 
+        public Temporal? Teq(TInt temp2)
+            => MEOSFactory.WrapTemporal(Meos.TeqTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public Temporal? Tge(int i)
             => MEOSFactory.WrapTemporal(Meos.TgeTintInt(this.Ptr, i));
 
+        public Temporal? Tge(TInt temp2)
+            => MEOSFactory.WrapTemporal(Meos.TgeTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public Temporal? Tgt(int i)
             => MEOSFactory.WrapTemporal(Meos.TgtTintInt(this.Ptr, i));
+
+        public Temporal? Tgt(TInt temp2)
+            => MEOSFactory.WrapTemporal(Meos.TgtTemporalTemporal(this.Ptr, temp2.Ptr));
 
         public TBox?[] TimeBoxes(Interval duration, DateTime torigin, bool border_inc)
         {
@@ -206,11 +332,20 @@ namespace MEOS.NET.Types
         public Temporal? Tle(int i)
             => MEOSFactory.WrapTemporal(Meos.TleTintInt(this.Ptr, i));
 
+        public Temporal? Tle(TInt temp2)
+            => MEOSFactory.WrapTemporal(Meos.TleTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public Temporal? Tlt(int i)
             => MEOSFactory.WrapTemporal(Meos.TltTintInt(this.Ptr, i));
 
+        public Temporal? Tlt(TInt temp2)
+            => MEOSFactory.WrapTemporal(Meos.TltTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public Temporal? Tne(int i)
             => MEOSFactory.WrapTemporal(Meos.TneTintInt(this.Ptr, i));
+
+        public Temporal? Tne(TInt temp2)
+            => MEOSFactory.WrapTemporal(Meos.TneTemporalTemporal(this.Ptr, temp2.Ptr));
 
         public Temporal? ToTbigint()
             => MEOSFactory.WrapTemporal(Meos.TintToTbigint(this.Ptr));

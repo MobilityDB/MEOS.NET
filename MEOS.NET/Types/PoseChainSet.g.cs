@@ -18,8 +18,14 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Contained(PoseChainSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(PoseChain pc)
             => Meos.ContainsSetPosechain(this.Ptr, pc.Ptr);
+
+        public bool Contains(PoseChainSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public double Distance(PoseChainSet s2)
             => Meos.DistancePosechainsetPosechainset(this.Ptr, s2.Ptr);
@@ -30,17 +36,29 @@ namespace MEOS.NET.Types
         public Set? Intersection(PoseChain pc)
             => MEOSFactory.WrapSet(Meos.IntersectionSetPosechain(this.Ptr, pc.Ptr));
 
+        public Set? Intersection(PoseChainSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
         public Set? Minus(PoseChain pc)
             => MEOSFactory.WrapSet(Meos.MinusSetPosechain(this.Ptr, pc.Ptr));
 
+        public Set? Minus(PoseChainSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
+
         public new string Out(int maxdd)
             => Meos.PosechainsetOut(this.Ptr, maxdd);
+
+        public bool Overlaps(PoseChainSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
         public PoseChain? StartValue()
             => MEOSFactory.WrapPoseChain(Meos.PosechainsetStartValue(this.Ptr));
 
         public Set? Union(PoseChain pc)
             => MEOSFactory.WrapSet(Meos.UnionSetPosechain(this.Ptr, pc.Ptr));
+
+        public Set? Union(PoseChainSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public PoseChain? ValueN(int n)
         {

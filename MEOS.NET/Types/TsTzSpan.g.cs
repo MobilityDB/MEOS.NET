@@ -27,6 +27,72 @@ namespace MEOS.NET.Types
         public bool Adjacent(Temporal temp)
             => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
 
+        public bool Adjacent(TsTzSpan s2)
+            => Meos.AdjacentSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Adjacent(TsTzSpanSet ss)
+            => Meos.AdjacentSpanSpanset(this.Ptr, ss.Ptr);
+
+        public bool Adjacent(TBigint temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TBool temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TCbuffer temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TFloat temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TGeogPoint temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TGeography temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TGeomPoint temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TGeometry temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TH3Index temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TInt temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TJsonb temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TNpoint temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TPcpatch temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TPcpoint temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TPose temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TPoseChain temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TQuadbin temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TRGeometry temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TS2Cell temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TText temp)
+            => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
+
         public bool After(DateTime t)
             => Meos.AfterSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
@@ -34,6 +100,66 @@ namespace MEOS.NET.Types
             => Meos.AfterTstzspanTbox(this.Ptr, box.Ptr);
 
         public bool After(Temporal temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TBigint temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TBool temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TCbuffer temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TFloat temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TGeogPoint temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TGeography temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TGeomPoint temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TGeometry temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TH3Index temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TInt temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TJsonb temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TNpoint temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TPcpatch temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TPcpoint temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TPose temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TPoseChain temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TQuadbin temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TRGeometry temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TS2Cell temp)
+            => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool After(TText temp)
             => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public string AsText()
@@ -46,6 +172,66 @@ namespace MEOS.NET.Types
             => Meos.BeforeTstzspanTbox(this.Ptr, box.Ptr);
 
         public bool Before(Temporal temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TBigint temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TBool temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TCbuffer temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TFloat temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TGeogPoint temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TGeography temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TGeomPoint temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TGeometry temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TH3Index temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TInt temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TJsonb temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TNpoint temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TPcpatch temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TPcpoint temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TPose temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TPoseChain temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TQuadbin temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TRGeometry temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TS2Cell temp)
+            => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Before(TText temp)
             => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public Span?[] Bins(Interval duration, DateTime torigin, bool border_inc)
@@ -68,6 +254,72 @@ namespace MEOS.NET.Types
         public bool Contained(Temporal temp)
             => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
 
+        public bool Contained(TsTzSpan s2)
+            => Meos.ContainedSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Contained(TsTzSpanSet ss)
+            => Meos.ContainedSpanSpanset(this.Ptr, ss.Ptr);
+
+        public bool Contained(TBigint temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TBool temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TCbuffer temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TFloat temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TGeogPoint temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TGeography temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TGeomPoint temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TGeometry temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TH3Index temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TInt temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TJsonb temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TNpoint temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TPcpatch temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TPcpoint temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TPose temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TPoseChain temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TQuadbin temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TRGeometry temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TS2Cell temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contained(TText temp)
+            => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
+
         public bool Contains(DateTime t)
             => Meos.ContainsSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
@@ -75,6 +327,72 @@ namespace MEOS.NET.Types
             => Meos.ContainsTstzspanTbox(this.Ptr, box.Ptr);
 
         public bool Contains(Temporal temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TsTzSpan s2)
+            => Meos.ContainsSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Contains(TsTzSpanSet ss)
+            => Meos.ContainsSpanSpanset(this.Ptr, ss.Ptr);
+
+        public bool Contains(TBigint temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TBool temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TCbuffer temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TFloat temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TGeogPoint temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TGeography temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TGeomPoint temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TGeometry temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TH3Index temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TInt temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TJsonb temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TNpoint temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TPcpatch temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TPcpoint temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TPose temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TPoseChain temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TQuadbin temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TRGeometry temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TS2Cell temp)
+            => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Contains(TText temp)
             => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public Interval? Distance(DateTime t)
@@ -103,11 +421,29 @@ namespace MEOS.NET.Types
         public Span? Intersection(DateTime t)
             => MEOSFactory.WrapSpan(Meos.IntersectionSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
 
+        public Span? Intersection(TsTzSpan s2)
+            => MEOSFactory.WrapSpan(Meos.IntersectionSpanSpan(this.Ptr, s2.Ptr));
+
+        public SpanSet? Intersection(TsTzSpanSet ss)
+            => MEOSFactory.WrapSpanSet(Meos.IntersectionSpanSpanset(this.Ptr, ss.Ptr));
+
+        public bool Left(TsTzSpan s2)
+            => Meos.LeftSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Left(TsTzSpanSet ss)
+            => Meos.LeftSpanSpanset(this.Ptr, ss.Ptr);
+
         public DateTime Lower()
             => MEOSConvert.ToDateTime(Meos.TstzspanLower(this.Ptr));
 
         public SpanSet? Minus(DateTime t)
             => MEOSFactory.WrapSpanSet(Meos.MinusSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
+
+        public SpanSet? Minus(TsTzSpan s2)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpanSpan(this.Ptr, s2.Ptr));
+
+        public SpanSet? Minus(TsTzSpanSet ss)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpanSpanset(this.Ptr, ss.Ptr));
 
         public TBox? Numspan(TsTzSpan p)
             => MEOSFactory.WrapTBox(Meos.NumspanTstzspanToTbox(this.Ptr, p.Ptr));
@@ -124,6 +460,66 @@ namespace MEOS.NET.Types
         public bool Overafter(Temporal temp)
             => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
 
+        public bool Overafter(TBigint temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TBool temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TCbuffer temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TFloat temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TGeogPoint temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TGeography temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TGeomPoint temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TGeometry temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TH3Index temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TInt temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TJsonb temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TNpoint temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TPcpatch temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TPcpoint temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TPose temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TPoseChain temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TQuadbin temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TRGeometry temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TS2Cell temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TText temp)
+            => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
+
         public bool Overbefore(DateTime t)
             => Meos.OverbeforeSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
@@ -133,11 +529,149 @@ namespace MEOS.NET.Types
         public bool Overbefore(Temporal temp)
             => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
+        public bool Overbefore(TBigint temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TBool temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TCbuffer temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TFloat temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TGeogPoint temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TGeography temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TGeomPoint temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TGeometry temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TH3Index temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TInt temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TJsonb temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TNpoint temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TPcpatch temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TPcpoint temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TPose temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TPoseChain temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TQuadbin temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TRGeometry temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TS2Cell temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TText temp)
+            => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
+
         public bool Overlaps(TBox box)
             => Meos.OverlapsTstzspanTbox(this.Ptr, box.Ptr);
 
         public bool Overlaps(Temporal temp)
             => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TsTzSpan s2)
+            => Meos.OverlapsSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Overlaps(TsTzSpanSet ss)
+            => Meos.OverlapsSpanSpanset(this.Ptr, ss.Ptr);
+
+        public bool Overlaps(TBigint temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TBool temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TCbuffer temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TFloat temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TGeogPoint temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TGeography temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TGeomPoint temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TGeometry temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TH3Index temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TInt temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TJsonb temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TNpoint temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TPcpatch temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TPcpoint temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TPose temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TPoseChain temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TQuadbin temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TRGeometry temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TS2Cell temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TText temp)
+            => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Overleft(TsTzSpan s2)
+            => Meos.OverleftSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Overleft(TsTzSpanSet ss)
+            => Meos.OverleftSpanSpanset(this.Ptr, ss.Ptr);
+
+        public bool Overright(TsTzSpan s2)
+            => Meos.OverrightSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Overright(TsTzSpanSet ss)
+            => Meos.OverrightSpanSpanset(this.Ptr, ss.Ptr);
 
         public bool Radjacent(DateTime t)
             => Meos.AdjacentTimestamptzSpan(MEOSConvert.ToTimestampTz(t), this.Ptr);
@@ -150,6 +684,12 @@ namespace MEOS.NET.Types
 
         public bool Rcontained(DateTime t)
             => Meos.ContainedTimestamptzSpan(MEOSConvert.ToTimestampTz(t), this.Ptr);
+
+        public bool Right(TsTzSpan s2)
+            => Meos.RightSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Right(TsTzSpanSet ss)
+            => Meos.RightSpanSpanset(this.Ptr, ss.Ptr);
 
         public Span? Rintersection(DateTime t)
             => MEOSFactory.WrapSpan(Meos.IntersectionTimestamptzSpan(MEOSConvert.ToTimestampTz(t), this.Ptr));
@@ -170,6 +710,66 @@ namespace MEOS.NET.Types
             => Meos.SameTstzspanTbox(this.Ptr, box.Ptr);
 
         public bool Same(Temporal temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TBigint temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TBool temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TCbuffer temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TFloat temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TGeogPoint temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TGeography temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TGeomPoint temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TGeometry temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TH3Index temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TInt temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TJsonb temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TNpoint temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TPcpatch temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TPcpoint temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TPose temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TPoseChain temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TQuadbin temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TRGeometry temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TS2Cell temp)
+            => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public bool Same(TText temp)
             => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public Span? Scale(Interval duration)
@@ -239,6 +839,12 @@ namespace MEOS.NET.Types
 
         public SpanSet? Union(DateTime t)
             => MEOSFactory.WrapSpanSet(Meos.UnionSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t)));
+
+        public SpanSet? Union(TsTzSpan s2)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpanSpan(this.Ptr, s2.Ptr));
+
+        public SpanSet? Union(TsTzSpanSet ss)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpanSpanset(this.Ptr, ss.Ptr));
 
         public DateTime Upper()
             => MEOSConvert.ToDateTime(Meos.TstzspanUpper(this.Ptr));

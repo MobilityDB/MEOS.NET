@@ -18,6 +18,15 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public bool Above(TS2Cell temp2)
+            => Meos.AboveTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Adjacent(TS2Cell temp2)
+            => Meos.AdjacentTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool After(TS2Cell temp2)
+            => Meos.AfterTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public int AlwaysEq(ulong cell)
             => Meos.AlwaysEqTs2cellS2cell(this.Ptr, cell);
 
@@ -33,8 +42,20 @@ namespace MEOS.NET.Types
         public Temporal? AtValue(ulong cell)
             => MEOSFactory.WrapTemporal(Meos.Ts2cellAtValue(this.Ptr, cell));
 
+        public bool Before(TS2Cell temp2)
+            => Meos.BeforeTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Below(TS2Cell temp2)
+            => Meos.BelowTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public Temporal? CellToToken()
             => MEOSFactory.WrapTemporal(Meos.Ts2cellCellToToken(this.Ptr));
+
+        public bool Contained(TS2Cell temp2)
+            => Meos.ContainedTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Contains(TS2Cell temp2)
+            => Meos.ContainsTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public ulong EndValue()
             => Meos.Ts2cellEndValue(this.Ptr);
@@ -57,11 +78,35 @@ namespace MEOS.NET.Types
         public Temporal? GridDistance(Temporal dest)
             => MEOSFactory.WrapTemporal(Meos.Ts2cellGridDistance(this.Ptr, dest.Ptr));
 
+        public bool Left(TS2Cell temp2)
+            => Meos.LeftTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public Temporal? MinusValue(ulong cell)
             => MEOSFactory.WrapTemporal(Meos.Ts2cellMinusValue(this.Ptr, cell));
 
         public string Out()
             => Meos.Ts2cellOut(this.Ptr);
+
+        public bool Overabove(TS2Cell temp2)
+            => Meos.OveraboveTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overafter(TS2Cell temp2)
+            => Meos.OverafterTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overbefore(TS2Cell temp2)
+            => Meos.OverbeforeTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overbelow(TS2Cell temp2)
+            => Meos.OverbelowTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overlaps(TS2Cell temp2)
+            => Meos.OverlapsTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overleft(TS2Cell temp2)
+            => Meos.OverleftTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overright(TS2Cell temp2)
+            => Meos.OverrightTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public int RalwaysEq(ulong cell)
             => Meos.AlwaysEqS2cellTs2cell(cell, this.Ptr);
@@ -75,11 +120,17 @@ namespace MEOS.NET.Types
         public int ReverNe(ulong cell)
             => Meos.EverNeS2cellTs2cell(cell, this.Ptr);
 
+        public bool Right(TS2Cell temp2)
+            => Meos.RightTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public Temporal? Rteq(ulong cell)
             => MEOSFactory.WrapTemporal(Meos.TeqS2cellTs2cell(cell, this.Ptr));
 
         public Temporal? Rtne(ulong cell)
             => MEOSFactory.WrapTemporal(Meos.TneS2cellTs2cell(cell, this.Ptr));
+
+        public bool Same(TS2Cell temp2)
+            => Meos.SameTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public ulong StartValue()
             => Meos.Ts2cellStartValue(this.Ptr);
@@ -87,8 +138,14 @@ namespace MEOS.NET.Types
         public Temporal? Teq(ulong cell)
             => MEOSFactory.WrapTemporal(Meos.TeqTs2cellS2cell(this.Ptr, cell));
 
+        public Temporal? Teq(TS2Cell temp2)
+            => MEOSFactory.WrapTemporal(Meos.TeqTs2cellTs2cell(this.Ptr, temp2.Ptr));
+
         public Temporal? Tne(ulong cell)
             => MEOSFactory.WrapTemporal(Meos.TneTs2cellS2cell(this.Ptr, cell));
+
+        public Temporal? Tne(TS2Cell temp2)
+            => MEOSFactory.WrapTemporal(Meos.TneTs2cellTs2cell(this.Ptr, temp2.Ptr));
 
         public Temporal? ToTbigint()
             => MEOSFactory.WrapTemporal(Meos.Ts2cellToTbigint(this.Ptr));

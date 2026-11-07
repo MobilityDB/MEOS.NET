@@ -18,8 +18,14 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Contained(CbufferSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(Cbuffer cb)
             => Meos.ContainsSetCbuffer(this.Ptr, cb.Ptr);
+
+        public bool Contains(CbufferSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public double Distance(CbufferSet s2)
             => Meos.DistanceCbuffersetCbufferset(this.Ptr, s2.Ptr);
@@ -30,17 +36,29 @@ namespace MEOS.NET.Types
         public Set? Intersection(Cbuffer cb)
             => MEOSFactory.WrapSet(Meos.IntersectionSetCbuffer(this.Ptr, cb.Ptr));
 
+        public Set? Intersection(CbufferSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
         public Set? Minus(Cbuffer cb)
             => MEOSFactory.WrapSet(Meos.MinusSetCbuffer(this.Ptr, cb.Ptr));
 
+        public Set? Minus(CbufferSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
+
         public new string Out(int maxdd)
             => Meos.CbuffersetOut(this.Ptr, maxdd);
+
+        public bool Overlaps(CbufferSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
         public Cbuffer? StartValue()
             => MEOSFactory.WrapCbuffer(Meos.CbuffersetStartValue(this.Ptr));
 
         public Set? Union(Cbuffer cb)
             => MEOSFactory.WrapSet(Meos.UnionSetCbuffer(this.Ptr, cb.Ptr));
+
+        public Set? Union(CbufferSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public Cbuffer? ValueN(int n)
         {

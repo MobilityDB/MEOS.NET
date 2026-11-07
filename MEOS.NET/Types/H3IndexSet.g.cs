@@ -18,8 +18,14 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public bool Contained(H3IndexSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(ulong cell)
             => Meos.ContainsSetH3index(this.Ptr, cell);
+
+        public bool Contains(H3IndexSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public Set? CoverCells(int resolution)
             => MEOSFactory.WrapSet(Meos.H3indexsetCoverCells(this.Ptr, resolution));
@@ -36,11 +42,20 @@ namespace MEOS.NET.Types
         public Set? Intersection(ulong cell)
             => MEOSFactory.WrapSet(Meos.IntersectionSetH3index(this.Ptr, cell));
 
+        public Set? Intersection(H3IndexSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
         public Set? Minus(ulong cell)
             => MEOSFactory.WrapSet(Meos.MinusSetH3index(this.Ptr, cell));
 
+        public Set? Minus(H3IndexSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
+
         public string Out()
             => Meos.H3indexsetOut(this.Ptr);
+
+        public bool Overlaps(H3IndexSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
         public bool Rcontained(ulong cell)
             => Meos.ContainedH3indexSet(cell, this.Ptr);
@@ -59,6 +74,9 @@ namespace MEOS.NET.Types
 
         public Set? Union(ulong cell)
             => MEOSFactory.WrapSet(Meos.UnionSetH3index(this.Ptr, cell));
+
+        public Set? Union(H3IndexSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public ulong[] Values()
             => Meos.H3indexsetValues(this.Ptr);

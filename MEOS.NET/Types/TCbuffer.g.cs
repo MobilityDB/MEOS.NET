@@ -18,6 +18,9 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Above(TCbuffer temp2)
+            => Meos.AboveTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public int Acontains(Cbuffer cb)
             => Meos.AcontainsTcbufferCbuffer(this.Ptr, cb.Ptr);
 
@@ -45,6 +48,9 @@ namespace MEOS.NET.Types
         public int Adisjoint(TCbuffer temp2)
             => Meos.AdisjointTcbufferTcbuffer(this.Ptr, temp2.Ptr);
 
+        public bool Adjacent(TCbuffer temp2)
+            => Meos.AdjacentTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public int Adwithin(Geometry gs, double dist)
             => Meos.AdwithinTcbufferGeo(this.Ptr, gs.Ptr, dist);
 
@@ -53,6 +59,9 @@ namespace MEOS.NET.Types
 
         public int Adwithin(TCbuffer temp2, double dist)
             => Meos.AdwithinTcbufferTcbuffer(this.Ptr, temp2.Ptr, dist);
+
+        public bool After(TCbuffer temp2)
+            => Meos.AfterTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public int Aintersects(Geometry gs)
             => Meos.AintersectsTcbufferGeo(this.Ptr, gs.Ptr);
@@ -92,6 +101,18 @@ namespace MEOS.NET.Types
 
         public int Atouches(TCbuffer temp2)
             => Meos.AtouchesTcbufferTcbuffer(this.Ptr, temp2.Ptr);
+
+        public bool Before(TCbuffer temp2)
+            => Meos.BeforeTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Below(TCbuffer temp2)
+            => Meos.BelowTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Contained(TCbuffer temp2)
+            => Meos.ContainedTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Contains(TCbuffer temp2)
+            => Meos.ContainsTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public Geo? ConvexHull()
             => MEOSFactory.WrapGeo(Meos.TcbufferConvexHull(this.Ptr));
@@ -168,10 +189,13 @@ namespace MEOS.NET.Types
         public Temporal? Expand(double dist)
             => MEOSFactory.WrapTemporal(Meos.TcbufferExpand(this.Ptr, dist));
 
+        public bool Left(TCbuffer temp2)
+            => Meos.LeftTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public Temporal? Make(Temporal tfloat)
             => MEOSFactory.WrapTemporal(Meos.TcbufferMake(this.Ptr, tfloat.Ptr));
 
-        public double Mindistance(Temporal temp2, double threshold)
+        public double Mindistance(TCbuffer temp2, double threshold)
             => Meos.MindistanceTcbufferTcbuffer(this.Ptr, temp2.Ptr, threshold);
 
         public Temporal? MinusCbuffer(Cbuffer cb)
@@ -204,17 +228,44 @@ namespace MEOS.NET.Types
         public Temporal? Nai(TCbuffer temp2)
             => MEOSFactory.WrapTemporal(Meos.NaiTcbufferTcbuffer(this.Ptr, temp2.Ptr));
 
+        public bool Overabove(TCbuffer temp2)
+            => Meos.OveraboveTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overafter(TCbuffer temp2)
+            => Meos.OverafterTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overbefore(TCbuffer temp2)
+            => Meos.OverbeforeTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overbelow(TCbuffer temp2)
+            => Meos.OverbelowTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overlaps(TCbuffer temp2)
+            => Meos.OverlapsTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overleft(TCbuffer temp2)
+            => Meos.OverleftTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overright(TCbuffer temp2)
+            => Meos.OverrightTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public Set? Points()
             => MEOSFactory.WrapSet(Meos.TcbufferPoints(this.Ptr));
 
         public Set? Radius()
             => MEOSFactory.WrapSet(Meos.TcbufferRadius(this.Ptr));
 
+        public bool Right(TCbuffer temp2)
+            => Meos.RightTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public Temporal? Rotate(double angle, double x0, double y0)
             => MEOSFactory.WrapTemporal(Meos.TcbufferRotate(this.Ptr, angle, x0, y0));
 
         public Temporal? RotateZ(double angle)
             => MEOSFactory.WrapTemporal(Meos.TcbufferRotateZ(this.Ptr, angle));
+
+        public bool Same(TCbuffer temp2)
+            => Meos.SameTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public Geo? Shortestline(Cbuffer cb)
             => MEOSFactory.WrapGeo(Meos.ShortestlineTcbufferCbuffer(this.Ptr, cb.Ptr));
@@ -276,6 +327,9 @@ namespace MEOS.NET.Types
         public Temporal? Teq(Cbuffer cb)
             => MEOSFactory.WrapTemporal(Meos.TeqTcbufferCbuffer(this.Ptr, cb.Ptr));
 
+        public Temporal? Teq(TCbuffer temp2)
+            => MEOSFactory.WrapTemporal(Meos.TeqTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public Temporal? Tintersects(Geometry gs)
             => MEOSFactory.WrapTemporal(Meos.TintersectsTcbufferGeo(this.Ptr, gs.Ptr));
 
@@ -287,6 +341,9 @@ namespace MEOS.NET.Types
 
         public Temporal? Tne(Cbuffer cb)
             => MEOSFactory.WrapTemporal(Meos.TneTcbufferCbuffer(this.Ptr, cb.Ptr));
+
+        public Temporal? Tne(TCbuffer temp2)
+            => MEOSFactory.WrapTemporal(Meos.TneTemporalTemporal(this.Ptr, temp2.Ptr));
 
         public Temporal? ToTfloat()
             => MEOSFactory.WrapTemporal(Meos.TcbufferToTfloat(this.Ptr));

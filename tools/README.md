@@ -81,7 +81,11 @@ built the same way, one overload of the method their `ooName` names:
 (`receiver: right`, `sub_float_tfloat` is `TFloat.Rsub`) is called on its
 second parameter, and the other operand is typed as the `otherClass` the
 model instantiates it to where that class is below the one its C type maps
-to. An overload C# could not tell from another one of the class, or one that
+to. Each pair of an operator's `instantiations` that narrows the other
+operand is a member of the pair's receiver class, calling the same C function:
+`contains_tnumber_numspan` is `TFloat.Contains(FloatSpan)` and
+`TInt.Contains(IntSpan)`. A pair a class's own operator already takes the
+arguments of is that operator. An overload C# could not tell from another one of the class, or one that
 would take the calls of an ancestor's member, is recorded in `GAP-LEDGER.md`
 rather than emitted.
 

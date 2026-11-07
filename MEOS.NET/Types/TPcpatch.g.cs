@@ -86,8 +86,14 @@ namespace MEOS.NET.Types
         public Temporal? Teq(Pcpatch pa)
             => MEOSFactory.WrapTemporal(Meos.TeqTpcpatchPcpatch(this.Ptr, pa.Ptr));
 
+        public Temporal? Teq(TPcpatch temp2)
+            => MEOSFactory.WrapTemporal(Meos.TeqTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public Temporal? Tne(Pcpatch pa)
             => MEOSFactory.WrapTemporal(Meos.TneTpcpatchPcpatch(this.Ptr, pa.Ptr));
+
+        public Temporal? Tne(TPcpatch temp2)
+            => MEOSFactory.WrapTemporal(Meos.TneTemporalTemporal(this.Ptr, temp2.Ptr));
 
         public Temporal? ToTgeometry()
             => MEOSFactory.WrapTemporal(Meos.TpcpatchToTgeometry(this.Ptr));

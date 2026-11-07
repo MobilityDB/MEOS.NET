@@ -24,16 +24,34 @@ namespace MEOS.NET.Types
         public bool Above(TSpatial temp)
             => Meos.AboveTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
+        public bool Above(TPcpatch temp)
+            => Meos.AboveTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Above(TPcpoint temp)
+            => Meos.AboveTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
         public bool Adjacent(TPCBox box2)
             => Meos.AdjacentTpcboxTpcbox(this.Ptr, box2.Ptr);
 
         public bool Adjacent(TSpatial temp)
             => Meos.AdjacentTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
+        public bool Adjacent(TPcpatch temp)
+            => Meos.AdjacentTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Adjacent(TPcpoint temp)
+            => Meos.AdjacentTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
         public bool After(TPCBox box2)
             => Meos.AfterTpcboxTpcbox(this.Ptr, box2.Ptr);
 
         public bool After(TSpatial temp)
+            => Meos.AfterTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool After(TPcpatch temp)
+            => Meos.AfterTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool After(TPcpoint temp)
             => Meos.AfterTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
         public byte[]? AsEWKB(byte variant)
@@ -93,16 +111,34 @@ namespace MEOS.NET.Types
         public bool Back(TSpatial temp)
             => Meos.BackTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
+        public bool Back(TPcpatch temp)
+            => Meos.BackTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Back(TPcpoint temp)
+            => Meos.BackTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
         public bool Before(TPCBox box2)
             => Meos.BeforeTpcboxTpcbox(this.Ptr, box2.Ptr);
 
         public bool Before(TSpatial temp)
             => Meos.BeforeTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
+        public bool Before(TPcpatch temp)
+            => Meos.BeforeTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Before(TPcpoint temp)
+            => Meos.BeforeTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
         public bool Below(TPCBox box2)
             => Meos.BelowTpcboxTpcbox(this.Ptr, box2.Ptr);
 
         public bool Below(TSpatial temp)
+            => Meos.BelowTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Below(TPcpatch temp)
+            => Meos.BelowTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Below(TPcpoint temp)
             => Meos.BelowTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
         public int Cmp(TPCBox box2)
@@ -114,10 +150,22 @@ namespace MEOS.NET.Types
         public bool Contained(TSpatial temp)
             => Meos.ContainedTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
+        public bool Contained(TPcpatch temp)
+            => Meos.ContainedTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Contained(TPcpoint temp)
+            => Meos.ContainedTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
         public bool Contains(TPCBox box2)
             => Meos.ContainsTpcboxTpcbox(this.Ptr, box2.Ptr);
 
         public bool Contains(TSpatial temp)
+            => Meos.ContainsTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Contains(TPcpatch temp)
+            => Meos.ContainsTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Contains(TPcpoint temp)
             => Meos.ContainsTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
         public TPCBox? Copy()
@@ -130,6 +178,12 @@ namespace MEOS.NET.Types
             => Meos.FrontTpcboxTpcbox(this.Ptr, box2.Ptr);
 
         public bool Front(TSpatial temp)
+            => Meos.FrontTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Front(TPcpatch temp)
+            => Meos.FrontTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Front(TPcpoint temp)
             => Meos.FrontTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
         public bool Ge(TPCBox box2)
@@ -162,6 +216,12 @@ namespace MEOS.NET.Types
         public bool Left(TSpatial temp)
             => Meos.LeftTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
+        public bool Left(TPcpatch temp)
+            => Meos.LeftTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Left(TPcpoint temp)
+            => Meos.LeftTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
         public bool Lt(TPCBox box2)
             => Meos.TpcboxLt(this.Ptr, box2.Ptr);
 
@@ -180,10 +240,22 @@ namespace MEOS.NET.Types
         public bool Overabove(TSpatial temp)
             => Meos.OveraboveTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
+        public bool Overabove(TPcpatch temp)
+            => Meos.OveraboveTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Overabove(TPcpoint temp)
+            => Meos.OveraboveTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
         public bool Overafter(TPCBox box2)
             => Meos.OverafterTpcboxTpcbox(this.Ptr, box2.Ptr);
 
         public bool Overafter(TSpatial temp)
+            => Meos.OverafterTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TPcpatch temp)
+            => Meos.OverafterTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Overafter(TPcpoint temp)
             => Meos.OverafterTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
         public bool Overback(TPCBox box2)
@@ -192,10 +264,22 @@ namespace MEOS.NET.Types
         public bool Overback(TSpatial temp)
             => Meos.OverbackTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
+        public bool Overback(TPcpatch temp)
+            => Meos.OverbackTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Overback(TPcpoint temp)
+            => Meos.OverbackTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
         public bool Overbefore(TPCBox box2)
             => Meos.OverbeforeTpcboxTpcbox(this.Ptr, box2.Ptr);
 
         public bool Overbefore(TSpatial temp)
+            => Meos.OverbeforeTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TPcpatch temp)
+            => Meos.OverbeforeTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Overbefore(TPcpoint temp)
             => Meos.OverbeforeTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
         public bool Overbelow(TPCBox box2)
@@ -204,10 +288,22 @@ namespace MEOS.NET.Types
         public bool Overbelow(TSpatial temp)
             => Meos.OverbelowTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
+        public bool Overbelow(TPcpatch temp)
+            => Meos.OverbelowTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Overbelow(TPcpoint temp)
+            => Meos.OverbelowTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
         public bool Overfront(TPCBox box2)
             => Meos.OverfrontTpcboxTpcbox(this.Ptr, box2.Ptr);
 
         public bool Overfront(TSpatial temp)
+            => Meos.OverfrontTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Overfront(TPcpatch temp)
+            => Meos.OverfrontTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Overfront(TPcpoint temp)
             => Meos.OverfrontTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
         public bool Overlaps(TPCBox box2)
@@ -216,16 +312,34 @@ namespace MEOS.NET.Types
         public bool Overlaps(TSpatial temp)
             => Meos.OverlapsTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
+        public bool Overlaps(TPcpatch temp)
+            => Meos.OverlapsTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Overlaps(TPcpoint temp)
+            => Meos.OverlapsTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
         public bool Overleft(TPCBox box2)
             => Meos.OverleftTpcboxTpcbox(this.Ptr, box2.Ptr);
 
         public bool Overleft(TSpatial temp)
             => Meos.OverleftTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
+        public bool Overleft(TPcpatch temp)
+            => Meos.OverleftTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Overleft(TPcpoint temp)
+            => Meos.OverleftTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
         public bool Overright(TPCBox box2)
             => Meos.OverrightTpcboxTpcbox(this.Ptr, box2.Ptr);
 
         public bool Overright(TSpatial temp)
+            => Meos.OverrightTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Overright(TPcpatch temp)
+            => Meos.OverrightTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Overright(TPcpoint temp)
             => Meos.OverrightTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
         public uint Pcid()
@@ -235,6 +349,12 @@ namespace MEOS.NET.Types
             => Meos.RightTpcboxTpcbox(this.Ptr, box2.Ptr);
 
         public bool Right(TSpatial temp)
+            => Meos.RightTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Right(TPcpatch temp)
+            => Meos.RightTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Right(TPcpoint temp)
             => Meos.RightTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
         public TPCBox? Round(int maxdd)
@@ -247,6 +367,12 @@ namespace MEOS.NET.Types
             => Meos.SameTpcboxTpcbox(this.Ptr, box2.Ptr);
 
         public bool Same(TSpatial temp)
+            => Meos.SameTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Same(TPcpatch temp)
+            => Meos.SameTpcboxTpointcloud(this.Ptr, temp.Ptr);
+
+        public bool Same(TPcpoint temp)
             => Meos.SameTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
         public TPCBox? SetSRID(int srid)
