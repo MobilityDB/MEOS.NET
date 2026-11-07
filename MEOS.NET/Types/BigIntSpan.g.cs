@@ -21,14 +21,32 @@ namespace MEOS.NET.Types
         public bool Adjacent(long i)
             => Meos.AdjacentSpanBigint(this.Ptr, i);
 
+        public bool Adjacent(BigIntSpan s2)
+            => Meos.AdjacentSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Adjacent(BigIntSpanSet ss)
+            => Meos.AdjacentSpanSpanset(this.Ptr, ss.Ptr);
+
         public string AsText()
             => this.Out();
 
         public Span?[] Bins(long vsize, long vorigin, bool border_inc)
             => MEOSFactory.WrapSpanArray(Meos.BigintspanBins(this.Ptr, vsize, vorigin, border_inc));
 
+        public bool Contained(BigIntSpan s2)
+            => Meos.ContainedSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Contained(BigIntSpanSet ss)
+            => Meos.ContainedSpanSpanset(this.Ptr, ss.Ptr);
+
         public bool Contains(long i)
             => Meos.ContainsSpanBigint(this.Ptr, i);
+
+        public bool Contains(BigIntSpan s2)
+            => Meos.ContainsSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Contains(BigIntSpanSet ss)
+            => Meos.ContainsSpanSpanset(this.Ptr, ss.Ptr);
 
         public long Distance(BigIntSpan s2)
             => Meos.DistanceBigintspanBigintspan(this.Ptr, s2.Ptr);
@@ -42,8 +60,20 @@ namespace MEOS.NET.Types
         public Span? Intersection(long i)
             => MEOSFactory.WrapSpan(Meos.IntersectionSpanBigint(this.Ptr, i));
 
+        public Span? Intersection(BigIntSpan s2)
+            => MEOSFactory.WrapSpan(Meos.IntersectionSpanSpan(this.Ptr, s2.Ptr));
+
+        public SpanSet? Intersection(BigIntSpanSet ss)
+            => MEOSFactory.WrapSpanSet(Meos.IntersectionSpanSpanset(this.Ptr, ss.Ptr));
+
         public bool Left(long i)
             => Meos.LeftSpanBigint(this.Ptr, i);
+
+        public bool Left(BigIntSpan s2)
+            => Meos.LeftSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Left(BigIntSpanSet ss)
+            => Meos.LeftSpanSpanset(this.Ptr, ss.Ptr);
 
         public long Lower()
             => Meos.BigintspanLower(this.Ptr);
@@ -51,17 +81,41 @@ namespace MEOS.NET.Types
         public SpanSet? Minus(long i)
             => MEOSFactory.WrapSpanSet(Meos.MinusSpanBigint(this.Ptr, i));
 
+        public SpanSet? Minus(BigIntSpan s2)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpanSpan(this.Ptr, s2.Ptr));
+
+        public SpanSet? Minus(BigIntSpanSet ss)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpanSpanset(this.Ptr, ss.Ptr));
+
         public long Nad(TBox box)
             => Meos.NadBigintspanTbox(this.Ptr, box.Ptr);
 
         public string Out()
             => Meos.BigintspanOut(this.Ptr);
 
+        public bool Overlaps(BigIntSpan s2)
+            => Meos.OverlapsSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Overlaps(BigIntSpanSet ss)
+            => Meos.OverlapsSpanSpanset(this.Ptr, ss.Ptr);
+
         public bool Overleft(long i)
             => Meos.OverleftSpanBigint(this.Ptr, i);
 
+        public bool Overleft(BigIntSpan s2)
+            => Meos.OverleftSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Overleft(BigIntSpanSet ss)
+            => Meos.OverleftSpanSpanset(this.Ptr, ss.Ptr);
+
         public bool Overright(long i)
             => Meos.OverrightSpanBigint(this.Ptr, i);
+
+        public bool Overright(BigIntSpan s2)
+            => Meos.OverrightSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Overright(BigIntSpanSet ss)
+            => Meos.OverrightSpanSpanset(this.Ptr, ss.Ptr);
 
         public bool Radjacent(long i)
             => Meos.AdjacentBigintSpan(i, this.Ptr);
@@ -71,6 +125,12 @@ namespace MEOS.NET.Types
 
         public bool Right(long i)
             => Meos.RightSpanBigint(this.Ptr, i);
+
+        public bool Right(BigIntSpan s2)
+            => Meos.RightSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Right(BigIntSpanSet ss)
+            => Meos.RightSpanSpanset(this.Ptr, ss.Ptr);
 
         public Span? Rintersection(long i)
             => MEOSFactory.WrapSpan(Meos.IntersectionBigintSpan(i, this.Ptr));
@@ -104,6 +164,12 @@ namespace MEOS.NET.Types
 
         public SpanSet? Union(long i)
             => MEOSFactory.WrapSpanSet(Meos.UnionSpanBigint(this.Ptr, i));
+
+        public SpanSet? Union(BigIntSpan s2)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpanSpan(this.Ptr, s2.Ptr));
+
+        public SpanSet? Union(BigIntSpanSet ss)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpanSpanset(this.Ptr, ss.Ptr));
 
         public long Upper()
             => Meos.BigintspanUpper(this.Ptr);

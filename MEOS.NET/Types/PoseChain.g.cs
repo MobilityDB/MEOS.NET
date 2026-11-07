@@ -99,6 +99,12 @@ namespace MEOS.NET.Types
         public double Distance(STBox box)
             => Meos.DistancePosechainStbox(this.Ptr, box.Ptr);
 
+        public double Distance(Geography gs)
+            => Meos.DistancePosechainGeo(this.Ptr, gs.Ptr);
+
+        public double Distance(Geometry gs)
+            => Meos.DistancePosechainGeo(this.Ptr, gs.Ptr);
+
         public Pose? EndPose()
             => MEOSFactory.WrapPose(Meos.PosechainEndPose(this.Ptr));
 

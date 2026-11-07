@@ -18,11 +18,23 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public bool Adjacent(TBool temp2)
+            => Meos.AdjacentTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool After(TBool temp2)
+            => Meos.AfterTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int AlwaysEq(bool b)
             => Meos.AlwaysEqTboolBool(this.Ptr, b);
 
+        public int AlwaysEq(TBool temp2)
+            => Meos.AlwaysEqTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int AlwaysNe(bool b)
             => Meos.AlwaysNeTboolBool(this.Ptr, b);
+
+        public int AlwaysNe(TBool temp2)
+            => Meos.AlwaysNeTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public string AsText()
             => this.Out();
@@ -30,20 +42,44 @@ namespace MEOS.NET.Types
         public Temporal? AtValue(bool b)
             => MEOSFactory.WrapTemporal(Meos.TboolAtValue(this.Ptr, b));
 
+        public bool Before(TBool temp2)
+            => Meos.BeforeTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool Contained(TBool temp2)
+            => Meos.ContainedTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool Contains(TBool temp2)
+            => Meos.ContainsTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public bool EndValue()
             => Meos.TboolEndValue(this.Ptr);
 
         public int EverEq(bool b)
             => Meos.EverEqTboolBool(this.Ptr, b);
 
+        public int EverEq(TBool temp2)
+            => Meos.EverEqTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int EverNe(bool b)
             => Meos.EverNeTboolBool(this.Ptr, b);
+
+        public int EverNe(TBool temp2)
+            => Meos.EverNeTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public Temporal? MinusValue(bool b)
             => MEOSFactory.WrapTemporal(Meos.TboolMinusValue(this.Ptr, b));
 
         public string Out()
             => Meos.TboolOut(this.Ptr);
+
+        public bool Overafter(TBool temp2)
+            => Meos.OverafterTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool Overbefore(TBool temp2)
+            => Meos.OverbeforeTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool Overlaps(TBool temp2)
+            => Meos.OverlapsTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public int RalwaysEq(bool b)
             => Meos.AlwaysEqBoolTbool(b, this.Ptr);
@@ -69,6 +105,9 @@ namespace MEOS.NET.Types
         public Temporal? Rtor(bool b)
             => MEOSFactory.WrapTemporal(Meos.TorBoolTbool(b, this.Ptr));
 
+        public bool Same(TBool temp2)
+            => Meos.SameTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public bool StartValue()
             => Meos.TboolStartValue(this.Ptr);
 
@@ -81,8 +120,14 @@ namespace MEOS.NET.Types
         public Temporal? Teq(bool b)
             => MEOSFactory.WrapTemporal(Meos.TeqTboolBool(this.Ptr, b));
 
+        public Temporal? Teq(TBool temp2)
+            => MEOSFactory.WrapTemporal(Meos.TeqTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public Temporal? Tne(bool b)
             => MEOSFactory.WrapTemporal(Meos.TneTboolBool(this.Ptr, b));
+
+        public Temporal? Tne(TBool temp2)
+            => MEOSFactory.WrapTemporal(Meos.TneTemporalTemporal(this.Ptr, temp2.Ptr));
 
         public Temporal? Tnot()
             => MEOSFactory.WrapTemporal(Meos.TnotTbool(this.Ptr));

@@ -18,6 +18,15 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public bool Above(TH3Index temp2)
+            => Meos.AboveTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Adjacent(TH3Index temp2)
+            => Meos.AdjacentTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool After(TH3Index temp2)
+            => Meos.AfterTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public int AlwaysEq(ulong cell)
             => Meos.AlwaysEqTh3indexH3index(this.Ptr, cell);
 
@@ -35,6 +44,12 @@ namespace MEOS.NET.Types
 
         public Temporal? AtValue(ulong cell)
             => MEOSFactory.WrapTemporal(Meos.Th3indexAtValue(this.Ptr, cell));
+
+        public bool Before(TH3Index temp2)
+            => Meos.BeforeTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Below(TH3Index temp2)
+            => Meos.BelowTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public Temporal? CellToCenterChild(int resolution)
             => MEOSFactory.WrapTemporal(Meos.Th3indexCellToCenterChild(this.Ptr, resolution));
@@ -59,6 +74,12 @@ namespace MEOS.NET.Types
 
         public Temporal? ChildPosToCell(Temporal parent, int child_res)
             => MEOSFactory.WrapTemporal(Meos.Th3indexChildPosToCell(this.Ptr, parent.Ptr, child_res));
+
+        public bool Contained(TH3Index temp2)
+            => Meos.ContainedTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Contains(TH3Index temp2)
+            => Meos.ContainsTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public Temporal? DirectedEdgeToBoundary()
             => MEOSFactory.WrapTemporal(Meos.Th3indexDirectedEdgeToBoundary(this.Ptr));
@@ -108,6 +129,9 @@ namespace MEOS.NET.Types
         public Temporal? IsValidVertex()
             => MEOSFactory.WrapTemporal(Meos.Th3indexIsValidVertex(this.Ptr));
 
+        public bool Left(TH3Index temp2)
+            => Meos.LeftTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public Temporal? LocalIjToCell(Temporal coord)
             => MEOSFactory.WrapTemporal(Meos.Th3indexLocalIjToCell(this.Ptr, coord.Ptr));
 
@@ -116,6 +140,27 @@ namespace MEOS.NET.Types
 
         public string Out()
             => Meos.Th3indexOut(this.Ptr);
+
+        public bool Overabove(TH3Index temp2)
+            => Meos.OveraboveTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overafter(TH3Index temp2)
+            => Meos.OverafterTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overbefore(TH3Index temp2)
+            => Meos.OverbeforeTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overbelow(TH3Index temp2)
+            => Meos.OverbelowTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overlaps(TH3Index temp2)
+            => Meos.OverlapsTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overleft(TH3Index temp2)
+            => Meos.OverleftTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overright(TH3Index temp2)
+            => Meos.OverrightTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public int RalwaysEq(ulong cell)
             => Meos.AlwaysEqH3indexTh3index(cell, this.Ptr);
@@ -129,11 +174,17 @@ namespace MEOS.NET.Types
         public int ReverNe(ulong cell)
             => Meos.EverNeH3indexTh3index(cell, this.Ptr);
 
+        public bool Right(TH3Index temp2)
+            => Meos.RightTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public Temporal? Rteq(ulong cell)
             => MEOSFactory.WrapTemporal(Meos.TeqH3indexTh3index(cell, this.Ptr));
 
         public Temporal? Rtne(ulong cell)
             => MEOSFactory.WrapTemporal(Meos.TneH3indexTh3index(cell, this.Ptr));
+
+        public bool Same(TH3Index temp2)
+            => Meos.SameTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public ulong StartValue()
             => Meos.Th3indexStartValue(this.Ptr);
@@ -141,8 +192,14 @@ namespace MEOS.NET.Types
         public Temporal? Teq(ulong cell)
             => MEOSFactory.WrapTemporal(Meos.TeqTh3indexH3index(this.Ptr, cell));
 
+        public Temporal? Teq(TH3Index temp2)
+            => MEOSFactory.WrapTemporal(Meos.TeqTh3indexTh3index(this.Ptr, temp2.Ptr));
+
         public Temporal? Tne(ulong cell)
             => MEOSFactory.WrapTemporal(Meos.TneTh3indexH3index(this.Ptr, cell));
+
+        public Temporal? Tne(TH3Index temp2)
+            => MEOSFactory.WrapTemporal(Meos.TneTh3indexTh3index(this.Ptr, temp2.Ptr));
 
         public Temporal? ToTbigint()
             => MEOSFactory.WrapTemporal(Meos.Th3indexToTbigint(this.Ptr));

@@ -18,23 +18,47 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public bool Adjacent(TText temp2)
+            => Meos.AdjacentTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool After(TText temp2)
+            => Meos.AfterTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int AlwaysEq(Text txt)
             => Meos.AlwaysEqTtextText(this.Ptr, txt.Ptr);
+
+        public int AlwaysEq(TText temp2)
+            => Meos.AlwaysEqTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public int AlwaysGe(Text txt)
             => Meos.AlwaysGeTtextText(this.Ptr, txt.Ptr);
 
+        public int AlwaysGe(TText temp2)
+            => Meos.AlwaysGeTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int AlwaysGt(Text txt)
             => Meos.AlwaysGtTtextText(this.Ptr, txt.Ptr);
+
+        public int AlwaysGt(TText temp2)
+            => Meos.AlwaysGtTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public int AlwaysLe(Text txt)
             => Meos.AlwaysLeTtextText(this.Ptr, txt.Ptr);
 
+        public int AlwaysLe(TText temp2)
+            => Meos.AlwaysLeTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int AlwaysLt(Text txt)
             => Meos.AlwaysLtTtextText(this.Ptr, txt.Ptr);
 
+        public int AlwaysLt(TText temp2)
+            => Meos.AlwaysLtTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int AlwaysNe(Text txt)
             => Meos.AlwaysNeTtextText(this.Ptr, txt.Ptr);
+
+        public int AlwaysNe(TText temp2)
+            => Meos.AlwaysNeTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public string AsText()
             => this.Out();
@@ -42,26 +66,53 @@ namespace MEOS.NET.Types
         public Temporal? AtValue(Text txt)
             => MEOSFactory.WrapTemporal(Meos.TtextAtValue(this.Ptr, txt.Ptr));
 
+        public bool Before(TText temp2)
+            => Meos.BeforeTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool Contained(TText temp2)
+            => Meos.ContainedTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool Contains(TText temp2)
+            => Meos.ContainsTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public Text? EndValue()
             => MEOSFactory.WrapText(Meos.TtextEndValue(this.Ptr));
 
         public int EverEq(Text txt)
             => Meos.EverEqTtextText(this.Ptr, txt.Ptr);
 
+        public int EverEq(TText temp2)
+            => Meos.EverEqTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int EverGe(Text txt)
             => Meos.EverGeTtextText(this.Ptr, txt.Ptr);
+
+        public int EverGe(TText temp2)
+            => Meos.EverGeTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public int EverGt(Text txt)
             => Meos.EverGtTtextText(this.Ptr, txt.Ptr);
 
+        public int EverGt(TText temp2)
+            => Meos.EverGtTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int EverLe(Text txt)
             => Meos.EverLeTtextText(this.Ptr, txt.Ptr);
+
+        public int EverLe(TText temp2)
+            => Meos.EverLeTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public int EverLt(Text txt)
             => Meos.EverLtTtextText(this.Ptr, txt.Ptr);
 
+        public int EverLt(TText temp2)
+            => Meos.EverLtTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int EverNe(Text txt)
             => Meos.EverNeTtextText(this.Ptr, txt.Ptr);
+
+        public int EverNe(TText temp2)
+            => Meos.EverNeTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public Temporal? Initcap()
             => MEOSFactory.WrapTemporal(Meos.TtextInitcap(this.Ptr));
@@ -81,11 +132,26 @@ namespace MEOS.NET.Types
         public string Out()
             => Meos.TtextOut(this.Ptr);
 
+        public bool Overafter(TText temp2)
+            => Meos.OverafterTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool Overbefore(TText temp2)
+            => Meos.OverbeforeTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool Overlaps(TText temp2)
+            => Meos.OverlapsTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool Same(TText temp2)
+            => Meos.SameTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public Text? StartValue()
             => MEOSFactory.WrapText(Meos.TtextStartValue(this.Ptr));
 
         public Temporal? Teq(Text txt)
             => MEOSFactory.WrapTemporal(Meos.TeqTtextText(this.Ptr, txt.Ptr));
+
+        public Temporal? Teq(TText temp2)
+            => MEOSFactory.WrapTemporal(Meos.TeqTemporalTemporal(this.Ptr, temp2.Ptr));
 
         public Temporal? Textcat(Text txt)
             => MEOSFactory.WrapTemporal(Meos.TextcatTtextText(this.Ptr, txt.Ptr));
@@ -96,17 +162,32 @@ namespace MEOS.NET.Types
         public Temporal? Tge(Text txt)
             => MEOSFactory.WrapTemporal(Meos.TgeTtextText(this.Ptr, txt.Ptr));
 
+        public Temporal? Tge(TText temp2)
+            => MEOSFactory.WrapTemporal(Meos.TgeTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public Temporal? Tgt(Text txt)
             => MEOSFactory.WrapTemporal(Meos.TgtTtextText(this.Ptr, txt.Ptr));
+
+        public Temporal? Tgt(TText temp2)
+            => MEOSFactory.WrapTemporal(Meos.TgtTemporalTemporal(this.Ptr, temp2.Ptr));
 
         public Temporal? Tle(Text txt)
             => MEOSFactory.WrapTemporal(Meos.TleTtextText(this.Ptr, txt.Ptr));
 
+        public Temporal? Tle(TText temp2)
+            => MEOSFactory.WrapTemporal(Meos.TleTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public Temporal? Tlt(Text txt)
             => MEOSFactory.WrapTemporal(Meos.TltTtextText(this.Ptr, txt.Ptr));
 
+        public Temporal? Tlt(TText temp2)
+            => MEOSFactory.WrapTemporal(Meos.TltTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public Temporal? Tne(Text txt)
             => MEOSFactory.WrapTemporal(Meos.TneTtextText(this.Ptr, txt.Ptr));
+
+        public Temporal? Tne(TText temp2)
+            => MEOSFactory.WrapTemporal(Meos.TneTemporalTemporal(this.Ptr, temp2.Ptr));
 
         public Temporal? ToTjsonb()
             => MEOSFactory.WrapTemporal(Meos.TtextToTjsonb(this.Ptr));

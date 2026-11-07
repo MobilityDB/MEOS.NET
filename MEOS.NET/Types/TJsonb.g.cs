@@ -18,6 +18,12 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
+        public bool Adjacent(TJsonb temp2)
+            => Meos.AdjacentTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool After(TJsonb temp2)
+            => Meos.AfterTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public int AlwaysEq(Jsonb jb)
             => Meos.AlwaysEqTjsonbJsonb(this.Ptr, jb.Ptr);
 
@@ -45,11 +51,17 @@ namespace MEOS.NET.Types
         public Temporal? AtValue(Jsonb jsb)
             => MEOSFactory.WrapTemporal(Meos.TjsonbAtValue(this.Ptr, jsb.Ptr));
 
+        public bool Before(TJsonb temp2)
+            => Meos.BeforeTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public Temporal? Concat(Jsonb jb, bool invert)
             => MEOSFactory.WrapTemporal(Meos.ConcatTjsonbJsonb(this.Ptr, jb.Ptr, invert));
 
         public Temporal? Concat(TJsonb temp2)
             => MEOSFactory.WrapTemporal(Meos.ConcatTjsonbTjsonb(this.Ptr, temp2.Ptr));
+
+        public bool Contained(TJsonb temp2)
+            => Meos.ContainedTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public Temporal? Contains(Jsonb jb, bool invert)
             => MEOSFactory.WrapTemporal(Meos.ContainsTjsonbJsonb(this.Ptr, jb.Ptr, invert));
@@ -245,6 +257,15 @@ namespace MEOS.NET.Types
         public string Out()
             => Meos.TjsonbOut(this.Ptr);
 
+        public bool Overafter(TJsonb temp2)
+            => Meos.OverafterTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool Overbefore(TJsonb temp2)
+            => Meos.OverbeforeTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public bool Overlaps(TJsonb temp2)
+            => Meos.OverlapsTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public Temporal? PathExists(JsonPath jp, Jsonb vars, bool silent, bool tz)
             => MEOSFactory.WrapTemporal(Meos.TjsonbPathExists(this.Ptr, jp.Ptr, vars.Ptr, silent, tz));
 
@@ -259,6 +280,9 @@ namespace MEOS.NET.Types
 
         public Temporal? Pretty()
             => MEOSFactory.WrapTemporal(Meos.TjsonbPretty(this.Ptr));
+
+        public bool Same(TJsonb temp2)
+            => Meos.SameTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public Temporal? Set(Text[] keys, Jsonb newjb, bool create)
         {
@@ -307,8 +331,14 @@ namespace MEOS.NET.Types
         public Temporal? Teq(Jsonb jb)
             => MEOSFactory.WrapTemporal(Meos.TeqTjsonbJsonb(this.Ptr, jb.Ptr));
 
+        public Temporal? Teq(TJsonb temp2)
+            => MEOSFactory.WrapTemporal(Meos.TeqTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public Temporal? Tne(Jsonb jb)
             => MEOSFactory.WrapTemporal(Meos.TneTjsonbJsonb(this.Ptr, jb.Ptr));
+
+        public Temporal? Tne(TJsonb temp2)
+            => MEOSFactory.WrapTemporal(Meos.TneTemporalTemporal(this.Ptr, temp2.Ptr));
 
         public Temporal? ToTbigint(string key, NullHandleType null_handle)
             => MEOSFactory.WrapTemporal(Meos.TjsonbToTbigint(this.Ptr, key, (int) null_handle));

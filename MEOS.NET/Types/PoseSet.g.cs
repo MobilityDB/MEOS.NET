@@ -18,8 +18,14 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Contained(PoseSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(Pose pose)
             => Meos.ContainsSetPose(this.Ptr, pose.Ptr);
+
+        public bool Contains(PoseSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public double Distance(PoseSet s2)
             => Meos.DistancePosesetPoseset(this.Ptr, s2.Ptr);
@@ -30,17 +36,29 @@ namespace MEOS.NET.Types
         public Set? Intersection(Pose pose)
             => MEOSFactory.WrapSet(Meos.IntersectionSetPose(this.Ptr, pose.Ptr));
 
+        public Set? Intersection(PoseSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
         public Set? Minus(Pose pose)
             => MEOSFactory.WrapSet(Meos.MinusSetPose(this.Ptr, pose.Ptr));
 
+        public Set? Minus(PoseSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
+
         public new string Out(int maxdd)
             => Meos.PosesetOut(this.Ptr, maxdd);
+
+        public bool Overlaps(PoseSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
         public Pose? StartValue()
             => MEOSFactory.WrapPose(Meos.PosesetStartValue(this.Ptr));
 
         public Set? Union(Pose pose)
             => MEOSFactory.WrapSet(Meos.UnionSetPose(this.Ptr, pose.Ptr));
+
+        public Set? Union(PoseSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public Pose? ValueN(int n)
         {

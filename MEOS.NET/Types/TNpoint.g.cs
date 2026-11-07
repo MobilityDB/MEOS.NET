@@ -18,6 +18,15 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Above(TNpoint temp2)
+            => Meos.AboveTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Adjacent(TNpoint temp2)
+            => Meos.AdjacentTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool After(TNpoint temp2)
+            => Meos.AfterTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public int AlwaysEq(Npoint np)
             => Meos.AlwaysEqTnpointNpoint(this.Ptr, np.Ptr);
 
@@ -42,11 +51,23 @@ namespace MEOS.NET.Types
         public Temporal? AtStbox(STBox box, bool border_inc)
             => MEOSFactory.WrapTemporal(Meos.TnpointAtStbox(this.Ptr, box.Ptr, border_inc));
 
+        public bool Before(TNpoint temp2)
+            => Meos.BeforeTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Below(TNpoint temp2)
+            => Meos.BelowTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Contained(TNpoint temp2)
+            => Meos.ContainedTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public bool ContainedRid(BigIntSet s)
             => Meos.ContainedRidTnpointBigintset(this.Ptr, s.Ptr);
 
         public bool ContainedRid(TNpoint temp2)
             => Meos.ContainedRidTnpointTnpoint(this.Ptr, temp2.Ptr);
+
+        public bool Contains(TNpoint temp2)
+            => Meos.ContainsTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public bool ContainsRid(long rid)
             => Meos.ContainsRidTnpointBigint(this.Ptr, rid);
@@ -63,6 +84,18 @@ namespace MEOS.NET.Types
         public Temporal? CumulativeLength()
             => MEOSFactory.WrapTemporal(Meos.TnpointCumulativeLength(this.Ptr));
 
+        public int Edwithin(Geometry gs, double dist, bool spheroid)
+            => Meos.EdwithinTgeoGeo(this.Ptr, gs.Ptr, dist, spheroid);
+
+        public int Edwithin(TNpoint temp2, double dist, bool spheroid)
+            => Meos.EdwithinTgeoTgeo(this.Ptr, temp2.Ptr, dist, spheroid);
+
+        public int Eintersects(Geometry gs)
+            => Meos.EintersectsTgeoGeo(this.Ptr, gs.Ptr);
+
+        public int Eintersects(TNpoint temp2)
+            => Meos.EintersectsTgeoTgeo(this.Ptr, temp2.Ptr);
+
         public Npoint? EndValue()
             => MEOSFactory.WrapNpoint(Meos.TnpointEndValue(this.Ptr));
 
@@ -77,6 +110,9 @@ namespace MEOS.NET.Types
 
         public int EverNe(TNpoint temp2)
             => Meos.EverNeTnpointTnpoint(this.Ptr, temp2.Ptr);
+
+        public bool Left(TNpoint temp2)
+            => Meos.LeftTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public double Length()
             => Meos.TnpointLength(this.Ptr);
@@ -117,17 +153,41 @@ namespace MEOS.NET.Types
         public new string Out(int maxdd)
             => Meos.TnpointOut(this.Ptr, maxdd);
 
+        public bool Overabove(TNpoint temp2)
+            => Meos.OveraboveTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overafter(TNpoint temp2)
+            => Meos.OverafterTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overbefore(TNpoint temp2)
+            => Meos.OverbeforeTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overbelow(TNpoint temp2)
+            => Meos.OverbelowTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overlaps(TNpoint temp2)
+            => Meos.OverlapsTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public bool OverlapsRid(BigIntSet s)
             => Meos.OverlapsRidTnpointBigintset(this.Ptr, s.Ptr);
 
         public bool OverlapsRid(TNpoint temp2)
             => Meos.OverlapsRidTnpointTnpoint(this.Ptr, temp2.Ptr);
 
+        public bool Overleft(TNpoint temp2)
+            => Meos.OverleftTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overright(TNpoint temp2)
+            => Meos.OverrightTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public Nsegment?[] Positions()
             => MEOSFactory.WrapNsegmentArray(Meos.TnpointPositions(this.Ptr));
 
         public bool RcontainedRid(long rid)
             => Meos.ContainedRidBigintTnpoint(rid, this.Ptr);
+
+        public bool Right(TNpoint temp2)
+            => Meos.RightTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public long Route()
             => Meos.TnpointRoute(this.Ptr);
@@ -137,6 +197,9 @@ namespace MEOS.NET.Types
 
         public bool RsameRid(long rid)
             => Meos.SameRidBigintTnpoint(rid, this.Ptr);
+
+        public bool Same(TNpoint temp2)
+            => Meos.SameTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public bool SameRid(long rid)
             => Meos.SameRidTnpointBigint(this.Ptr, rid);
@@ -177,8 +240,14 @@ namespace MEOS.NET.Types
         public Temporal? Teq(Npoint np)
             => MEOSFactory.WrapTemporal(Meos.TeqTnpointNpoint(this.Ptr, np.Ptr));
 
+        public Temporal? Teq(TNpoint temp2)
+            => MEOSFactory.WrapTemporal(Meos.TeqTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public Temporal? Tne(Npoint np)
             => MEOSFactory.WrapTemporal(Meos.TneTnpointNpoint(this.Ptr, np.Ptr));
+
+        public Temporal? Tne(TNpoint temp2)
+            => MEOSFactory.WrapTemporal(Meos.TneTemporalTemporal(this.Ptr, temp2.Ptr));
 
         public Temporal? ToTgeompoint()
             => MEOSFactory.WrapTemporal(Meos.TnpointToTgeompoint(this.Ptr));

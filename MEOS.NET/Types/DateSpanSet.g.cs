@@ -21,6 +21,12 @@ namespace MEOS.NET.Types
         public bool Adjacent(DateOnly d)
             => Meos.AdjacentSpansetDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
+        public bool Adjacent(DateSpan s)
+            => Meos.AdjacentSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Adjacent(DateSpanSet ss2)
+            => Meos.AdjacentSpansetSpanset(this.Ptr, ss2.Ptr);
+
         public bool After(DateOnly d)
             => Meos.AfterSpansetDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
@@ -44,8 +50,20 @@ namespace MEOS.NET.Types
             }
         }
 
+        public bool Contained(DateSpan s)
+            => Meos.ContainedSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Contained(DateSpanSet ss2)
+            => Meos.ContainedSpansetSpanset(this.Ptr, ss2.Ptr);
+
         public bool Contains(DateOnly d)
             => Meos.ContainsSpansetDate(this.Ptr, MEOSConvert.ToDateADT(d));
+
+        public bool Contains(DateSpan s)
+            => Meos.ContainsSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Contains(DateSpanSet ss2)
+            => Meos.ContainsSpansetSpanset(this.Ptr, ss2.Ptr);
 
         public DateOnly? DateN(int n)
         {
@@ -86,11 +104,29 @@ namespace MEOS.NET.Types
         public SpanSet? Intersection(DateOnly d)
             => MEOSFactory.WrapSpanSet(Meos.IntersectionSpansetDate(this.Ptr, MEOSConvert.ToDateADT(d)));
 
+        public SpanSet? Intersection(DateSpan s)
+            => MEOSFactory.WrapSpanSet(Meos.IntersectionSpansetSpan(this.Ptr, s.Ptr));
+
+        public SpanSet? Intersection(DateSpanSet ss2)
+            => MEOSFactory.WrapSpanSet(Meos.IntersectionSpansetSpanset(this.Ptr, ss2.Ptr));
+
+        public bool Left(DateSpan s)
+            => Meos.LeftSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Left(DateSpanSet ss2)
+            => Meos.LeftSpansetSpanset(this.Ptr, ss2.Ptr);
+
         public DateOnly Lower()
             => MEOSConvert.ToDateOnly(Meos.DatespansetLower(this.Ptr));
 
         public SpanSet? Minus(DateOnly d)
             => MEOSFactory.WrapSpanSet(Meos.MinusSpansetDate(this.Ptr, MEOSConvert.ToDateADT(d)));
+
+        public SpanSet? Minus(DateSpan s)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpansetSpan(this.Ptr, s.Ptr));
+
+        public SpanSet? Minus(DateSpanSet ss2)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpansetSpanset(this.Ptr, ss2.Ptr));
 
         public int NumDates()
             => Meos.DatespansetNumDates(this.Ptr);
@@ -104,6 +140,24 @@ namespace MEOS.NET.Types
         public bool Overbefore(DateOnly d)
             => Meos.OverbeforeSpansetDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
+        public bool Overlaps(DateSpan s)
+            => Meos.OverlapsSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Overlaps(DateSpanSet ss2)
+            => Meos.OverlapsSpansetSpanset(this.Ptr, ss2.Ptr);
+
+        public bool Overleft(DateSpan s)
+            => Meos.OverleftSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Overleft(DateSpanSet ss2)
+            => Meos.OverleftSpansetSpanset(this.Ptr, ss2.Ptr);
+
+        public bool Overright(DateSpan s)
+            => Meos.OverrightSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Overright(DateSpanSet ss2)
+            => Meos.OverrightSpansetSpanset(this.Ptr, ss2.Ptr);
+
         public bool Radjacent(DateOnly d)
             => Meos.AdjacentDateSpanset(MEOSConvert.ToDateADT(d), this.Ptr);
 
@@ -115,6 +169,12 @@ namespace MEOS.NET.Types
 
         public bool Rcontained(DateOnly d)
             => Meos.ContainedDateSpanset(MEOSConvert.ToDateADT(d), this.Ptr);
+
+        public bool Right(DateSpan s)
+            => Meos.RightSpansetSpan(this.Ptr, s.Ptr);
+
+        public bool Right(DateSpanSet ss2)
+            => Meos.RightSpansetSpanset(this.Ptr, ss2.Ptr);
 
         public SpanSet? Rintersection(DateOnly d)
             => MEOSFactory.WrapSpanSet(Meos.IntersectionDateSpanset(MEOSConvert.ToDateADT(d), this.Ptr));
@@ -142,6 +202,12 @@ namespace MEOS.NET.Types
 
         public SpanSet? Union(DateOnly d)
             => MEOSFactory.WrapSpanSet(Meos.UnionSpansetDate(this.Ptr, MEOSConvert.ToDateADT(d)));
+
+        public SpanSet? Union(DateSpan s)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpansetSpan(this.Ptr, s.Ptr));
+
+        public SpanSet? Union(DateSpanSet ss2)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpansetSpanset(this.Ptr, ss2.Ptr));
 
         public DateOnly Upper()
             => MEOSConvert.ToDateOnly(Meos.DatespansetUpper(this.Ptr));

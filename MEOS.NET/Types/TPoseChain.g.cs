@@ -18,6 +18,15 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Above(TPoseChain temp2)
+            => Meos.AboveTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Adjacent(TPoseChain temp2)
+            => Meos.AdjacentTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool After(TPoseChain temp2)
+            => Meos.AfterTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public int AlwaysEq(PoseChain posechain)
             => Meos.AlwaysEqTposechainPosechain(this.Ptr, posechain.Ptr);
 
@@ -36,6 +45,39 @@ namespace MEOS.NET.Types
         public Temporal? AtValue(PoseChain pc)
             => MEOSFactory.WrapTemporal(Meos.TposechainAtValue(this.Ptr, pc.Ptr));
 
+        public bool Back(TPoseChain temp2)
+            => Meos.BackTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Before(TPoseChain temp2)
+            => Meos.BeforeTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Below(TPoseChain temp2)
+            => Meos.BelowTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Contained(TPoseChain temp2)
+            => Meos.ContainedTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Contains(TPoseChain temp2)
+            => Meos.ContainsTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public int Edwithin(Geography gs, double dist, bool spheroid)
+            => Meos.EdwithinTgeoGeo(this.Ptr, gs.Ptr, dist, spheroid);
+
+        public int Edwithin(Geometry gs, double dist, bool spheroid)
+            => Meos.EdwithinTgeoGeo(this.Ptr, gs.Ptr, dist, spheroid);
+
+        public int Edwithin(TPoseChain temp2, double dist, bool spheroid)
+            => Meos.EdwithinTgeoTgeo(this.Ptr, temp2.Ptr, dist, spheroid);
+
+        public int Eintersects(Geography gs)
+            => Meos.EintersectsTgeoGeo(this.Ptr, gs.Ptr);
+
+        public int Eintersects(Geometry gs)
+            => Meos.EintersectsTgeoGeo(this.Ptr, gs.Ptr);
+
+        public int Eintersects(TPoseChain temp2)
+            => Meos.EintersectsTgeoTgeo(this.Ptr, temp2.Ptr);
+
         public PoseChain? EndValue()
             => MEOSFactory.WrapPoseChain(Meos.TposechainEndValue(this.Ptr));
 
@@ -50,6 +92,12 @@ namespace MEOS.NET.Types
 
         public int EverNe(TPoseChain temp2)
             => Meos.EverNeTposechainTposechain(this.Ptr, temp2.Ptr);
+
+        public bool Front(TPoseChain temp2)
+            => Meos.FrontTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Left(TPoseChain temp2)
+            => Meos.LeftTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public Temporal? MinusValue(PoseChain pc)
             => MEOSFactory.WrapTemporal(Meos.TposechainMinusValue(this.Ptr, pc.Ptr));
@@ -66,6 +114,12 @@ namespace MEOS.NET.Types
         public double Nad(TPoseChain temp2)
             => Meos.NadTposechainTposechain(this.Ptr, temp2.Ptr);
 
+        public double Nad(Geography gs)
+            => Meos.NadTposechainGeo(this.Ptr, gs.Ptr);
+
+        public double Nad(Geometry gs)
+            => Meos.NadTposechainGeo(this.Ptr, gs.Ptr);
+
         public Temporal? Nai(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.NaiTposechainGeo(this.Ptr, gs.Ptr));
 
@@ -75,8 +129,44 @@ namespace MEOS.NET.Types
         public Temporal? Nai(TPoseChain temp2)
             => MEOSFactory.WrapTemporal(Meos.NaiTposechainTposechain(this.Ptr, temp2.Ptr));
 
+        public Temporal? Nai(Geography gs)
+            => MEOSFactory.WrapTemporal(Meos.NaiTposechainGeo(this.Ptr, gs.Ptr));
+
+        public Temporal? Nai(Geometry gs)
+            => MEOSFactory.WrapTemporal(Meos.NaiTposechainGeo(this.Ptr, gs.Ptr));
+
         public int NumPoses()
             => Meos.TposechainNumPoses(this.Ptr);
+
+        public bool Overabove(TPoseChain temp2)
+            => Meos.OveraboveTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overafter(TPoseChain temp2)
+            => Meos.OverafterTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overback(TPoseChain temp2)
+            => Meos.OverbackTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overbefore(TPoseChain temp2)
+            => Meos.OverbeforeTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overbelow(TPoseChain temp2)
+            => Meos.OverbelowTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overfront(TPoseChain temp2)
+            => Meos.OverfrontTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overlaps(TPoseChain temp2)
+            => Meos.OverlapsTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overleft(TPoseChain temp2)
+            => Meos.OverleftTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Overright(TPoseChain temp2)
+            => Meos.OverrightTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public bool Right(TPoseChain temp2)
+            => Meos.RightTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public Temporal? Rotate(double angle, double x0, double y0)
             => MEOSFactory.WrapTemporal(Meos.TposechainRotate(this.Ptr, angle, x0, y0));
@@ -90,6 +180,9 @@ namespace MEOS.NET.Types
         public Temporal? RotateZ(double angle)
             => MEOSFactory.WrapTemporal(Meos.TposechainRotateZ(this.Ptr, angle));
 
+        public bool Same(TPoseChain temp2)
+            => Meos.SameTspatialTspatial(this.Ptr, temp2.Ptr);
+
         public Geo? Shortestline(Geo gs)
             => MEOSFactory.WrapGeo(Meos.ShortestlineTposechainGeo(this.Ptr, gs.Ptr));
 
@@ -98,6 +191,12 @@ namespace MEOS.NET.Types
 
         public Geo? Shortestline(TPoseChain temp2)
             => MEOSFactory.WrapGeo(Meos.ShortestlineTposechainTposechain(this.Ptr, temp2.Ptr));
+
+        public Geo? Shortestline(Geography gs)
+            => MEOSFactory.WrapGeo(Meos.ShortestlineTposechainGeo(this.Ptr, gs.Ptr));
+
+        public Geo? Shortestline(Geometry gs)
+            => MEOSFactory.WrapGeo(Meos.ShortestlineTposechainGeo(this.Ptr, gs.Ptr));
 
         public PoseChain? StartValue()
             => MEOSFactory.WrapPoseChain(Meos.TposechainStartValue(this.Ptr));
@@ -111,11 +210,23 @@ namespace MEOS.NET.Types
         public Temporal? Tdistance(TPoseChain temp2)
             => MEOSFactory.WrapTemporal(Meos.TdistanceTposechainTposechain(this.Ptr, temp2.Ptr));
 
+        public Temporal? Tdistance(Geography gs)
+            => MEOSFactory.WrapTemporal(Meos.TdistanceTposechainGeo(this.Ptr, gs.Ptr));
+
+        public Temporal? Tdistance(Geometry gs)
+            => MEOSFactory.WrapTemporal(Meos.TdistanceTposechainGeo(this.Ptr, gs.Ptr));
+
         public Temporal? Teq(PoseChain posechain)
             => MEOSFactory.WrapTemporal(Meos.TeqTposechainPosechain(this.Ptr, posechain.Ptr));
 
+        public Temporal? Teq(TPoseChain temp2)
+            => MEOSFactory.WrapTemporal(Meos.TeqTemporalTemporal(this.Ptr, temp2.Ptr));
+
         public Temporal? Tne(PoseChain posechain)
             => MEOSFactory.WrapTemporal(Meos.TneTposechainPosechain(this.Ptr, posechain.Ptr));
+
+        public Temporal? Tne(TPoseChain temp2)
+            => MEOSFactory.WrapTemporal(Meos.TneTemporalTemporal(this.Ptr, temp2.Ptr));
 
         public Temporal? ToTpose()
             => MEOSFactory.WrapTemporal(Meos.TposechainToTpose(this.Ptr));

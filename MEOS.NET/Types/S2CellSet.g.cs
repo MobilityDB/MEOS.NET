@@ -21,8 +21,14 @@ namespace MEOS.NET.Types
         public Set? CompactCells()
             => MEOSFactory.WrapSet(Meos.S2cellsetCompactCells(this.Ptr));
 
+        public bool Contained(S2CellSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(ulong cell)
             => Meos.ContainsSetS2cell(this.Ptr, cell);
+
+        public bool Contains(S2CellSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public Set? CoverCells(int resolution)
             => MEOSFactory.WrapSet(Meos.S2cellsetCoverCells(this.Ptr, resolution));
@@ -36,11 +42,20 @@ namespace MEOS.NET.Types
         public Set? Intersection(ulong cell)
             => MEOSFactory.WrapSet(Meos.IntersectionSetS2cell(this.Ptr, cell));
 
+        public Set? Intersection(S2CellSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
         public Set? Minus(ulong cell)
             => MEOSFactory.WrapSet(Meos.MinusSetS2cell(this.Ptr, cell));
 
+        public Set? Minus(S2CellSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
+
         public string Out()
             => Meos.S2cellsetOut(this.Ptr);
+
+        public bool Overlaps(S2CellSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
         public bool Rcontained(ulong cell)
             => Meos.ContainedS2cellSet(cell, this.Ptr);
@@ -62,6 +77,9 @@ namespace MEOS.NET.Types
 
         public Set? Union(ulong cell)
             => MEOSFactory.WrapSet(Meos.UnionSetS2cell(this.Ptr, cell));
+
+        public Set? Union(S2CellSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public ulong[] Values()
             => Meos.S2cellsetValues(this.Ptr);

@@ -18,8 +18,14 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.AsText(15);
 
+        public bool Contained(PcpointSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(Pcpoint pt)
             => Meos.ContainsSetPcpoint(this.Ptr, pt.Ptr);
+
+        public bool Contains(PcpointSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public Pcpoint? EndValue()
             => MEOSFactory.WrapPcpoint(Meos.PcpointsetEndValue(this.Ptr));
@@ -27,17 +33,29 @@ namespace MEOS.NET.Types
         public Set? Intersection(Pcpoint pt)
             => MEOSFactory.WrapSet(Meos.IntersectionSetPcpoint(this.Ptr, pt.Ptr));
 
+        public Set? Intersection(PcpointSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
         public Set? Minus(Pcpoint pt)
             => MEOSFactory.WrapSet(Meos.MinusSetPcpoint(this.Ptr, pt.Ptr));
 
+        public Set? Minus(PcpointSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
+
         public new string Out(int maxdd)
             => Meos.PcpointsetOut(this.Ptr, maxdd);
+
+        public bool Overlaps(PcpointSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
         public Pcpoint? StartValue()
             => MEOSFactory.WrapPcpoint(Meos.PcpointsetStartValue(this.Ptr));
 
         public Set? Union(Pcpoint pt)
             => MEOSFactory.WrapSet(Meos.UnionSetPcpoint(this.Ptr, pt.Ptr));
+
+        public Set? Union(PcpointSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public Pcpoint? ValueN(int n)
         {

@@ -21,6 +21,12 @@ namespace MEOS.NET.Types
         public bool Adjacent(double d)
             => Meos.AdjacentSpanFloat(this.Ptr, d);
 
+        public bool Adjacent(FloatSpan s2)
+            => Meos.AdjacentSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Adjacent(FloatSpanSet ss)
+            => Meos.AdjacentSpanSpanset(this.Ptr, ss.Ptr);
+
         public string AsText(int maxdd)
             => this.Out(maxdd);
 
@@ -30,8 +36,20 @@ namespace MEOS.NET.Types
         public Span? Ceil()
             => MEOSFactory.WrapSpan(Meos.FloatspanCeil(this.Ptr));
 
+        public bool Contained(FloatSpan s2)
+            => Meos.ContainedSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Contained(FloatSpanSet ss)
+            => Meos.ContainedSpanSpanset(this.Ptr, ss.Ptr);
+
         public bool Contains(double d)
             => Meos.ContainsSpanFloat(this.Ptr, d);
+
+        public bool Contains(FloatSpan s2)
+            => Meos.ContainsSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Contains(FloatSpanSet ss)
+            => Meos.ContainsSpanSpanset(this.Ptr, ss.Ptr);
 
         public Span? Degrees(bool normalize)
             => MEOSFactory.WrapSpan(Meos.FloatspanDegrees(this.Ptr, normalize));
@@ -51,8 +69,20 @@ namespace MEOS.NET.Types
         public Span? Intersection(double d)
             => MEOSFactory.WrapSpan(Meos.IntersectionSpanFloat(this.Ptr, d));
 
+        public Span? Intersection(FloatSpan s2)
+            => MEOSFactory.WrapSpan(Meos.IntersectionSpanSpan(this.Ptr, s2.Ptr));
+
+        public SpanSet? Intersection(FloatSpanSet ss)
+            => MEOSFactory.WrapSpanSet(Meos.IntersectionSpanSpanset(this.Ptr, ss.Ptr));
+
         public bool Left(double d)
             => Meos.LeftSpanFloat(this.Ptr, d);
+
+        public bool Left(FloatSpan s2)
+            => Meos.LeftSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Left(FloatSpanSet ss)
+            => Meos.LeftSpanSpanset(this.Ptr, ss.Ptr);
 
         public double Lower()
             => Meos.FloatspanLower(this.Ptr);
@@ -60,17 +90,41 @@ namespace MEOS.NET.Types
         public SpanSet? Minus(double d)
             => MEOSFactory.WrapSpanSet(Meos.MinusSpanFloat(this.Ptr, d));
 
+        public SpanSet? Minus(FloatSpan s2)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpanSpan(this.Ptr, s2.Ptr));
+
+        public SpanSet? Minus(FloatSpanSet ss)
+            => MEOSFactory.WrapSpanSet(Meos.MinusSpanSpanset(this.Ptr, ss.Ptr));
+
         public double Nad(TBox box)
             => Meos.NadFloatspanTbox(this.Ptr, box.Ptr);
 
         public string Out(int maxdd)
             => Meos.FloatspanOut(this.Ptr, maxdd);
 
+        public bool Overlaps(FloatSpan s2)
+            => Meos.OverlapsSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Overlaps(FloatSpanSet ss)
+            => Meos.OverlapsSpanSpanset(this.Ptr, ss.Ptr);
+
         public bool Overleft(double d)
             => Meos.OverleftSpanFloat(this.Ptr, d);
 
+        public bool Overleft(FloatSpan s2)
+            => Meos.OverleftSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Overleft(FloatSpanSet ss)
+            => Meos.OverleftSpanSpanset(this.Ptr, ss.Ptr);
+
         public bool Overright(double d)
             => Meos.OverrightSpanFloat(this.Ptr, d);
+
+        public bool Overright(FloatSpan s2)
+            => Meos.OverrightSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Overright(FloatSpanSet ss)
+            => Meos.OverrightSpanSpanset(this.Ptr, ss.Ptr);
 
         public Span? Radians()
             => MEOSFactory.WrapSpan(Meos.FloatspanRadians(this.Ptr));
@@ -83,6 +137,12 @@ namespace MEOS.NET.Types
 
         public bool Right(double d)
             => Meos.RightSpanFloat(this.Ptr, d);
+
+        public bool Right(FloatSpan s2)
+            => Meos.RightSpanSpan(this.Ptr, s2.Ptr);
+
+        public bool Right(FloatSpanSet ss)
+            => Meos.RightSpanSpanset(this.Ptr, ss.Ptr);
 
         public Span? Rintersection(double d)
             => MEOSFactory.WrapSpan(Meos.IntersectionFloatSpan(d, this.Ptr));
@@ -119,6 +179,12 @@ namespace MEOS.NET.Types
 
         public SpanSet? Union(double d)
             => MEOSFactory.WrapSpanSet(Meos.UnionSpanFloat(this.Ptr, d));
+
+        public SpanSet? Union(FloatSpan s2)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpanSpan(this.Ptr, s2.Ptr));
+
+        public SpanSet? Union(FloatSpanSet ss)
+            => MEOSFactory.WrapSpanSet(Meos.UnionSpanSpanset(this.Ptr, ss.Ptr));
 
         public double Upper()
             => Meos.FloatspanUpper(this.Ptr);

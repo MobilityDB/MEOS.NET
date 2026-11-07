@@ -21,8 +21,14 @@ namespace MEOS.NET.Types
         public string AsText()
             => this.Out();
 
+        public bool Contained(TextSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(Text t)
             => Meos.ContainsSetText(this.Ptr, t.Ptr);
+
+        public bool Contains(TextSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public Text? EndValue()
             => MEOSFactory.WrapText(Meos.TextsetEndValue(this.Ptr));
@@ -33,8 +39,14 @@ namespace MEOS.NET.Types
         public Set? Intersection(Text txt)
             => MEOSFactory.WrapSet(Meos.IntersectionSetText(this.Ptr, txt.Ptr));
 
+        public Set? Intersection(TextSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
         public bool Left(Text txt)
             => Meos.LeftSetText(this.Ptr, txt.Ptr);
+
+        public bool Left(TextSet s2)
+            => Meos.LeftSetSet(this.Ptr, s2.Ptr);
 
         public Set? Lower()
             => MEOSFactory.WrapSet(Meos.TextsetLower(this.Ptr));
@@ -42,17 +54,32 @@ namespace MEOS.NET.Types
         public Set? Minus(Text txt)
             => MEOSFactory.WrapSet(Meos.MinusSetText(this.Ptr, txt.Ptr));
 
+        public Set? Minus(TextSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
+
         public string Out()
             => Meos.TextsetOut(this.Ptr);
+
+        public bool Overlaps(TextSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
         public bool Overleft(Text txt)
             => Meos.OverleftSetText(this.Ptr, txt.Ptr);
 
+        public bool Overleft(TextSet s2)
+            => Meos.OverleftSetSet(this.Ptr, s2.Ptr);
+
         public bool Overright(Text txt)
             => Meos.OverrightSetText(this.Ptr, txt.Ptr);
 
+        public bool Overright(TextSet s2)
+            => Meos.OverrightSetSet(this.Ptr, s2.Ptr);
+
         public bool Right(Text txt)
             => Meos.RightSetText(this.Ptr, txt.Ptr);
+
+        public bool Right(TextSet s2)
+            => Meos.RightSetSet(this.Ptr, s2.Ptr);
 
         public Text? StartValue()
             => MEOSFactory.WrapText(Meos.TextsetStartValue(this.Ptr));
@@ -65,6 +92,9 @@ namespace MEOS.NET.Types
 
         public Set? Union(Text txt)
             => MEOSFactory.WrapSet(Meos.UnionSetText(this.Ptr, txt.Ptr));
+
+        public Set? Union(TextSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public Set? Upper()
             => MEOSFactory.WrapSet(Meos.TextsetUpper(this.Ptr));

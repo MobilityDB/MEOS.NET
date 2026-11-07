@@ -33,8 +33,14 @@ namespace MEOS.NET.Types
         public Set? Concat(Jsonb jb, bool invert)
             => MEOSFactory.WrapSet(Meos.ConcatJsonbsetJsonb(this.Ptr, jb.Ptr, invert));
 
+        public bool Contained(JsonbSet s2)
+            => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
+
         public bool Contains(Jsonb jb)
             => Meos.ContainsSetJsonb(this.Ptr, jb.Ptr);
+
+        public bool Contains(JsonbSet s2)
+            => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
         public Set? Delete(Text key)
             => MEOSFactory.WrapSet(Meos.JsonbsetDelete(this.Ptr, key.Ptr));
@@ -146,8 +152,14 @@ namespace MEOS.NET.Types
         public Set? Intersection(Jsonb jb)
             => MEOSFactory.WrapSet(Meos.IntersectionSetJsonb(this.Ptr, jb.Ptr));
 
+        public Set? Intersection(JsonbSet s2)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
+
         public Set? Minus(Jsonb jb)
             => MEOSFactory.WrapSet(Meos.MinusSetJsonb(this.Ptr, jb.Ptr));
+
+        public Set? Minus(JsonbSet s2)
+            => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
 
         public Set? ObjectField(Text key, NullHandleType null_handle)
             => MEOSFactory.WrapSet(Meos.JsonbsetObjectField(this.Ptr, key.Ptr, (int) null_handle));
@@ -157,6 +169,9 @@ namespace MEOS.NET.Types
 
         public string Out()
             => Meos.JsonbsetOut(this.Ptr);
+
+        public bool Overlaps(JsonbSet s2)
+            => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
         public bool[] PathExists(JsonPath jp, Jsonb vars, bool silent, bool tz)
             => Meos.JsonbsetPathExists(this.Ptr, jp.Ptr, vars.Ptr, silent, tz);
@@ -237,6 +252,9 @@ namespace MEOS.NET.Types
 
         public Set? Union(Jsonb jb)
             => MEOSFactory.WrapSet(Meos.UnionSetJsonb(this.Ptr, jb.Ptr));
+
+        public Set? Union(JsonbSet s2)
+            => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
         public Jsonb? ValueN(int n)
         {
