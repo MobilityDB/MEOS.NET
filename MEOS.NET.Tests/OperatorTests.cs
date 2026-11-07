@@ -79,6 +79,24 @@ namespace MEOS.NET.Tests
         }
 
         [TestMethod]
+        public void ContainsOnATemporalNumberTakesANumberSpanAndATimeSpan()
+        {
+            // On the common class: contains_tnumber_numspan takes the number
+            // span, and the time span still reaches contains_temporal_tstzspan,
+            // the Temporal member TNumber declares again beside it.
+            TNumber temp = Rising();
+            Span values = FloatSpan.In("[1.5, 2.5]")!;
+            Span far = FloatSpan.In("[5.0, 6.0]")!;
+            TsTzSpan period = (TsTzSpan)TsTzSpan.In("[2024-12-06, 2024-12-07]")!;
+            TsTzSpan later = (TsTzSpan)TsTzSpan.In("[2025-01-01, 2025-01-02]")!;
+
+            Assert.IsTrue(temp.Contains(values));
+            Assert.IsFalse(temp.Contains(far));
+            Assert.IsTrue(temp.Contains(period));
+            Assert.IsFalse(temp.Contains(later));
+        }
+
+        [TestMethod]
         public void TemporalEqualityOfTwoH3IndexesTakesAnH3Index()
         {
             // teq_th3index_th3index, which SQL does not declare: its other

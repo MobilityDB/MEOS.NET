@@ -59,10 +59,10 @@ DEFERRAL_KINDS: dict[str, str] = {
         "An operator takes the name and parameter types of a method the model "
         "gives the same class, so the two cannot both be members of it.",
     "takes an inherited member's calls":
-        "An operator takes the name of a member of an ancestor and parameter "
-        "types that member's arguments convert to, and C# reaches an ancestor's "
-        "member only where none of the class applies, so emitting it would "
-        "answer the ancestor's calls on the class with another function.",
+        "An operator takes the name and parameter types of a member of an "
+        "ancestor, a second function for one call, or would take the calls of "
+        "an ancestor's member the layer does not emit and so cannot declare "
+        "again beside it.",
 }
 
 GENERATOR_VERSION = "0.1.0"
@@ -403,6 +403,13 @@ class Generator:
         self.m = model
         self.deferred: dict[str, list[str]] = defaultdict(list)
         self.class_member_names: dict[str, set[str]] = {}
+        # class -> {(name, parameter types): the method it emits}, so a class
+        # can declare again an ancestor's member an operator of its would
+        # otherwise take the calls of (#operator_methods).
+        self.class_methods: dict[str, dict[tuple, Method]] = {}
+        # Ancestors' members declared again beside the operator that would
+        # otherwise take their calls.
+        self.redeclared = 0
         # class -> {C function: instance method}, its ancestors' included, as
         # #inherited_names carries the member names down the parent edges.
         self.class_functions: dict[str | None, dict] = {}
@@ -802,12 +809,16 @@ class Generator:
         Two overloads C# cannot tell apart — the same parameter types, among the
         operators or against a method of the class — are deferred together:
         emitting one would answer the other's call with the wrong function. So is
-        an operator an ancestor's member of its name would be called through: C#
-        considers an ancestor's members only where no member of the class
-        applies, so an overload taking the ancestor's parameter types, or types
-        they convert to, answers the ancestor's calls with another function —
+        an operator taking the parameter types of an ancestor's member of its
+        name, a second function for one call.
+
+        C# considers an ancestor's members only where no member of the class
+        applies, so an overload taking types an ancestor's arguments convert to
+        would answer the ancestor's calls with another function:
         `TNumber.Contains(Span)` would take every `Contains(TsTzSpan)` call that
-        `Temporal` answers."""
+        `Temporal` answers. The class declares that ancestor's member again,
+        calling the same function, and C# prefers it there as the closer match,
+        so each call reaches the function the model assigns it."""
         built = []
         for entry in self.m.om["classes"].get(cls, {}).get("operators", []):
             if entry.get("ooExclude"):
@@ -835,6 +846,10 @@ class Generator:
         same: dict[tuple, list] = defaultdict(list)
         for fname, method in built:
             same[(method.name, signature_of(method))].append((fname, method))
+        # Every signature the class declares itself, so a member declared again
+        # never repeats one.
+        declared = set(same) | taken
+        again_keys: set[tuple] = set()
         out = []
         for (name, types), group in same.items():
             shown = f"{name}({', '.join(types)})"
@@ -849,19 +864,47 @@ class Generator:
                 self.defer(cls, name, "signature taken by a method",
                            f"{group[0][0]}: {shown} is a method of {cls}")
                 continue
-            captured = next(
-                (theirs for n, theirs in sorted(inherited)
-                 if n == name and len(theirs) == len(types)
-                 and all(self.converts(a, b) for a, b in zip(theirs, types))),
-                None)
-            if captured is not None:
+            captured = sorted(
+                theirs for n, theirs in inherited
+                if n == name and len(theirs) == len(types)
+                and all(self.converts(a, b) for a, b in zip(theirs, types)))
+            # The same parameter types as an ancestor's member is a second
+            # function for one call, which no declaration resolves.
+            if types in captured:
+                self.defer(cls, name, "takes an inherited member's calls",
+                           f"{group[0][0]}: {shown} is the signature of a "
+                           f"member of an ancestor of {cls}")
+                continue
+            # Parameter types the ancestor's arguments convert to: the class
+            # declares that member again, calling the same function, so C#
+            # finds it among the class's own and prefers it as the closer
+            # match. `TNumber.Contains(TsTzSpan)` calls contains_temporal_tstzspan
+            # beside `TNumber.Contains(Span)`, which then takes the number spans.
+            again = [self.inherited_method(cls, name, theirs) for theirs in captured]
+            if any(m is None for m in again):
                 self.defer(cls, name, "takes an inherited member's calls",
                            f"{group[0][0]}: {shown} would take the calls of "
-                           f"{name}({', '.join(captured)}), a member of an "
-                           f"ancestor of {cls}")
+                           f"{name}({', '.join(captured[0])}), a member of an "
+                           f"ancestor of {cls} the layer does not emit")
                 continue
             out.append(group[0][1])
+            for method in again:
+                key = (method.name, signature_of(method))
+                if key in declared or key in again_keys:
+                    continue
+                again_keys.add(key)
+                out.append(method)
+                self.redeclared += 1
         return out
+
+    def inherited_method(self, cls: str, name: str, types: tuple) -> Method | None:
+        """The method the nearest ancestor emits under this name and these
+        parameter types, as #inherited_names finds its name."""
+        for ancestor in self.m.ancestors(cls):
+            method = self.class_methods.get(ancestor, {}).get((name, types))
+            if method is not None:
+                return method
+        return None
 
     def converts(self, given: str, taken: str) -> bool:
         """Whether C# passes an argument of type `given` to a parameter of type
@@ -906,6 +949,7 @@ class Generator:
         inherited = self.inherited_names(cls)
         self.class_member_names[cls] = {
             (m.name, tuple(t for t, _ in m.params)) for m in methods} | inherited
+        self.class_methods[cls] = {(m.name, signature_of(m)): m for m in methods}
 
         lines = [
             "#nullable enable",

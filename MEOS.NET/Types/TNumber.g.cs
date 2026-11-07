@@ -20,6 +20,12 @@ namespace MEOS.NET.Types
         public Temporal? Add(TNumber tnumber2)
             => MEOSFactory.WrapTemporal(Meos.AddTnumberTnumber(this.Ptr, tnumber2.Ptr));
 
+        public bool Adjacent(Span s)
+            => Meos.AdjacentTnumberNumspan(this.Ptr, s.Ptr);
+
+        public new bool Adjacent(TsTzSpan s)
+            => Meos.AdjacentTemporalTstzspan(this.Ptr, s.Ptr);
+
         public bool Adjacent(TBox box)
             => Meos.AdjacentTnumberTbox(this.Ptr, box.Ptr);
 
@@ -53,11 +59,23 @@ namespace MEOS.NET.Types
         public bool Before(TNumber temp2)
             => Meos.BeforeTnumberTnumber(this.Ptr, temp2.Ptr);
 
+        public bool Contained(Span s)
+            => Meos.ContainedTnumberNumspan(this.Ptr, s.Ptr);
+
+        public new bool Contained(TsTzSpan s)
+            => Meos.ContainedTemporalTstzspan(this.Ptr, s.Ptr);
+
         public bool Contained(TBox box)
             => Meos.ContainedTnumberTbox(this.Ptr, box.Ptr);
 
         public bool Contained(TNumber temp2)
             => Meos.ContainedTnumberTnumber(this.Ptr, temp2.Ptr);
+
+        public bool Contains(Span s)
+            => Meos.ContainsTnumberNumspan(this.Ptr, s.Ptr);
+
+        public new bool Contains(TsTzSpan s)
+            => Meos.ContainsTemporalTstzspan(this.Ptr, s.Ptr);
 
         public bool Contains(TBox box)
             => Meos.ContainsTnumberTbox(this.Ptr, box.Ptr);
@@ -107,6 +125,12 @@ namespace MEOS.NET.Types
         public bool Overbefore(TNumber temp2)
             => Meos.OverbeforeTnumberTnumber(this.Ptr, temp2.Ptr);
 
+        public bool Overlaps(Span s)
+            => Meos.OverlapsTnumberNumspan(this.Ptr, s.Ptr);
+
+        public new bool Overlaps(TsTzSpan s)
+            => Meos.OverlapsTemporalTstzspan(this.Ptr, s.Ptr);
+
         public bool Overlaps(TBox box)
             => Meos.OverlapsTnumberTbox(this.Ptr, box.Ptr);
 
@@ -139,6 +163,12 @@ namespace MEOS.NET.Types
 
         public bool Right(TNumber temp2)
             => Meos.RightTnumberTnumber(this.Ptr, temp2.Ptr);
+
+        public bool Same(Span s)
+            => Meos.SameTnumberNumspan(this.Ptr, s.Ptr);
+
+        public new bool Same(TsTzSpan s)
+            => Meos.SameTemporalTstzspan(this.Ptr, s.Ptr);
 
         public bool Same(TBox box)
             => Meos.SameTnumberTbox(this.Ptr, box.Ptr);
