@@ -99,5 +99,25 @@ namespace MEOS.NET.Types
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.NpointsetIn(str));
 
+        public static Set? Make(Npoint[] values)
+        {
+            IntPtr _values = Marshal.AllocHGlobal(16 * Math.Max(values.Length, 1));
+            byte[] _valuesValue = new byte[16];
+            for (int i = 0; i < values.Length; i++)
+            {
+                Marshal.Copy(values[i].Ptr, _valuesValue, 0, 16);
+                Marshal.Copy(_valuesValue, 0, IntPtr.Add(_values, i * 16), 16);
+            }
+
+            try
+            {
+                return MEOSFactory.WrapSet(Meos.NpointsetMake(_values, values.Length));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_values);
+            }
+        }
+
     }
 }
