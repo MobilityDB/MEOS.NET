@@ -36,6 +36,9 @@ namespace MEOS.NET.Functions
         public static string? MeostypeName(int type)
             => Marshal.PtrToStringUTF8(SafeExecution<IntPtr>(() => Native.MeostypeName(type)));
 
+        public static string? MeostypeCamelName(int type)
+            => Marshal.PtrToStringUTF8(SafeExecution<IntPtr>(() => Native.MeostypeCamelName(type)));
+
         public static int MeostypeFromString(string name)
             => SafeExecution<int>(() => Native.MeostypeFromString(name));
 

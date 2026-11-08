@@ -519,6 +519,24 @@ namespace MEOS.NET.Functions
         public static IntPtr ShortestlineTrgeometryTrgeometry(IntPtr temp1, IntPtr temp2)
             => SafeExecution<IntPtr>(() => Native.ShortestlineTrgeometryTrgeometry(temp1, temp2));
 
+        public static IntPtr TdisjointGeoTrgeometry(IntPtr gs, IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TdisjointGeoTrgeometry(gs, temp));
+
+        public static IntPtr TdisjointTrgeometryGeo(IntPtr temp, IntPtr gs)
+            => SafeExecution<IntPtr>(() => Native.TdisjointTrgeometryGeo(temp, gs));
+
+        public static IntPtr TdisjointTrgeometryTrgeometry(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<IntPtr>(() => Native.TdisjointTrgeometryTrgeometry(temp1, temp2));
+
+        public static IntPtr TintersectsGeoTrgeometry(IntPtr gs, IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TintersectsGeoTrgeometry(gs, temp));
+
+        public static IntPtr TintersectsTrgeometryGeo(IntPtr temp, IntPtr gs)
+            => SafeExecution<IntPtr>(() => Native.TintersectsTrgeometryGeo(temp, gs));
+
+        public static IntPtr TintersectsTrgeometryTrgeometry(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<IntPtr>(() => Native.TintersectsTrgeometryTrgeometry(temp1, temp2));
+
         public static IntPtr TdwithinGeoTrgeometry(IntPtr gs, IntPtr temp, double dist)
             => SafeExecution<IntPtr>(() => Native.TdwithinGeoTrgeometry(gs, temp, dist));
 

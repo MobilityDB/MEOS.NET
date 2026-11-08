@@ -372,11 +372,15 @@ class Method:
         # (parameter name, bytes per element) for each array MEOS reads as
         # struct values one after another, gathered from the caller's handles.
         self.contiguous = contiguous or []
+        # (parameter name, struct) for each array of structs of scalars and
+        # strings the method lays out for MEOS (#written_struct).
+        self.written: list[tuple[str, str]] = []
 
     def needs_a_body(self) -> bool:
         """Whether the call needs anything allocated, pinned or read around it."""
         return bool(self.structs or self.arrays or self.scalar_arrays
-                    or self.contiguous or self.out_params or self.length_out or self.parallel
+                    or self.contiguous or self.written or self.out_params
+                    or self.length_out or self.parallel
                     or (self.ret.startswith("(") and self.ret.endswith(")")))
 
 
@@ -417,6 +421,9 @@ class Generator:
         # struct -> its fields, for each struct of values an array return holds
         # (#held_struct_array): emitted as a record struct of its own.
         self.held_structs: dict[str, list[tuple[str, str, str]]] = {}
+        # struct -> (bytes, fields), for each struct of scalars and strings an
+        # array argument holds (#written_struct).
+        self.written_structs: dict[str, tuple[int, list[tuple[str, str, int, str]]]] = {}
         # class -> {C function: instance method}, its ancestors' included, as
         # #inherited_names carries the member names down the parent edges.
         self.class_functions: dict[str | None, dict] = {}
@@ -876,6 +883,7 @@ class Generator:
         arrays: list[tuple[str, str]] = []
         scalar_arrays: list[str] = []
         contiguous: list[tuple[str, int]] = []
+        written: list[tuple[str, str]] = []
         structs: list[tuple[str, str]] = []
         for cs_type, pname in params:
             if any(pname == n for n, _r in result_outs):
@@ -907,6 +915,16 @@ class Generator:
                 if value is not None and stride:
                     sig.append((f"{value}[]", pname))
                     contiguous.append((pname, stride))
+                    args.append(scratch(pname))
+                    continue
+                # A struct no class stands for, of scalars and strings —
+                # `PCDimensionSpec { const char *name; ...; int32_t position;
+                # ...; double scale; ... }` — is passed as the C# values of its
+                # fields, laid out at the offsets the catalog records
+                # (#written_struct).
+                if self.written_struct(pointee) is not None:
+                    sig.append((f"{pointee}[]", pname))
+                    written.append((pname, pointee))
                     args.append(scratch(pname))
                     continue
                 # A scalar element is the array itself: the values need no
@@ -952,11 +970,98 @@ class Generator:
             read = ", ".join([ret_expr.replace("$", "_answered")]
                              + [reader for _n, _s, reader in outs])
             body = f"{call}|>({read})"
-        return Method(pascal(oo), ret_type, sig, body, static,
-                      arrays, outs, structs, scalar_arrays, length_out,
-                      ret_type == "byte[]?",
-                      [names for names in count_of.values() if len(names) > 1],
-                      contiguous)
+        method = Method(pascal(oo), ret_type, sig, body, static,
+                        arrays, outs, structs, scalar_arrays, length_out,
+                        ret_type == "byte[]?",
+                        [names for names in count_of.values() if len(names) > 1],
+                        contiguous)
+        method.written = written
+        return method
+
+    def written_struct(self, struct: str) -> tuple[int, list[tuple[str, str, int, str]]] | None:
+        """`(bytes, fields)` of a struct of scalars and strings a function reads,
+        each field `(C# name, C# type, offset, writer kind)`, or None.
+
+        MEOS reads such a struct in place, so the binding writes each field at
+        the offset the catalog records: a string as a UTF-8 copy the call
+        holds and frees after it (a null as NULL), a bool as one byte, any
+        other scalar at its own width. The struct is recorded so the layer
+        declares it (#written_struct_file)."""
+        if (struct not in codegen.STRUCTS or struct in codegen.BY_VALUE_STRUCTS
+                or self.m.class_for_ctype(f"{struct} *") is not None):
+            return None
+        size = codegen.STRUCTS[struct].get("sizeBytes") or self.struct_stride(struct)
+        if not size:
+            return None
+        fields = []
+        for field in codegen.STRUCTS[struct]["fields"]:
+            offset = field["offset_bits"] // 8
+            name = "".join(part[:1].upper() + part[1:]
+                           for part in field["name"].split("_") if part)
+            canonical = codegen._bare(field["canonical"])
+            if canonical == "char *":
+                fields.append((name, "string", offset, "string"))
+                continue
+            try:
+                cs_type = codegen.scalar_cs(canonical, f"{struct}.{field['name']}")
+            except codegen.UnmappedType:
+                return None
+            if cs_type is None:
+                return None
+            fields.append((name, cs_type, offset, "bool" if cs_type == "bool" else "scalar"))
+        self.written_structs[struct] = (size, fields)
+        return size, fields
+
+    def written_struct_file(self, struct: str, size: int,
+                            fields: list[tuple[str, str, int, str]]) -> str:
+        """A struct of scalars and strings MEOS reads, as the record struct of
+        its fields, and the writer of an array of it (#written_struct)."""
+        members = ", ".join(f"{cs_type} {name}" for name, cs_type, _o, _k in fields)
+        writes = []
+        for name, cs_type, offset, kind in fields:
+            if kind == "string":
+                writes += [
+                    f"                IntPtr _{name} = value.{name} is null ? IntPtr.Zero",
+                    f"                    : Marshal.StringToCoTaskMemUTF8(value.{name});",
+                    f"                strings.Add(_{name});",
+                    f"                Marshal.WriteIntPtr(item, {offset}, _{name});",
+                ]
+            elif kind == "bool":
+                writes.append(f"                Marshal.WriteByte(item, {offset}, "
+                              f"(byte) (value.{name} ? 1 : 0));")
+            else:
+                writes.append(f"                Marshal.StructureToPtr(value.{name}, "
+                              f"IntPtr.Add(item, {offset}), false);")
+        return "\n".join([
+            "#nullable enable",
+            "",
+            "using System.Runtime.InteropServices;",
+            "",
+            f"namespace {NAMESPACE}",
+            "{",
+            f"    /// <summary>The MEOS <c>{struct}</c>, as the values of its fields.</summary>",
+            f'    [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "{GENERATOR_VERSION}")]',
+            f"    public readonly record struct {struct}({members})",
+            "    {",
+            "        /// <summary>The values laid out one after another as MEOS reads",
+            "        /// them, each string a copy added to <paramref name=\"strings\"/>,",
+            "        /// which the caller frees with the block after the call.</summary>",
+            f"        internal static IntPtr ToBlock({struct}[] values, List<IntPtr> strings)",
+            "        {",
+            f"            IntPtr block = Marshal.AllocHGlobal({size} * Math.Max(values.Length, 1));",
+            "            for (int i = 0; i < values.Length; i++)",
+            "            {",
+            f"                IntPtr item = IntPtr.Add(block, i * {size});",
+            f"                {struct} value = values[i];",
+        ] + writes + [
+            "            }",
+            "",
+            "            return block;",
+            "        }",
+            "    }",
+            "}",
+            "",
+        ])
 
     def struct_stride(self, c_type: str) -> int | None:
         """The bytes one value of a catalog struct takes in an array of them,
@@ -1189,6 +1294,22 @@ class Generator:
                 f"                Marshal.StructureToPtr({ident(name)}, "
                 f"{scratch(name)}, false);")
             teardown.append(f"                Marshal.FreeHGlobal({scratch(name)});")
+        for name, _struct in method.written:
+            # The block and the strings in it are the call's own: MEOS copies
+            # what it keeps, so both go with the call.
+            setup += [
+                f"            var {scratch(name)}Strings = new List<IntPtr>();",
+                f"            IntPtr {scratch(name)} = "
+                f"{_struct}.ToBlock({ident(name)}, {scratch(name)}Strings);",
+                "",
+            ]
+            teardown += [
+                f"                foreach (IntPtr _string in {scratch(name)}Strings)",
+                "                {",
+                "                    Marshal.FreeCoTaskMem(_string);",
+                "                }",
+                f"                Marshal.FreeHGlobal({scratch(name)});",
+            ]
         for name, size in method.contiguous:
             # The values are copied out of the caller's handles into one block
             # MEOS reads in step; MEOS copies what it keeps, so the block goes
@@ -1824,6 +1945,9 @@ namespace {EXCEPTION_NAMESPACE}
             (out_dir / f"{cls}.g.cs").write_text(self.emit_class(cls))
         for struct, fields in sorted(self.held_structs.items()):
             (out_dir / f"{struct}.g.cs").write_text(self.held_struct_file(struct, fields))
+        for struct, (size, fields) in sorted(self.written_structs.items()):
+            (out_dir / f"{struct}.g.cs").write_text(
+                self.written_struct_file(struct, size, fields))
         (out_dir / "MEOSFactory.g.cs").write_text(self.factory_file())
 
     def run_enums(self, enums_dir: Path) -> int:
