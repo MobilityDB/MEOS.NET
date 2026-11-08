@@ -20,6 +20,25 @@ namespace MEOS.NET.Types
         public static string? Compression(uint pcid)
             => Meos.MeosPcSchemaCompression(pcid);
 
+        public static Pcschema? FromDims(uint pcid, int srid, string compression, PCDimensionSpec[] dims)
+        {
+            var _dimsStrings = new List<IntPtr>();
+            IntPtr _dims = PCDimensionSpec.ToBlock(dims, _dimsStrings);
+
+            try
+            {
+                return MEOSFactory.WrapPcschema(Meos.MeosPcSchemaFromDims(pcid, srid, compression, _dims, dims.Length));
+            }
+            finally
+            {
+                foreach (IntPtr _string in _dimsStrings)
+                {
+                    Marshal.FreeCoTaskMem(_string);
+                }
+                Marshal.FreeHGlobal(_dims);
+            }
+        }
+
         public static Pcschema? Get(uint pcid)
             => MEOSFactory.WrapPcschema(Meos.MeosPcSchema(pcid));
 
@@ -28,6 +47,25 @@ namespace MEOS.NET.Types
 
         public static void Register(uint pcid, Pcschema schema)
             => Meos.MeosPcSchemaRegister(pcid, schema.Ptr);
+
+        public static bool RegisterDims(uint pcid, int srid, string compression, PCDimensionSpec[] dims)
+        {
+            var _dimsStrings = new List<IntPtr>();
+            IntPtr _dims = PCDimensionSpec.ToBlock(dims, _dimsStrings);
+
+            try
+            {
+                return Meos.MeosPcSchemaRegisterDims(pcid, srid, compression, _dims, dims.Length);
+            }
+            finally
+            {
+                foreach (IntPtr _string in _dimsStrings)
+                {
+                    Marshal.FreeCoTaskMem(_string);
+                }
+                Marshal.FreeHGlobal(_dims);
+            }
+        }
 
         public static void RegisterXml(uint pcid, Pcschema schema, string xml_text)
             => Meos.MeosPcSchemaRegisterXml(pcid, schema.Ptr, xml_text);

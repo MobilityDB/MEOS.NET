@@ -383,6 +383,9 @@ namespace MEOS.NET.Types
         public Temporal? Tdisjoint(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TdisjointGeoTcbuffer(this.Ptr, temp.Ptr));
 
+        public Temporal? Tdisjoint(TRGeometry temp)
+            => MEOSFactory.WrapTemporal(Meos.TdisjointGeoTrgeometry(this.Ptr, temp.Ptr));
+
         public Temporal? Tdisjoint(TGeomPoint temp)
             => MEOSFactory.WrapTemporal(Meos.TdisjointGeoTgeo(this.Ptr, temp.Ptr));
 
@@ -412,6 +415,9 @@ namespace MEOS.NET.Types
 
         public Temporal? Tintersects(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TintersectsGeoTcbuffer(this.Ptr, temp.Ptr));
+
+        public Temporal? Tintersects(TRGeometry temp)
+            => MEOSFactory.WrapTemporal(Meos.TintersectsGeoTrgeometry(this.Ptr, temp.Ptr));
 
         public Temporal? Tintersects(TGeomPoint temp)
             => MEOSFactory.WrapTemporal(Meos.TintersectsGeoTgeo(this.Ptr, temp.Ptr));

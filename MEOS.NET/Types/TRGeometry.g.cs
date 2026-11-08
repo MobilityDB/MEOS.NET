@@ -400,6 +400,12 @@ namespace MEOS.NET.Types
         public STBox?[] Stboxes()
             => MEOSFactory.WrapSTBoxArray(Meos.TrgeometryStboxes(this.Ptr));
 
+        public Temporal? Tdisjoint(Geometry gs)
+            => MEOSFactory.WrapTemporal(Meos.TdisjointTrgeometryGeo(this.Ptr, gs.Ptr));
+
+        public Temporal? Tdisjoint(TRGeometry temp2)
+            => MEOSFactory.WrapTemporal(Meos.TdisjointTrgeometryTrgeometry(this.Ptr, temp2.Ptr));
+
         public Temporal? Tdistance(Geometry gs)
             => MEOSFactory.WrapTemporal(Meos.TdistanceTrgeometryGeo(this.Ptr, gs.Ptr));
 
@@ -434,6 +440,12 @@ namespace MEOS.NET.Types
                 Marshal.FreeHGlobal(_duration);
             }
         }
+
+        public Temporal? Tintersects(Geometry gs)
+            => MEOSFactory.WrapTemporal(Meos.TintersectsTrgeometryGeo(this.Ptr, gs.Ptr));
+
+        public Temporal? Tintersects(TRGeometry temp2)
+            => MEOSFactory.WrapTemporal(Meos.TintersectsTrgeometryTrgeometry(this.Ptr, temp2.Ptr));
 
         public Temporal? Tne(Geometry gs)
             => MEOSFactory.WrapTemporal(Meos.TneTrgeometryGeo(this.Ptr, gs.Ptr));

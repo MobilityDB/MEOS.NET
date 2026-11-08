@@ -10,14 +10,14 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `869ec432a2b12aa3755c909ca94a6512918c6bd8` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `827adf5d7055f47f4e918544314a50e4c3856bba` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
 
 ## The flat surface — `tools/codegen.py`
 
-### parameter nullability — 4346
+### parameter nullability — 4352
 
 `shape.nullable` names the parameters a function accepts NULL for, and the catalog carries no field saying a parameter is required. A pointer parameter named in neither reaches the surface with its contract unstated: the wrapper takes it, and nothing says whether zero is an argument or a fault.
 
@@ -2833,12 +2833,15 @@ and `tools/objectgen.py`.  Do not edit.
 | tdisjoint_cbuffer_tcbuffer | cb, temp |
 | tdisjoint_geo_tcbuffer | gs, temp |
 | tdisjoint_geo_tgeo | gs, temp |
+| tdisjoint_geo_trgeometry | gs, temp |
 | tdisjoint_tcbuffer_cbuffer | temp, cb |
 | tdisjoint_tcbuffer_geo | temp, gs |
 | tdisjoint_tcbuffer_tcbuffer | temp1, temp2 |
 | tdisjoint_tgeo_geo | temp, gs |
 | tdisjoint_tgeo_tgeo | temp1, temp2 |
 | tdisjoint_tgeoarr_tgeoarr | arr1, arr2, count, periods |
+| tdisjoint_trgeometry_geo | temp, gs |
+| tdisjoint_trgeometry_trgeometry | temp1, temp2 |
 | tdistance_tcbuffer_cbuffer | temp, cb |
 | tdistance_tcbuffer_geo | temp, gs |
 | tdistance_tcbuffer_tcbuffer | temp1, temp2 |
@@ -3475,12 +3478,15 @@ and `tools/objectgen.py`.  Do not edit.
 | tintersects_cbuffer_tcbuffer | cb, temp |
 | tintersects_geo_tcbuffer | gs, temp |
 | tintersects_geo_tgeo | gs, temp |
+| tintersects_geo_trgeometry | gs, temp |
 | tintersects_tcbuffer_cbuffer | temp, cb |
 | tintersects_tcbuffer_geo | temp, gs |
 | tintersects_tcbuffer_tcbuffer | temp1, temp2 |
 | tintersects_tgeo_geo | temp, gs |
 | tintersects_tgeo_tgeo | temp1, temp2 |
 | tintersects_tgeoarr_tgeoarr | arr1, arr2, count, periods |
+| tintersects_trgeometry_geo | temp, gs |
+| tintersects_trgeometry_trgeometry | temp1, temp2 |
 | tintinst_from_mfjson | mfjson |
 | tintinst_in | str |
 | tintseq_from_base_tstzset | s |
@@ -4438,14 +4444,11 @@ The function answers a type no class stands for and no scalar, value struct or a
 | --- | --- | --- |
 | TPoint | asMVTGeom | return bool needs wrapping |
 
-### argument needs a class — 2
+### argument needs a class — 0
 
 The function takes a type no class stands for and no marshalling rule reads, so there is nothing for a caller to pass.
 
-| class | member | what is missing |
-| --- | --- | --- |
-| Pcschema | fromDims | argument dims is an array of PCDimensionSpec, which has no class |
-| Pcschema | registerDims | argument dims is an array of PCDimensionSpec, which has no class |
+None in this run.
 
 ### overloads of one C# signature — 0
 

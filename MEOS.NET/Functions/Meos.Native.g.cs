@@ -5103,6 +5103,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "meostype_name", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr MeostypeName(int type);
 
+            [LibraryImport(DllPath, EntryPoint = "meostype_camel_name", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr MeostypeCamelName(int type);
+
             [LibraryImport(DllPath, EntryPoint = "meostype_from_string", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int MeostypeFromString(string name);
 
@@ -14416,6 +14419,24 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "shortestline_trgeometry_trgeometry", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr ShortestlineTrgeometryTrgeometry(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, EntryPoint = "tdisjoint_geo_trgeometry", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TdisjointGeoTrgeometry(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "tdisjoint_trgeometry_geo", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TdisjointTrgeometryGeo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, EntryPoint = "tdisjoint_trgeometry_trgeometry", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TdisjointTrgeometryTrgeometry(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, EntryPoint = "tintersects_geo_trgeometry", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TintersectsGeoTrgeometry(IntPtr gs, IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "tintersects_trgeometry_geo", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TintersectsTrgeometryGeo(IntPtr temp, IntPtr gs);
+
+            [LibraryImport(DllPath, EntryPoint = "tintersects_trgeometry_trgeometry", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TintersectsTrgeometryTrgeometry(IntPtr temp1, IntPtr temp2);
 
             [LibraryImport(DllPath, EntryPoint = "tdwithin_geo_trgeometry", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TdwithinGeoTrgeometry(IntPtr gs, IntPtr temp, double dist);
