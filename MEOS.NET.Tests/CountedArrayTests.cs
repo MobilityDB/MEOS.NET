@@ -30,6 +30,41 @@ namespace MEOS.NET.Tests
         }
 
         [TestMethod]
+        public void ASpanSetIsMadeOfItsSpans()
+        {
+            // spanset_make reads its spans as Span values one after another, not
+            // as pointers to them.
+            Span[] spans =
+            [
+                FloatSpan.In("[1.0, 2.0]")!,
+                FloatSpan.In("[3.0, 4.0]")!,
+            ];
+
+            SpanSet set = SpanSet.Make(spans)!;
+
+            Assert.IsInstanceOfType(set, typeof(FloatSpanSet));
+            Assert.AreEqual("{[1, 2], [3, 4]}", set.ToString());
+        }
+
+        [TestMethod]
+        public void ACbufferSetIsMadeOfItsCircularBuffers()
+        {
+            // cbufferset_make reads its buffers as Cbuffer values one after
+            // another.
+            Cbuffer[] values =
+            [
+                Cbuffer.In("Cbuffer(Point(1 1),0.5)")!,
+                Cbuffer.In("Cbuffer(Point(2 2),1.5)")!,
+            ];
+
+            Set set = CbufferSet.Make(values)!;
+
+            Assert.AreEqual(2, set.NumValues());
+            Assert.AreEqual(
+                "{\"Cbuffer(POINT(1 1),0.5)\", \"Cbuffer(POINT(2 2),1.5)\"}", set.ToString());
+        }
+
+        [TestMethod]
         public void MergingAnArrayOfTemporalValuesJoinsThem()
         {
             Temporal[] parts =

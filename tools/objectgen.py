@@ -347,7 +347,8 @@ class Method:
                  structs: list[tuple[str, str]] | None = None,
                  scalar_arrays: list[str] | None = None,
                  length_out: str | None = None, byte_buffer: bool = False,
-                 parallel: list[list[str]] | None = None):
+                 parallel: list[list[str]] | None = None,
+                 contiguous: list[tuple[str, int]] | None = None):
         self.name = name
         self.ret = ret
         self.params = params
@@ -368,11 +369,14 @@ class Method:
         self.byte_buffer = byte_buffer
         # Arrays the catalog counts once, so the method reads them in step.
         self.parallel = parallel or []
+        # (parameter name, bytes per element) for each array MEOS reads as
+        # struct values one after another, gathered from the caller's handles.
+        self.contiguous = contiguous or []
 
     def needs_a_body(self) -> bool:
         """Whether the call needs anything allocated, pinned or read around it."""
         return bool(self.structs or self.arrays or self.scalar_arrays
-                    or self.out_params or self.length_out or self.parallel
+                    or self.contiguous or self.out_params or self.length_out or self.parallel
                     or (self.ret.startswith("(") and self.ret.endswith(")")))
 
 
@@ -750,6 +754,7 @@ class Generator:
         sig: list[tuple[str, str]] = []
         arrays: list[tuple[str, str]] = []
         scalar_arrays: list[str] = []
+        contiguous: list[tuple[str, int]] = []
         structs: list[tuple[str, str]] = []
         for cs_type, pname in params:
             if any(pname == n for n, _r in result_outs):
@@ -769,6 +774,19 @@ class Generator:
                     sig.append((f"{element}[]", pname))
                     arrays.append((pname, element))
                     args.append(f"{scratch(pname)}.AddrOfPinnedObject()")
+                    continue
+                # An element that is a struct VALUE rather than a pointer to one
+                # — `spanset_make(Span *spans, int count)` — is an array MEOS
+                # reads at the struct's own stride, the size codegen.py walks a
+                # returned array of it by (#struct_layout). Each element is the
+                # value the caller's handle points at, so its bytes are gathered
+                # one after another.
+                value = self.m.class_for_ctype(f"{pointee} *")
+                stride = self.struct_stride(pointee)
+                if value is not None and stride:
+                    sig.append((f"{value}[]", pname))
+                    contiguous.append((pname, stride))
+                    args.append(scratch(pname))
                     continue
                 # A scalar element is the array itself: the values need no
                 # gathering, so what is pinned is the caller's own array.
@@ -816,7 +834,19 @@ class Generator:
         return Method(pascal(oo), ret_type, sig, body, static,
                       arrays, outs, structs, scalar_arrays, length_out,
                       ret_type == "byte[]?",
-                      [names for names in count_of.values() if len(names) > 1])
+                      [names for names in count_of.values() if len(names) > 1],
+                      contiguous)
+
+    def struct_stride(self, c_type: str) -> int | None:
+        """The bytes one value of a catalog struct takes in an array of them,
+        as codegen.py lays it out (#struct_layout), or None for no struct."""
+        try:
+            base = codegen.resolve(c_type, "array element")
+        except codegen.UnmappedType:
+            return None
+        if base not in codegen.STRUCTS:
+            return None
+        return codegen.struct_layout(base)[0]
 
     def operator_methods(self, cls: str, methods: list[Method]) -> list[Method]:
         """The operators the model assigns the class (`classes.<C>.operators`,
@@ -1037,6 +1067,23 @@ class Generator:
             before.append(
                 f"                Marshal.StructureToPtr({ident(name)}, "
                 f"{scratch(name)}, false);")
+            teardown.append(f"                Marshal.FreeHGlobal({scratch(name)});")
+        for name, size in method.contiguous:
+            # The values are copied out of the caller's handles into one block
+            # MEOS reads in step; MEOS copies what it keeps, so the block goes
+            # with the call.
+            setup += [
+                f"            IntPtr {scratch(name)} = "
+                f"Marshal.AllocHGlobal({size} * Math.Max({ident(name)}.Length, 1));",
+                f"            byte[] {scratch(name)}Value = new byte[{size}];",
+                f"            for (int i = 0; i < {ident(name)}.Length; i++)",
+                "            {",
+                f"                Marshal.Copy({ident(name)}[i].Ptr, {scratch(name)}Value, 0, {size});",
+                f"                Marshal.Copy({scratch(name)}Value, 0, "
+                f"IntPtr.Add({scratch(name)}, i * {size}), {size});",
+                "            }",
+                "",
+            ]
             teardown.append(f"                Marshal.FreeHGlobal({scratch(name)});")
         for name in method.scalar_arrays:
             setup.append(

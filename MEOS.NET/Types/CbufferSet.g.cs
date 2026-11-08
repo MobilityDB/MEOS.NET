@@ -96,5 +96,25 @@ namespace MEOS.NET.Types
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.CbuffersetIn(str));
 
+        public static Set? Make(Cbuffer[] values)
+        {
+            IntPtr _values = Marshal.AllocHGlobal(32 * Math.Max(values.Length, 1));
+            byte[] _valuesValue = new byte[32];
+            for (int i = 0; i < values.Length; i++)
+            {
+                Marshal.Copy(values[i].Ptr, _valuesValue, 0, 32);
+                Marshal.Copy(_valuesValue, 0, IntPtr.Add(_values, i * 32), 32);
+            }
+
+            try
+            {
+                return MEOSFactory.WrapSet(Meos.CbuffersetMake(_values, values.Length));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_values);
+            }
+        }
+
     }
 }

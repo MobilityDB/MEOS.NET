@@ -4419,17 +4419,14 @@ The function answers a type no class stands for and no scalar, value struct or a
 | Raster | pixelAsPoints | return Pixel * needs wrapping |
 | TPoint | asMVTGeom | return bool needs wrapping |
 
-### argument needs a class — 5
+### argument needs a class — 2
 
 The function takes a type no class stands for and no marshalling rule reads, so there is nothing for a caller to pass.
 
 | class | member | what is missing |
 | --- | --- | --- |
-| CbufferSet | make | argument values is an array of Cbuffer, which has no class |
-| NpointSet | make | argument values is an array of Npoint, which has no class |
 | Pcschema | fromDims | argument dims of type PCDimensionSpec * needs marshalling |
 | Pcschema | registerDims | argument dims of type PCDimensionSpec * needs marshalling |
-| SpanSet | make | argument spans is an array of Span, which has no class |
 
 ### overloads of one C# signature — 0
 

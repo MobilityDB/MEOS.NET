@@ -210,5 +210,25 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static SpanSet? Make(Span[] spans)
+        {
+            IntPtr _spans = Marshal.AllocHGlobal(24 * Math.Max(spans.Length, 1));
+            byte[] _spansValue = new byte[24];
+            for (int i = 0; i < spans.Length; i++)
+            {
+                Marshal.Copy(spans[i].Ptr, _spansValue, 0, 24);
+                Marshal.Copy(_spansValue, 0, IntPtr.Add(_spans, i * 24), 24);
+            }
+
+            try
+            {
+                return MEOSFactory.WrapSpanSet(Meos.SpansetMake(_spans, spans.Length));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_spans);
+            }
+        }
+
     }
 }
