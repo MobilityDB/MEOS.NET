@@ -8,11 +8,11 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>A raster tile. A MeosType no membership predicate admits, as Nsegment is.</summary>
+    /// <summary>A raster tile. A MeosType no membership predicate admits, as NSegment is.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class Raquet : Value
+    public class RaQuet : Value
     {
-        internal Raquet(IntPtr ptr) : base(ptr) { }
+        internal RaQuet(IntPtr ptr) : base(ptr) { }
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
@@ -69,19 +69,19 @@ namespace MEOS.NET.Types
         public string BandPixelType()
             => Meos.RaquetBandPixelType(this.Ptr);
 
-        public int Cmp(Raquet rq2)
+        public int Cmp(RaQuet rq2)
             => Meos.RaquetCmp(this.Ptr, rq2.Ptr);
 
-        public Raquet? Copy()
-            => MEOSFactory.WrapRaquet(Meos.RaquetCopy(this.Ptr));
+        public RaQuet? Copy()
+            => MEOSFactory.WrapRaQuet(Meos.RaquetCopy(this.Ptr));
 
-        public bool Eq(Raquet rq2)
+        public bool Eq(RaQuet rq2)
             => Meos.RaquetEq(this.Ptr, rq2.Ptr);
 
-        public bool Ge(Raquet rq2)
+        public bool Ge(RaQuet rq2)
             => Meos.RaquetGe(this.Ptr, rq2.Ptr);
 
-        public bool Gt(Raquet rq2)
+        public bool Gt(RaQuet rq2)
             => Meos.RaquetGt(this.Ptr, rq2.Ptr);
 
         public uint Hash()
@@ -93,16 +93,16 @@ namespace MEOS.NET.Types
         public int Height()
             => Meos.RaquetHeight(this.Ptr);
 
-        public bool Le(Raquet rq2)
+        public bool Le(RaQuet rq2)
             => Meos.RaquetLe(this.Ptr, rq2.Ptr);
 
-        public bool Lt(Raquet rq2)
+        public bool Lt(RaQuet rq2)
             => Meos.RaquetLt(this.Ptr, rq2.Ptr);
 
         public int MemSize()
             => Meos.RaquetMemSize(this.Ptr);
 
-        public bool Ne(Raquet rq2)
+        public bool Ne(RaQuet rq2)
             => Meos.RaquetNe(this.Ptr, rq2.Ptr);
 
         public string Out()
@@ -138,18 +138,18 @@ namespace MEOS.NET.Types
         public int Width()
             => Meos.RaquetWidth(this.Ptr);
 
-        public static Raquet? FromHexWKB(string hexwkb)
-            => MEOSFactory.WrapRaquet(Meos.RaquetFromHexwkb(hexwkb));
+        public static RaQuet? FromHexWKB(string hexwkb)
+            => MEOSFactory.WrapRaQuet(Meos.RaquetFromHexwkb(hexwkb));
 
-        public static Raquet? FromText(string str)
-            => Raquet.In(str);
+        public static RaQuet? FromText(string str)
+            => RaQuet.In(str);
 
-        public static Raquet? FromWKB(byte[] wkb)
+        public static RaQuet? FromWKB(byte[] wkb)
         {
             GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapRaquet(Meos.RaquetFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+                return MEOSFactory.WrapRaQuet(Meos.RaquetFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
             }
             finally
             {
@@ -157,15 +157,15 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static Raquet? In(string str)
-            => MEOSFactory.WrapRaquet(Meos.RaquetIn(str));
+        public static RaQuet? In(string str)
+            => MEOSFactory.WrapRaQuet(Meos.RaquetIn(str));
 
-        public static Raquet? Make(ulong quadbin, int width, int height, MeosPixType pixtype, double nodata, bool has_nodata, byte[] pixels)
+        public static RaQuet? Make(ulong quadbin, int width, int height, MeosPixType pixtype, double nodata, bool has_nodata, byte[] pixels)
         {
             GCHandle _pixels = GCHandle.Alloc(pixels, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapRaquet(Meos.RaquetMake(quadbin, width, height, (int) pixtype, nodata, has_nodata, _pixels.AddrOfPinnedObject(), (ulong) pixels.Length));
+                return MEOSFactory.WrapRaQuet(Meos.RaquetMake(quadbin, width, height, (int) pixtype, nodata, has_nodata, _pixels.AddrOfPinnedObject(), (ulong) pixels.Length));
             }
             finally
             {
@@ -179,15 +179,15 @@ namespace MEOS.NET.Types
         public static ulong PixtypeSize(MeosPixType pixtype)
             => Meos.RaquetPixtypeSize((int) pixtype);
 
-        public static Raquet? Read(string path, ulong quadbin)
-            => MEOSFactory.WrapRaquet(Meos.RaquetRead(path, quadbin));
+        public static RaQuet? Read(string path, ulong quadbin)
+            => MEOSFactory.WrapRaQuet(Meos.RaquetRead(path, quadbin));
 
-        public static Raquet? ReadBytes(byte[] data, ulong quadbin)
+        public static RaQuet? ReadBytes(byte[] data, ulong quadbin)
         {
             GCHandle _data = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapRaquet(Meos.RaquetReadBytes(_data.AddrOfPinnedObject(), (ulong) data.Length, quadbin));
+                return MEOSFactory.WrapRaQuet(Meos.RaquetReadBytes(_data.AddrOfPinnedObject(), (ulong) data.Length, quadbin));
             }
             finally
             {

@@ -8,16 +8,16 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>A TPcpatch of subtype TSequence.</summary>
+    /// <summary>A TPCPatch of subtype TSequence.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class TPcpatchSeq : TPcpatch
+    public class TPCPatchSeq : TPCPatch
     {
-        internal TPcpatchSeq(IntPtr ptr) : base(ptr) { }
+        internal TPCPatchSeq(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? FromBaseTstzset(Pcpatch pa, Set s)
+        public static Temporal? FromBaseTstzset(PCPatch pa, Set s)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchseqFromBaseTstzset(pa.Ptr, s.Ptr));
 
-        public static Temporal? FromBaseTstzspan(Pcpatch pa, Span sp)
+        public static Temporal? FromBaseTstzspan(PCPatch pa, Span sp)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchseqFromBaseTstzspan(pa.Ptr, sp.Ptr));
 
     }

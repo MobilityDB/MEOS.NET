@@ -26,7 +26,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ACircularBufferPrintsItsCentreAsWkt()
         {
-            Cbuffer cbuffer = Cbuffer.FromText("Cbuffer(Point(1 1),0.5)")!;
+            CBuffer cbuffer = CBuffer.FromText("Cbuffer(Point(1 1),0.5)")!;
 
             Assert.AreEqual("Cbuffer(POINT(1 1),0.5)", cbuffer.ToString());
         }

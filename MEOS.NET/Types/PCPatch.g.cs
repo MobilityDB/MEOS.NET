@@ -8,20 +8,20 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>The Pcpatch class of the MEOS object model.</summary>
+    /// <summary>The PCPatch class of the MEOS object model.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class Pcpatch : Value
+    public class PCPatch : Value
     {
-        internal Pcpatch(IntPtr ptr) : base(ptr) { }
+        internal PCPatch(IntPtr ptr) : base(ptr) { }
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
             => this.HexOut(15);
 
-        public int AlwaysEq(TPcpatch temp)
+        public int AlwaysEq(TPCPatch temp)
             => Meos.AlwaysEqPcpatchTpcpatch(this.Ptr, temp.Ptr);
 
-        public int AlwaysNe(TPcpatch temp)
+        public int AlwaysNe(TPCPatch temp)
             => Meos.AlwaysNePcpatchTpcpatch(this.Ptr, temp.Ptr);
 
         public string AsHexWKB()
@@ -30,31 +30,31 @@ namespace MEOS.NET.Types
         public string AsText(int maxdd)
             => this.HexOut(maxdd);
 
-        public int Cmp(Pcpatch pa2)
+        public int Cmp(PCPatch pa2)
             => Meos.PcpatchCmp(this.Ptr, pa2.Ptr);
 
-        public bool Contained(PcpatchSet s)
+        public bool Contained(PCPatchSet s)
             => Meos.ContainedPcpatchSet(this.Ptr, s.Ptr);
 
-        public Pcpatch? Copy()
-            => MEOSFactory.WrapPcpatch(Meos.PcpatchCopy(this.Ptr));
+        public PCPatch? Copy()
+            => MEOSFactory.WrapPCPatch(Meos.PcpatchCopy(this.Ptr));
 
-        public bool Eq(Pcpatch pa2)
+        public bool Eq(PCPatch pa2)
             => Meos.PcpatchEq(this.Ptr, pa2.Ptr);
 
-        public int EverEq(TPcpatch temp)
+        public int EverEq(TPCPatch temp)
             => Meos.EverEqPcpatchTpcpatch(this.Ptr, temp.Ptr);
 
-        public int EverNe(TPcpatch temp)
+        public int EverNe(TPCPatch temp)
             => Meos.EverNePcpatchTpcpatch(this.Ptr, temp.Ptr);
 
-        public bool Ge(Pcpatch pa2)
+        public bool Ge(PCPatch pa2)
             => Meos.PcpatchGe(this.Ptr, pa2.Ptr);
 
         public uint GetPcid()
             => Meos.PcpatchGetPcid(this.Ptr);
 
-        public bool Gt(Pcpatch pa2)
+        public bool Gt(PCPatch pa2)
             => Meos.PcpatchGt(this.Ptr, pa2.Ptr);
 
         public uint Hash()
@@ -66,38 +66,41 @@ namespace MEOS.NET.Types
         public string HexOut(int maxdd)
             => Meos.PcpatchHexOut(this.Ptr, maxdd);
 
-        public Set? Intersection(PcpatchSet s)
+        public Set? Intersection(PCPatchSet s)
             => MEOSFactory.WrapSet(Meos.IntersectionPcpatchSet(this.Ptr, s.Ptr));
 
-        public bool Le(Pcpatch pa2)
+        public bool Le(PCPatch pa2)
             => Meos.PcpatchLe(this.Ptr, pa2.Ptr);
 
-        public bool Lt(Pcpatch pa2)
+        public bool Lt(PCPatch pa2)
             => Meos.PcpatchLt(this.Ptr, pa2.Ptr);
 
         public int MemSize()
             => Meos.PcpatchMemSize(this.Ptr);
 
-        public Set? Minus(PcpatchSet s)
+        public Set? Minus(PCPatchSet s)
             => MEOSFactory.WrapSet(Meos.MinusPcpatchSet(this.Ptr, s.Ptr));
 
-        public bool Ne(Pcpatch pa2)
+        public bool Ne(PCPatch pa2)
             => Meos.PcpatchNe(this.Ptr, pa2.Ptr);
 
         public uint Npoints()
             => Meos.PcpatchNpoints(this.Ptr);
 
-        public Pcpoint? PointN(int n)
-            => MEOSFactory.WrapPcpoint(Meos.PcpatchPointN(this.Ptr, n));
+        public PCPoint? PointN(int n)
+            => MEOSFactory.WrapPCPoint(Meos.PcpatchPointN(this.Ptr, n));
 
-        public Pcpoint?[] Points()
-            => MEOSFactory.WrapPcpointArray(Meos.PcpatchPoints(this.Ptr));
+        public PCPoint?[] Points()
+            => MEOSFactory.WrapPCPointArray(Meos.PcpatchPoints(this.Ptr));
 
-        public Temporal? Teq(TPcpatch temp)
+        public Temporal? Teq(TPCPatch temp)
             => MEOSFactory.WrapTemporal(Meos.TeqPcpatchTpcpatch(this.Ptr, temp.Ptr));
 
-        public Temporal? Tne(TPcpatch temp)
+        public Temporal? Tne(TPCPatch temp)
             => MEOSFactory.WrapTemporal(Meos.TnePcpatchTpcpatch(this.Ptr, temp.Ptr));
+
+        public Geo? ToGeog()
+            => MEOSFactory.WrapGeo(Meos.PcpatchToGeog(this.Ptr));
 
         public Geo? ToGeom()
             => MEOSFactory.WrapGeo(Meos.PcpatchToGeom(this.Ptr));
@@ -108,19 +111,19 @@ namespace MEOS.NET.Types
         public TPCBox? ToTpcbox()
             => MEOSFactory.WrapTPCBox(Meos.PcpatchToTpcbox(this.Ptr));
 
-        public Set? Union(PcpatchSet s)
+        public Set? Union(PCPatchSet s)
             => MEOSFactory.WrapSet(Meos.UnionPcpatchSet(this.Ptr, s.Ptr));
 
-        public static Pcpatch? FromHexWKB(string hexwkb)
-            => MEOSFactory.WrapPcpatch(Meos.PcpatchFromHexwkb(hexwkb));
+        public static PCPatch? FromHexWKB(string hexwkb)
+            => MEOSFactory.WrapPCPatch(Meos.PcpatchFromHexwkb(hexwkb));
 
-        public static Pcpatch? FromText(string str)
-            => Pcpatch.HexIn(str);
+        public static PCPatch? FromText(string str)
+            => PCPatch.HexIn(str);
 
-        public static Pcpatch? HexIn(string str)
-            => MEOSFactory.WrapPcpatch(Meos.PcpatchHexIn(str));
+        public static PCPatch? HexIn(string str)
+            => MEOSFactory.WrapPCPatch(Meos.PcpatchHexIn(str));
 
-        public static Pcpatch? Make(Pcpoint[] points)
+        public static PCPatch? Make(PCPoint[] points)
         {
             IntPtr[] _pointsValues = new IntPtr[points.Length];
             for (int i = 0; i < points.Length; i++)
@@ -131,7 +134,7 @@ namespace MEOS.NET.Types
             GCHandle _points = GCHandle.Alloc(_pointsValues, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapPcpatch(Meos.PcpatchMake(_points.AddrOfPinnedObject(), points.Length));
+                return MEOSFactory.WrapPCPatch(Meos.PcpatchMake(_points.AddrOfPinnedObject(), points.Length));
             }
             finally
             {
@@ -139,12 +142,12 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static Pcpatch? MakeCoords(uint pcid, double[] values)
+        public static PCPatch? MakeCoords(uint pcid, double[] values)
         {
             GCHandle _values = GCHandle.Alloc(values, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapPcpatch(Meos.PcpatchMakeCoords(pcid, _values.AddrOfPinnedObject(), values.Length));
+                return MEOSFactory.WrapPCPatch(Meos.PcpatchMakeCoords(pcid, _values.AddrOfPinnedObject(), values.Length));
             }
             finally
             {

@@ -8,56 +8,56 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>The PcpointSet class of the MEOS object model.</summary>
+    /// <summary>The PCPointSet class of the MEOS object model.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class PcpointSet : SpatialSet
+    public class PCPointSet : SpatialSet
     {
-        internal PcpointSet(IntPtr ptr) : base(ptr) { }
+        internal PCPointSet(IntPtr ptr) : base(ptr) { }
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
             => this.AsText(15);
 
-        public bool Contained(PcpointSet s2)
+        public bool Contained(PCPointSet s2)
             => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
 
-        public bool Contains(Pcpoint pt)
+        public bool Contains(PCPoint pt)
             => Meos.ContainsSetPcpoint(this.Ptr, pt.Ptr);
 
-        public bool Contains(PcpointSet s2)
+        public bool Contains(PCPointSet s2)
             => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
-        public Pcpoint? EndValue()
-            => MEOSFactory.WrapPcpoint(Meos.PcpointsetEndValue(this.Ptr));
+        public PCPoint? EndValue()
+            => MEOSFactory.WrapPCPoint(Meos.PcpointsetEndValue(this.Ptr));
 
-        public Set? Intersection(Pcpoint pt)
+        public Set? Intersection(PCPoint pt)
             => MEOSFactory.WrapSet(Meos.IntersectionSetPcpoint(this.Ptr, pt.Ptr));
 
-        public Set? Intersection(PcpointSet s2)
+        public Set? Intersection(PCPointSet s2)
             => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
 
-        public Set? Minus(Pcpoint pt)
+        public Set? Minus(PCPoint pt)
             => MEOSFactory.WrapSet(Meos.MinusSetPcpoint(this.Ptr, pt.Ptr));
 
-        public Set? Minus(PcpointSet s2)
+        public Set? Minus(PCPointSet s2)
             => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
 
         public new string Out(int maxdd)
             => Meos.PcpointsetOut(this.Ptr, maxdd);
 
-        public bool Overlaps(PcpointSet s2)
+        public bool Overlaps(PCPointSet s2)
             => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
-        public Pcpoint? StartValue()
-            => MEOSFactory.WrapPcpoint(Meos.PcpointsetStartValue(this.Ptr));
+        public PCPoint? StartValue()
+            => MEOSFactory.WrapPCPoint(Meos.PcpointsetStartValue(this.Ptr));
 
-        public Set? Union(Pcpoint pt)
+        public Set? Union(PCPoint pt)
             => MEOSFactory.WrapSet(Meos.UnionSetPcpoint(this.Ptr, pt.Ptr));
 
-        public Set? Union(PcpointSet s2)
+        public Set? Union(PCPointSet s2)
             => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
-        public Pcpoint? ValueN(int n)
+        public PCPoint? ValueN(int n)
         {
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
@@ -67,7 +67,7 @@ namespace MEOS.NET.Types
                     return null;
                 }
 
-                return MEOSFactory.WrapPcpoint(Marshal.ReadIntPtr(_result));
+                return MEOSFactory.WrapPCPoint(Marshal.ReadIntPtr(_result));
             }
             finally
             {
@@ -75,25 +75,25 @@ namespace MEOS.NET.Types
             }
         }
 
-        public Pcpoint?[] Values()
-            => MEOSFactory.WrapPcpointArray(Meos.PcpointsetValues(this.Ptr));
+        public PCPoint?[] Values()
+            => MEOSFactory.WrapPCPointArray(Meos.PcpointsetValues(this.Ptr));
 
         public static Set? FromEWKB(byte[] wkb)
             => Set.FromWKB(wkb);
 
         public static Set? FromEWKT(string str)
-            => PcpointSet.In(str);
+            => PCPointSet.In(str);
 
         public static Set? FromHexEWKB(string hexwkb)
             => Set.FromHexWKB(hexwkb);
 
         public static Set? FromText(string str)
-            => PcpointSet.In(str);
+            => PCPointSet.In(str);
 
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.PcpointsetIn(str));
 
-        public static Set? Make(Pcpoint[] values)
+        public static Set? Make(PCPoint[] values)
         {
             IntPtr[] _valuesValues = new IntPtr[values.Length];
             for (int i = 0; i < values.Length; i++)

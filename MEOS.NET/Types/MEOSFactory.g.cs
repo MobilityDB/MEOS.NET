@@ -17,25 +17,25 @@ namespace MEOS.NET.Types
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
     public static class MEOSFactory
     {
-        /// <summary>The value at <paramref name="ptr"/> as the Cbuffer
+        /// <summary>The value at <paramref name="ptr"/> as the CBuffer
         /// class the model gives its runtime type.</summary>
-        public static Cbuffer? WrapCbuffer(IntPtr ptr)
+        public static CBuffer? WrapCBuffer(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
             {
                 return null;
             }
 
-            return new Cbuffer(ptr);
+            return new CBuffer(ptr);
         }
 
-        /// <summary>Every element of a C array of Cbuffer pointers, wrapped.</summary>
-        public static Cbuffer?[] WrapCbufferArray(IntPtr[] ptrs)
+        /// <summary>Every element of a C array of CBuffer pointers, wrapped.</summary>
+        public static CBuffer?[] WrapCBufferArray(IntPtr[] ptrs)
         {
-            Cbuffer?[] wrapped = new Cbuffer?[ptrs.Length];
+            CBuffer?[] wrapped = new CBuffer?[ptrs.Length];
             for (int i = 0; i < ptrs.Length; i++)
             {
-                wrapped[i] = WrapCbuffer(ptrs[i]);
+                wrapped[i] = WrapCBuffer(ptrs[i]);
             }
 
             return wrapped;
@@ -137,49 +137,49 @@ namespace MEOS.NET.Types
             return wrapped;
         }
 
-        /// <summary>The value at <paramref name="ptr"/> as the Npoint
+        /// <summary>The value at <paramref name="ptr"/> as the NPoint
         /// class the model gives its runtime type.</summary>
-        public static Npoint? WrapNpoint(IntPtr ptr)
+        public static NPoint? WrapNPoint(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
             {
                 return null;
             }
 
-            return new Npoint(ptr);
+            return new NPoint(ptr);
         }
 
-        /// <summary>Every element of a C array of Npoint pointers, wrapped.</summary>
-        public static Npoint?[] WrapNpointArray(IntPtr[] ptrs)
+        /// <summary>Every element of a C array of NPoint pointers, wrapped.</summary>
+        public static NPoint?[] WrapNPointArray(IntPtr[] ptrs)
         {
-            Npoint?[] wrapped = new Npoint?[ptrs.Length];
+            NPoint?[] wrapped = new NPoint?[ptrs.Length];
             for (int i = 0; i < ptrs.Length; i++)
             {
-                wrapped[i] = WrapNpoint(ptrs[i]);
+                wrapped[i] = WrapNPoint(ptrs[i]);
             }
 
             return wrapped;
         }
 
-        /// <summary>The value at <paramref name="ptr"/> as the Nsegment
+        /// <summary>The value at <paramref name="ptr"/> as the NSegment
         /// class the model gives its runtime type.</summary>
-        public static Nsegment? WrapNsegment(IntPtr ptr)
+        public static NSegment? WrapNSegment(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
             {
                 return null;
             }
 
-            return new Nsegment(ptr);
+            return new NSegment(ptr);
         }
 
-        /// <summary>Every element of a C array of Nsegment pointers, wrapped.</summary>
-        public static Nsegment?[] WrapNsegmentArray(IntPtr[] ptrs)
+        /// <summary>Every element of a C array of NSegment pointers, wrapped.</summary>
+        public static NSegment?[] WrapNSegmentArray(IntPtr[] ptrs)
         {
-            Nsegment?[] wrapped = new Nsegment?[ptrs.Length];
+            NSegment?[] wrapped = new NSegment?[ptrs.Length];
             for (int i = 0; i < ptrs.Length; i++)
             {
-                wrapped[i] = WrapNsegment(ptrs[i]);
+                wrapped[i] = WrapNSegment(ptrs[i]);
             }
 
             return wrapped;
@@ -233,49 +233,49 @@ namespace MEOS.NET.Types
             return wrapped;
         }
 
-        /// <summary>The value at <paramref name="ptr"/> as the Pcpatch
+        /// <summary>The value at <paramref name="ptr"/> as the PCPatch
         /// class the model gives its runtime type.</summary>
-        public static Pcpatch? WrapPcpatch(IntPtr ptr)
+        public static PCPatch? WrapPCPatch(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
             {
                 return null;
             }
 
-            return new Pcpatch(ptr);
+            return new PCPatch(ptr);
         }
 
-        /// <summary>Every element of a C array of Pcpatch pointers, wrapped.</summary>
-        public static Pcpatch?[] WrapPcpatchArray(IntPtr[] ptrs)
+        /// <summary>Every element of a C array of PCPatch pointers, wrapped.</summary>
+        public static PCPatch?[] WrapPCPatchArray(IntPtr[] ptrs)
         {
-            Pcpatch?[] wrapped = new Pcpatch?[ptrs.Length];
+            PCPatch?[] wrapped = new PCPatch?[ptrs.Length];
             for (int i = 0; i < ptrs.Length; i++)
             {
-                wrapped[i] = WrapPcpatch(ptrs[i]);
+                wrapped[i] = WrapPCPatch(ptrs[i]);
             }
 
             return wrapped;
         }
 
-        /// <summary>The value at <paramref name="ptr"/> as the Pcpoint
+        /// <summary>The value at <paramref name="ptr"/> as the PCPoint
         /// class the model gives its runtime type.</summary>
-        public static Pcpoint? WrapPcpoint(IntPtr ptr)
+        public static PCPoint? WrapPCPoint(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
             {
                 return null;
             }
 
-            return new Pcpoint(ptr);
+            return new PCPoint(ptr);
         }
 
-        /// <summary>Every element of a C array of Pcpoint pointers, wrapped.</summary>
-        public static Pcpoint?[] WrapPcpointArray(IntPtr[] ptrs)
+        /// <summary>Every element of a C array of PCPoint pointers, wrapped.</summary>
+        public static PCPoint?[] WrapPCPointArray(IntPtr[] ptrs)
         {
-            Pcpoint?[] wrapped = new Pcpoint?[ptrs.Length];
+            PCPoint?[] wrapped = new PCPoint?[ptrs.Length];
             for (int i = 0; i < ptrs.Length; i++)
             {
-                wrapped[i] = WrapPcpoint(ptrs[i]);
+                wrapped[i] = WrapPCPoint(ptrs[i]);
             }
 
             return wrapped;
@@ -377,25 +377,25 @@ namespace MEOS.NET.Types
             return wrapped;
         }
 
-        /// <summary>The value at <paramref name="ptr"/> as the Raquet
+        /// <summary>The value at <paramref name="ptr"/> as the RaQuet
         /// class the model gives its runtime type.</summary>
-        public static Raquet? WrapRaquet(IntPtr ptr)
+        public static RaQuet? WrapRaQuet(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
             {
                 return null;
             }
 
-            return new Raquet(ptr);
+            return new RaQuet(ptr);
         }
 
-        /// <summary>Every element of a C array of Raquet pointers, wrapped.</summary>
-        public static Raquet?[] WrapRaquetArray(IntPtr[] ptrs)
+        /// <summary>Every element of a C array of RaQuet pointers, wrapped.</summary>
+        public static RaQuet?[] WrapRaQuetArray(IntPtr[] ptrs)
         {
-            Raquet?[] wrapped = new Raquet?[ptrs.Length];
+            RaQuet?[] wrapped = new RaQuet?[ptrs.Length];
             for (int i = 0; i < ptrs.Length; i++)
             {
-                wrapped[i] = WrapRaquet(ptrs[i]);
+                wrapped[i] = WrapRaQuet(ptrs[i]);
             }
 
             return wrapped;
@@ -517,14 +517,14 @@ namespace MEOS.NET.Types
                 38 => new TsTzSet(ptr),  // T_TSTZSET
                 43 => new GeomSet(ptr),  // T_GEOMSET
                 45 => new GeogSet(ptr),  // T_GEOGSET
-                49 => new NpointSet(ptr),  // T_NPOINTSET
+                49 => new NPointSet(ptr),  // T_NPOINTSET
                 55 => new PoseSet(ptr),  // T_POSESET
-                58 => new CbufferSet(ptr),  // T_CBUFFERSET
+                58 => new CBufferSet(ptr),  // T_CBUFFERSET
                 65 => new JsonbSet(ptr),  // T_JSONBSET
                 69 => new H3IndexSet(ptr),  // T_H3INDEXSET
                 72 => new QuadbinSet(ptr),  // T_QUADBINSET
-                75 => new PcpointSet(ptr),  // T_PCPOINTSET
-                78 => new PcpatchSet(ptr),  // T_PCPATCHSET
+                75 => new PCPointSet(ptr),  // T_PCPOINTSET
+                78 => new PCPatchSet(ptr),  // T_PCPATCHSET
                 83 => new PoseChainSet(ptr),  // T_POSECHAINSET
                 86 => new S2CellSet(ptr),  // T_S2CELLSET
                 _ => new Set(ptr),
@@ -699,18 +699,18 @@ namespace MEOS.NET.Types
                 41 => WrapTTextSubtype(ptr),  // T_TTEXT
                 46 => WrapTGeomPointSubtype(ptr),  // T_TGEOMPOINT
                 47 => WrapTGeogPointSubtype(ptr),  // T_TGEOGPOINT
-                51 => WrapTNpointSubtype(ptr),  // T_TNPOINT
+                51 => WrapTNPointSubtype(ptr),  // T_TNPOINT
                 56 => WrapTPoseSubtype(ptr),  // T_TPOSE
-                59 => WrapTCbufferSubtype(ptr),  // T_TCBUFFER
+                59 => WrapTCBufferSubtype(ptr),  // T_TCBUFFER
                 60 => WrapTGeometrySubtype(ptr),  // T_TGEOMETRY
                 61 => WrapTGeographySubtype(ptr),  // T_TGEOGRAPHY
                 62 => WrapTRGeometrySubtype(ptr),  // T_TRGEOMETRY
                 66 => WrapTJsonbSubtype(ptr),  // T_TJSONB
-                67 => WrapTBigintSubtype(ptr),  // T_TBIGINT
+                67 => WrapTBigIntSubtype(ptr),  // T_TBIGINT
                 70 => WrapTH3IndexSubtype(ptr),  // T_TH3INDEX
                 73 => WrapTQuadbinSubtype(ptr),  // T_TQUADBIN
-                76 => WrapTPcpointSubtype(ptr),  // T_TPCPOINT
-                79 => WrapTPcpatchSubtype(ptr),  // T_TPCPATCH
+                76 => WrapTPCPointSubtype(ptr),  // T_TPCPOINT
+                79 => WrapTPCPatchSubtype(ptr),  // T_TPCPATCH
                 84 => WrapTPoseChainSubtype(ptr),  // T_TPOSECHAIN
                 87 => WrapTS2CellSubtype(ptr),  // T_TS2CELL
                 _ => new Temporal(ptr),
@@ -729,15 +729,15 @@ namespace MEOS.NET.Types
             return wrapped;
         }
 
-        /// <summary>The concrete TBigint class for the template subtype
+        /// <summary>The concrete TBigInt class for the template subtype
         /// at byte 5.</summary>
-        private static TBigint WrapTBigintSubtype(IntPtr ptr)
+        private static TBigInt WrapTBigIntSubtype(IntPtr ptr)
             => Marshal.ReadByte(ptr, 5) switch
             {
-                1 => new TBigintInst(ptr),
-                2 => new TBigintSeq(ptr),
-                3 => new TBigintSeqSet(ptr),
-                _ => new TBigint(ptr),
+                1 => new TBigIntInst(ptr),
+                2 => new TBigIntSeq(ptr),
+                3 => new TBigIntSeqSet(ptr),
+                _ => new TBigInt(ptr),
             };
 
         /// <summary>The concrete TBool class for the template subtype
@@ -751,15 +751,15 @@ namespace MEOS.NET.Types
                 _ => new TBool(ptr),
             };
 
-        /// <summary>The concrete TCbuffer class for the template subtype
+        /// <summary>The concrete TCBuffer class for the template subtype
         /// at byte 5.</summary>
-        private static TCbuffer WrapTCbufferSubtype(IntPtr ptr)
+        private static TCBuffer WrapTCBufferSubtype(IntPtr ptr)
             => Marshal.ReadByte(ptr, 5) switch
             {
-                1 => new TCbufferInst(ptr),
-                2 => new TCbufferSeq(ptr),
-                3 => new TCbufferSeqSet(ptr),
-                _ => new TCbuffer(ptr),
+                1 => new TCBufferInst(ptr),
+                2 => new TCBufferSeq(ptr),
+                3 => new TCBufferSeqSet(ptr),
+                _ => new TCBuffer(ptr),
             };
 
         /// <summary>The concrete TFloat class for the template subtype
@@ -850,37 +850,37 @@ namespace MEOS.NET.Types
                 _ => new TJsonb(ptr),
             };
 
-        /// <summary>The concrete TNpoint class for the template subtype
+        /// <summary>The concrete TNPoint class for the template subtype
         /// at byte 5.</summary>
-        private static TNpoint WrapTNpointSubtype(IntPtr ptr)
+        private static TNPoint WrapTNPointSubtype(IntPtr ptr)
             => Marshal.ReadByte(ptr, 5) switch
             {
-                1 => new TNpointInst(ptr),
-                2 => new TNpointSeq(ptr),
-                3 => new TNpointSeqSet(ptr),
-                _ => new TNpoint(ptr),
+                1 => new TNPointInst(ptr),
+                2 => new TNPointSeq(ptr),
+                3 => new TNPointSeqSet(ptr),
+                _ => new TNPoint(ptr),
             };
 
-        /// <summary>The concrete TPcpatch class for the template subtype
+        /// <summary>The concrete TPCPatch class for the template subtype
         /// at byte 5.</summary>
-        private static TPcpatch WrapTPcpatchSubtype(IntPtr ptr)
+        private static TPCPatch WrapTPCPatchSubtype(IntPtr ptr)
             => Marshal.ReadByte(ptr, 5) switch
             {
-                1 => new TPcpatchInst(ptr),
-                2 => new TPcpatchSeq(ptr),
-                3 => new TPcpatchSeqSet(ptr),
-                _ => new TPcpatch(ptr),
+                1 => new TPCPatchInst(ptr),
+                2 => new TPCPatchSeq(ptr),
+                3 => new TPCPatchSeqSet(ptr),
+                _ => new TPCPatch(ptr),
             };
 
-        /// <summary>The concrete TPcpoint class for the template subtype
+        /// <summary>The concrete TPCPoint class for the template subtype
         /// at byte 5.</summary>
-        private static TPcpoint WrapTPcpointSubtype(IntPtr ptr)
+        private static TPCPoint WrapTPCPointSubtype(IntPtr ptr)
             => Marshal.ReadByte(ptr, 5) switch
             {
-                1 => new TPcpointInst(ptr),
-                2 => new TPcpointSeq(ptr),
-                3 => new TPcpointSeqSet(ptr),
-                _ => new TPcpoint(ptr),
+                1 => new TPCPointInst(ptr),
+                2 => new TPCPointSeq(ptr),
+                3 => new TPCPointSeqSet(ptr),
+                _ => new TPCPoint(ptr),
             };
 
         /// <summary>The concrete TPose class for the template subtype

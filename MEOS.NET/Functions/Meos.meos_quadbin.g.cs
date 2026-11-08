@@ -443,6 +443,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TquadbinToTbigint(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TquadbinToTbigint(temp));
 
+        public static IntPtr TquadbinToTgeogpoint(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TquadbinToTgeogpoint(temp));
+
         public static IntPtr TquadbinAtValue(IntPtr temp, ulong cell)
             => SafeExecution<IntPtr>(() => Native.TquadbinAtValue(temp, cell));
 

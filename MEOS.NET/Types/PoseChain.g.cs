@@ -183,6 +183,9 @@ namespace MEOS.NET.Types
         public Temporal? Tne(TPoseChain temp)
             => MEOSFactory.WrapTemporal(Meos.TnePosechainTposechain(this.Ptr, temp.Ptr));
 
+        public Geo? ToGeog()
+            => MEOSFactory.WrapGeo(Meos.PosechainToGeog(this.Ptr));
+
         public Geo? ToPoint()
             => MEOSFactory.WrapGeo(Meos.PosechainToPoint(this.Ptr));
 

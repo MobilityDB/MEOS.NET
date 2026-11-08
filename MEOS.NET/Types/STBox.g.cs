@@ -24,7 +24,7 @@ namespace MEOS.NET.Types
         public bool Above(TSpatial temp)
             => Meos.AboveStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Above(TCbuffer temp)
+        public bool Above(TCBuffer temp)
             => Meos.AboveStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Above(TGeomPoint temp)
@@ -36,7 +36,7 @@ namespace MEOS.NET.Types
         public bool Above(TH3Index temp)
             => Meos.AboveStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Above(TNpoint temp)
+        public bool Above(TNPoint temp)
             => Meos.AboveStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Above(TPose temp)
@@ -60,7 +60,7 @@ namespace MEOS.NET.Types
         public bool Adjacent(TSpatial temp)
             => Meos.AdjacentStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Adjacent(TCbuffer temp)
+        public bool Adjacent(TCBuffer temp)
             => Meos.AdjacentStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Adjacent(TGeogPoint temp)
@@ -78,7 +78,7 @@ namespace MEOS.NET.Types
         public bool Adjacent(TH3Index temp)
             => Meos.AdjacentStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Adjacent(TNpoint temp)
+        public bool Adjacent(TNPoint temp)
             => Meos.AdjacentStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Adjacent(TPose temp)
@@ -102,7 +102,7 @@ namespace MEOS.NET.Types
         public bool After(TSpatial temp)
             => Meos.AfterStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool After(TCbuffer temp)
+        public bool After(TCBuffer temp)
             => Meos.AfterStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool After(TGeogPoint temp)
@@ -120,7 +120,7 @@ namespace MEOS.NET.Types
         public bool After(TH3Index temp)
             => Meos.AfterStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool After(TNpoint temp)
+        public bool After(TNPoint temp)
             => Meos.AfterStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool After(TPose temp)
@@ -219,7 +219,7 @@ namespace MEOS.NET.Types
         public bool Before(TSpatial temp)
             => Meos.BeforeStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Before(TCbuffer temp)
+        public bool Before(TCBuffer temp)
             => Meos.BeforeStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Before(TGeogPoint temp)
@@ -237,7 +237,7 @@ namespace MEOS.NET.Types
         public bool Before(TH3Index temp)
             => Meos.BeforeStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Before(TNpoint temp)
+        public bool Before(TNPoint temp)
             => Meos.BeforeStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Before(TPose temp)
@@ -261,7 +261,7 @@ namespace MEOS.NET.Types
         public bool Below(TSpatial temp)
             => Meos.BelowStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Below(TCbuffer temp)
+        public bool Below(TCBuffer temp)
             => Meos.BelowStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Below(TGeomPoint temp)
@@ -273,7 +273,7 @@ namespace MEOS.NET.Types
         public bool Below(TH3Index temp)
             => Meos.BelowStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Below(TNpoint temp)
+        public bool Below(TNPoint temp)
             => Meos.BelowStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Below(TPose temp)
@@ -300,7 +300,7 @@ namespace MEOS.NET.Types
         public bool Contained(TSpatial temp)
             => Meos.ContainedStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Contained(TCbuffer temp)
+        public bool Contained(TCBuffer temp)
             => Meos.ContainedStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Contained(TGeogPoint temp)
@@ -318,7 +318,7 @@ namespace MEOS.NET.Types
         public bool Contained(TH3Index temp)
             => Meos.ContainedStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Contained(TNpoint temp)
+        public bool Contained(TNPoint temp)
             => Meos.ContainedStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Contained(TPose temp)
@@ -342,7 +342,7 @@ namespace MEOS.NET.Types
         public bool Contains(TSpatial temp)
             => Meos.ContainsStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Contains(TCbuffer temp)
+        public bool Contains(TCBuffer temp)
             => Meos.ContainsStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Contains(TGeogPoint temp)
@@ -360,7 +360,7 @@ namespace MEOS.NET.Types
         public bool Contains(TH3Index temp)
             => Meos.ContainsStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Contains(TNpoint temp)
+        public bool Contains(TNPoint temp)
             => Meos.ContainsStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Contains(TPose temp)
@@ -461,7 +461,7 @@ namespace MEOS.NET.Types
         public bool Left(TSpatial temp)
             => Meos.LeftStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Left(TCbuffer temp)
+        public bool Left(TCBuffer temp)
             => Meos.LeftStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Left(TGeomPoint temp)
@@ -473,7 +473,7 @@ namespace MEOS.NET.Types
         public bool Left(TH3Index temp)
             => Meos.LeftStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Left(TNpoint temp)
+        public bool Left(TNPoint temp)
             => Meos.LeftStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Left(TPose temp)
@@ -521,7 +521,7 @@ namespace MEOS.NET.Types
         public bool Overabove(TSpatial temp)
             => Meos.OveraboveStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overabove(TCbuffer temp)
+        public bool Overabove(TCBuffer temp)
             => Meos.OveraboveStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overabove(TGeomPoint temp)
@@ -533,7 +533,7 @@ namespace MEOS.NET.Types
         public bool Overabove(TH3Index temp)
             => Meos.OveraboveStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overabove(TNpoint temp)
+        public bool Overabove(TNPoint temp)
             => Meos.OveraboveStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overabove(TPose temp)
@@ -557,7 +557,7 @@ namespace MEOS.NET.Types
         public bool Overafter(TSpatial temp)
             => Meos.OverafterStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overafter(TCbuffer temp)
+        public bool Overafter(TCBuffer temp)
             => Meos.OverafterStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overafter(TGeogPoint temp)
@@ -575,7 +575,7 @@ namespace MEOS.NET.Types
         public bool Overafter(TH3Index temp)
             => Meos.OverafterStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overafter(TNpoint temp)
+        public bool Overafter(TNPoint temp)
             => Meos.OverafterStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overafter(TPose temp)
@@ -620,7 +620,7 @@ namespace MEOS.NET.Types
         public bool Overbefore(TSpatial temp)
             => Meos.OverbeforeStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overbefore(TCbuffer temp)
+        public bool Overbefore(TCBuffer temp)
             => Meos.OverbeforeStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overbefore(TGeogPoint temp)
@@ -638,7 +638,7 @@ namespace MEOS.NET.Types
         public bool Overbefore(TH3Index temp)
             => Meos.OverbeforeStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overbefore(TNpoint temp)
+        public bool Overbefore(TNPoint temp)
             => Meos.OverbeforeStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overbefore(TPose temp)
@@ -662,7 +662,7 @@ namespace MEOS.NET.Types
         public bool Overbelow(TSpatial temp)
             => Meos.OverbelowStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overbelow(TCbuffer temp)
+        public bool Overbelow(TCBuffer temp)
             => Meos.OverbelowStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overbelow(TGeomPoint temp)
@@ -674,7 +674,7 @@ namespace MEOS.NET.Types
         public bool Overbelow(TH3Index temp)
             => Meos.OverbelowStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overbelow(TNpoint temp)
+        public bool Overbelow(TNPoint temp)
             => Meos.OverbelowStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overbelow(TPose temp)
@@ -719,7 +719,7 @@ namespace MEOS.NET.Types
         public bool Overlaps(TSpatial temp)
             => Meos.OverlapsStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overlaps(TCbuffer temp)
+        public bool Overlaps(TCBuffer temp)
             => Meos.OverlapsStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overlaps(TGeogPoint temp)
@@ -737,7 +737,7 @@ namespace MEOS.NET.Types
         public bool Overlaps(TH3Index temp)
             => Meos.OverlapsStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overlaps(TNpoint temp)
+        public bool Overlaps(TNPoint temp)
             => Meos.OverlapsStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overlaps(TPose temp)
@@ -761,7 +761,7 @@ namespace MEOS.NET.Types
         public bool Overleft(TSpatial temp)
             => Meos.OverleftStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overleft(TCbuffer temp)
+        public bool Overleft(TCBuffer temp)
             => Meos.OverleftStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overleft(TGeomPoint temp)
@@ -773,7 +773,7 @@ namespace MEOS.NET.Types
         public bool Overleft(TH3Index temp)
             => Meos.OverleftStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overleft(TNpoint temp)
+        public bool Overleft(TNPoint temp)
             => Meos.OverleftStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overleft(TPose temp)
@@ -797,7 +797,7 @@ namespace MEOS.NET.Types
         public bool Overright(TSpatial temp)
             => Meos.OverrightStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overright(TCbuffer temp)
+        public bool Overright(TCBuffer temp)
             => Meos.OverrightStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overright(TGeomPoint temp)
@@ -809,7 +809,7 @@ namespace MEOS.NET.Types
         public bool Overright(TH3Index temp)
             => Meos.OverrightStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Overright(TNpoint temp)
+        public bool Overright(TNPoint temp)
             => Meos.OverrightStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Overright(TPose temp)
@@ -839,7 +839,7 @@ namespace MEOS.NET.Types
         public bool Right(TSpatial temp)
             => Meos.RightStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Right(TCbuffer temp)
+        public bool Right(TCBuffer temp)
             => Meos.RightStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Right(TGeomPoint temp)
@@ -851,7 +851,7 @@ namespace MEOS.NET.Types
         public bool Right(TH3Index temp)
             => Meos.RightStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Right(TNpoint temp)
+        public bool Right(TNPoint temp)
             => Meos.RightStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Right(TPose temp)
@@ -881,7 +881,7 @@ namespace MEOS.NET.Types
         public bool Same(TSpatial temp)
             => Meos.SameStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Same(TCbuffer temp)
+        public bool Same(TCBuffer temp)
             => Meos.SameStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Same(TGeogPoint temp)
@@ -899,7 +899,7 @@ namespace MEOS.NET.Types
         public bool Same(TH3Index temp)
             => Meos.SameStboxTspatial(this.Ptr, temp.Ptr);
 
-        public bool Same(TNpoint temp)
+        public bool Same(TNPoint temp)
             => Meos.SameStboxTspatial(this.Ptr, temp.Ptr);
 
         public bool Same(TPose temp)
@@ -1100,6 +1100,12 @@ namespace MEOS.NET.Types
 
         public Geo? ToGeo()
             => MEOSFactory.WrapGeo(Meos.StboxToGeo(this.Ptr));
+
+        public Geo? ToGeog()
+            => MEOSFactory.WrapGeo(Meos.StboxToGeog(this.Ptr));
+
+        public Geo? ToGeom()
+            => MEOSFactory.WrapGeo(Meos.StboxToGeom(this.Ptr));
 
         public Span? ToTstzspan()
             => MEOSFactory.WrapSpan(Meos.StboxToTstzspan(this.Ptr));

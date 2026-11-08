@@ -642,6 +642,12 @@ namespace MEOS.NET.Functions
         public static IntPtr GeosetToGeo(IntPtr s)
             => SafeExecution<IntPtr>(() => Native.GeosetToGeo(s));
 
+        public static IntPtr GeomsetToGeogset(IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.GeomsetToGeogset(s));
+
+        public static IntPtr GeogsetToGeomset(IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.GeogsetToGeomset(s));
+
         public static IntPtr GeosetEndValue(IntPtr s)
             => SafeExecution<IntPtr>(() => Native.GeosetEndValue(s));
 
@@ -809,6 +815,12 @@ namespace MEOS.NET.Functions
 
         public static IntPtr StboxToGeo(IntPtr box)
             => SafeExecution<IntPtr>(() => Native.StboxToGeo(box));
+
+        public static IntPtr StboxToGeom(IntPtr box)
+            => SafeExecution<IntPtr>(() => Native.StboxToGeom(box));
+
+        public static IntPtr StboxToGeog(IntPtr box)
+            => SafeExecution<IntPtr>(() => Native.StboxToGeog(box));
 
         public static IntPtr StboxToTstzspan(IntPtr box)
             => SafeExecution<IntPtr>(() => Native.StboxToTstzspan(box));

@@ -8,13 +8,13 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>A TPcpatch of subtype TInstant.</summary>
+    /// <summary>A TPCPatch of subtype TInstant.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class TPcpatchInst : TPcpatch
+    public class TPCPatchInst : TPCPatch
     {
-        internal TPcpatchInst(IntPtr ptr) : base(ptr) { }
+        internal TPCPatchInst(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? Make(Pcpatch pa, DateTime t)
+        public static Temporal? Make(PCPatch pa, DateTime t)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchinstMake(pa.Ptr, MEOSConvert.ToTimestampTz(t)));
 
     }

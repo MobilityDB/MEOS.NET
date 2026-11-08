@@ -419,6 +419,9 @@ namespace MEOS.NET.Functions
         public static IntPtr Ts2cellToTbigint(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.Ts2cellToTbigint(temp));
 
+        public static IntPtr Ts2cellToTgeompoint(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.Ts2cellToTgeompoint(temp));
+
         public static IntPtr TgeogpointToTs2cell(IntPtr temp, int level, bool border_inc)
             => SafeExecution<IntPtr>(() => Native.TgeogpointToTs2cell(temp, level, border_inc));
 

@@ -162,6 +162,9 @@ namespace MEOS.NET.Types
         public Temporal? ToTbigint()
             => MEOSFactory.WrapTemporal(Meos.TquadbinToTbigint(this.Ptr));
 
+        public Temporal? ToTgeogpoint()
+            => MEOSFactory.WrapTemporal(Meos.TquadbinToTgeogpoint(this.Ptr));
+
         public (SpanSet?[], ulong[]) Unnest()
         {
             var _answered = Meos.TquadbinUnnest(this.Ptr);

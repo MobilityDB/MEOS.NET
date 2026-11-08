@@ -150,6 +150,9 @@ namespace MEOS.NET.Types
         public Temporal? ToTbigint()
             => MEOSFactory.WrapTemporal(Meos.Ts2cellToTbigint(this.Ptr));
 
+        public Temporal? ToTgeompoint()
+            => MEOSFactory.WrapTemporal(Meos.Ts2cellToTgeompoint(this.Ptr));
+
         public (SpanSet?[], ulong[]) Unnest()
         {
             var _answered = Meos.Ts2cellUnnest(this.Ptr);

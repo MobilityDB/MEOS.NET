@@ -8,20 +8,20 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>The Pcpoint class of the MEOS object model.</summary>
+    /// <summary>The PCPoint class of the MEOS object model.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class Pcpoint : Value
+    public class PCPoint : Value
     {
-        internal Pcpoint(IntPtr ptr) : base(ptr) { }
+        internal PCPoint(IntPtr ptr) : base(ptr) { }
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
             => this.HexOut(15);
 
-        public int AlwaysEq(TPcpoint temp)
+        public int AlwaysEq(TPCPoint temp)
             => Meos.AlwaysEqPcpointTpcpoint(this.Ptr, temp.Ptr);
 
-        public int AlwaysNe(TPcpoint temp)
+        public int AlwaysNe(TPCPoint temp)
             => Meos.AlwaysNePcpointTpcpoint(this.Ptr, temp.Ptr);
 
         public string AsHexWKB()
@@ -30,25 +30,25 @@ namespace MEOS.NET.Types
         public string AsText(int maxdd)
             => this.HexOut(maxdd);
 
-        public int Cmp(Pcpoint pt2)
+        public int Cmp(PCPoint pt2)
             => Meos.PcpointCmp(this.Ptr, pt2.Ptr);
 
-        public bool Contained(PcpointSet s)
+        public bool Contained(PCPointSet s)
             => Meos.ContainedPcpointSet(this.Ptr, s.Ptr);
 
-        public Pcpoint? Copy()
-            => MEOSFactory.WrapPcpoint(Meos.PcpointCopy(this.Ptr));
+        public PCPoint? Copy()
+            => MEOSFactory.WrapPCPoint(Meos.PcpointCopy(this.Ptr));
 
-        public bool Eq(Pcpoint pt2)
+        public bool Eq(PCPoint pt2)
             => Meos.PcpointEq(this.Ptr, pt2.Ptr);
 
-        public int EverEq(TPcpoint temp)
+        public int EverEq(TPCPoint temp)
             => Meos.EverEqPcpointTpcpoint(this.Ptr, temp.Ptr);
 
-        public int EverNe(TPcpoint temp)
+        public int EverNe(TPCPoint temp)
             => Meos.EverNePcpointTpcpoint(this.Ptr, temp.Ptr);
 
-        public bool Ge(Pcpoint pt2)
+        public bool Ge(PCPoint pt2)
             => Meos.PcpointGe(this.Ptr, pt2.Ptr);
 
         public double? GetDim(string name)
@@ -126,7 +126,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public bool Gt(Pcpoint pt2)
+        public bool Gt(PCPoint pt2)
             => Meos.PcpointGt(this.Ptr, pt2.Ptr);
 
         public uint Hash()
@@ -138,28 +138,28 @@ namespace MEOS.NET.Types
         public string HexOut(int maxdd)
             => Meos.PcpointHexOut(this.Ptr, maxdd);
 
-        public Set? Intersection(PcpointSet s)
+        public Set? Intersection(PCPointSet s)
             => MEOSFactory.WrapSet(Meos.IntersectionPcpointSet(this.Ptr, s.Ptr));
 
-        public bool Le(Pcpoint pt2)
+        public bool Le(PCPoint pt2)
             => Meos.PcpointLe(this.Ptr, pt2.Ptr);
 
-        public bool Lt(Pcpoint pt2)
+        public bool Lt(PCPoint pt2)
             => Meos.PcpointLt(this.Ptr, pt2.Ptr);
 
         public int MemSize()
             => Meos.PcpointMemSize(this.Ptr);
 
-        public Set? Minus(PcpointSet s)
+        public Set? Minus(PCPointSet s)
             => MEOSFactory.WrapSet(Meos.MinusPcpointSet(this.Ptr, s.Ptr));
 
-        public bool Ne(Pcpoint pt2)
+        public bool Ne(PCPoint pt2)
             => Meos.PcpointNe(this.Ptr, pt2.Ptr);
 
-        public Temporal? Teq(TPcpoint temp)
+        public Temporal? Teq(TPCPoint temp)
             => MEOSFactory.WrapTemporal(Meos.TeqPcpointTpcpoint(this.Ptr, temp.Ptr));
 
-        public Temporal? Tne(TPcpoint temp)
+        public Temporal? Tne(TPCPoint temp)
             => MEOSFactory.WrapTemporal(Meos.TnePcpointTpcpoint(this.Ptr, temp.Ptr));
 
         public Set? ToSet()
@@ -168,24 +168,24 @@ namespace MEOS.NET.Types
         public TPCBox? ToTpcbox()
             => MEOSFactory.WrapTPCBox(Meos.PcpointToTpcbox(this.Ptr));
 
-        public Set? Union(PcpointSet s)
+        public Set? Union(PCPointSet s)
             => MEOSFactory.WrapSet(Meos.UnionPcpointSet(this.Ptr, s.Ptr));
 
-        public static Pcpoint? FromHexWKB(string hexwkb)
-            => MEOSFactory.WrapPcpoint(Meos.PcpointFromHexwkb(hexwkb));
+        public static PCPoint? FromHexWKB(string hexwkb)
+            => MEOSFactory.WrapPCPoint(Meos.PcpointFromHexwkb(hexwkb));
 
-        public static Pcpoint? FromText(string str)
-            => Pcpoint.HexIn(str);
+        public static PCPoint? FromText(string str)
+            => PCPoint.HexIn(str);
 
-        public static Pcpoint? HexIn(string str)
-            => MEOSFactory.WrapPcpoint(Meos.PcpointHexIn(str));
+        public static PCPoint? HexIn(string str)
+            => MEOSFactory.WrapPCPoint(Meos.PcpointHexIn(str));
 
-        public static Pcpoint? Make(uint pcid, double[] values)
+        public static PCPoint? Make(uint pcid, double[] values)
         {
             GCHandle _values = GCHandle.Alloc(values, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapPcpoint(Meos.PcpointMake(pcid, _values.AddrOfPinnedObject(), values.Length));
+                return MEOSFactory.WrapPCPoint(Meos.PcpointMake(pcid, _values.AddrOfPinnedObject(), values.Length));
             }
             finally
             {

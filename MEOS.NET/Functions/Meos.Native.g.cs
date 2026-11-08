@@ -5814,6 +5814,12 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "geoset_to_geo", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GeosetToGeo(IntPtr s);
 
+            [LibraryImport(DllPath, EntryPoint = "geomset_to_geogset", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr GeomsetToGeogset(IntPtr s);
+
+            [LibraryImport(DllPath, EntryPoint = "geogset_to_geomset", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr GeogsetToGeomset(IntPtr s);
+
             [LibraryImport(DllPath, EntryPoint = "geoset_end_value", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr GeosetEndValue(IntPtr s);
 
@@ -5924,6 +5930,12 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "stbox_to_geo", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr StboxToGeo(IntPtr box);
+
+            [LibraryImport(DllPath, EntryPoint = "stbox_to_geom", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr StboxToGeom(IntPtr box);
+
+            [LibraryImport(DllPath, EntryPoint = "stbox_to_geog", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr StboxToGeog(IntPtr box);
 
             [LibraryImport(DllPath, EntryPoint = "stbox_to_tstzspan", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr StboxToTstzspan(IntPtr box);
@@ -7116,6 +7128,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "cbuffer_to_geom", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr CbufferToGeom(IntPtr cb);
 
+            [LibraryImport(DllPath, EntryPoint = "cbuffer_to_geog", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr CbufferToGeog(IntPtr cb);
+
             [LibraryImport(DllPath, EntryPoint = "cbuffer_to_stbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr CbufferToStbox(IntPtr cb);
 
@@ -7342,6 +7357,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "tcbuffer_to_tgeompoint", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TcbufferToTgeompoint(IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "tcbuffer_to_tgeogpoint", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TcbufferToTgeogpoint(IntPtr temp);
 
             [LibraryImport(DllPath, EntryPoint = "tgeometry_to_tcbuffer", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TgeometryToTcbuffer(IntPtr temp);
@@ -10987,6 +11005,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "npoint_to_geompoint", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NpointToGeompoint(IntPtr np);
 
+            [LibraryImport(DllPath, EntryPoint = "npoint_to_geog", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr NpointToGeog(IntPtr np);
+
             [LibraryImport(DllPath, EntryPoint = "npoint_to_nsegment", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NpointToNsegment(IntPtr np);
 
@@ -10995,6 +11016,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "nsegment_to_geom", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NsegmentToGeom(IntPtr ns);
+
+            [LibraryImport(DllPath, EntryPoint = "nsegment_to_geog", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr NsegmentToGeog(IntPtr ns);
 
             [LibraryImport(DllPath, EntryPoint = "nsegment_to_stbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr NsegmentToStbox(IntPtr ns);
@@ -11194,6 +11218,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "tnpoint_to_tgeompoint", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TnpointToTgeompoint(IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "tnpoint_to_tgeogpoint", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TnpointToTgeogpoint(IntPtr temp);
 
             [LibraryImport(DllPath, EntryPoint = "tnpoint_cumulative_length", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TnpointCumulativeLength(IntPtr temp);
@@ -11593,6 +11620,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "pcpatch_to_geom", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PcpatchToGeom(IntPtr pa);
+
+            [LibraryImport(DllPath, EntryPoint = "pcpatch_to_geog", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr PcpatchToGeog(IntPtr pa);
 
             [LibraryImport(DllPath, EntryPoint = "pcpatch_cmp", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int PcpatchCmp(IntPtr pa1, IntPtr pa2);
@@ -11999,8 +12029,14 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "tpcpoint_to_tgeompoint", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TpcpointToTgeompoint(IntPtr temp);
 
+            [LibraryImport(DllPath, EntryPoint = "tpcpoint_to_tgeogpoint", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TpcpointToTgeogpoint(IntPtr temp);
+
             [LibraryImport(DllPath, EntryPoint = "tpcpatch_to_tgeometry", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TpcpatchToTgeometry(IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "tpcpatch_to_tgeography", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TpcpatchToTgeography(IntPtr temp);
 
             [LibraryImport(DllPath, EntryPoint = "tpcpointinst_make", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TpcpointinstMake(IntPtr pt, long t);
@@ -12797,6 +12833,12 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "tpose_to_tpoint", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TposeToTpoint(IntPtr temp);
 
+            [LibraryImport(DllPath, EntryPoint = "tpose_to_tgeompoint", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TposeToTgeompoint(IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "tpose_to_tgeogpoint", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TposeToTgeogpoint(IntPtr temp);
+
             [LibraryImport(DllPath, EntryPoint = "tpose_end_value", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TposeEndValue(IntPtr temp);
 
@@ -13003,6 +13045,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "posechain_to_point", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PosechainToPoint(IntPtr pc);
 
+            [LibraryImport(DllPath, EntryPoint = "posechain_to_geog", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr PosechainToGeog(IntPtr pc);
+
             [LibraryImport(DllPath, EntryPoint = "posechain_to_stbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr PosechainToStbox(IntPtr pc);
 
@@ -13176,6 +13221,12 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "tposechain_to_tpose", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TposechainToTpose(IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "tposechain_to_tgeompoint", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TposechainToTgeompoint(IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "tposechain_to_tgeogpoint", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TposechainToTgeogpoint(IntPtr temp);
 
             [LibraryImport(DllPath, EntryPoint = "tposechain_end_value", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TposechainEndValue(IntPtr temp);
@@ -13581,6 +13632,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "tquadbin_to_tbigint", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TquadbinToTbigint(IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "tquadbin_to_tgeogpoint", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TquadbinToTgeogpoint(IntPtr temp);
 
             [LibraryImport(DllPath, EntryPoint = "tquadbin_at_value", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TquadbinAtValue(IntPtr temp, ulong cell);
@@ -14076,8 +14130,14 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "trgeometry_to_tgeompoint", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TrgeometryToTgeompoint(IntPtr temp);
 
+            [LibraryImport(DllPath, EntryPoint = "trgeometry_to_tgeogpoint", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TrgeometryToTgeogpoint(IntPtr temp);
+
             [LibraryImport(DllPath, EntryPoint = "trgeometry_to_tgeometry", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TrgeometryToTgeometry(IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "trgeometry_to_tgeography", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TrgeometryToTgeography(IntPtr temp);
 
             [LibraryImport(DllPath, EntryPoint = "trgeometry_end_instant", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TrgeometryEndInstant(IntPtr temp);
@@ -14747,6 +14807,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "ts2cell_to_tbigint", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr Ts2cellToTbigint(IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "ts2cell_to_tgeompoint", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr Ts2cellToTgeompoint(IntPtr temp);
 
             [LibraryImport(DllPath, EntryPoint = "tgeogpoint_to_ts2cell", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TgeogpointToTs2cell(IntPtr temp, int level, [MarshalAs(UnmanagedType.U1)] bool border_inc);

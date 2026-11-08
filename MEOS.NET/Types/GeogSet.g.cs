@@ -48,6 +48,9 @@ namespace MEOS.NET.Types
         public bool Overlaps(GeogSet s2)
             => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
+        public Set? ToGeomset()
+            => MEOSFactory.WrapSet(Meos.GeogsetToGeomset(this.Ptr));
+
         public Set? Union(GeogSet s2)
             => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 

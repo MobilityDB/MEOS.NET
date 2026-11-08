@@ -8,20 +8,20 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>The Npoint class of the MEOS object model.</summary>
+    /// <summary>The NPoint class of the MEOS object model.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class Npoint : Value
+    public class NPoint : Value
     {
-        internal Npoint(IntPtr ptr) : base(ptr) { }
+        internal NPoint(IntPtr ptr) : base(ptr) { }
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
             => this.AsText(15);
 
-        public int AlwaysEq(TNpoint temp)
+        public int AlwaysEq(TNPoint temp)
             => Meos.AlwaysEqNpointTnpoint(this.Ptr, temp.Ptr);
 
-        public int AlwaysNe(TNpoint temp)
+        public int AlwaysNe(TNPoint temp)
             => Meos.AlwaysNeNpointTnpoint(this.Ptr, temp.Ptr);
 
         public byte[]? AsEWKB(byte variant)
@@ -78,31 +78,31 @@ namespace MEOS.NET.Types
             }
         }
 
-        public int Cmp(Npoint np2)
+        public int Cmp(NPoint np2)
             => Meos.NpointCmp(this.Ptr, np2.Ptr);
 
-        public bool Contained(NpointSet s)
+        public bool Contained(NPointSet s)
             => Meos.ContainedNpointSet(this.Ptr, s.Ptr);
 
-        public bool ContainedRid(TNpoint temp)
+        public bool ContainedRid(TNPoint temp)
             => Meos.ContainedRidNpointTnpoint(this.Ptr, temp.Ptr);
 
-        public Npoint? Copy()
-            => MEOSFactory.WrapNpoint(Meos.NpointCopy(this.Ptr));
+        public NPoint? Copy()
+            => MEOSFactory.WrapNPoint(Meos.NpointCopy(this.Ptr));
 
-        public bool Eq(Npoint np2)
+        public bool Eq(NPoint np2)
             => Meos.NpointEq(this.Ptr, np2.Ptr);
 
-        public int EverEq(TNpoint temp)
+        public int EverEq(TNPoint temp)
             => Meos.EverEqNpointTnpoint(this.Ptr, temp.Ptr);
 
-        public int EverNe(TNpoint temp)
+        public int EverNe(TNPoint temp)
             => Meos.EverNeNpointTnpoint(this.Ptr, temp.Ptr);
 
-        public bool Ge(Npoint np2)
+        public bool Ge(NPoint np2)
             => Meos.NpointGe(this.Ptr, np2.Ptr);
 
-        public bool Gt(Npoint np2)
+        public bool Gt(NPoint np2)
             => Meos.NpointGt(this.Ptr, np2.Ptr);
 
         public uint Hash()
@@ -111,19 +111,19 @@ namespace MEOS.NET.Types
         public ulong HashExtended(ulong seed)
             => Meos.NpointHashExtended(this.Ptr, seed);
 
-        public Set? Intersection(NpointSet s)
+        public Set? Intersection(NPointSet s)
             => MEOSFactory.WrapSet(Meos.IntersectionNpointSet(this.Ptr, s.Ptr));
 
-        public bool Le(Npoint np2)
+        public bool Le(NPoint np2)
             => Meos.NpointLe(this.Ptr, np2.Ptr);
 
-        public bool Lt(Npoint np2)
+        public bool Lt(NPoint np2)
             => Meos.NpointLt(this.Ptr, np2.Ptr);
 
-        public Set? Minus(NpointSet s)
+        public Set? Minus(NPointSet s)
             => MEOSFactory.WrapSet(Meos.MinusNpointSet(this.Ptr, s.Ptr));
 
-        public bool Ne(Npoint np2)
+        public bool Ne(NPoint np2)
             => Meos.NpointNe(this.Ptr, np2.Ptr);
 
         public string Out(int maxdd)
@@ -132,8 +132,8 @@ namespace MEOS.NET.Types
         public double Position()
             => Meos.NpointPosition(this.Ptr);
 
-        public Npoint? Round(int maxdd)
-            => MEOSFactory.WrapNpoint(Meos.NpointRound(this.Ptr, maxdd));
+        public NPoint? Round(int maxdd)
+            => MEOSFactory.WrapNPoint(Meos.NpointRound(this.Ptr, maxdd));
 
         public long Route()
             => Meos.NpointRoute(this.Ptr);
@@ -141,17 +141,20 @@ namespace MEOS.NET.Types
         public int SRID()
             => Meos.NpointSrid(this.Ptr);
 
-        public bool SameRid(TNpoint temp)
+        public bool SameRid(TNPoint temp)
             => Meos.SameRidNpointTnpoint(this.Ptr, temp.Ptr);
 
         public STBox? TimestamptzToStbox(DateTime t)
             => MEOSFactory.WrapSTBox(Meos.NpointTimestamptzToStbox(this.Ptr, MEOSConvert.ToTimestampTz(t)));
 
+        public Geo? ToGeog()
+            => MEOSFactory.WrapGeo(Meos.NpointToGeog(this.Ptr));
+
         public Geo? ToGeompoint()
             => MEOSFactory.WrapGeo(Meos.NpointToGeompoint(this.Ptr));
 
-        public Nsegment? ToNsegment()
-            => MEOSFactory.WrapNsegment(Meos.NpointToNsegment(this.Ptr));
+        public NSegment? ToNsegment()
+            => MEOSFactory.WrapNSegment(Meos.NpointToNsegment(this.Ptr));
 
         public Set? ToSet()
             => MEOSFactory.WrapSet(Meos.NpointToSet(this.Ptr));
@@ -162,33 +165,33 @@ namespace MEOS.NET.Types
         public STBox? TstzspanToStbox(Span s)
             => MEOSFactory.WrapSTBox(Meos.NpointTstzspanToStbox(this.Ptr, s.Ptr));
 
-        public Set? Union(NpointSet s)
+        public Set? Union(NPointSet s)
             => MEOSFactory.WrapSet(Meos.UnionNpointSet(this.Ptr, s.Ptr));
 
-        public static Npoint? FromEWKB(byte[] wkb)
-            => Npoint.FromWKB(wkb);
+        public static NPoint? FromEWKB(byte[] wkb)
+            => NPoint.FromWKB(wkb);
 
-        public static Npoint? FromEWKT(string str)
-            => Npoint.In(str);
+        public static NPoint? FromEWKT(string str)
+            => NPoint.In(str);
 
-        public static Npoint? FromGeompoint(Geo gs, double tolerance)
-            => MEOSFactory.WrapNpoint(Meos.GeompointToNpoint(gs.Ptr, tolerance));
+        public static NPoint? FromGeompoint(Geo gs, double tolerance)
+            => MEOSFactory.WrapNPoint(Meos.GeompointToNpoint(gs.Ptr, tolerance));
 
-        public static Npoint? FromHexEWKB(string hexwkb)
-            => Npoint.FromHexWKB(hexwkb);
+        public static NPoint? FromHexEWKB(string hexwkb)
+            => NPoint.FromHexWKB(hexwkb);
 
-        public static Npoint? FromHexWKB(string hexwkb)
-            => MEOSFactory.WrapNpoint(Meos.NpointFromHexwkb(hexwkb));
+        public static NPoint? FromHexWKB(string hexwkb)
+            => MEOSFactory.WrapNPoint(Meos.NpointFromHexwkb(hexwkb));
 
-        public static Npoint? FromText(string str)
-            => Npoint.In(str);
+        public static NPoint? FromText(string str)
+            => NPoint.In(str);
 
-        public static Npoint? FromWKB(byte[] wkb)
+        public static NPoint? FromWKB(byte[] wkb)
         {
             GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapNpoint(Meos.NpointFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+                return MEOSFactory.WrapNPoint(Meos.NpointFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
             }
             finally
             {
@@ -196,11 +199,11 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static Npoint? In(string str)
-            => MEOSFactory.WrapNpoint(Meos.NpointIn(str));
+        public static NPoint? In(string str)
+            => MEOSFactory.WrapNPoint(Meos.NpointIn(str));
 
-        public static Npoint? Make(long rid, double pos)
-            => MEOSFactory.WrapNpoint(Meos.NpointMake(rid, pos));
+        public static NPoint? Make(long rid, double pos)
+            => MEOSFactory.WrapNPoint(Meos.NpointMake(rid, pos));
 
     }
 }

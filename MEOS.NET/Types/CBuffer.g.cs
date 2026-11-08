@@ -8,35 +8,35 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>The Cbuffer class of the MEOS object model.</summary>
+    /// <summary>The CBuffer class of the MEOS object model.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class Cbuffer : Value
+    public class CBuffer : Value
     {
-        internal Cbuffer(IntPtr ptr) : base(ptr) { }
+        internal CBuffer(IntPtr ptr) : base(ptr) { }
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
             => this.AsText(15);
 
-        public int Acontains(TCbuffer temp)
+        public int Acontains(TCBuffer temp)
             => Meos.AcontainsCbufferTcbuffer(this.Ptr, temp.Ptr);
 
-        public int Acovers(TCbuffer temp)
+        public int Acovers(TCBuffer temp)
             => Meos.AcoversCbufferTcbuffer(this.Ptr, temp.Ptr);
 
-        public int Adisjoint(TCbuffer temp)
+        public int Adisjoint(TCBuffer temp)
             => Meos.AdisjointCbufferTcbuffer(this.Ptr, temp.Ptr);
 
-        public int Adwithin(TCbuffer temp, double dist)
+        public int Adwithin(TCBuffer temp, double dist)
             => Meos.AdwithinCbufferTcbuffer(this.Ptr, temp.Ptr, dist);
 
-        public int Aintersects(TCbuffer temp)
+        public int Aintersects(TCBuffer temp)
             => Meos.AintersectsCbufferTcbuffer(this.Ptr, temp.Ptr);
 
-        public int AlwaysEq(TCbuffer temp)
+        public int AlwaysEq(TCBuffer temp)
             => Meos.AlwaysEqCbufferTcbuffer(this.Ptr, temp.Ptr);
 
-        public int AlwaysNe(TCbuffer temp)
+        public int AlwaysNe(TCBuffer temp)
             => Meos.AlwaysNeCbufferTcbuffer(this.Ptr, temp.Ptr);
 
         public byte[]? AsEWKB(byte variant)
@@ -93,28 +93,28 @@ namespace MEOS.NET.Types
             }
         }
 
-        public int Atouches(TCbuffer temp)
+        public int Atouches(TCBuffer temp)
             => Meos.AtouchesCbufferTcbuffer(this.Ptr, temp.Ptr);
 
-        public int Cmp(Cbuffer cb2)
+        public int Cmp(CBuffer cb2)
             => Meos.CbufferCmp(this.Ptr, cb2.Ptr);
 
-        public bool Contained(CbufferSet s)
+        public bool Contained(CBufferSet s)
             => Meos.ContainedCbufferSet(this.Ptr, s.Ptr);
 
-        public int Contains(Cbuffer cb2)
+        public int Contains(CBuffer cb2)
             => Meos.ContainsCbufferCbuffer(this.Ptr, cb2.Ptr);
 
-        public Cbuffer? Copy()
-            => MEOSFactory.WrapCbuffer(Meos.CbufferCopy(this.Ptr));
+        public CBuffer? Copy()
+            => MEOSFactory.WrapCBuffer(Meos.CbufferCopy(this.Ptr));
 
-        public int Covers(Cbuffer cb2)
+        public int Covers(CBuffer cb2)
             => Meos.CoversCbufferCbuffer(this.Ptr, cb2.Ptr);
 
-        public int Disjoint(Cbuffer cb2)
+        public int Disjoint(CBuffer cb2)
             => Meos.DisjointCbufferCbuffer(this.Ptr, cb2.Ptr);
 
-        public double Distance(Cbuffer cb2)
+        public double Distance(CBuffer cb2)
             => Meos.DistanceCbufferCbuffer(this.Ptr, cb2.Ptr);
 
         public double Distance(Geometry gs)
@@ -123,40 +123,40 @@ namespace MEOS.NET.Types
         public double Distance(STBox box)
             => Meos.DistanceCbufferStbox(this.Ptr, box.Ptr);
 
-        public int Dwithin(Cbuffer cb2, double dist)
+        public int Dwithin(CBuffer cb2, double dist)
             => Meos.DwithinCbufferCbuffer(this.Ptr, cb2.Ptr, dist);
 
-        public int Econtains(TCbuffer temp)
+        public int Econtains(TCBuffer temp)
             => Meos.EcontainsCbufferTcbuffer(this.Ptr, temp.Ptr);
 
-        public int Ecovers(TCbuffer temp)
+        public int Ecovers(TCBuffer temp)
             => Meos.EcoversCbufferTcbuffer(this.Ptr, temp.Ptr);
 
-        public int Edisjoint(TCbuffer temp)
+        public int Edisjoint(TCBuffer temp)
             => Meos.EdisjointCbufferTcbuffer(this.Ptr, temp.Ptr);
 
-        public int Edwithin(TCbuffer temp, double dist)
+        public int Edwithin(TCBuffer temp, double dist)
             => Meos.EdwithinCbufferTcbuffer(this.Ptr, temp.Ptr, dist);
 
-        public int Eintersects(TCbuffer temp)
+        public int Eintersects(TCBuffer temp)
             => Meos.EintersectsCbufferTcbuffer(this.Ptr, temp.Ptr);
 
-        public bool Eq(Cbuffer cb2)
+        public bool Eq(CBuffer cb2)
             => Meos.CbufferEq(this.Ptr, cb2.Ptr);
 
-        public int Etouches(TCbuffer temp)
+        public int Etouches(TCBuffer temp)
             => Meos.EtouchesCbufferTcbuffer(this.Ptr, temp.Ptr);
 
-        public int EverEq(TCbuffer temp)
+        public int EverEq(TCBuffer temp)
             => Meos.EverEqCbufferTcbuffer(this.Ptr, temp.Ptr);
 
-        public int EverNe(TCbuffer temp)
+        public int EverNe(TCBuffer temp)
             => Meos.EverNeCbufferTcbuffer(this.Ptr, temp.Ptr);
 
-        public bool Ge(Cbuffer cb2)
+        public bool Ge(CBuffer cb2)
             => Meos.CbufferGe(this.Ptr, cb2.Ptr);
 
-        public bool Gt(Cbuffer cb2)
+        public bool Gt(CBuffer cb2)
             => Meos.CbufferGt(this.Ptr, cb2.Ptr);
 
         public uint Hash()
@@ -165,28 +165,28 @@ namespace MEOS.NET.Types
         public ulong HashExtended(ulong seed)
             => Meos.CbufferHashExtended(this.Ptr, seed);
 
-        public Set? Intersection(CbufferSet s)
+        public Set? Intersection(CBufferSet s)
             => MEOSFactory.WrapSet(Meos.IntersectionCbufferSet(this.Ptr, s.Ptr));
 
-        public int Intersects(Cbuffer cb2)
+        public int Intersects(CBuffer cb2)
             => Meos.IntersectsCbufferCbuffer(this.Ptr, cb2.Ptr);
 
-        public bool Le(Cbuffer cb2)
+        public bool Le(CBuffer cb2)
             => Meos.CbufferLe(this.Ptr, cb2.Ptr);
 
-        public bool Lt(Cbuffer cb2)
+        public bool Lt(CBuffer cb2)
             => Meos.CbufferLt(this.Ptr, cb2.Ptr);
 
         public int MemSize()
             => Meos.CbufferMemSize(this.Ptr);
 
-        public Set? Minus(CbufferSet s)
+        public Set? Minus(CBufferSet s)
             => MEOSFactory.WrapSet(Meos.MinusCbufferSet(this.Ptr, s.Ptr));
 
         public double Nad(STBox box)
             => Meos.NadCbufferStbox(this.Ptr, box.Ptr);
 
-        public bool Ne(Cbuffer cb2)
+        public bool Ne(CBuffer cb2)
             => Meos.CbufferNe(this.Ptr, cb2.Ptr);
 
         public string Out(int maxdd)
@@ -198,38 +198,41 @@ namespace MEOS.NET.Types
         public double Radius()
             => Meos.CbufferRadius(this.Ptr);
 
-        public Cbuffer? Round(int maxdd)
-            => MEOSFactory.WrapCbuffer(Meos.CbufferRound(this.Ptr, maxdd));
+        public CBuffer? Round(int maxdd)
+            => MEOSFactory.WrapCBuffer(Meos.CbufferRound(this.Ptr, maxdd));
 
         public int SRID()
             => Meos.CbufferSrid(this.Ptr);
 
-        public Cbuffer? SetSRID(int srid)
-            => MEOSFactory.WrapCbuffer(Meos.CbufferSetSrid(this.Ptr, srid));
+        public CBuffer? SetSRID(int srid)
+            => MEOSFactory.WrapCBuffer(Meos.CbufferSetSrid(this.Ptr, srid));
 
-        public Temporal? Tcontains(TCbuffer temp)
+        public Temporal? Tcontains(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TcontainsCbufferTcbuffer(this.Ptr, temp.Ptr));
 
-        public Temporal? Tcovers(TCbuffer temp)
+        public Temporal? Tcovers(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TcoversCbufferTcbuffer(this.Ptr, temp.Ptr));
 
-        public Temporal? Tdisjoint(TCbuffer temp)
+        public Temporal? Tdisjoint(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TdisjointCbufferTcbuffer(this.Ptr, temp.Ptr));
 
-        public Temporal? Tdwithin(TCbuffer temp, double dist)
+        public Temporal? Tdwithin(TCBuffer temp, double dist)
             => MEOSFactory.WrapTemporal(Meos.TdwithinCbufferTcbuffer(this.Ptr, temp.Ptr, dist));
 
-        public Temporal? Teq(TCbuffer temp)
+        public Temporal? Teq(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TeqCbufferTcbuffer(this.Ptr, temp.Ptr));
 
         public STBox? TimestamptzToStbox(DateTime t)
             => MEOSFactory.WrapSTBox(Meos.CbufferTimestamptzToStbox(this.Ptr, MEOSConvert.ToTimestampTz(t)));
 
-        public Temporal? Tintersects(TCbuffer temp)
+        public Temporal? Tintersects(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TintersectsCbufferTcbuffer(this.Ptr, temp.Ptr));
 
-        public Temporal? Tne(TCbuffer temp)
+        public Temporal? Tne(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TneCbufferTcbuffer(this.Ptr, temp.Ptr));
+
+        public Geo? ToGeog()
+            => MEOSFactory.WrapGeo(Meos.CbufferToGeog(this.Ptr));
 
         public Geo? ToGeom()
             => MEOSFactory.WrapGeo(Meos.CbufferToGeom(this.Ptr));
@@ -240,45 +243,45 @@ namespace MEOS.NET.Types
         public STBox? ToStbox()
             => MEOSFactory.WrapSTBox(Meos.CbufferToStbox(this.Ptr));
 
-        public int Touches(Cbuffer cb2)
+        public int Touches(CBuffer cb2)
             => Meos.TouchesCbufferCbuffer(this.Ptr, cb2.Ptr);
 
-        public Cbuffer? Transform(int srid)
-            => MEOSFactory.WrapCbuffer(Meos.CbufferTransform(this.Ptr, srid));
+        public CBuffer? Transform(int srid)
+            => MEOSFactory.WrapCBuffer(Meos.CbufferTransform(this.Ptr, srid));
 
-        public Cbuffer? TransformPipeline(string pipelinestr, int srid, bool is_forward)
-            => MEOSFactory.WrapCbuffer(Meos.CbufferTransformPipeline(this.Ptr, pipelinestr, srid, is_forward));
+        public CBuffer? TransformPipeline(string pipelinestr, int srid, bool is_forward)
+            => MEOSFactory.WrapCBuffer(Meos.CbufferTransformPipeline(this.Ptr, pipelinestr, srid, is_forward));
 
         public STBox? TstzspanToStbox(Span s)
             => MEOSFactory.WrapSTBox(Meos.CbufferTstzspanToStbox(this.Ptr, s.Ptr));
 
-        public Temporal? Ttouches(TCbuffer temp)
+        public Temporal? Ttouches(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TtouchesCbufferTcbuffer(this.Ptr, temp.Ptr));
 
-        public Set? Union(CbufferSet s)
+        public Set? Union(CBufferSet s)
             => MEOSFactory.WrapSet(Meos.UnionCbufferSet(this.Ptr, s.Ptr));
 
-        public static Cbuffer? FromEWKB(byte[] wkb)
-            => Cbuffer.FromWKB(wkb);
+        public static CBuffer? FromEWKB(byte[] wkb)
+            => CBuffer.FromWKB(wkb);
 
-        public static Cbuffer? FromEWKT(string str)
-            => Cbuffer.In(str);
+        public static CBuffer? FromEWKT(string str)
+            => CBuffer.In(str);
 
-        public static Cbuffer? FromHexEWKB(string hexwkb)
-            => Cbuffer.FromHexWKB(hexwkb);
+        public static CBuffer? FromHexEWKB(string hexwkb)
+            => CBuffer.FromHexWKB(hexwkb);
 
-        public static Cbuffer? FromHexWKB(string hexwkb)
-            => MEOSFactory.WrapCbuffer(Meos.CbufferFromHexwkb(hexwkb));
+        public static CBuffer? FromHexWKB(string hexwkb)
+            => MEOSFactory.WrapCBuffer(Meos.CbufferFromHexwkb(hexwkb));
 
-        public static Cbuffer? FromText(string str)
-            => Cbuffer.In(str);
+        public static CBuffer? FromText(string str)
+            => CBuffer.In(str);
 
-        public static Cbuffer? FromWKB(byte[] wkb)
+        public static CBuffer? FromWKB(byte[] wkb)
         {
             GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapCbuffer(Meos.CbufferFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+                return MEOSFactory.WrapCBuffer(Meos.CbufferFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
             }
             finally
             {
@@ -286,11 +289,11 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static Cbuffer? In(string str)
-            => MEOSFactory.WrapCbuffer(Meos.CbufferIn(str));
+        public static CBuffer? In(string str)
+            => MEOSFactory.WrapCBuffer(Meos.CbufferIn(str));
 
-        public static Cbuffer? Make(Geo point, double radius)
-            => MEOSFactory.WrapCbuffer(Meos.CbufferMake(point.Ptr, radius));
+        public static CBuffer? Make(Geo point, double radius)
+            => MEOSFactory.WrapCBuffer(Meos.CbufferMake(point.Ptr, radius));
 
     }
 }

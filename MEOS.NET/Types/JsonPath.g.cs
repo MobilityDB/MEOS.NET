@@ -8,7 +8,7 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>A path into a jsonb value. A MeosType no membership predicate admits, as Nsegment and Raquet are; the nine signatures naming it are what need it.</summary>
+    /// <summary>A path into a jsonb value. A MeosType no membership predicate admits, as NSegment and RaQuet are; the nine signatures naming it are what need it.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
     public class JsonPath : Value
     {

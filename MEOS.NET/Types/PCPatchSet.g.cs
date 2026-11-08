@@ -8,56 +8,56 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>The PcpatchSet class of the MEOS object model.</summary>
+    /// <summary>The PCPatchSet class of the MEOS object model.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class PcpatchSet : SpatialSet
+    public class PCPatchSet : SpatialSet
     {
-        internal PcpatchSet(IntPtr ptr) : base(ptr) { }
+        internal PCPatchSet(IntPtr ptr) : base(ptr) { }
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
             => this.AsText(15);
 
-        public bool Contained(PcpatchSet s2)
+        public bool Contained(PCPatchSet s2)
             => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
 
-        public bool Contains(Pcpatch pa)
+        public bool Contains(PCPatch pa)
             => Meos.ContainsSetPcpatch(this.Ptr, pa.Ptr);
 
-        public bool Contains(PcpatchSet s2)
+        public bool Contains(PCPatchSet s2)
             => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
-        public Pcpatch? EndValue()
-            => MEOSFactory.WrapPcpatch(Meos.PcpatchsetEndValue(this.Ptr));
+        public PCPatch? EndValue()
+            => MEOSFactory.WrapPCPatch(Meos.PcpatchsetEndValue(this.Ptr));
 
-        public Set? Intersection(Pcpatch pa)
+        public Set? Intersection(PCPatch pa)
             => MEOSFactory.WrapSet(Meos.IntersectionSetPcpatch(this.Ptr, pa.Ptr));
 
-        public Set? Intersection(PcpatchSet s2)
+        public Set? Intersection(PCPatchSet s2)
             => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
 
-        public Set? Minus(Pcpatch pa)
+        public Set? Minus(PCPatch pa)
             => MEOSFactory.WrapSet(Meos.MinusSetPcpatch(this.Ptr, pa.Ptr));
 
-        public Set? Minus(PcpatchSet s2)
+        public Set? Minus(PCPatchSet s2)
             => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
 
         public new string Out(int maxdd)
             => Meos.PcpatchsetOut(this.Ptr, maxdd);
 
-        public bool Overlaps(PcpatchSet s2)
+        public bool Overlaps(PCPatchSet s2)
             => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
-        public Pcpatch? StartValue()
-            => MEOSFactory.WrapPcpatch(Meos.PcpatchsetStartValue(this.Ptr));
+        public PCPatch? StartValue()
+            => MEOSFactory.WrapPCPatch(Meos.PcpatchsetStartValue(this.Ptr));
 
-        public Set? Union(Pcpatch pa)
+        public Set? Union(PCPatch pa)
             => MEOSFactory.WrapSet(Meos.UnionSetPcpatch(this.Ptr, pa.Ptr));
 
-        public Set? Union(PcpatchSet s2)
+        public Set? Union(PCPatchSet s2)
             => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
-        public Pcpatch? ValueN(int n)
+        public PCPatch? ValueN(int n)
         {
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
@@ -67,7 +67,7 @@ namespace MEOS.NET.Types
                     return null;
                 }
 
-                return MEOSFactory.WrapPcpatch(Marshal.ReadIntPtr(_result));
+                return MEOSFactory.WrapPCPatch(Marshal.ReadIntPtr(_result));
             }
             finally
             {
@@ -75,25 +75,25 @@ namespace MEOS.NET.Types
             }
         }
 
-        public Pcpatch?[] Values()
-            => MEOSFactory.WrapPcpatchArray(Meos.PcpatchsetValues(this.Ptr));
+        public PCPatch?[] Values()
+            => MEOSFactory.WrapPCPatchArray(Meos.PcpatchsetValues(this.Ptr));
 
         public static Set? FromEWKB(byte[] wkb)
             => Set.FromWKB(wkb);
 
         public static Set? FromEWKT(string str)
-            => PcpatchSet.In(str);
+            => PCPatchSet.In(str);
 
         public static Set? FromHexEWKB(string hexwkb)
             => Set.FromHexWKB(hexwkb);
 
         public static Set? FromText(string str)
-            => PcpatchSet.In(str);
+            => PCPatchSet.In(str);
 
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.PcpatchsetIn(str));
 
-        public static Set? Make(Pcpatch[] values)
+        public static Set? Make(PCPatch[] values)
         {
             IntPtr[] _valuesValues = new IntPtr[values.Length];
             for (int i = 0; i < values.Length; i++)

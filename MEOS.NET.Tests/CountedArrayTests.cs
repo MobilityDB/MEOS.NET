@@ -49,15 +49,15 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ACbufferSetIsMadeOfItsCircularBuffers()
         {
-            // cbufferset_make reads its buffers as Cbuffer values one after
+            // cbufferset_make reads its buffers as CBuffer values one after
             // another.
-            Cbuffer[] values =
+            CBuffer[] values =
             [
-                Cbuffer.In("Cbuffer(Point(1 1),0.5)")!,
-                Cbuffer.In("Cbuffer(Point(2 2),1.5)")!,
+                CBuffer.In("Cbuffer(Point(1 1),0.5)")!,
+                CBuffer.In("Cbuffer(Point(2 2),1.5)")!,
             ];
 
-            Set set = CbufferSet.Make(values)!;
+            Set set = CBufferSet.Make(values)!;
 
             Assert.AreEqual(2, set.NumValues());
             Assert.AreEqual(

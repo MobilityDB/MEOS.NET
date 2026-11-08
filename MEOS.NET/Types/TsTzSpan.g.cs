@@ -33,13 +33,13 @@ namespace MEOS.NET.Types
         public bool Adjacent(TsTzSpanSet ss)
             => Meos.AdjacentSpanSpanset(this.Ptr, ss.Ptr);
 
-        public bool Adjacent(TBigint temp)
+        public bool Adjacent(TBigInt temp)
             => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Adjacent(TBool temp)
             => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Adjacent(TCbuffer temp)
+        public bool Adjacent(TCBuffer temp)
             => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Adjacent(TFloat temp)
@@ -66,13 +66,13 @@ namespace MEOS.NET.Types
         public bool Adjacent(TJsonb temp)
             => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Adjacent(TNpoint temp)
+        public bool Adjacent(TNPoint temp)
             => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Adjacent(TPcpatch temp)
+        public bool Adjacent(TPCPatch temp)
             => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Adjacent(TPcpoint temp)
+        public bool Adjacent(TPCPoint temp)
             => Meos.AdjacentTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Adjacent(TPose temp)
@@ -102,13 +102,13 @@ namespace MEOS.NET.Types
         public bool After(Temporal temp)
             => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool After(TBigint temp)
+        public bool After(TBigInt temp)
             => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool After(TBool temp)
             => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool After(TCbuffer temp)
+        public bool After(TCBuffer temp)
             => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool After(TFloat temp)
@@ -135,13 +135,13 @@ namespace MEOS.NET.Types
         public bool After(TJsonb temp)
             => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool After(TNpoint temp)
+        public bool After(TNPoint temp)
             => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool After(TPcpatch temp)
+        public bool After(TPCPatch temp)
             => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool After(TPcpoint temp)
+        public bool After(TPCPoint temp)
             => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool After(TPose temp)
@@ -174,13 +174,13 @@ namespace MEOS.NET.Types
         public bool Before(Temporal temp)
             => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Before(TBigint temp)
+        public bool Before(TBigInt temp)
             => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Before(TBool temp)
             => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Before(TCbuffer temp)
+        public bool Before(TCBuffer temp)
             => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Before(TFloat temp)
@@ -207,13 +207,13 @@ namespace MEOS.NET.Types
         public bool Before(TJsonb temp)
             => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Before(TNpoint temp)
+        public bool Before(TNPoint temp)
             => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Before(TPcpatch temp)
+        public bool Before(TPCPatch temp)
             => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Before(TPcpoint temp)
+        public bool Before(TPCPoint temp)
             => Meos.BeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Before(TPose temp)
@@ -260,13 +260,13 @@ namespace MEOS.NET.Types
         public bool Contained(TsTzSpanSet ss)
             => Meos.ContainedSpanSpanset(this.Ptr, ss.Ptr);
 
-        public bool Contained(TBigint temp)
+        public bool Contained(TBigInt temp)
             => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Contained(TBool temp)
             => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Contained(TCbuffer temp)
+        public bool Contained(TCBuffer temp)
             => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Contained(TFloat temp)
@@ -293,13 +293,13 @@ namespace MEOS.NET.Types
         public bool Contained(TJsonb temp)
             => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Contained(TNpoint temp)
+        public bool Contained(TNPoint temp)
             => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Contained(TPcpatch temp)
+        public bool Contained(TPCPatch temp)
             => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Contained(TPcpoint temp)
+        public bool Contained(TPCPoint temp)
             => Meos.ContainedTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Contained(TPose temp)
@@ -335,13 +335,13 @@ namespace MEOS.NET.Types
         public bool Contains(TsTzSpanSet ss)
             => Meos.ContainsSpanSpanset(this.Ptr, ss.Ptr);
 
-        public bool Contains(TBigint temp)
+        public bool Contains(TBigInt temp)
             => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Contains(TBool temp)
             => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Contains(TCbuffer temp)
+        public bool Contains(TCBuffer temp)
             => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Contains(TFloat temp)
@@ -368,13 +368,13 @@ namespace MEOS.NET.Types
         public bool Contains(TJsonb temp)
             => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Contains(TNpoint temp)
+        public bool Contains(TNPoint temp)
             => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Contains(TPcpatch temp)
+        public bool Contains(TPCPatch temp)
             => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Contains(TPcpoint temp)
+        public bool Contains(TPCPoint temp)
             => Meos.ContainsTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Contains(TPose temp)
@@ -457,13 +457,13 @@ namespace MEOS.NET.Types
         public bool Overafter(Temporal temp)
             => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overafter(TBigint temp)
+        public bool Overafter(TBigInt temp)
             => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Overafter(TBool temp)
             => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overafter(TCbuffer temp)
+        public bool Overafter(TCBuffer temp)
             => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Overafter(TFloat temp)
@@ -490,13 +490,13 @@ namespace MEOS.NET.Types
         public bool Overafter(TJsonb temp)
             => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overafter(TNpoint temp)
+        public bool Overafter(TNPoint temp)
             => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overafter(TPcpatch temp)
+        public bool Overafter(TPCPatch temp)
             => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overafter(TPcpoint temp)
+        public bool Overafter(TPCPoint temp)
             => Meos.OverafterTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Overafter(TPose temp)
@@ -526,13 +526,13 @@ namespace MEOS.NET.Types
         public bool Overbefore(Temporal temp)
             => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overbefore(TBigint temp)
+        public bool Overbefore(TBigInt temp)
             => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Overbefore(TBool temp)
             => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overbefore(TCbuffer temp)
+        public bool Overbefore(TCBuffer temp)
             => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Overbefore(TFloat temp)
@@ -559,13 +559,13 @@ namespace MEOS.NET.Types
         public bool Overbefore(TJsonb temp)
             => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overbefore(TNpoint temp)
+        public bool Overbefore(TNPoint temp)
             => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overbefore(TPcpatch temp)
+        public bool Overbefore(TPCPatch temp)
             => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overbefore(TPcpoint temp)
+        public bool Overbefore(TPCPoint temp)
             => Meos.OverbeforeTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Overbefore(TPose temp)
@@ -598,13 +598,13 @@ namespace MEOS.NET.Types
         public bool Overlaps(TsTzSpanSet ss)
             => Meos.OverlapsSpanSpanset(this.Ptr, ss.Ptr);
 
-        public bool Overlaps(TBigint temp)
+        public bool Overlaps(TBigInt temp)
             => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Overlaps(TBool temp)
             => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overlaps(TCbuffer temp)
+        public bool Overlaps(TCBuffer temp)
             => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Overlaps(TFloat temp)
@@ -631,13 +631,13 @@ namespace MEOS.NET.Types
         public bool Overlaps(TJsonb temp)
             => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overlaps(TNpoint temp)
+        public bool Overlaps(TNPoint temp)
             => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overlaps(TPcpatch temp)
+        public bool Overlaps(TPCPatch temp)
             => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Overlaps(TPcpoint temp)
+        public bool Overlaps(TPCPoint temp)
             => Meos.OverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Overlaps(TPose temp)
@@ -709,13 +709,13 @@ namespace MEOS.NET.Types
         public bool Same(Temporal temp)
             => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Same(TBigint temp)
+        public bool Same(TBigInt temp)
             => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Same(TBool temp)
             => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Same(TCbuffer temp)
+        public bool Same(TCBuffer temp)
             => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Same(TFloat temp)
@@ -742,13 +742,13 @@ namespace MEOS.NET.Types
         public bool Same(TJsonb temp)
             => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Same(TNpoint temp)
+        public bool Same(TNPoint temp)
             => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Same(TPcpatch temp)
+        public bool Same(TPCPatch temp)
             => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public bool Same(TPcpoint temp)
+        public bool Same(TPCPoint temp)
             => Meos.SameTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public bool Same(TPose temp)
