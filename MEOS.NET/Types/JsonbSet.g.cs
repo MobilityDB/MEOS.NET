@@ -18,11 +18,11 @@ namespace MEOS.NET.Types
         public override string ToString()
             => this.Out();
 
-        public Set? ArrayElement(int idx, NullHandleType null_handle)
-            => MEOSFactory.WrapSet(Meos.JsonbsetArrayElement(this.Ptr, idx, (int) null_handle));
+        public Set? ArrayElement(int idx, string null_handle)
+            => MEOSFactory.WrapSet(Meos.JsonbsetArrayElement(this.Ptr, idx, Meos.NullhandletypeFromString(null_handle)));
 
-        public Set? ArrayElementText(int idx, NullHandleType null_handle)
-            => MEOSFactory.WrapSet(Meos.JsonbsetArrayElementText(this.Ptr, idx, (int) null_handle));
+        public Set? ArrayElementText(int idx, string null_handle)
+            => MEOSFactory.WrapSet(Meos.JsonbsetArrayElementText(this.Ptr, idx, Meos.NullhandletypeFromString(null_handle)));
 
         public Set? ArrayLength()
             => MEOSFactory.WrapSet(Meos.JsonbsetArrayLength(this.Ptr));
@@ -111,7 +111,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public Set? ExtractPath(Text[] path_elems, NullHandleType null_handle)
+        public Set? ExtractPath(Text[] path_elems, string null_handle)
         {
             IntPtr[] _path_elemsValues = new IntPtr[path_elems.Length];
             for (int i = 0; i < path_elems.Length; i++)
@@ -122,7 +122,7 @@ namespace MEOS.NET.Types
             GCHandle _path_elems = GCHandle.Alloc(_path_elemsValues, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapSet(Meos.JsonbsetExtractPath(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length, (int) null_handle));
+                return MEOSFactory.WrapSet(Meos.JsonbsetExtractPath(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length, Meos.NullhandletypeFromString(null_handle)));
             }
             finally
             {
@@ -130,7 +130,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public Set? ExtractPathText(Text[] path_elems, NullHandleType null_handle)
+        public Set? ExtractPathText(Text[] path_elems, string null_handle)
         {
             IntPtr[] _path_elemsValues = new IntPtr[path_elems.Length];
             for (int i = 0; i < path_elems.Length; i++)
@@ -141,7 +141,7 @@ namespace MEOS.NET.Types
             GCHandle _path_elems = GCHandle.Alloc(_path_elemsValues, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapSet(Meos.JsonbsetExtractPathText(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length, (int) null_handle));
+                return MEOSFactory.WrapSet(Meos.JsonbsetExtractPathText(this.Ptr, _path_elems.AddrOfPinnedObject(), path_elems.Length, Meos.NullhandletypeFromString(null_handle)));
             }
             finally
             {
@@ -180,11 +180,11 @@ namespace MEOS.NET.Types
         public Set? Minus(JsonbSet s2)
             => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
 
-        public Set? ObjectField(Text key, NullHandleType null_handle)
-            => MEOSFactory.WrapSet(Meos.JsonbsetObjectField(this.Ptr, key.Ptr, (int) null_handle));
+        public Set? ObjectField(Text key, string null_handle)
+            => MEOSFactory.WrapSet(Meos.JsonbsetObjectField(this.Ptr, key.Ptr, Meos.NullhandletypeFromString(null_handle)));
 
-        public Set? ObjectFieldText(Text key, NullHandleType null_handle)
-            => MEOSFactory.WrapSet(Meos.JsonbsetObjectFieldText(this.Ptr, key.Ptr, (int) null_handle));
+        public Set? ObjectFieldText(Text key, string null_handle)
+            => MEOSFactory.WrapSet(Meos.JsonbsetObjectFieldText(this.Ptr, key.Ptr, Meos.NullhandletypeFromString(null_handle)));
 
         public string Out()
             => Meos.JsonbsetOut(this.Ptr);
@@ -251,23 +251,23 @@ namespace MEOS.NET.Types
         public Set? StripNulls(bool strip_in_arrays)
             => MEOSFactory.WrapSet(Meos.JsonbsetStripNulls(this.Ptr, strip_in_arrays));
 
-        public Set? ToAlphanumset(string key, MeosType settype, NullHandleType null_handle)
-            => MEOSFactory.WrapSet(Meos.JsonbsetToAlphanumset(this.Ptr, key, (int) settype, (int) null_handle));
+        public Set? ToAlphanumset(string key, string settype, string null_handle)
+            => MEOSFactory.WrapSet(Meos.JsonbsetToAlphanumset(this.Ptr, key, Meos.MeostypeFromString(settype), Meos.NullhandletypeFromString(null_handle)));
 
-        public Set? ToBigintset(string key, NullHandleType null_handle)
-            => MEOSFactory.WrapSet(Meos.JsonbsetToBigintset(this.Ptr, key, (int) null_handle));
+        public Set? ToBigintset(string key, string null_handle)
+            => MEOSFactory.WrapSet(Meos.JsonbsetToBigintset(this.Ptr, key, Meos.NullhandletypeFromString(null_handle)));
 
-        public Set? ToFloatset(string key, NullHandleType null_handle)
-            => MEOSFactory.WrapSet(Meos.JsonbsetToFloatset(this.Ptr, key, (int) null_handle));
+        public Set? ToFloatset(string key, string null_handle)
+            => MEOSFactory.WrapSet(Meos.JsonbsetToFloatset(this.Ptr, key, Meos.NullhandletypeFromString(null_handle)));
 
-        public Set? ToIntset(string key, NullHandleType null_handle)
-            => MEOSFactory.WrapSet(Meos.JsonbsetToIntset(this.Ptr, key, (int) null_handle));
+        public Set? ToIntset(string key, string null_handle)
+            => MEOSFactory.WrapSet(Meos.JsonbsetToIntset(this.Ptr, key, Meos.NullhandletypeFromString(null_handle)));
 
         public Set? ToTextset()
             => MEOSFactory.WrapSet(Meos.JsonbsetToTextset(this.Ptr));
 
-        public Set? ToTextsetKey(string key, NullHandleType null_handle)
-            => MEOSFactory.WrapSet(Meos.JsonbsetToTextsetKey(this.Ptr, key, (int) null_handle));
+        public Set? ToTextsetKey(string key, string null_handle)
+            => MEOSFactory.WrapSet(Meos.JsonbsetToTextsetKey(this.Ptr, key, Meos.NullhandletypeFromString(null_handle)));
 
         public Set? Union(Jsonb jb)
             => MEOSFactory.WrapSet(Meos.UnionSetJsonb(this.Ptr, jb.Ptr));

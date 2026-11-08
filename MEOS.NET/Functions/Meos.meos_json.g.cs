@@ -855,8 +855,11 @@ namespace MEOS.NET.Functions
         public static IntPtr ContainsTjsonbTjsonb(IntPtr temp1, IntPtr temp2)
             => SafeExecution<IntPtr>(() => Native.ContainsTjsonbTjsonb(temp1, temp2));
 
-        public static int NullHandleTypeFromString(string str)
-            => SafeExecution<int>(() => Native.NullHandleTypeFromString(str));
+        public static string? NullhandletypeName(int type)
+            => Marshal.PtrToStringUTF8(SafeExecution<IntPtr>(() => Native.NullhandletypeName(type)));
+
+        public static int NullhandletypeFromString(string str)
+            => SafeExecution<int>(() => Native.NullhandletypeFromString(str));
 
         public static IntPtr TjsonArrayElement(IntPtr temp, int idx, int null_handle)
             => SafeExecution<IntPtr>(() => Native.TjsonArrayElement(temp, idx, null_handle));

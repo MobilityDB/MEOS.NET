@@ -21,6 +21,9 @@ namespace MEOS.NET.Types
         public int Adisjoint(TGeo temp)
             => Meos.AdisjointGeoTgeo(this.Ptr, temp.Ptr);
 
+        public int Adwithin(TGeo temp, double dist, bool spheroid)
+            => Meos.AdwithinGeoTgeo(this.Ptr, temp.Ptr, dist, spheroid);
+
         public Geo? Affine(double a, double b, double c, double d, double e, double f, double g, double h, double i, double xoff, double yoff, double zoff)
             => MEOSFactory.WrapGeo(Meos.GeoAffine(this.Ptr, a, b, c, d, e, f, g, h, i, xoff, yoff, zoff));
 

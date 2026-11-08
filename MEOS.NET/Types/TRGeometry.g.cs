@@ -66,13 +66,13 @@ namespace MEOS.NET.Types
         public Temporal? AngularSpeed()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAngularSpeed(this.Ptr));
 
-        public new Temporal? AppendTinstant(Temporal inst, InterpType interp, double maxdist, Interval maxt, bool expand)
+        public new Temporal? AppendTinstant(Temporal inst, string interp, double maxdist, Interval maxt, bool expand)
         {
             IntPtr _maxt = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
             {
                 Marshal.StructureToPtr(maxt, _maxt, false);
-                return MEOSFactory.WrapTemporal(Meos.TrgeometryAppendTinstant(this.Ptr, inst.Ptr, (int) interp, maxdist, _maxt, expand));
+                return MEOSFactory.WrapTemporal(Meos.TrgeometryAppendTinstant(this.Ptr, inst.Ptr, Meos.InterptypeFromString(interp), maxdist, _maxt, expand));
             }
             finally
             {
@@ -92,10 +92,10 @@ namespace MEOS.NET.Types
         public new Temporal? AsTinstant()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAsTinstant(this.Ptr));
 
-        public Temporal? AsTsequence(string interp_str)
+        public new Temporal? AsTsequence(string interp_str)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAsTsequence(this.Ptr, interp_str));
 
-        public Temporal? AsTsequenceset(string interp_str)
+        public new Temporal? AsTsequenceset(string interp_str)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAsTsequenceset(this.Ptr, interp_str));
 
         public Temporal? AtGeom(Geo gs)
@@ -350,8 +350,8 @@ namespace MEOS.NET.Types
         public new Temporal?[] Sequences()
             => MEOSFactory.WrapTemporalArray(Meos.TrgeometrySequences(this.Ptr));
 
-        public new Temporal? SetInterp(InterpType interp)
-            => MEOSFactory.WrapTemporal(Meos.TrgeometrySetInterp(this.Ptr, (int) interp));
+        public new Temporal? SetInterp(string interp)
+            => MEOSFactory.WrapTemporal(Meos.TrgeometrySetInterp(this.Ptr, Meos.InterptypeFromString(interp)));
 
         public Geo? Shortestline(Geometry gs)
             => MEOSFactory.WrapGeo(Meos.ShortestlineTrgeometryGeo(this.Ptr, gs.Ptr));

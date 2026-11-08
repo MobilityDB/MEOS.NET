@@ -17,8 +17,8 @@ namespace MEOS.NET.Types
         public static Temporal? FromBaseTstzset(CBuffer cb, Set s)
             => MEOSFactory.WrapTemporal(Meos.TcbufferseqFromBaseTstzset(cb.Ptr, s.Ptr));
 
-        public static Temporal? FromBaseTstzspan(CBuffer cb, Span s, InterpType interp)
-            => MEOSFactory.WrapTemporal(Meos.TcbufferseqFromBaseTstzspan(cb.Ptr, s.Ptr, (int) interp));
+        public static Temporal? FromBaseTstzspan(CBuffer cb, Span s, string interp)
+            => MEOSFactory.WrapTemporal(Meos.TcbufferseqFromBaseTstzspan(cb.Ptr, s.Ptr, Meos.InterptypeFromString(interp)));
 
     }
 }

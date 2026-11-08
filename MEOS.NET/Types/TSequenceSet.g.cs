@@ -33,7 +33,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static Temporal? MakeGaps(Temporal[] instants, InterpType interp, Interval maxt, double maxdist)
+        public static Temporal? MakeGaps(Temporal[] instants, string interp, Interval maxt, double maxdist)
         {
             IntPtr _maxt = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             IntPtr[] _instantsValues = new IntPtr[instants.Length];
@@ -46,7 +46,7 @@ namespace MEOS.NET.Types
             try
             {
                 Marshal.StructureToPtr(maxt, _maxt, false);
-                return MEOSFactory.WrapTemporal(Meos.TsequencesetMakeGaps(_instants.AddrOfPinnedObject(), instants.Length, (int) interp, _maxt, maxdist));
+                return MEOSFactory.WrapTemporal(Meos.TsequencesetMakeGaps(_instants.AddrOfPinnedObject(), instants.Length, Meos.InterptypeFromString(interp), _maxt, maxdist));
             }
             finally
             {

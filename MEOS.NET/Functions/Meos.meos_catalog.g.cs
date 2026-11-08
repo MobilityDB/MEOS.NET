@@ -27,9 +27,6 @@ namespace MEOS.NET.Functions
         public static int MeosoperFromString(string name)
             => SafeExecution<int>(() => Native.MeosoperFromString(name));
 
-        public static string? InterptypeName(int interp)
-            => Marshal.PtrToStringUTF8(SafeExecution<IntPtr>(() => Native.InterptypeName(interp)));
-
         public static int MeosTypeofHexwkb(string hexwkb)
             => SafeExecution<int>(() => Native.MeosTypeofHexwkb(hexwkb));
 

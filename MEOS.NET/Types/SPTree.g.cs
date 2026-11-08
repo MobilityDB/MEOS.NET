@@ -29,8 +29,8 @@ namespace MEOS.NET.Types
         public bool InsertTemporalSplit(Temporal temp, long id, int maxboxes)
             => Meos.SptreeInsertTemporalSplit(this.Ptr, temp.Ptr, id, maxboxes);
 
-        public int Join(SPTree sptree2, IndexSearchOp op, MeosArray result)
-            => Meos.SptreeJoin(this.Ptr, sptree2.Ptr, (int) op, result.Ptr);
+        public int Join(SPTree sptree2, string op, MeosArray result)
+            => Meos.SptreeJoin(this.Ptr, sptree2.Ptr, Meos.IndexsearchopFromString(op), result.Ptr);
 
         public bool Load(IntPtr boxes, long[] ids)
         {
@@ -51,38 +51,38 @@ namespace MEOS.NET.Types
         public int NumEntries()
             => Meos.SptreeNumEntries(this.Ptr);
 
-        public int Search(IndexSearchOp op, IntPtr query, MeosArray result)
-            => Meos.SptreeSearch(this.Ptr, (int) op, query, result.Ptr);
+        public int Search(string op, IntPtr query, MeosArray result)
+            => Meos.SptreeSearch(this.Ptr, Meos.IndexsearchopFromString(op), query, result.Ptr);
 
-        public int SearchTemporal(IndexSearchOp op, Temporal temp, MeosArray result)
-            => Meos.SptreeSearchTemporal(this.Ptr, (int) op, temp.Ptr, result.Ptr);
+        public int SearchTemporal(string op, Temporal temp, MeosArray result)
+            => Meos.SptreeSearchTemporal(this.Ptr, Meos.IndexsearchopFromString(op), temp.Ptr, result.Ptr);
 
-        public int SearchTemporalDedup(IndexSearchOp op, Temporal temp, int maxboxes, MeosArray result)
-            => Meos.SptreeSearchTemporalDedup(this.Ptr, (int) op, temp.Ptr, maxboxes, result.Ptr);
+        public int SearchTemporalDedup(string op, Temporal temp, int maxboxes, MeosArray result)
+            => Meos.SptreeSearchTemporalDedup(this.Ptr, Meos.IndexsearchopFromString(op), temp.Ptr, maxboxes, result.Ptr);
 
-        public static SPTree? CreateBigintspan(SPTreeKind kind)
-            => MEOSFactory.WrapSPTree(Meos.SptreeCreateBigintspan((int) kind));
+        public static SPTree? CreateBigintspan(string kind)
+            => MEOSFactory.WrapSPTree(Meos.SptreeCreateBigintspan(Meos.SptreekindFromString(kind)));
 
-        public static SPTree? CreateDatespan(SPTreeKind kind)
-            => MEOSFactory.WrapSPTree(Meos.SptreeCreateDatespan((int) kind));
+        public static SPTree? CreateDatespan(string kind)
+            => MEOSFactory.WrapSPTree(Meos.SptreeCreateDatespan(Meos.SptreekindFromString(kind)));
 
-        public static SPTree? CreateFloatspan(SPTreeKind kind)
-            => MEOSFactory.WrapSPTree(Meos.SptreeCreateFloatspan((int) kind));
+        public static SPTree? CreateFloatspan(string kind)
+            => MEOSFactory.WrapSPTree(Meos.SptreeCreateFloatspan(Meos.SptreekindFromString(kind)));
 
-        public static SPTree? CreateIntspan(SPTreeKind kind)
-            => MEOSFactory.WrapSPTree(Meos.SptreeCreateIntspan((int) kind));
+        public static SPTree? CreateIntspan(string kind)
+            => MEOSFactory.WrapSPTree(Meos.SptreeCreateIntspan(Meos.SptreekindFromString(kind)));
 
-        public static SPTree? CreateStbox(SPTreeKind kind)
-            => MEOSFactory.WrapSPTree(Meos.SptreeCreateStbox((int) kind));
+        public static SPTree? CreateStbox(string kind)
+            => MEOSFactory.WrapSPTree(Meos.SptreeCreateStbox(Meos.SptreekindFromString(kind)));
 
-        public static SPTree? CreateTbox(SPTreeKind kind)
-            => MEOSFactory.WrapSPTree(Meos.SptreeCreateTbox((int) kind));
+        public static SPTree? CreateTbox(string kind)
+            => MEOSFactory.WrapSPTree(Meos.SptreeCreateTbox(Meos.SptreekindFromString(kind)));
 
-        public static SPTree? CreateTpcbox(SPTreeKind kind)
-            => MEOSFactory.WrapSPTree(Meos.SptreeCreateTpcbox((int) kind));
+        public static SPTree? CreateTpcbox(string kind)
+            => MEOSFactory.WrapSPTree(Meos.SptreeCreateTpcbox(Meos.SptreekindFromString(kind)));
 
-        public static SPTree? CreateTstzspan(SPTreeKind kind)
-            => MEOSFactory.WrapSPTree(Meos.SptreeCreateTstzspan((int) kind));
+        public static SPTree? CreateTstzspan(string kind)
+            => MEOSFactory.WrapSPTree(Meos.SptreeCreateTstzspan(Meos.SptreekindFromString(kind)));
 
     }
 }

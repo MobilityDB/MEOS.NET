@@ -10,14 +10,14 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `827adf5d7055f47f4e918544314a50e4c3856bba` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `6f329a98d05bece363940b0489a34295ce09d7f2` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
 
 ## The flat surface — `tools/codegen.py`
 
-### parameter nullability — 4352
+### parameter nullability — 4354
 
 `shape.nullable` names the parameters a function accepts NULL for, and the catalog carries no field saying a parameter is required. A pointer parameter named in neither reaches the surface with its contract unstated: the wrapper takes it, and nothing says whether zero is an argument or a fault.
 
@@ -1162,6 +1162,7 @@ and `tools/objectgen.py`.  Do not edit.
 | index_op_is_valid | box, query |
 | index_query_project | query, box, result |
 | index_result_id | result, id |
+| indexsearchop_from_string | str |
 | int16_in | str |
 | int32_in | str |
 | int32_out | size_out |
@@ -1501,6 +1502,7 @@ and `tools/objectgen.py`.  Do not edit.
 | meos_typeof_hexwkb | hexwkb |
 | meos_version | size_out |
 | meosoper_from_string | name |
+| meospixtype_from_string | str |
 | meostype_from_string | name |
 | mi_span_span | s1, s2, result |
 | mindistance_tcbuffer_tcbuffer | temp1, temp2 |
@@ -1730,7 +1732,7 @@ and `tools/objectgen.py`.  Do not edit.
 | nsegment_to_geog | ns |
 | nsegment_to_geom | ns |
 | nsegment_to_stbox | ns |
-| null_handle_type_from_string | str |
+| nullhandletype_from_string | str |
 | number_set_tbox | box |
 | number_tstzspan_to_tbox | s |
 | numeric_in | str |
@@ -2182,7 +2184,6 @@ and `tools/objectgen.py`.  Do not edit.
 | raquet_ne | rq1, rq2 |
 | raquet_out | rq, size_out |
 | raquet_pixels | rq, size_out |
-| raquet_pixtype_from_string | str |
 | raquet_quadbin | rq |
 | raquet_read | path |
 | raquet_read_bytes | data |
@@ -2524,6 +2525,7 @@ and `tools/objectgen.py`.  Do not edit.
 | sptree_search_intl | sptree, query, result |
 | sptree_search_temporal | sptree, temp, result |
 | sptree_search_temporal_dedup | sptree, temp, result |
+| sptreekind_from_string | str |
 | stbox_above | box1, box2 |
 | stbox_adjacent | box1, box2 |
 | stbox_after | box1, box2 |

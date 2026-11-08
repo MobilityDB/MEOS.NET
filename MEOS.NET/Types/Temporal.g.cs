@@ -41,13 +41,13 @@ namespace MEOS.NET.Types
         public int AlwaysNe(Temporal temp2)
             => Meos.AlwaysNeTemporalTemporal(this.Ptr, temp2.Ptr);
 
-        public Temporal? AppendTinstant(Temporal inst, InterpType interp, double maxdist, Interval maxt, bool expand)
+        public Temporal? AppendTinstant(Temporal inst, string interp, double maxdist, Interval maxt, bool expand)
         {
             IntPtr _maxt = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
             {
                 Marshal.StructureToPtr(maxt, _maxt, false);
-                return MEOSFactory.WrapTemporal(Meos.TemporalAppendTinstant(this.Ptr, inst.Ptr, (int) interp, maxdist, _maxt, expand));
+                return MEOSFactory.WrapTemporal(Meos.TemporalAppendTinstant(this.Ptr, inst.Ptr, Meos.InterptypeFromString(interp), maxdist, _maxt, expand));
             }
             finally
             {
@@ -67,11 +67,11 @@ namespace MEOS.NET.Types
         public Temporal? AsTinstant()
             => MEOSFactory.WrapTemporal(Meos.TemporalAsTinstant(this.Ptr));
 
-        public Temporal? AsTsequence(InterpType interp)
-            => MEOSFactory.WrapTemporal(Meos.TemporalAsTsequence(this.Ptr, (int) interp));
+        public Temporal? AsTsequence(string interp)
+            => MEOSFactory.WrapTemporal(Meos.TemporalAsTsequence(this.Ptr, Meos.InterptypeFromString(interp)));
 
-        public Temporal? AsTsequenceset(InterpType interp)
-            => MEOSFactory.WrapTemporal(Meos.TemporalAsTsequenceset(this.Ptr, (int) interp));
+        public Temporal? AsTsequenceset(string interp)
+            => MEOSFactory.WrapTemporal(Meos.TemporalAsTsequenceset(this.Ptr, Meos.InterptypeFromString(interp)));
 
         public byte[]? AsWKB(byte variant)
         {
@@ -338,8 +338,8 @@ namespace MEOS.NET.Types
         public Temporal?[] Sequences()
             => MEOSFactory.WrapTemporalArray(Meos.TemporalSequences(this.Ptr));
 
-        public Temporal? SetInterp(InterpType interp)
-            => MEOSFactory.WrapTemporal(Meos.TemporalSetInterp(this.Ptr, (int) interp));
+        public Temporal? SetInterp(string interp)
+            => MEOSFactory.WrapTemporal(Meos.TemporalSetInterp(this.Ptr, Meos.InterptypeFromString(interp)));
 
         public Temporal? ShiftScaleTime(Interval shift, Interval duration)
         {
@@ -543,13 +543,13 @@ namespace MEOS.NET.Types
             }
         }
 
-        public Temporal? Tsample(Interval duration, DateTime torigin, InterpType interp)
+        public Temporal? Tsample(Interval duration, DateTime torigin, string interp)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
             {
                 Marshal.StructureToPtr(duration, _duration, false);
-                return MEOSFactory.WrapTemporal(Meos.TemporalTsample(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), (int) interp));
+                return MEOSFactory.WrapTemporal(Meos.TemporalTsample(this.Ptr, _duration, MEOSConvert.ToTimestampTz(torigin), Meos.InterptypeFromString(interp)));
             }
             finally
             {

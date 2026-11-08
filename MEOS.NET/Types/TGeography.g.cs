@@ -27,6 +27,9 @@ namespace MEOS.NET.Types
         public bool Adjacent(TGeography temp2)
             => Meos.AdjacentTspatialTspatial(this.Ptr, temp2.Ptr);
 
+        public int Adwithin(Geography gs, double dist, bool spheroid)
+            => Meos.AdwithinTgeoGeo(this.Ptr, gs.Ptr, dist, spheroid);
+
         public int Adwithin(TGeography temp2, double dist, bool spheroid)
             => Meos.AdwithinTgeoTgeo(this.Ptr, temp2.Ptr, dist, spheroid);
 
