@@ -10,9 +10,9 @@ namespace MEOS.NET.Types
 {
     /// <summary>A segment of a network route. A MeosType no membership predicate admits, so the coverage gate does not demand it; the 20 signatures naming it do.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class Nsegment : Value
+    public class NSegment : Value
     {
-        internal Nsegment(IntPtr ptr) : base(ptr) { }
+        internal NSegment(IntPtr ptr) : base(ptr) { }
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
@@ -72,38 +72,38 @@ namespace MEOS.NET.Types
             }
         }
 
-        public int Cmp(Nsegment ns2)
+        public int Cmp(NSegment ns2)
             => Meos.NsegmentCmp(this.Ptr, ns2.Ptr);
 
-        public Nsegment? Copy()
-            => MEOSFactory.WrapNsegment(Meos.NsegmentCopy(this.Ptr));
+        public NSegment? Copy()
+            => MEOSFactory.WrapNSegment(Meos.NsegmentCopy(this.Ptr));
 
         public double EndPosition()
             => Meos.NsegmentEndPosition(this.Ptr);
 
-        public bool Eq(Nsegment ns2)
+        public bool Eq(NSegment ns2)
             => Meos.NsegmentEq(this.Ptr, ns2.Ptr);
 
-        public bool Ge(Nsegment ns2)
+        public bool Ge(NSegment ns2)
             => Meos.NsegmentGe(this.Ptr, ns2.Ptr);
 
-        public bool Gt(Nsegment ns2)
+        public bool Gt(NSegment ns2)
             => Meos.NsegmentGt(this.Ptr, ns2.Ptr);
 
-        public bool Le(Nsegment ns2)
+        public bool Le(NSegment ns2)
             => Meos.NsegmentLe(this.Ptr, ns2.Ptr);
 
-        public bool Lt(Nsegment ns2)
+        public bool Lt(NSegment ns2)
             => Meos.NsegmentLt(this.Ptr, ns2.Ptr);
 
-        public bool Ne(Nsegment ns2)
+        public bool Ne(NSegment ns2)
             => Meos.NsegmentNe(this.Ptr, ns2.Ptr);
 
         public string Out(int maxdd)
             => Meos.NsegmentOut(this.Ptr, maxdd);
 
-        public Nsegment? Round(int maxdd)
-            => MEOSFactory.WrapNsegment(Meos.NsegmentRound(this.Ptr, maxdd));
+        public NSegment? Round(int maxdd)
+            => MEOSFactory.WrapNSegment(Meos.NsegmentRound(this.Ptr, maxdd));
 
         public long Route()
             => Meos.NsegmentRoute(this.Ptr);
@@ -114,33 +114,36 @@ namespace MEOS.NET.Types
         public double StartPosition()
             => Meos.NsegmentStartPosition(this.Ptr);
 
+        public Geo? ToGeog()
+            => MEOSFactory.WrapGeo(Meos.NsegmentToGeog(this.Ptr));
+
         public Geo? ToGeom()
             => MEOSFactory.WrapGeo(Meos.NsegmentToGeom(this.Ptr));
 
         public STBox? ToStbox()
             => MEOSFactory.WrapSTBox(Meos.NsegmentToStbox(this.Ptr));
 
-        public static Nsegment? FromEWKB(byte[] wkb)
-            => Nsegment.FromWKB(wkb);
+        public static NSegment? FromEWKB(byte[] wkb)
+            => NSegment.FromWKB(wkb);
 
-        public static Nsegment? FromEWKT(string str)
-            => Nsegment.In(str);
+        public static NSegment? FromEWKT(string str)
+            => NSegment.In(str);
 
-        public static Nsegment? FromHexEWKB(string hexwkb)
-            => Nsegment.FromHexWKB(hexwkb);
+        public static NSegment? FromHexEWKB(string hexwkb)
+            => NSegment.FromHexWKB(hexwkb);
 
-        public static Nsegment? FromHexWKB(string hexwkb)
-            => MEOSFactory.WrapNsegment(Meos.NsegmentFromHexwkb(hexwkb));
+        public static NSegment? FromHexWKB(string hexwkb)
+            => MEOSFactory.WrapNSegment(Meos.NsegmentFromHexwkb(hexwkb));
 
-        public static Nsegment? FromText(string str)
-            => Nsegment.In(str);
+        public static NSegment? FromText(string str)
+            => NSegment.In(str);
 
-        public static Nsegment? FromWKB(byte[] wkb)
+        public static NSegment? FromWKB(byte[] wkb)
         {
             GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapNsegment(Meos.NsegmentFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+                return MEOSFactory.WrapNSegment(Meos.NsegmentFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
             }
             finally
             {
@@ -148,11 +151,11 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static Nsegment? In(string str)
-            => MEOSFactory.WrapNsegment(Meos.NsegmentIn(str));
+        public static NSegment? In(string str)
+            => MEOSFactory.WrapNSegment(Meos.NsegmentIn(str));
 
-        public static Nsegment? Make(long rid, double pos1, double pos2)
-            => MEOSFactory.WrapNsegment(Meos.NsegmentMake(rid, pos1, pos2));
+        public static NSegment? Make(long rid, double pos1, double pos2)
+            => MEOSFactory.WrapNSegment(Meos.NsegmentMake(rid, pos1, pos2));
 
     }
 }

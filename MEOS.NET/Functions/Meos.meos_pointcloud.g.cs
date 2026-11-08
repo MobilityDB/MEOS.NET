@@ -238,6 +238,9 @@ namespace MEOS.NET.Functions
         public static IntPtr PcpatchToGeom(IntPtr pa)
             => SafeExecution<IntPtr>(() => Native.PcpatchToGeom(pa));
 
+        public static IntPtr PcpatchToGeog(IntPtr pa)
+            => SafeExecution<IntPtr>(() => Native.PcpatchToGeog(pa));
+
         public static int PcpatchCmp(IntPtr pa1, IntPtr pa2)
             => SafeExecution<int>(() => Native.PcpatchCmp(pa1, pa2));
 
@@ -725,8 +728,14 @@ namespace MEOS.NET.Functions
         public static IntPtr TpcpointToTgeompoint(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TpcpointToTgeompoint(temp));
 
+        public static IntPtr TpcpointToTgeogpoint(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TpcpointToTgeogpoint(temp));
+
         public static IntPtr TpcpatchToTgeometry(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TpcpatchToTgeometry(temp));
+
+        public static IntPtr TpcpatchToTgeography(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TpcpatchToTgeography(temp));
 
         public static IntPtr TpcpointinstMake(IntPtr pt, long t)
             => SafeExecution<IntPtr>(() => Native.TpcpointinstMake(pt, t));

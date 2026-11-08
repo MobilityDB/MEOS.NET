@@ -8,13 +8,13 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>A TPcpoint of subtype TSequenceSet.</summary>
+    /// <summary>A TPCPoint of subtype TSequenceSet.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class TPcpointSeqSet : TPcpoint
+    public class TPCPointSeqSet : TPCPoint
     {
-        internal TPcpointSeqSet(IntPtr ptr) : base(ptr) { }
+        internal TPCPointSeqSet(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? FromBaseTstzspanset(Pcpoint pt, SpanSet ss)
+        public static Temporal? FromBaseTstzspanset(PCPoint pt, SpanSet ss)
             => MEOSFactory.WrapTemporal(Meos.TpcpointseqsetFromBaseTstzspanset(pt.Ptr, ss.Ptr));
 
     }

@@ -302,10 +302,10 @@ namespace MEOS.NET.Types
         public static Temporal? MinusValueGdal(Temporal traj, string path, int band, Span vspan)
             => MEOSFactory.WrapTemporal(Meos.RasterMinusValueGdal(traj.Ptr, path, band, vspan.Ptr));
 
-        public static Temporal? TileValue(Temporal traj, Raquet rq)
+        public static Temporal? TileValue(Temporal traj, RaQuet rq)
             => MEOSFactory.WrapTemporal(Meos.RasterTileValue(traj.Ptr, rq.Ptr));
 
-        public static Temporal? TileValueArray(Temporal traj, Raquet[] rqarr)
+        public static Temporal? TileValueArray(Temporal traj, RaQuet[] rqarr)
         {
             IntPtr[] _rqarrValues = new IntPtr[rqarr.Length];
             for (int i = 0; i < rqarr.Length; i++)

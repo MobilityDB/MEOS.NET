@@ -250,6 +250,9 @@ namespace MEOS.NET.Functions
         public static IntPtr NpointToGeompoint(IntPtr np)
             => SafeExecution<IntPtr>(() => Native.NpointToGeompoint(np));
 
+        public static IntPtr NpointToGeog(IntPtr np)
+            => SafeExecution<IntPtr>(() => Native.NpointToGeog(np));
+
         public static IntPtr NpointToNsegment(IntPtr np)
             => SafeExecution<IntPtr>(() => Native.NpointToNsegment(np));
 
@@ -258,6 +261,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr NsegmentToGeom(IntPtr ns)
             => SafeExecution<IntPtr>(() => Native.NsegmentToGeom(ns));
+
+        public static IntPtr NsegmentToGeog(IntPtr ns)
+            => SafeExecution<IntPtr>(() => Native.NsegmentToGeog(ns));
 
         public static IntPtr NsegmentToStbox(IntPtr ns)
             => SafeExecution<IntPtr>(() => Native.NsegmentToStbox(ns));
@@ -485,6 +491,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TnpointToTgeompoint(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TnpointToTgeompoint(temp));
+
+        public static IntPtr TnpointToTgeogpoint(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TnpointToTgeogpoint(temp));
 
         public static IntPtr TnpointCumulativeLength(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TnpointCumulativeLength(temp));

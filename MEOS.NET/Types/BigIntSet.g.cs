@@ -24,7 +24,7 @@ namespace MEOS.NET.Types
         public bool Contained(BigIntSet s2)
             => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
 
-        public bool ContainedRid(TNpoint temp)
+        public bool ContainedRid(TNPoint temp)
             => Meos.ContainedRidBigintsetTnpoint(this.Ptr, temp.Ptr);
 
         public bool Contains(long i)
@@ -33,7 +33,7 @@ namespace MEOS.NET.Types
         public bool Contains(BigIntSet s2)
             => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
 
-        public bool ContainsRid(TNpoint temp)
+        public bool ContainsRid(TNPoint temp)
             => Meos.ContainsRidBigintsetTnpoint(this.Ptr, temp.Ptr);
 
         public long Distance(BigIntSet s2)
@@ -69,7 +69,7 @@ namespace MEOS.NET.Types
         public bool Overlaps(BigIntSet s2)
             => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
-        public bool OverlapsRid(TNpoint temp)
+        public bool OverlapsRid(TNPoint temp)
             => Meos.OverlapsRidBigintsetTnpoint(this.Ptr, temp.Ptr);
 
         public bool Overleft(long i)
@@ -114,7 +114,7 @@ namespace MEOS.NET.Types
         public Set? Runion(long i)
             => MEOSFactory.WrapSet(Meos.UnionBigintSet(i, this.Ptr));
 
-        public bool SameRid(TNpoint temp)
+        public bool SameRid(TNPoint temp)
             => Meos.SameRidBigintsetTnpoint(this.Ptr, temp.Ptr);
 
         public Set? ShiftScale(long shift, long width, bool hasshift, bool haswidth)

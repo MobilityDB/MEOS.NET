@@ -93,8 +93,14 @@ namespace MEOS.NET.Functions
         public static IntPtr TrgeometryToTgeompoint(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TrgeometryToTgeompoint(temp));
 
+        public static IntPtr TrgeometryToTgeogpoint(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TrgeometryToTgeogpoint(temp));
+
         public static IntPtr TrgeometryToTgeometry(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TrgeometryToTgeometry(temp));
+
+        public static IntPtr TrgeometryToTgeography(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TrgeometryToTgeography(temp));
 
         public static IntPtr TrgeometryEndInstant(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TrgeometryEndInstant(temp));

@@ -557,6 +557,12 @@ namespace MEOS.NET.Functions
         public static IntPtr TposeToTpoint(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TposeToTpoint(temp));
 
+        public static IntPtr TposeToTgeompoint(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TposeToTgeompoint(temp));
+
+        public static IntPtr TposeToTgeogpoint(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TposeToTgeogpoint(temp));
+
         public static IntPtr TposeEndValue(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TposeEndValue(temp));
 
@@ -874,6 +880,9 @@ namespace MEOS.NET.Functions
         public static IntPtr PosechainToPoint(IntPtr pc)
             => SafeExecution<IntPtr>(() => Native.PosechainToPoint(pc));
 
+        public static IntPtr PosechainToGeog(IntPtr pc)
+            => SafeExecution<IntPtr>(() => Native.PosechainToGeog(pc));
+
         public static IntPtr PosechainToStbox(IntPtr pc)
             => SafeExecution<IntPtr>(() => Native.PosechainToStbox(pc));
 
@@ -1110,6 +1119,12 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TposechainToTpose(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TposechainToTpose(temp));
+
+        public static IntPtr TposechainToTgeompoint(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TposechainToTgeompoint(temp));
+
+        public static IntPtr TposechainToTgeogpoint(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TposechainToTgeogpoint(temp));
 
         public static IntPtr TposechainEndValue(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TposechainEndValue(temp));

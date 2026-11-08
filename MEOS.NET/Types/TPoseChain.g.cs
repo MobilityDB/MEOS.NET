@@ -228,6 +228,12 @@ namespace MEOS.NET.Types
         public Temporal? Tne(TPoseChain temp2)
             => MEOSFactory.WrapTemporal(Meos.TneTemporalTemporal(this.Ptr, temp2.Ptr));
 
+        public Temporal? ToTgeogpoint()
+            => MEOSFactory.WrapTemporal(Meos.TposechainToTgeogpoint(this.Ptr));
+
+        public Temporal? ToTgeompoint()
+            => MEOSFactory.WrapTemporal(Meos.TposechainToTgeompoint(this.Ptr));
+
         public Temporal? ToTpose()
             => MEOSFactory.WrapTemporal(Meos.TposechainToTpose(this.Ptr));
 

@@ -8,50 +8,50 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>The TPcpatch class of the MEOS object model.</summary>
+    /// <summary>The TPCPatch class of the MEOS object model.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class TPcpatch : TSpatial
+    public class TPCPatch : TSpatial
     {
-        internal TPcpatch(IntPtr ptr) : base(ptr) { }
+        internal TPCPatch(IntPtr ptr) : base(ptr) { }
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
             => this.Out();
 
-        public int AlwaysEq(Pcpatch pa)
+        public int AlwaysEq(PCPatch pa)
             => Meos.AlwaysEqTpcpatchPcpatch(this.Ptr, pa.Ptr);
 
-        public int AlwaysEq(TPcpatch temp2)
+        public int AlwaysEq(TPCPatch temp2)
             => Meos.AlwaysEqTpcpatchTpcpatch(this.Ptr, temp2.Ptr);
 
-        public int AlwaysNe(Pcpatch pa)
+        public int AlwaysNe(PCPatch pa)
             => Meos.AlwaysNeTpcpatchPcpatch(this.Ptr, pa.Ptr);
 
-        public int AlwaysNe(TPcpatch temp2)
+        public int AlwaysNe(TPCPatch temp2)
             => Meos.AlwaysNeTpcpatchTpcpatch(this.Ptr, temp2.Ptr);
 
-        public Temporal? AtValue(Pcpatch pa)
+        public Temporal? AtValue(PCPatch pa)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchAtValue(this.Ptr, pa.Ptr));
 
         public uint EndNpoints()
             => Meos.TpcpatchEndNpoints(this.Ptr);
 
-        public Pcpatch? EndValue()
-            => MEOSFactory.WrapPcpatch(Meos.TpcpatchEndValue(this.Ptr));
+        public PCPatch? EndValue()
+            => MEOSFactory.WrapPCPatch(Meos.TpcpatchEndValue(this.Ptr));
 
-        public int EverEq(Pcpatch pa)
+        public int EverEq(PCPatch pa)
             => Meos.EverEqTpcpatchPcpatch(this.Ptr, pa.Ptr);
 
-        public int EverEq(TPcpatch temp2)
+        public int EverEq(TPCPatch temp2)
             => Meos.EverEqTpcpatchTpcpatch(this.Ptr, temp2.Ptr);
 
-        public int EverNe(Pcpatch pa)
+        public int EverNe(PCPatch pa)
             => Meos.EverNeTpcpatchPcpatch(this.Ptr, pa.Ptr);
 
-        public int EverNe(TPcpatch temp2)
+        public int EverNe(TPCPatch temp2)
             => Meos.EverNeTpcpatchTpcpatch(this.Ptr, temp2.Ptr);
 
-        public Temporal? MinusValue(Pcpatch pa)
+        public Temporal? MinusValue(PCPatch pa)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchMinusValue(this.Ptr, pa.Ptr));
 
         public long Npoints()
@@ -66,8 +66,8 @@ namespace MEOS.NET.Types
         public uint StartNpoints()
             => Meos.TpcpatchStartNpoints(this.Ptr);
 
-        public Pcpatch? StartValue()
-            => MEOSFactory.WrapPcpatch(Meos.TpcpatchStartValue(this.Ptr));
+        public PCPatch? StartValue()
+            => MEOSFactory.WrapPCPatch(Meos.TpcpatchStartValue(this.Ptr));
 
         public Geo? Swath(Interval maxt)
         {
@@ -83,32 +83,35 @@ namespace MEOS.NET.Types
             }
         }
 
-        public Temporal? Teq(Pcpatch pa)
+        public Temporal? Teq(PCPatch pa)
             => MEOSFactory.WrapTemporal(Meos.TeqTpcpatchPcpatch(this.Ptr, pa.Ptr));
 
-        public Temporal? Teq(TPcpatch temp2)
+        public Temporal? Teq(TPCPatch temp2)
             => MEOSFactory.WrapTemporal(Meos.TeqTemporalTemporal(this.Ptr, temp2.Ptr));
 
-        public Temporal? Tne(Pcpatch pa)
+        public Temporal? Tne(PCPatch pa)
             => MEOSFactory.WrapTemporal(Meos.TneTpcpatchPcpatch(this.Ptr, pa.Ptr));
 
-        public Temporal? Tne(TPcpatch temp2)
+        public Temporal? Tne(TPCPatch temp2)
             => MEOSFactory.WrapTemporal(Meos.TneTemporalTemporal(this.Ptr, temp2.Ptr));
+
+        public Temporal? ToTgeography()
+            => MEOSFactory.WrapTemporal(Meos.TpcpatchToTgeography(this.Ptr));
 
         public Temporal? ToTgeometry()
             => MEOSFactory.WrapTemporal(Meos.TpcpatchToTgeometry(this.Ptr));
 
-        public (SpanSet?[], Pcpatch?[]) Unnest()
+        public (SpanSet?[], PCPatch?[]) Unnest()
         {
             var _answered = Meos.TpcpatchUnnest(this.Ptr);
 
-            return (MEOSFactory.WrapSpanSetArray(_answered.Item1), MEOSFactory.WrapPcpatchArray(_answered.Item2));
+            return (MEOSFactory.WrapSpanSetArray(_answered.Item1), MEOSFactory.WrapPCPatchArray(_answered.Item2));
         }
 
-        public Pcpatch? Value()
-            => MEOSFactory.WrapPcpatch(Meos.TpcpatchValue(this.Ptr));
+        public PCPatch? Value()
+            => MEOSFactory.WrapPCPatch(Meos.TpcpatchValue(this.Ptr));
 
-        public Pcpatch? ValueAtTimestamptz(DateTime t, bool strict)
+        public PCPatch? ValueAtTimestamptz(DateTime t, bool strict)
         {
             IntPtr _value = Marshal.AllocHGlobal(8);
             try
@@ -118,7 +121,7 @@ namespace MEOS.NET.Types
                     return null;
                 }
 
-                return MEOSFactory.WrapPcpatch(Marshal.ReadIntPtr(_value));
+                return MEOSFactory.WrapPCPatch(Marshal.ReadIntPtr(_value));
             }
             finally
             {
@@ -126,7 +129,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public Pcpatch? ValueN(int n)
+        public PCPatch? ValueN(int n)
         {
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
@@ -136,7 +139,7 @@ namespace MEOS.NET.Types
                     return null;
                 }
 
-                return MEOSFactory.WrapPcpatch(Marshal.ReadIntPtr(_result));
+                return MEOSFactory.WrapPCPatch(Marshal.ReadIntPtr(_result));
             }
             finally
             {
@@ -144,17 +147,17 @@ namespace MEOS.NET.Types
             }
         }
 
-        public Pcpatch?[] Values()
-            => MEOSFactory.WrapPcpatchArray(Meos.TpcpatchValues(this.Ptr));
+        public PCPatch?[] Values()
+            => MEOSFactory.WrapPCPatchArray(Meos.TpcpatchValues(this.Ptr));
 
-        public static Temporal? FromBaseTemp(Pcpatch pa, Temporal temp)
+        public static Temporal? FromBaseTemp(PCPatch pa, Temporal temp)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchFromBaseTemp(pa.Ptr, temp.Ptr));
 
         public static Temporal? FromEWKB(byte[] wkb)
             => Temporal.FromWKB(wkb);
 
         public static Temporal? FromEWKT(string str)
-            => TPcpatch.In(str);
+            => TPCPatch.In(str);
 
         public static Temporal? FromHexEWKB(string hexwkb)
             => Temporal.FromHexWKB(hexwkb);
@@ -163,7 +166,7 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTemporal(Meos.TpcpatchFromMfjson(mfjson));
 
         public static Temporal? FromText(string str)
-            => TPcpatch.In(str);
+            => TPCPatch.In(str);
 
         public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchIn(str));

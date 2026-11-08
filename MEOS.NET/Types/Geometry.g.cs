@@ -17,7 +17,7 @@ namespace MEOS.NET.Types
         public int Acontains(TGeo temp)
             => Meos.AcontainsGeoTgeo(this.Ptr, temp.Ptr);
 
-        public int Acontains(TCbuffer temp)
+        public int Acontains(TCBuffer temp)
             => Meos.AcontainsGeoTcbuffer(this.Ptr, temp.Ptr);
 
         public int Acontains(TRGeometry temp)
@@ -32,7 +32,7 @@ namespace MEOS.NET.Types
         public int Acovers(TGeo temp)
             => Meos.AcoversGeoTgeo(this.Ptr, temp.Ptr);
 
-        public int Acovers(TCbuffer temp)
+        public int Acovers(TCBuffer temp)
             => Meos.AcoversGeoTcbuffer(this.Ptr, temp.Ptr);
 
         public int Acovers(TRGeometry temp)
@@ -44,7 +44,7 @@ namespace MEOS.NET.Types
         public int Acovers(TGeometry temp)
             => Meos.AcoversGeoTgeo(this.Ptr, temp.Ptr);
 
-        public int Adisjoint(TCbuffer temp)
+        public int Adisjoint(TCBuffer temp)
             => Meos.AdisjointGeoTcbuffer(this.Ptr, temp.Ptr);
 
         public int Adisjoint(TGeomPoint temp)
@@ -56,7 +56,7 @@ namespace MEOS.NET.Types
         public int Adwithin(TGeo temp, double dist, bool spheroid)
             => Meos.AdwithinGeoTgeo(this.Ptr, temp.Ptr, dist, spheroid);
 
-        public int Adwithin(TCbuffer temp, double dist)
+        public int Adwithin(TCBuffer temp, double dist)
             => Meos.AdwithinGeoTcbuffer(this.Ptr, temp.Ptr, dist);
 
         public int Adwithin(TGeomPoint temp, double dist, bool spheroid)
@@ -65,7 +65,7 @@ namespace MEOS.NET.Types
         public int Adwithin(TGeometry temp, double dist, bool spheroid)
             => Meos.AdwithinGeoTgeo(this.Ptr, temp.Ptr, dist, spheroid);
 
-        public int Aintersects(TCbuffer temp)
+        public int Aintersects(TCBuffer temp)
             => Meos.AintersectsGeoTcbuffer(this.Ptr, temp.Ptr);
 
         public int Aintersects(TGeomPoint temp)
@@ -104,7 +104,7 @@ namespace MEOS.NET.Types
         public int Atouches(TGeomPoint temp)
             => Meos.AtouchesGeoTpoint(this.Ptr, temp.Ptr);
 
-        public int Atouches(TCbuffer temp)
+        public int Atouches(TCBuffer temp)
             => Meos.AtouchesGeoTcbuffer(this.Ptr, temp.Ptr);
 
         public double? Azimuth(Geo gs2)
@@ -176,7 +176,7 @@ namespace MEOS.NET.Types
         public int Econtains(TGeo temp)
             => Meos.EcontainsGeoTgeo(this.Ptr, temp.Ptr);
 
-        public int Econtains(TCbuffer temp)
+        public int Econtains(TCBuffer temp)
             => Meos.EcontainsGeoTcbuffer(this.Ptr, temp.Ptr);
 
         public int Econtains(TRGeometry temp)
@@ -191,7 +191,7 @@ namespace MEOS.NET.Types
         public int Ecovers(TGeo temp)
             => Meos.EcoversGeoTgeo(this.Ptr, temp.Ptr);
 
-        public int Ecovers(TCbuffer temp)
+        public int Ecovers(TCBuffer temp)
             => Meos.EcoversGeoTcbuffer(this.Ptr, temp.Ptr);
 
         public int Ecovers(TRGeometry temp)
@@ -203,7 +203,7 @@ namespace MEOS.NET.Types
         public int Ecovers(TGeometry temp)
             => Meos.EcoversGeoTgeo(this.Ptr, temp.Ptr);
 
-        public int Edisjoint(TCbuffer temp)
+        public int Edisjoint(TCBuffer temp)
             => Meos.EdisjointGeoTcbuffer(this.Ptr, temp.Ptr);
 
         public int Edisjoint(TGeomPoint temp)
@@ -212,7 +212,7 @@ namespace MEOS.NET.Types
         public int Edisjoint(TGeometry temp)
             => Meos.EdisjointGeoTgeo(this.Ptr, temp.Ptr);
 
-        public int Edwithin(TCbuffer temp, double dist)
+        public int Edwithin(TCBuffer temp, double dist)
             => Meos.EdwithinGeoTcbuffer(this.Ptr, temp.Ptr, dist);
 
         public int Edwithin(TGeomPoint temp, double dist, bool spheroid)
@@ -221,7 +221,7 @@ namespace MEOS.NET.Types
         public int Edwithin(TGeometry temp, double dist, bool spheroid)
             => Meos.EdwithinGeoTgeo(this.Ptr, temp.Ptr, dist, spheroid);
 
-        public int Edwithin(TNpoint temp, double dist, bool spheroid)
+        public int Edwithin(TNPoint temp, double dist, bool spheroid)
             => Meos.EdwithinGeoTgeo(this.Ptr, temp.Ptr, dist, spheroid);
 
         public int Edwithin(TPose temp, double dist, bool spheroid)
@@ -233,7 +233,7 @@ namespace MEOS.NET.Types
         public int Edwithin(TQuadbin temp, double dist, bool spheroid)
             => Meos.EdwithinGeoTgeo(this.Ptr, temp.Ptr, dist, spheroid);
 
-        public int Eintersects(TCbuffer temp)
+        public int Eintersects(TCBuffer temp)
             => Meos.EintersectsGeoTcbuffer(this.Ptr, temp.Ptr);
 
         public int Eintersects(TGeomPoint temp)
@@ -242,7 +242,7 @@ namespace MEOS.NET.Types
         public int Eintersects(TGeometry temp)
             => Meos.EintersectsGeoTgeo(this.Ptr, temp.Ptr);
 
-        public int Eintersects(TNpoint temp)
+        public int Eintersects(TNPoint temp)
             => Meos.EintersectsGeoTgeo(this.Ptr, temp.Ptr);
 
         public int Eintersects(TPose temp)
@@ -260,7 +260,7 @@ namespace MEOS.NET.Types
         public int Etouches(TGeomPoint temp)
             => Meos.EtouchesGeoTpoint(this.Ptr, temp.Ptr);
 
-        public int Etouches(TCbuffer temp)
+        public int Etouches(TCBuffer temp)
             => Meos.EtouchesGeoTcbuffer(this.Ptr, temp.Ptr);
 
         public int EverEq(TRGeometry temp)
@@ -359,7 +359,7 @@ namespace MEOS.NET.Types
         public Temporal? Tcontains(TGeo temp)
             => MEOSFactory.WrapTemporal(Meos.TcontainsGeoTgeo(this.Ptr, temp.Ptr));
 
-        public Temporal? Tcontains(TCbuffer temp)
+        public Temporal? Tcontains(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TcontainsGeoTcbuffer(this.Ptr, temp.Ptr));
 
         public Temporal? Tcontains(TGeomPoint temp)
@@ -371,7 +371,7 @@ namespace MEOS.NET.Types
         public Temporal? Tcovers(TGeo temp)
             => MEOSFactory.WrapTemporal(Meos.TcoversGeoTgeo(this.Ptr, temp.Ptr));
 
-        public Temporal? Tcovers(TCbuffer temp)
+        public Temporal? Tcovers(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TcoversGeoTcbuffer(this.Ptr, temp.Ptr));
 
         public Temporal? Tcovers(TGeomPoint temp)
@@ -380,7 +380,7 @@ namespace MEOS.NET.Types
         public Temporal? Tcovers(TGeometry temp)
             => MEOSFactory.WrapTemporal(Meos.TcoversGeoTgeo(this.Ptr, temp.Ptr));
 
-        public Temporal? Tdisjoint(TCbuffer temp)
+        public Temporal? Tdisjoint(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TdisjointGeoTcbuffer(this.Ptr, temp.Ptr));
 
         public Temporal? Tdisjoint(TGeomPoint temp)
@@ -389,7 +389,7 @@ namespace MEOS.NET.Types
         public Temporal? Tdisjoint(TGeometry temp)
             => MEOSFactory.WrapTemporal(Meos.TdisjointGeoTgeo(this.Ptr, temp.Ptr));
 
-        public Temporal? Tdwithin(TCbuffer temp, double dist)
+        public Temporal? Tdwithin(TCBuffer temp, double dist)
             => MEOSFactory.WrapTemporal(Meos.TdwithinGeoTcbuffer(this.Ptr, temp.Ptr, dist));
 
         public Temporal? Tdwithin(TRGeometry temp, double dist)
@@ -410,7 +410,7 @@ namespace MEOS.NET.Types
         public Temporal? Teq(TGeometry temp)
             => MEOSFactory.WrapTemporal(Meos.TeqGeoTgeo(this.Ptr, temp.Ptr));
 
-        public Temporal? Tintersects(TCbuffer temp)
+        public Temporal? Tintersects(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TintersectsGeoTcbuffer(this.Ptr, temp.Ptr));
 
         public Temporal? Tintersects(TGeomPoint temp)
@@ -428,14 +428,14 @@ namespace MEOS.NET.Types
         public Temporal? Tne(TGeometry temp)
             => MEOSFactory.WrapTemporal(Meos.TneGeoTgeo(this.Ptr, temp.Ptr));
 
-        public Cbuffer? ToCbuffer()
-            => MEOSFactory.WrapCbuffer(Meos.GeomToCbuffer(this.Ptr));
+        public CBuffer? ToCbuffer()
+            => MEOSFactory.WrapCBuffer(Meos.GeomToCbuffer(this.Ptr));
 
         public Geo? ToGeog()
             => MEOSFactory.WrapGeo(Meos.GeomToGeog(this.Ptr));
 
-        public Nsegment? ToNsegment()
-            => MEOSFactory.WrapNsegment(Meos.GeomToNsegment(this.Ptr));
+        public NSegment? ToNsegment()
+            => MEOSFactory.WrapNSegment(Meos.GeomToNsegment(this.Ptr));
 
         public bool Touches(Geo gs2)
             => Meos.GeomTouches(this.Ptr, gs2.Ptr);
@@ -446,7 +446,7 @@ namespace MEOS.NET.Types
         public Temporal? Ttouches(TGeo temp)
             => MEOSFactory.WrapTemporal(Meos.TtouchesGeoTgeo(this.Ptr, temp.Ptr));
 
-        public Temporal? Ttouches(TCbuffer temp)
+        public Temporal? Ttouches(TCBuffer temp)
             => MEOSFactory.WrapTemporal(Meos.TtouchesGeoTcbuffer(this.Ptr, temp.Ptr));
 
         public Temporal? Ttouches(TGeomPoint temp)
@@ -483,7 +483,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static Geo? FromCbufferarr(Cbuffer[] cbarr)
+        public static Geo? FromCbufferarr(CBuffer[] cbarr)
         {
             IntPtr[] _cbarrValues = new IntPtr[cbarr.Length];
             for (int i = 0; i < cbarr.Length; i++)

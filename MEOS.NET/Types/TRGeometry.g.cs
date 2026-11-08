@@ -441,6 +441,12 @@ namespace MEOS.NET.Types
         public Temporal? Tne(TRGeometry temp2)
             => MEOSFactory.WrapTemporal(Meos.TneTemporalTemporal(this.Ptr, temp2.Ptr));
 
+        public Temporal? ToTgeogpoint()
+            => MEOSFactory.WrapTemporal(Meos.TrgeometryToTgeogpoint(this.Ptr));
+
+        public Temporal? ToTgeography()
+            => MEOSFactory.WrapTemporal(Meos.TrgeometryToTgeography(this.Ptr));
+
         public Temporal? ToTgeometry()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryToTgeometry(this.Ptr));
 

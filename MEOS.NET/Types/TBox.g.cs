@@ -39,7 +39,7 @@ namespace MEOS.NET.Types
         public bool Adjacent(IntSpan s)
             => Meos.AdjacentTboxNumspan(this.Ptr, s.Ptr);
 
-        public bool Adjacent(TBigint temp)
+        public bool Adjacent(TBigInt temp)
             => Meos.AdjacentTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Adjacent(TFloat temp)
@@ -57,7 +57,7 @@ namespace MEOS.NET.Types
         public bool After(TNumber temp)
             => Meos.AfterTboxTnumber(this.Ptr, temp.Ptr);
 
-        public bool After(TBigint temp)
+        public bool After(TBigInt temp)
             => Meos.AfterTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool After(TFloat temp)
@@ -102,7 +102,7 @@ namespace MEOS.NET.Types
         public bool Before(TNumber temp)
             => Meos.BeforeTboxTnumber(this.Ptr, temp.Ptr);
 
-        public bool Before(TBigint temp)
+        public bool Before(TBigInt temp)
             => Meos.BeforeTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Before(TFloat temp)
@@ -135,7 +135,7 @@ namespace MEOS.NET.Types
         public bool Contained(IntSpan s)
             => Meos.ContainedTboxNumspan(this.Ptr, s.Ptr);
 
-        public bool Contained(TBigint temp)
+        public bool Contained(TBigInt temp)
             => Meos.ContainedTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Contained(TFloat temp)
@@ -165,7 +165,7 @@ namespace MEOS.NET.Types
         public bool Contains(IntSpan s)
             => Meos.ContainsTboxNumspan(this.Ptr, s.Ptr);
 
-        public bool Contains(TBigint temp)
+        public bool Contains(TBigInt temp)
             => Meos.ContainsTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Contains(TFloat temp)
@@ -180,7 +180,7 @@ namespace MEOS.NET.Types
         public bool Eq(TBox box2)
             => Meos.TboxEq(this.Ptr, box2.Ptr);
 
-        public TBox? ExpandBigint(long i)
+        public TBox? ExpandBigInt(long i)
             => MEOSFactory.WrapTBox(Meos.TbigintboxExpand(this.Ptr, i));
 
         public TBox? ExpandFloat(double d)
@@ -245,7 +245,7 @@ namespace MEOS.NET.Types
         public bool Left(IntSpan s)
             => Meos.LeftTboxNumspan(this.Ptr, s.Ptr);
 
-        public bool Left(TBigint temp)
+        public bool Left(TBigInt temp)
             => Meos.LeftTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Left(TFloat temp)
@@ -272,7 +272,7 @@ namespace MEOS.NET.Types
         public bool Overafter(TNumber temp)
             => Meos.OverafterTboxTnumber(this.Ptr, temp.Ptr);
 
-        public bool Overafter(TBigint temp)
+        public bool Overafter(TBigInt temp)
             => Meos.OverafterTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Overafter(TFloat temp)
@@ -290,7 +290,7 @@ namespace MEOS.NET.Types
         public bool Overbefore(TNumber temp)
             => Meos.OverbeforeTboxTnumber(this.Ptr, temp.Ptr);
 
-        public bool Overbefore(TBigint temp)
+        public bool Overbefore(TBigInt temp)
             => Meos.OverbeforeTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Overbefore(TFloat temp)
@@ -320,7 +320,7 @@ namespace MEOS.NET.Types
         public bool Overlaps(IntSpan s)
             => Meos.OverlapsTboxNumspan(this.Ptr, s.Ptr);
 
-        public bool Overlaps(TBigint temp)
+        public bool Overlaps(TBigInt temp)
             => Meos.OverlapsTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Overlaps(TFloat temp)
@@ -347,7 +347,7 @@ namespace MEOS.NET.Types
         public bool Overleft(IntSpan s)
             => Meos.OverleftTboxNumspan(this.Ptr, s.Ptr);
 
-        public bool Overleft(TBigint temp)
+        public bool Overleft(TBigInt temp)
             => Meos.OverleftTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Overleft(TFloat temp)
@@ -374,7 +374,7 @@ namespace MEOS.NET.Types
         public bool Overright(IntSpan s)
             => Meos.OverrightTboxNumspan(this.Ptr, s.Ptr);
 
-        public bool Overright(TBigint temp)
+        public bool Overright(TBigInt temp)
             => Meos.OverrightTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Overright(TFloat temp)
@@ -401,7 +401,7 @@ namespace MEOS.NET.Types
         public bool Right(IntSpan s)
             => Meos.RightTboxNumspan(this.Ptr, s.Ptr);
 
-        public bool Right(TBigint temp)
+        public bool Right(TBigInt temp)
             => Meos.RightTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Right(TFloat temp)
@@ -434,7 +434,7 @@ namespace MEOS.NET.Types
         public bool Same(IntSpan s)
             => Meos.SameTboxNumspan(this.Ptr, s.Ptr);
 
-        public bool Same(TBigint temp)
+        public bool Same(TBigInt temp)
             => Meos.SameTboxTnumber(this.Ptr, temp.Ptr);
 
         public bool Same(TFloat temp)
@@ -457,7 +457,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public TBox? ShiftScaleBigint(long shift, long width, bool hasshift, bool haswidth)
+        public TBox? ShiftScaleBigInt(long shift, long width, bool hasshift, bool haswidth)
             => MEOSFactory.WrapTBox(Meos.TbigintboxShiftScale(this.Ptr, shift, width, hasshift, haswidth));
 
         public TBox? ShiftScaleFloat(double shift, double width, bool hasshift, bool haswidth)
@@ -532,7 +532,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public TBox?[] TimeTilesBigint(Interval duration, DateTime torigin, bool border_inc)
+        public TBox?[] TimeTilesBigInt(Interval duration, DateTime torigin, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
@@ -661,7 +661,7 @@ namespace MEOS.NET.Types
         public TBox? Union(TBox box2, bool strict)
             => MEOSFactory.WrapTBox(Meos.UnionTboxTbox(this.Ptr, box2.Ptr, strict));
 
-        public TBox?[] ValueTilesBigint(long vsize, long vorigin, bool border_inc)
+        public TBox?[] ValueTilesBigInt(long vsize, long vorigin, bool border_inc)
             => MEOSFactory.WrapTBoxArray(Meos.TbigintboxValueTiles(this.Ptr, vsize, vorigin, border_inc));
 
         public TBox?[] ValueTilesFloat(double vsize, double vorigin, bool border_inc)
@@ -670,7 +670,7 @@ namespace MEOS.NET.Types
         public TBox?[] ValueTilesInt(int vsize, int vorigin, bool border_inc)
             => MEOSFactory.WrapTBoxArray(Meos.TintboxValueTiles(this.Ptr, vsize, vorigin, border_inc));
 
-        public TBox?[] ValueTimeTilesBigint(long vsize, Interval duration, long vorigin, DateTime torigin, bool border_inc)
+        public TBox?[] ValueTimeTilesBigInt(long vsize, Interval duration, long vorigin, DateTime torigin, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try

@@ -8,13 +8,13 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>A TNpoint of subtype TInstant.</summary>
+    /// <summary>A TNPoint of subtype TInstant.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
-    public class TNpointInst : TNpoint
+    public class TNPointInst : TNPoint
     {
-        internal TNpointInst(IntPtr ptr) : base(ptr) { }
+        internal TNPointInst(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? Make(Npoint np, DateTime t)
+        public static Temporal? Make(NPoint np, DateTime t)
             => MEOSFactory.WrapTemporal(Meos.TnpointinstMake(np.Ptr, MEOSConvert.ToTimestampTz(t)));
 
     }

@@ -128,6 +128,9 @@ namespace MEOS.NET.Functions
         public static IntPtr CbufferToGeom(IntPtr cb)
             => SafeExecution<IntPtr>(() => Native.CbufferToGeom(cb));
 
+        public static IntPtr CbufferToGeog(IntPtr cb)
+            => SafeExecution<IntPtr>(() => Native.CbufferToGeog(cb));
+
         public static IntPtr CbufferToStbox(IntPtr cb)
             => SafeExecution<IntPtr>(() => Native.CbufferToStbox(cb));
 
@@ -411,6 +414,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TcbufferToTgeompoint(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TcbufferToTgeompoint(temp));
+
+        public static IntPtr TcbufferToTgeogpoint(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TcbufferToTgeogpoint(temp));
 
         public static IntPtr TgeometryToTcbuffer(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TgeometryToTcbuffer(temp));

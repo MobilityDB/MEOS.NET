@@ -10,14 +10,14 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `cc5cf1950abfa84a876849f4f3e67cc6a22b3711` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `80a149bed7bcbca916476d4be71924b69626b760` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
 
 ## The flat surface — `tools/codegen.py`
 
-### parameter nullability — 4325
+### parameter nullability — 4346
 
 `shape.nullable` names the parameters a function accepts NULL for, and the catalog carries no field saying a parameter is required. A pointer parameter named in neither reaches the surface with its contract unstated: the wrapper takes it, and nothing says whether zero is an argument or a fault.
 
@@ -450,6 +450,7 @@ and `tools/objectgen.py`.  Do not edit.
 | cbuffer_set_srid | cb |
 | cbuffer_srid | cb |
 | cbuffer_timestamptz_to_stbox | cb |
+| cbuffer_to_geog | cb |
 | cbuffer_to_geom | cb |
 | cbuffer_to_set | cb |
 | cbuffer_to_stbox | cb |
@@ -1077,6 +1078,7 @@ and `tools/objectgen.py`.  Do not edit.
 | geog_shortestline | gs1, gs2 |
 | geog_to_geom | geog |
 | geogset_in | str |
+| geogset_to_geomset | s |
 | geom_area | gs |
 | geom_array_union | gsarr |
 | geom_azimuth | gs1, gs2, result |
@@ -1127,6 +1129,7 @@ and `tools/objectgen.py`.  Do not edit.
 | geometry_tpose_to_trgeometry | gs, temp |
 | geompoint_to_npoint | gs |
 | geomset_in | str |
+| geomset_to_geogset | s |
 | geopose_frame_name | size_out |
 | geopose_frames | count |
 | geoset_end_value | s |
@@ -1686,6 +1689,7 @@ and `tools/objectgen.py`.  Do not edit.
 | npoint_route | np |
 | npoint_srid | np |
 | npoint_timestamptz_to_stbox | np |
+| npoint_to_geog | np |
 | npoint_to_geompoint | np |
 | npoint_to_nsegment | np |
 | npoint_to_set | np |
@@ -1723,6 +1727,7 @@ and `tools/objectgen.py`.  Do not edit.
 | nsegment_route | ns |
 | nsegment_srid | ns |
 | nsegment_start_position | ns |
+| nsegment_to_geog | ns |
 | nsegment_to_geom | ns |
 | nsegment_to_stbox | ns |
 | null_handle_type_from_string | str |
@@ -1975,6 +1980,7 @@ and `tools/objectgen.py`.  Do not edit.
 | pcpatch_npoints | pa |
 | pcpatch_point_n | pa |
 | pcpatch_points | pa, count |
+| pcpatch_to_geog | pa |
 | pcpatch_to_geom | pa |
 | pcpatch_to_set | pa |
 | pcpatch_to_tpcbox | pa |
@@ -2105,6 +2111,7 @@ and `tools/objectgen.py`.  Do not edit.
 | posechain_srid | pc |
 | posechain_start_pose | pc |
 | posechain_timestamptz_to_stbox | pc |
+| posechain_to_geog | pc |
 | posechain_to_point | pc |
 | posechain_to_pose | pc |
 | posechain_to_set | pc |
@@ -2596,6 +2603,8 @@ and `tools/objectgen.py`.  Do not edit.
 | stbox_to_box3d | box |
 | stbox_to_gbox | box |
 | stbox_to_geo | box |
+| stbox_to_geog | box |
+| stbox_to_geom | box |
 | stbox_to_tstzspan | box |
 | stbox_transform | box |
 | stbox_transform_pipeline | box, pipelinestr |
@@ -2780,6 +2789,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tcbuffer_rotate_z | temp |
 | tcbuffer_start_value | temp |
 | tcbuffer_to_tfloat | temp |
+| tcbuffer_to_tgeogpoint | temp |
 | tcbuffer_to_tgeompoint | temp |
 | tcbuffer_translate | temp |
 | tcbuffer_traversed_area | temp |
@@ -3631,6 +3641,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tnpoint_routes | temp |
 | tnpoint_speed | temp |
 | tnpoint_start_value | temp |
+| tnpoint_to_tgeogpoint | temp |
 | tnpoint_to_tgeompoint | temp |
 | tnpoint_trajectory | temp |
 | tnpoint_twcentroid | temp |
@@ -3754,6 +3765,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tpcpatch_start_npoints | temp |
 | tpcpatch_start_value | temp |
 | tpcpatch_swath | temp |
+| tpcpatch_to_tgeography | temp |
 | tpcpatch_to_tgeometry | temp |
 | tpcpatch_unnest | temp, values, count |
 | tpcpatch_value | temp |
@@ -3776,6 +3788,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tpcpoint_out | temp, size_out |
 | tpcpoint_pcid | temp |
 | tpcpoint_start_value | temp |
+| tpcpoint_to_tgeogpoint | temp |
 | tpcpoint_to_tgeompoint | temp |
 | tpcpoint_unnest | temp, values, count |
 | tpcpoint_value | temp |
@@ -3872,6 +3885,8 @@ and `tools/objectgen.py`.  Do not edit.
 | tpose_rotate_z | temp |
 | tpose_speed | temp |
 | tpose_start_value | temp |
+| tpose_to_tgeogpoint | temp |
+| tpose_to_tgeompoint | temp |
 | tpose_to_tpoint | temp |
 | tpose_trajectory | temp |
 | tpose_translate | temp |
@@ -3895,6 +3910,8 @@ and `tools/objectgen.py`.  Do not edit.
 | tposechain_rotate_y | temp |
 | tposechain_rotate_z | temp |
 | tposechain_start_value | temp |
+| tposechain_to_tgeogpoint | temp |
+| tposechain_to_tgeompoint | temp |
 | tposechain_to_tpose | temp |
 | tposechain_translate | temp |
 | tposechain_unnest | temp, values, count |
@@ -3922,6 +3939,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tquadbin_out | temp, size_out |
 | tquadbin_start_value | temp |
 | tquadbin_to_tbigint | temp |
+| tquadbin_to_tgeogpoint | temp |
 | tquadbin_unnest | temp, values, count |
 | tquadbin_value | temp |
 | tquadbin_value_at_timestamptz | temp, result |
@@ -4008,6 +4026,8 @@ and `tools/objectgen.py`.  Do not edit.
 | trgeometry_start_value | temp |
 | trgeometry_stboxes | temp, count |
 | trgeometry_time_boxes | temp, duration, count |
+| trgeometry_to_tgeogpoint | temp |
+| trgeometry_to_tgeography | temp |
 | trgeometry_to_tgeometry | temp |
 | trgeometry_to_tgeompoint | temp |
 | trgeometry_to_tpose | temp |
@@ -4035,6 +4055,7 @@ and `tools/objectgen.py`.  Do not edit.
 | ts2cell_out | temp, size_out |
 | ts2cell_start_value | temp |
 | ts2cell_to_tbigint | temp |
+| ts2cell_to_tgeompoint | temp |
 | ts2cell_unnest | temp, values, count |
 | ts2cell_value | temp |
 | ts2cell_value_at_timestamptz | temp, result |

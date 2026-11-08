@@ -33,7 +33,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ACbufferAnswersItsCentreAsAGeometry()
         {
-            Cbuffer buffer = Cbuffer.In("Cbuffer(Point(1 1),5)")!;
+            CBuffer buffer = CBuffer.In("Cbuffer(Point(1 1),5)")!;
 
             Assert.AreEqual(5.0, buffer.Radius());
 
