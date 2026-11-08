@@ -10,7 +10,7 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `80a149bed7bcbca916476d4be71924b69626b760` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `869ec432a2b12aa3755c909ca94a6512918c6bd8` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
@@ -4430,14 +4430,12 @@ The flat surface emits no wrapper for the function, so the layer has no signatur
 
 None in this run.
 
-### return needs a class — 3
+### return needs a class — 1
 
 The function answers a type no class stands for and no scalar, value struct or array rule reads, so there is nothing to hand back.
 
 | class | member | what is missing |
 | --- | --- | --- |
-| Raster | dumpAsPolygons | return GeomVal * needs wrapping |
-| Raster | pixelAsPoints | return Pixel * needs wrapping |
 | TPoint | asMVTGeom | return bool needs wrapping |
 
 ### argument needs a class — 2
@@ -4446,8 +4444,8 @@ The function takes a type no class stands for and no marshalling rule reads, so 
 
 | class | member | what is missing |
 | --- | --- | --- |
-| Pcschema | fromDims | argument dims of type PCDimensionSpec * needs marshalling |
-| Pcschema | registerDims | argument dims of type PCDimensionSpec * needs marshalling |
+| Pcschema | fromDims | argument dims is an array of PCDimensionSpec, which has no class |
+| Pcschema | registerDims | argument dims is an array of PCDimensionSpec, which has no class |
 
 ### overloads of one C# signature — 0
 

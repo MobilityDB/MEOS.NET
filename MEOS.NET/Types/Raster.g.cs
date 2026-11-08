@@ -119,6 +119,9 @@ namespace MEOS.NET.Types
         public Raster? Div(Raster rast2)
             => MEOSFactory.WrapRaster(Meos.DivRasterRaster(this.Ptr, rast2.Ptr));
 
+        public GeomVal[] DumpAsPolygons(int band, bool exclude_nodata)
+            => GeomVal.FromAnswer(Meos.RasterDumpAsPolygons(this.Ptr, band, exclude_nodata), (array, count) => Meos.GeomvalArrFree(array, count));
+
         public (double[], bool[]) DumpValues(int band, bool exclude_nodata)
         {
             var _answered = Meos.RasterDumpValues(this.Ptr, band, exclude_nodata);
@@ -146,6 +149,9 @@ namespace MEOS.NET.Types
 
         public int NumBands()
             => Meos.RasterNumBands(this.Ptr);
+
+        public Pixel[] PixelAsPoints(int band, bool exclude_nodata)
+            => Pixel.FromAnswer(Meos.RasterPixelAsPoints(this.Ptr, band, exclude_nodata), (array, count) => Meos.PixelArrFree(array, count));
 
         public Raster? Radd(double d)
             => MEOSFactory.WrapRaster(Meos.AddFloatRaster(d, this.Ptr));
