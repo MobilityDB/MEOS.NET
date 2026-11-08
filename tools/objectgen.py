@@ -414,6 +414,9 @@ class Generator:
         # Ancestors' members declared again beside the operator that would
         # otherwise take their calls.
         self.redeclared = 0
+        # struct -> its fields, for each struct of values an array return holds
+        # (#held_struct_array): emitted as a record struct of its own.
+        self.held_structs: dict[str, list[tuple[str, str, str]]] = {}
         # class -> {C function: instance method}, its ancestors' included, as
         # #inherited_names carries the member names down the parent edges.
         self.class_functions: dict[str | None, dict] = {}
@@ -485,7 +488,125 @@ class Generator:
             return (f"{struct}?", f"MEOSConvert.ToStruct<{struct}>($)")
         if struct and wrapper_ret == "IntPtr[]":
             return (f"{struct}[]", f"MEOSConvert.ToStructArray<{struct}>($)")
+        held = self.held_struct_array(f, wrapper_ret)
+        if held is not None:
+            return held
         return None
+
+    def held_struct_array(self, f: dict, wrapper_ret: str) -> tuple[str, str] | None:
+        """The C# array and the reader of an array return whose element is a
+        struct holding MEOS values, and the function that releases it.
+
+        `raster_dump_as_polygons` answers `GeomVal { GSERIALIZED *geom; double
+        val; }` values, and the catalog states the function that releases the
+        array, geometries with it (`shape.arrayReturn.releasedBy`,
+        `geomval_arr_free`). The wrapper answers one address per element, so
+        each element is read at the offsets the catalog records, each MEOS value
+        it holds copied through the copy its class states, and the array then
+        released: what the caller holds outlives the release."""
+        shape = (f.get("shape") or {}).get("arrayReturn") or {}
+        release = shape.get("releasedBy")
+        if wrapper_ret != "IntPtr[]" or not release:
+            return None
+        struct = codegen._bare(shape["element"]["canonical"])
+        fields = self.held_struct(struct)
+        signature = codegen.SIGNATURES.get(release["function"])
+        if fields is None or signature is None:
+            return None
+        if [t for t, _ in signature[1]] != ["IntPtr", "int"]:
+            return None
+        self.held_structs[struct] = fields
+        free = f"Meos.{codegen.public_name(release['function'])}"
+        return (f"{struct}[]",
+                f"{struct}.FromAnswer($, (array, count) => {free}(array, count))")
+
+    def held_struct(self, struct: str) -> list[tuple[str, str, str]] | None:
+        """`(C# name, C# type, reader)` for each field of a struct whose fields
+        are scalars or pointers to a class the model can copy, or None.
+
+        The reader reads the field off an element's address `item`: a scalar
+        at its offset, a MEOS value as a copy of the one the element points
+        at, null where it points at nothing."""
+        if struct not in codegen.STRUCTS or struct in codegen.BY_VALUE_STRUCTS:
+            return None
+        out = []
+        for field in codegen.STRUCTS[struct]["fields"]:
+            offset = field["offset_bits"] // 8
+            canonical = field["canonical"]
+            name = "".join(part[:1].upper() + part[1:]
+                           for part in field["name"].split("_") if part)
+            cls = self.m.class_for_ctype(canonical)
+            if cls is not None:
+                copy = self.copy_function(cls)
+                if copy is None:
+                    return None
+                out.append((name, f"{cls}?",
+                            f"Marshal.ReadIntPtr(item, {offset}) is var _{field['name']} "
+                            f"&& _{field['name']} != IntPtr.Zero ? "
+                            f"MEOSFactory.Wrap{cls}(Meos.{codegen.public_name(copy)}"
+                            f"(_{field['name']})) : null"))
+                continue
+            try:
+                cs_type = codegen.scalar_cs(canonical, f"{struct}.{field['name']}")
+            except codegen.UnmappedType:
+                return None
+            if cs_type is None:
+                return None
+            reader = (f"Marshal.ReadByte(item, {offset}) != 0" if cs_type == "bool"
+                      else f"Marshal.PtrToStructure<{cs_type}>(IntPtr.Add(item, {offset}))")
+            out.append((name, cs_type, reader))
+        return out
+
+    def copy_function(self, cls: str) -> str | None:
+        """The function the model states copies a value of the class or of an
+        ancestor (its member `copy`), with a wrapper taking that one value."""
+        for owner in [cls] + self.m.ancestors(cls):
+            for entry in self.m.om["classes"].get(owner, {}).get("methods", []):
+                if entry["ooName"] != "copy" or entry.get("ooExclude"):
+                    continue
+                signature = codegen.SIGNATURES.get(entry["function"])
+                if signature and [t for t, _ in signature[1]] == ["IntPtr"]:
+                    return entry["function"]
+        return None
+
+    def held_struct_file(self, struct: str, fields: list[tuple[str, str, str]]) -> str:
+        """A struct holding MEOS values, as the record struct of its fields, and
+        the reader of an array of it answered by MEOS (#held_struct_array)."""
+        members = ", ".join(f"{cs_type} {name}" for name, cs_type, _r in fields)
+        reads = ",\n".join(f"                    {reader}" for _n, _t, reader in fields)
+        return "\n".join([
+            "#nullable enable",
+            "",
+            "using System.Runtime.InteropServices;",
+            "",
+            "using MEOS.NET.Functions;",
+            "",
+            f"namespace {NAMESPACE}",
+            "{",
+            f"    /// <summary>The MEOS <c>{struct}</c>, each MEOS value it holds a copy",
+            "    /// that outlives the array MEOS answered it in.</summary>",
+            f'    [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "{GENERATOR_VERSION}")]',
+            f"    public readonly record struct {struct}({members})",
+            "    {",
+            "        /// <summary>The elements of an array MEOS answered, one address each,",
+            "        /// read and the array then released with the function made for it.</summary>",
+            f"        internal static {struct}[] FromAnswer(IntPtr[] items, Action<IntPtr, int> release)",
+            "        {",
+            f"            var result = new {struct}[items.Length];",
+            "            for (int i = 0; i < items.Length; i++)",
+            "            {",
+            "                IntPtr item = items[i];",
+            f"                result[i] = new {struct}(",
+            reads + ");",
+            "            }",
+            "",
+            "            release(items.Length > 0 ? items[0] : IntPtr.Zero, items.Length);",
+            "            return result;",
+            "        }",
+            "    }",
+            "}",
+            "",
+        ])
 
     def scalar_out_reader(self, pointee: str, where: str) -> tuple[str, int, str] | None:
         """The reader for a scalar MEOS writes through a pointer, from the C#
@@ -1701,6 +1822,8 @@ namespace {EXCEPTION_NAMESPACE}
         (out_dir / "MEOSConvert.g.cs").write_text(self.convert_file())
         for cls in self.m.classes():
             (out_dir / f"{cls}.g.cs").write_text(self.emit_class(cls))
+        for struct, fields in sorted(self.held_structs.items()):
+            (out_dir / f"{struct}.g.cs").write_text(self.held_struct_file(struct, fields))
         (out_dir / "MEOSFactory.g.cs").write_text(self.factory_file())
 
     def run_enums(self, enums_dir: Path) -> int:

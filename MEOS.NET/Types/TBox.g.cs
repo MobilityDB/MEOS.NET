@@ -180,7 +180,7 @@ namespace MEOS.NET.Types
         public bool Eq(TBox box2)
             => Meos.TboxEq(this.Ptr, box2.Ptr);
 
-        public TBox? ExpandBigInt(long i)
+        public TBox? ExpandBigint(long i)
             => MEOSFactory.WrapTBox(Meos.TbigintboxExpand(this.Ptr, i));
 
         public TBox? ExpandFloat(double d)
@@ -457,7 +457,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public TBox? ShiftScaleBigInt(long shift, long width, bool hasshift, bool haswidth)
+        public TBox? ShiftScaleBigint(long shift, long width, bool hasshift, bool haswidth)
             => MEOSFactory.WrapTBox(Meos.TbigintboxShiftScale(this.Ptr, shift, width, hasshift, haswidth));
 
         public TBox? ShiftScaleFloat(double shift, double width, bool hasshift, bool haswidth)
@@ -532,7 +532,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public TBox?[] TimeTilesBigInt(Interval duration, DateTime torigin, bool border_inc)
+        public TBox?[] TimeTilesBigint(Interval duration, DateTime torigin, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
@@ -661,7 +661,7 @@ namespace MEOS.NET.Types
         public TBox? Union(TBox box2, bool strict)
             => MEOSFactory.WrapTBox(Meos.UnionTboxTbox(this.Ptr, box2.Ptr, strict));
 
-        public TBox?[] ValueTilesBigInt(long vsize, long vorigin, bool border_inc)
+        public TBox?[] ValueTilesBigint(long vsize, long vorigin, bool border_inc)
             => MEOSFactory.WrapTBoxArray(Meos.TbigintboxValueTiles(this.Ptr, vsize, vorigin, border_inc));
 
         public TBox?[] ValueTilesFloat(double vsize, double vorigin, bool border_inc)
@@ -670,7 +670,7 @@ namespace MEOS.NET.Types
         public TBox?[] ValueTilesInt(int vsize, int vorigin, bool border_inc)
             => MEOSFactory.WrapTBoxArray(Meos.TintboxValueTiles(this.Ptr, vsize, vorigin, border_inc));
 
-        public TBox?[] ValueTimeTilesBigInt(long vsize, Interval duration, long vorigin, DateTime torigin, bool border_inc)
+        public TBox?[] ValueTimeTilesBigint(long vsize, Interval duration, long vorigin, DateTime torigin, bool border_inc)
         {
             IntPtr _duration = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
             try
