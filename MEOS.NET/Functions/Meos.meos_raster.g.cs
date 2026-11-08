@@ -12,8 +12,11 @@ namespace MEOS.NET.Functions
         public static ulong RaquetPixtypeSize(int pixtype)
             => SafeExecution<ulong>(() => Native.RaquetPixtypeSize(pixtype));
 
-        public static int RaquetPixtypeFromString(string str)
-            => SafeExecution<int>(() => Native.RaquetPixtypeFromString(str));
+        public static string? MeospixtypeName(int pixtype)
+            => Marshal.PtrToStringUTF8(SafeExecution<IntPtr>(() => Native.MeospixtypeName(pixtype)));
+
+        public static int MeospixtypeFromString(string str)
+            => SafeExecution<int>(() => Native.MeospixtypeFromString(str));
 
         public static IntPtr RaquetIn(string str)
             => SafeExecution<IntPtr>(() => Native.RaquetIn(str));

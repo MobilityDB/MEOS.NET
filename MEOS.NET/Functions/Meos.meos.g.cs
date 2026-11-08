@@ -248,6 +248,12 @@ namespace MEOS.NET.Functions
         public static void MeosArrayDestroyFree(IntPtr array)
             => SafeExecution(() => Native.MeosArrayDestroyFree(array));
 
+        public static string? IndexsearchopName(int op)
+            => Marshal.PtrToStringUTF8(SafeExecution<IntPtr>(() => Native.IndexsearchopName(op)));
+
+        public static int IndexsearchopFromString(string str)
+            => SafeExecution<int>(() => Native.IndexsearchopFromString(str));
+
         public static IntPtr IndexResultCreate()
             => SafeExecution<IntPtr>(() => Native.IndexResultCreate());
 
@@ -319,6 +325,12 @@ namespace MEOS.NET.Functions
 
         public static void RtreeNnCursorClose(IntPtr cursor)
             => SafeExecution(() => Native.RtreeNnCursorClose(cursor));
+
+        public static string? SptreekindName(int kind)
+            => Marshal.PtrToStringUTF8(SafeExecution<IntPtr>(() => Native.SptreekindName(kind)));
+
+        public static int SptreekindFromString(string str)
+            => SafeExecution<int>(() => Native.SptreekindFromString(str));
 
         public static IntPtr SptreeCreateIntspan(int kind)
             => SafeExecution<IntPtr>(() => Native.SptreeCreateIntspan(kind));
@@ -3572,6 +3584,9 @@ namespace MEOS.NET.Functions
 
         public static byte WkbVariantFromEndian(string endian)
             => SafeExecution<byte>(() => Native.WkbVariantFromEndian(endian));
+
+        public static string? InterptypeName(int interp)
+            => Marshal.PtrToStringUTF8(SafeExecution<IntPtr>(() => Native.InterptypeName(interp)));
 
         public static int InterptypeFromString(string str)
             => SafeExecution<int>(() => Native.InterptypeFromString(str));

@@ -1,4 +1,3 @@
-using MEOS.NET.Enums;
 using MEOS.NET.Structures;
 using MEOS.NET.Types;
 
@@ -13,12 +12,14 @@ namespace MEOS.NET.Tests
     public class CatalogValueTypeTests : MeosTest
     {
         [TestMethod]
-        public void AnEnumArgumentIsTheEnumTheCatalogNames()
+        public void AnEnumArgumentIsTheTextMeosReadsThroughItsPair()
         {
             TJsonb temp = (TJsonb)TJsonb.In(
                 "[{\"a\": [1, 2]}@2024-12-06, {\"a\": [1, 2]}@2024-12-08]")!;
 
-            Temporal? first = temp.ArrayElement(0, NullHandleType.NullJsonNull);
+            // The handling of a SQL NULL is passed as the SQL functions take it,
+            // as text, which nullhandletype_from_string reads.
+            Temporal? first = temp.ArrayElement(0, "use_json_null");
 
             Assert.IsNotNull(first);
         }

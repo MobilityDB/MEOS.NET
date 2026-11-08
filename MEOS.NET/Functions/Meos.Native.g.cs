@@ -126,6 +126,12 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "meos_array_destroy_free", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial void MeosArrayDestroyFree(IntPtr array);
 
+            [LibraryImport(DllPath, EntryPoint = "indexsearchop_name", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr IndexsearchopName(int op);
+
+            [LibraryImport(DllPath, EntryPoint = "indexsearchop_from_string", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int IndexsearchopFromString(string str);
+
             [LibraryImport(DllPath, EntryPoint = "index_result_create", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr IndexResultCreate();
 
@@ -203,6 +209,12 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "rtree_nn_cursor_close", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial void RtreeNnCursorClose(IntPtr cursor);
+
+            [LibraryImport(DllPath, EntryPoint = "sptreekind_name", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr SptreekindName(int kind);
+
+            [LibraryImport(DllPath, EntryPoint = "sptreekind_from_string", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int SptreekindFromString(string str);
 
             [LibraryImport(DllPath, EntryPoint = "sptree_create_intspan", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr SptreeCreateIntspan(int kind);
@@ -3034,6 +3046,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "wkb_variant_from_endian", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial byte WkbVariantFromEndian(string endian);
 
+            [LibraryImport(DllPath, EntryPoint = "interptype_name", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr InterptypeName(int interp);
+
             [LibraryImport(DllPath, EntryPoint = "interptype_from_string", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int InterptypeFromString(string str);
 
@@ -5093,9 +5108,6 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "meosoper_from_string", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int MeosoperFromString(string name);
-
-            [LibraryImport(DllPath, EntryPoint = "interptype_name", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial IntPtr InterptypeName(int interp);
 
             [LibraryImport(DllPath, EntryPoint = "meos_typeof_hexwkb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int MeosTypeofHexwkb(string hexwkb);
@@ -10735,8 +10747,11 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "contains_tjsonb_tjsonb", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr ContainsTjsonbTjsonb(IntPtr temp1, IntPtr temp2);
 
-            [LibraryImport(DllPath, EntryPoint = "null_handle_type_from_string", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int NullHandleTypeFromString(string str);
+            [LibraryImport(DllPath, EntryPoint = "nullhandletype_name", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr NullhandletypeName(int type);
+
+            [LibraryImport(DllPath, EntryPoint = "nullhandletype_from_string", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int NullhandletypeFromString(string str);
 
             [LibraryImport(DllPath, EntryPoint = "tjson_array_element", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TjsonArrayElement(IntPtr temp, int idx, int null_handle);
@@ -13720,8 +13735,11 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "raquet_pixtype_size", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial ulong RaquetPixtypeSize(int pixtype);
 
-            [LibraryImport(DllPath, EntryPoint = "raquet_pixtype_from_string", StringMarshalling = StringMarshalling.Utf8)]
-            internal static partial int RaquetPixtypeFromString(string str);
+            [LibraryImport(DllPath, EntryPoint = "meospixtype_name", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr MeospixtypeName(int pixtype);
+
+            [LibraryImport(DllPath, EntryPoint = "meospixtype_from_string", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int MeospixtypeFromString(string str);
 
             [LibraryImport(DllPath, EntryPoint = "raquet_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr RaquetIn(string str);

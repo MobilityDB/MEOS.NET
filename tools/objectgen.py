@@ -193,6 +193,12 @@ class Model:
             e["name"]: {v["name"]: v["value"] for v in e.get("values", [])}
             for e in idl["enums"] if e.get("name")
         }
+        # The two functions MEOS names from an enumeration that write and read
+        # its values as text (`interptype_name`, `interptype_from_string`), as
+        # the catalog states them in `enums[].text`.
+        self.enum_text: dict[str, dict] = {
+            e["name"]: e["text"] for e in idl["enums"] if e.get("name") and e.get("text")
+        }
         self.parent: dict[str, str | None] = {}
         self.ctype: dict[str, str] = {}
         self.meostype: dict[str, str] = {}      # class -> its MeosType constant
@@ -467,6 +473,9 @@ class Generator:
             return ("DateOnly", "MEOSConvert.ToDateOnly($)")
         if wrapper_ret in ("string", "string?"):
             return (wrapper_ret, "$")
+        text = self.enum_text(c) if c in codegen.ENUM_TYPES else None
+        if text:
+            return ("string", f"Meos.{codegen.public_name(text['name'])}($)!")
         if c in codegen.ENUM_TYPES:
             return (enum_type_name(c), f"({enum_type_name(c)}) $")
         if is_scalar(wrapper_ret):
@@ -703,6 +712,19 @@ class Generator:
         base = base[:-1].strip() if base.endswith("*") else base
         return base if base in codegen.BY_VALUE_STRUCTS else None
 
+    def enum_text(self, c: str) -> dict | None:
+        """The text pair of an enumeration slot whose two functions the flat
+        surface emits, or None, as #flatText of MEOS.js's
+        codegen/ObjectGenerator.ts reads it: a pair the flat surface lacks
+        leaves the slot the C# enum. A slot with a pair takes and answers its
+        values as the SQL functions do, as text, through MEOS's own functions,
+        and the binding names no value on its own. It reads the catalog as
+        #value_struct beside it does."""
+        text = self.m.enum_text.get(c)
+        if text and text["name"] in codegen.SIGNATURES and text["fromString"] in codegen.SIGNATURES:
+            return text
+        return None
+
     def map_param(self, c_type: str, cs_type: str, name: str) -> tuple[str, str] | None:
         """``(csharp_type, argument expression)`` for one parameter, or None."""
         c = clean(c_type)
@@ -710,6 +732,9 @@ class Generator:
             return ("DateTime", f"MEOSConvert.ToTimestampTz({name})")
         if c == "DateADT":
             return ("DateOnly", f"MEOSConvert.ToDateADT({name})")
+        text = self.enum_text(c) if c in codegen.ENUM_TYPES else None
+        if text:
+            return ("string", f"Meos.{codegen.public_name(text['fromString'])}({name})")
         if c in codegen.ENUM_TYPES:
             # The wrapper takes the enum's value as an int, and the catalog
             # already names every enum the surface uses — so a method takes the

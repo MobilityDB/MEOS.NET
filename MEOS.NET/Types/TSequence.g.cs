@@ -14,7 +14,7 @@ namespace MEOS.NET.Types
     {
         internal TSequence(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? Make(Temporal[] instants, bool lower_inc, bool upper_inc, InterpType interp, bool normalize)
+        public static Temporal? Make(Temporal[] instants, bool lower_inc, bool upper_inc, string interp, bool normalize)
         {
             IntPtr[] _instantsValues = new IntPtr[instants.Length];
             for (int i = 0; i < instants.Length; i++)
@@ -25,7 +25,7 @@ namespace MEOS.NET.Types
             GCHandle _instants = GCHandle.Alloc(_instantsValues, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapTemporal(Meos.TsequenceMake(_instants.AddrOfPinnedObject(), instants.Length, lower_inc, upper_inc, (int) interp, normalize));
+                return MEOSFactory.WrapTemporal(Meos.TsequenceMake(_instants.AddrOfPinnedObject(), instants.Length, lower_inc, upper_inc, Meos.InterptypeFromString(interp), normalize));
             }
             finally
             {

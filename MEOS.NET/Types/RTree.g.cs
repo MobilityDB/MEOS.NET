@@ -29,8 +29,8 @@ namespace MEOS.NET.Types
         public bool InsertTemporalSplit(Temporal temp, long id, int maxboxes)
             => Meos.RtreeInsertTemporalSplit(this.Ptr, temp.Ptr, id, maxboxes);
 
-        public int Join(RTree rtree2, IndexSearchOp op, MeosArray result)
-            => Meos.RtreeJoin(this.Ptr, rtree2.Ptr, (int) op, result.Ptr);
+        public int Join(RTree rtree2, string op, MeosArray result)
+            => Meos.RtreeJoin(this.Ptr, rtree2.Ptr, Meos.IndexsearchopFromString(op), result.Ptr);
 
         public bool Load(IntPtr boxes, long[] ids)
         {
@@ -51,14 +51,14 @@ namespace MEOS.NET.Types
         public int NumEntries()
             => Meos.RtreeNumEntries(this.Ptr);
 
-        public int Search(IndexSearchOp op, IntPtr query, MeosArray result)
-            => Meos.RtreeSearch(this.Ptr, (int) op, query, result.Ptr);
+        public int Search(string op, IntPtr query, MeosArray result)
+            => Meos.RtreeSearch(this.Ptr, Meos.IndexsearchopFromString(op), query, result.Ptr);
 
-        public int SearchTemporal(IndexSearchOp op, Temporal temp, MeosArray result)
-            => Meos.RtreeSearchTemporal(this.Ptr, (int) op, temp.Ptr, result.Ptr);
+        public int SearchTemporal(string op, Temporal temp, MeosArray result)
+            => Meos.RtreeSearchTemporal(this.Ptr, Meos.IndexsearchopFromString(op), temp.Ptr, result.Ptr);
 
-        public int SearchTemporalDedup(IndexSearchOp op, Temporal temp, int maxboxes, MeosArray result)
-            => Meos.RtreeSearchTemporalDedup(this.Ptr, (int) op, temp.Ptr, maxboxes, result.Ptr);
+        public int SearchTemporalDedup(string op, Temporal temp, int maxboxes, MeosArray result)
+            => Meos.RtreeSearchTemporalDedup(this.Ptr, Meos.IndexsearchopFromString(op), temp.Ptr, maxboxes, result.Ptr);
 
         public static RTree? CreateBigintspan()
             => MEOSFactory.WrapRTree(Meos.RtreeCreateBigintspan());

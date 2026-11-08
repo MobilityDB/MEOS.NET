@@ -20,6 +20,12 @@ namespace MEOS.NET.Types
         public int Adisjoint(TGeography temp)
             => Meos.AdisjointGeoTgeo(this.Ptr, temp.Ptr);
 
+        public int Adwithin(TGeogPoint temp, double dist, bool spheroid)
+            => Meos.AdwithinGeoTgeo(this.Ptr, temp.Ptr, dist, spheroid);
+
+        public int Adwithin(TGeography temp, double dist, bool spheroid)
+            => Meos.AdwithinGeoTgeo(this.Ptr, temp.Ptr, dist, spheroid);
+
         public int Aintersects(TGeogPoint temp)
             => Meos.AintersectsGeoTgeo(this.Ptr, temp.Ptr);
 
@@ -119,6 +125,9 @@ namespace MEOS.NET.Types
         public new Geo? Shortestline(Geo gs2, bool use_spheroid)
             => MEOSFactory.WrapGeo(Meos.GeogShortestline(this.Ptr, gs2.Ptr, use_spheroid));
 
+        public Temporal? Tdisjoint(TGeogPoint temp)
+            => MEOSFactory.WrapTemporal(Meos.TdisjointGeoTgeo(this.Ptr, temp.Ptr));
+
         public Temporal? Tdisjoint(TGeography temp)
             => MEOSFactory.WrapTemporal(Meos.TdisjointGeoTgeo(this.Ptr, temp.Ptr));
 
@@ -133,6 +142,9 @@ namespace MEOS.NET.Types
 
         public Temporal? Teq(TGeography temp)
             => MEOSFactory.WrapTemporal(Meos.TeqGeoTgeo(this.Ptr, temp.Ptr));
+
+        public Temporal? Tintersects(TGeogPoint temp)
+            => MEOSFactory.WrapTemporal(Meos.TintersectsGeoTgeo(this.Ptr, temp.Ptr));
 
         public Temporal? Tintersects(TGeography temp)
             => MEOSFactory.WrapTemporal(Meos.TintersectsGeoTgeo(this.Ptr, temp.Ptr));

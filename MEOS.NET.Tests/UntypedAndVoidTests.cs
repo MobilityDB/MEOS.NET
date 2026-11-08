@@ -1,4 +1,3 @@
-using MEOS.NET.Enums;
 using MEOS.NET.Types;
 
 namespace MEOS.NET.Tests
@@ -27,7 +26,9 @@ namespace MEOS.NET.Tests
             MeosArray? found = MeosArray.Create(8);
 
             Assert.IsNotNull(found);
-            Assert.AreEqual(1, tree.Search(IndexSearchOp.IndexOverlaps, second.Ptr, found!));
+            // The operator is passed by the name of its SQL function, which
+            // indexsearchop_from_string reads.
+            Assert.AreEqual(1, tree.Search("overlaps", second.Ptr, found!));
         }
 
         [TestMethod]

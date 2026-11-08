@@ -14,8 +14,8 @@ namespace MEOS.NET.Types
     {
         internal TPoseChainSeqSet(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? FromBaseTstzspanset(PoseChain pc, SpanSet ss, InterpType interp)
-            => MEOSFactory.WrapTemporal(Meos.TposechainseqsetFromBaseTstzspanset(pc.Ptr, ss.Ptr, (int) interp));
+        public static Temporal? FromBaseTstzspanset(PoseChain pc, SpanSet ss, string interp)
+            => MEOSFactory.WrapTemporal(Meos.TposechainseqsetFromBaseTstzspanset(pc.Ptr, ss.Ptr, Meos.InterptypeFromString(interp)));
 
     }
 }

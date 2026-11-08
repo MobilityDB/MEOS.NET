@@ -20,7 +20,7 @@ namespace MEOS.NET.Types
         public int Adisjoint(TGeo temp2)
             => Meos.AdisjointTgeoTgeo(this.Ptr, temp2.Ptr);
 
-        public int Adwithin(Geometry gs, double dist, bool spheroid)
+        public int Adwithin(Geo gs, double dist, bool spheroid)
             => Meos.AdwithinTgeoGeo(this.Ptr, gs.Ptr, dist, spheroid);
 
         public int Adwithin(TGeo temp2, double dist, bool spheroid)

@@ -1,4 +1,3 @@
-using MEOS.NET.Enums;
 using MEOS.NET.Types;
 
 namespace MEOS.NET.Tests
@@ -21,7 +20,8 @@ namespace MEOS.NET.Tests
                 TFloat.In("30.0@2024-12-09")!,
             ];
 
-            Temporal sequence = TSequence.Make(instants, true, true, InterpType.Linear, true)!;
+            // The interpolation is passed as text, which interptype_from_string reads.
+            Temporal sequence = TSequence.Make(instants, true, true, "linear", true)!;
 
             Assert.AreEqual(3, sequence.NumInstants());
             Assert.AreEqual(
@@ -83,7 +83,7 @@ namespace MEOS.NET.Tests
         public void AnEmptyArrayIsARequestMeosRefuses()
         {
             Assert.ThrowsException<MEOS.NET.Exceptions.MEOSInvalidArgValueException>(
-                () => TSequence.Make([], true, true, InterpType.Linear, true));
+                () => TSequence.Make([], true, true, "linear", true));
         }
     }
 }
