@@ -16,7 +16,7 @@ namespace MEOS.NET.Tests
         {
             const string text = "{\"Zürich\"@2001-01-01 00:00:00+00, \"Liège\"@2001-01-02 00:00:00+00}";
 
-            Assert.AreEqual(text, Meos.TtextOut(Meos.TtextIn(text)));
+            Assert.AreEqual(text, Meos.TemporalOut(Meos.TtextIn(text), 15));
         }
 
         [TestMethod]
@@ -25,7 +25,7 @@ namespace MEOS.NET.Tests
             string value = new('x', 200000);
             string text = $"\"{value}\"@2001-01-01 00:00:00+00";
 
-            Assert.AreEqual(text, Meos.TtextOut(Meos.TtextIn(text)));
+            Assert.AreEqual(text, Meos.TemporalOut(Meos.TtextIn(text), 15));
         }
 
         [TestMethod]

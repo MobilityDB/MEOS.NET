@@ -104,9 +104,6 @@ namespace MEOS.NET.Types
         public bool Left(TSpatial temp2)
             => Meos.LeftTspatialTspatial(this.Ptr, temp2.Ptr);
 
-        public string Out(int maxdd)
-            => Meos.TspatialOut(this.Ptr, maxdd);
-
         public bool Overabove(STBox box)
             => Meos.OveraboveTspatialStbox(this.Ptr, box.Ptr);
 

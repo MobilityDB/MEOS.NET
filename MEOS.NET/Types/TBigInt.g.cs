@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.Out(15);
 
         public Temporal? Add(long i)
             => MEOSFactory.WrapTemporal(Meos.AddTbigintBigint(this.Ptr, i));
@@ -69,8 +69,8 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TBigInt temp2)
             => Meos.AlwaysNeTemporalTemporal(this.Ptr, temp2.Ptr);
 
-        public string AsText()
-            => this.Out();
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
 
         public Temporal? AtValue(long i)
             => MEOSFactory.WrapTemporal(Meos.TbigintAtValue(this.Ptr, i));
@@ -167,9 +167,6 @@ namespace MEOS.NET.Types
 
         public long Nad(TBigInt temp2)
             => Meos.NadTbigintTbigint(this.Ptr, temp2.Ptr);
-
-        public string Out()
-            => Meos.TbigintOut(this.Ptr);
 
         public bool Overafter(TBigInt temp2)
             => Meos.OverafterTnumberTnumber(this.Ptr, temp2.Ptr);

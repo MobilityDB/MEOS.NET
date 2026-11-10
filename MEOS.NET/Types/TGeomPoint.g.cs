@@ -66,8 +66,8 @@ namespace MEOS.NET.Types
         public Temporal? Bearing(TGeomPoint temp2)
             => MEOSFactory.WrapTemporal(Meos.BearingTpointTpoint(this.Ptr, temp2.Ptr));
 
-        public Temporal? Bearing(Geometry gs, bool invert)
-            => MEOSFactory.WrapTemporal(Meos.BearingTpointPoint(this.Ptr, gs.Ptr, invert));
+        public Temporal? Bearing(Geometry gs)
+            => MEOSFactory.WrapTemporal(Meos.BearingTpointPoint(this.Ptr, gs.Ptr));
 
         public bool Before(TGeomPoint temp2)
             => Meos.BeforeTspatialTspatial(this.Ptr, temp2.Ptr);

@@ -92,11 +92,11 @@ namespace MEOS.NET.Types
         public new Temporal? AsTinstant()
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAsTinstant(this.Ptr));
 
-        public new Temporal? AsTsequence(string interp_str)
-            => MEOSFactory.WrapTemporal(Meos.TrgeometryAsTsequence(this.Ptr, interp_str));
+        public new Temporal? AsTsequence(string interp)
+            => MEOSFactory.WrapTemporal(Meos.TrgeometryAsTsequence(this.Ptr, Meos.InterptypeFromString(interp)));
 
-        public new Temporal? AsTsequenceset(string interp_str)
-            => MEOSFactory.WrapTemporal(Meos.TrgeometryAsTsequenceset(this.Ptr, interp_str));
+        public new Temporal? AsTsequenceset(string interp)
+            => MEOSFactory.WrapTemporal(Meos.TrgeometryAsTsequenceset(this.Ptr, Meos.InterptypeFromString(interp)));
 
         public Temporal? AtGeom(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryAtGeom(this.Ptr, gs.Ptr));

@@ -189,9 +189,6 @@ namespace MEOS.NET.Types
         public double Nad(TBox box)
             => Meos.NadTfloatTbox(this.Ptr, box.Ptr);
 
-        public string Out(int maxdd)
-            => Meos.TfloatOut(this.Ptr, maxdd);
-
         public bool Overafter(TFloat temp2)
             => Meos.OverafterTnumberTnumber(this.Ptr, temp2.Ptr);
 

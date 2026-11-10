@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.Out(15);
 
         public bool Adjacent(TBool temp2)
             => Meos.AdjacentTemporalTemporal(this.Ptr, temp2.Ptr);
@@ -36,8 +36,8 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TBool temp2)
             => Meos.AlwaysNeTemporalTemporal(this.Ptr, temp2.Ptr);
 
-        public string AsText()
-            => this.Out();
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
 
         public Temporal? AtValue(bool b)
             => MEOSFactory.WrapTemporal(Meos.TboolAtValue(this.Ptr, b));
@@ -68,9 +68,6 @@ namespace MEOS.NET.Types
 
         public Temporal? MinusValue(bool b)
             => MEOSFactory.WrapTemporal(Meos.TboolMinusValue(this.Ptr, b));
-
-        public string Out()
-            => Meos.TboolOut(this.Ptr);
 
         public bool Overafter(TBool temp2)
             => Meos.OverafterTemporalTemporal(this.Ptr, temp2.Ptr);

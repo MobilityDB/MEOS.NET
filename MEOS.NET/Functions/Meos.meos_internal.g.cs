@@ -57,68 +57,11 @@ namespace MEOS.NET.Functions
         public static IntPtr SetIn(string str, int settype)
             => SafeExecution<IntPtr>(() => Native.SetIn(str, settype));
 
-        public static string SetOut(IntPtr s, int maxdd)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.SetOut(s, maxdd, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
-
         public static IntPtr SpanIn(string str, int spantype)
             => SafeExecution<IntPtr>(() => Native.SpanIn(str, spantype));
 
-        public static string SpanOut(IntPtr s, int maxdd)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.SpanOut(s, maxdd, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
-
         public static IntPtr SpansetIn(string str, int spantype)
             => SafeExecution<IntPtr>(() => Native.SpansetIn(str, spantype));
-
-        public static string SpansetOut(IntPtr ss, int maxdd)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.SpansetOut(ss, maxdd, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
 
         public static IntPtr SetMake(IntPtr values, int count, int basetype, bool order)
             => SafeExecution<IntPtr>(() => Native.SetMake(values, count, basetype, order));
@@ -690,25 +633,6 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TemporalIn(string str, int temptype)
             => SafeExecution<IntPtr>(() => Native.TemporalIn(str, temptype));
-
-        public static string TemporalOut(IntPtr temp, int maxdd)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalOut(temp, maxdd, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
 
         public static IntPtr TemparrOut(IntPtr temparr, int count, int maxdd)
             => SafeExecution<IntPtr>(() => Native.TemparrOut(temparr, count, maxdd));

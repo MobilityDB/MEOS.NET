@@ -45,9 +45,6 @@ namespace MEOS.NET.Types
         public Set? Minus(PoseChainSet s2)
             => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
 
-        public new string Out(int maxdd)
-            => Meos.PosechainsetOut(this.Ptr, maxdd);
-
         public bool Overlaps(PoseChainSet s2)
             => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 

@@ -14,10 +14,6 @@ namespace MEOS.NET.Types
     {
         internal BigIntSpanSet(IntPtr ptr) : base(ptr) { }
 
-        /// <summary>The text MEOS writes this value as.</summary>
-        public override string ToString()
-            => this.Out();
-
         public bool Adjacent(long i)
             => Meos.AdjacentSpansetBigint(this.Ptr, i);
 
@@ -27,8 +23,8 @@ namespace MEOS.NET.Types
         public bool Adjacent(BigIntSpanSet ss2)
             => Meos.AdjacentSpansetSpanset(this.Ptr, ss2.Ptr);
 
-        public string AsText()
-            => this.Out();
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
 
         public Span?[] Bins(long vsize, long vorigin, bool border_inc)
             => MEOSFactory.WrapSpanArray(Meos.BigintspansetBins(this.Ptr, vsize, vorigin, border_inc));
@@ -86,9 +82,6 @@ namespace MEOS.NET.Types
 
         public SpanSet? Minus(BigIntSpanSet ss2)
             => MEOSFactory.WrapSpanSet(Meos.MinusSpansetSpanset(this.Ptr, ss2.Ptr));
-
-        public string Out()
-            => Meos.BigintspansetOut(this.Ptr);
 
         public bool Overlaps(BigIntSpan s)
             => Meos.OverlapsSpansetSpan(this.Ptr, s.Ptr);

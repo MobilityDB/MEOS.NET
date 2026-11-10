@@ -451,25 +451,6 @@ namespace MEOS.NET.Functions
         public static IntPtr PosesetIn(string str)
             => SafeExecution<IntPtr>(() => Native.PosesetIn(str));
 
-        public static string PosesetOut(IntPtr s, int maxdd)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.PosesetOut(s, maxdd, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
-
         public static IntPtr PosesetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.PosesetMake(values, count));
 
@@ -1016,25 +997,6 @@ namespace MEOS.NET.Functions
 
         public static IntPtr PosechainsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.PosechainsetIn(str));
-
-        public static string PosechainsetOut(IntPtr s, int maxdd)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.PosechainsetOut(s, maxdd, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
 
         public static IntPtr PosechainsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.PosechainsetMake(values, count));

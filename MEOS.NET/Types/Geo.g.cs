@@ -72,6 +72,27 @@ namespace MEOS.NET.Types
         public string AsText(int precision)
             => Meos.GeoAsText(this.Ptr, precision);
 
+        public double? Bearing(Geo gs2)
+        {
+            IntPtr _result = Marshal.AllocHGlobal(8);
+            try
+            {
+                if (!Meos.BearingPointPoint(this.Ptr, gs2.Ptr, _result))
+                {
+                    return null;
+                }
+
+                return Marshal.PtrToStructure<double>(_result);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_result);
+            }
+        }
+
+        public Temporal? Bearing(TPoint temp)
+            => MEOSFactory.WrapTemporal(Meos.BearingPointTpoint(this.Ptr, temp.Ptr));
+
         public Geo? Centroid(bool spheroid)
             => MEOSFactory.WrapGeo(Meos.GeoCentroid(this.Ptr, spheroid));
 

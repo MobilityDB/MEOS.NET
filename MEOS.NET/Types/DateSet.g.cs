@@ -16,13 +16,13 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.Out(15);
 
         public bool After(DateOnly d)
             => Meos.AfterSetDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
-        public string AsText()
-            => this.Out();
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
 
         public bool Before(DateOnly d)
             => Meos.BeforeSetDate(this.Ptr, MEOSConvert.ToDateADT(d));
@@ -59,9 +59,6 @@ namespace MEOS.NET.Types
 
         public Set? Minus(DateSet s2)
             => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
-
-        public string Out()
-            => Meos.DatesetOut(this.Ptr);
 
         public bool Overafter(DateOnly d)
             => Meos.OverafterSetDate(this.Ptr, MEOSConvert.ToDateADT(d));

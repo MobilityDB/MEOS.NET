@@ -42,9 +42,6 @@ namespace MEOS.NET.Types
         public Set? Minus(PCPointSet s2)
             => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
 
-        public new string Out(int maxdd)
-            => Meos.PcpointsetOut(this.Ptr, maxdd);
-
         public bool Overlaps(PCPointSet s2)
             => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 

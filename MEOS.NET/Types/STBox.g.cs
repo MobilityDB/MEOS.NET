@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public bool Above(STBox box2)
             => Meos.AboveStboxStbox(this.Ptr, box2.Ptr);
@@ -162,6 +162,9 @@ namespace MEOS.NET.Types
             }
         }
 
+        public string AsEWKT(int maxdd)
+            => this.Out(maxdd);
+
         public string AsHexEWKB(byte variant)
             => Meos.StboxAsHexewkb(this.Ptr, variant);
 
@@ -169,7 +172,7 @@ namespace MEOS.NET.Types
             => Meos.StboxAsHexwkb(this.Ptr, variant);
 
         public string AsText(int maxdd)
-            => this.Out(maxdd);
+            => Meos.StboxAsText(this.Ptr, maxdd);
 
         public byte[]? AsWKB(byte variant)
         {
@@ -1246,6 +1249,9 @@ namespace MEOS.NET.Types
 
         public static STBox? FromEWKB(byte[] wkb)
             => STBox.FromWKB(wkb);
+
+        public static STBox? FromEWKT(string str)
+            => STBox.In(str);
 
         public static STBox? FromGbox(GBOX box)
         {

@@ -52,9 +52,19 @@ namespace MEOS.NET.Errors
                 25 => new MEOSWKBOutputException(level, MEOSErrorCodes.WKBOutput, message),
                 26 => new MEOSGEOJSONInputException(level, MEOSErrorCodes.GEOJSONInput, message),
                 27 => new MEOSGEOJSONOutputException(level, MEOSErrorCodes.GEOJSONOutput, message),
-                28 => new MEOSSQLJSONErrorException(level, MEOSErrorCodes.SQLJSONError, message),
                 29 => new MEOSInvalidRegularExpressionException(level, MEOSErrorCodes.InvalidRegularExpression, message),
                 30 => new MEOSDatetimeOutOfRangeException(level, MEOSErrorCodes.DatetimeOutOfRange, message),
+                31 => new MEOSNonNumericSQLJSONItemException(level, MEOSErrorCodes.NonNumericSQLJSONItem, message),
+                32 => new MEOSInvalidArgumentForSQLJSONDatetimeFunctionException(level, MEOSErrorCodes.InvalidArgumentForSQLJSONDatetimeFunction, message),
+                33 => new MEOSMoreThanOneSQLJSONItemException(level, MEOSErrorCodes.MoreThanOneSQLJSONItem, message),
+                34 => new MEOSSingletonSQLJSONItemRequiredException(level, MEOSErrorCodes.SingletonSQLJSONItemRequired, message),
+                35 => new MEOSSQLJSONArrayNotFoundException(level, MEOSErrorCodes.SQLJSONArrayNotFound, message),
+                36 => new MEOSInvalidSQLJSONSubscriptException(level, MEOSErrorCodes.InvalidSQLJSONSubscript, message),
+                37 => new MEOSSQLJSONObjectNotFoundException(level, MEOSErrorCodes.SQLJSONObjectNotFound, message),
+                38 => new MEOSSQLJSONMemberNotFoundException(level, MEOSErrorCodes.SQLJSONMemberNotFound, message),
+                39 => new MEOSSQLJSONNumberNotFoundException(level, MEOSErrorCodes.SQLJSONNumberNotFound, message),
+                40 => new MEOSDuplicateJSONObjectKeyValueException(level, MEOSErrorCodes.DuplicateJSONObjectKeyValue, message),
+                41 => new MEOSUndefinedObjectException(level, MEOSErrorCodes.UndefinedObject, message),
                 // A code this binding does not name is still an error MEOS
                 // raised, so it reaches the caller rather than being dropped.
                 _ => new MEOSInternalErrorException(

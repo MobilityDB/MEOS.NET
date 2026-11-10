@@ -81,14 +81,44 @@ namespace MEOS.NET.Errors
         /// <summary>GEOJSON output error (<c>MEOS_ERR_GEOJSON_OUTPUT</c>).</summary>
         GEOJSONOutput = 27,
 
-        /// <summary>SQL JSON error (<c>MEOS_ERR_SQL_JSON_ERROR</c>).</summary>
-        SQLJSONError = 28,
-
         /// <summary>Regular expression error (<c>MEOS_ERR_INVALID_REGULAR_EXPRESSION</c>).</summary>
         InvalidRegularExpression = 29,
 
         /// <summary>Date or time value out of range (<c>MEOS_ERR_DATETIME_OUT_OF_RANGE</c>).</summary>
         DatetimeOutOfRange = 30,
+
+        /// <summary>Non-numeric SQL/JSON item (<c>MEOS_ERR_NON_NUMERIC_SQL_JSON_ITEM</c>).</summary>
+        NonNumericSQLJSONItem = 31,
+
+        /// <summary>Invalid argument for an SQL/JSON datetime function (<c>MEOS_ERR_INVALID_ARGUMENT_FOR_SQL_JSON_DATETIME_FUNCTION</c>).</summary>
+        InvalidArgumentForSQLJSONDatetimeFunction = 32,
+
+        /// <summary>More than one SQL/JSON item (<c>MEOS_ERR_MORE_THAN_ONE_SQL_JSON_ITEM</c>).</summary>
+        MoreThanOneSQLJSONItem = 33,
+
+        /// <summary>Singleton SQL/JSON item required (<c>MEOS_ERR_SINGLETON_SQL_JSON_ITEM_REQUIRED</c>).</summary>
+        SingletonSQLJSONItemRequired = 34,
+
+        /// <summary>SQL/JSON array not found (<c>MEOS_ERR_SQL_JSON_ARRAY_NOT_FOUND</c>).</summary>
+        SQLJSONArrayNotFound = 35,
+
+        /// <summary>Invalid SQL/JSON subscript (<c>MEOS_ERR_INVALID_SQL_JSON_SUBSCRIPT</c>).</summary>
+        InvalidSQLJSONSubscript = 36,
+
+        /// <summary>SQL/JSON object not found (<c>MEOS_ERR_SQL_JSON_OBJECT_NOT_FOUND</c>).</summary>
+        SQLJSONObjectNotFound = 37,
+
+        /// <summary>SQL/JSON member not found (<c>MEOS_ERR_SQL_JSON_MEMBER_NOT_FOUND</c>).</summary>
+        SQLJSONMemberNotFound = 38,
+
+        /// <summary>SQL/JSON number not found (<c>MEOS_ERR_SQL_JSON_NUMBER_NOT_FOUND</c>).</summary>
+        SQLJSONNumberNotFound = 39,
+
+        /// <summary>Duplicate JSON object key value (<c>MEOS_ERR_DUPLICATE_JSON_OBJECT_KEY_VALUE</c>).</summary>
+        DuplicateJSONObjectKeyValue = 40,
+
+        /// <summary>Undefined object (<c>MEOS_ERR_UNDEFINED_OBJECT</c>).</summary>
+        UndefinedObject = 41,
 
     }
 }

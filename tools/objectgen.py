@@ -387,7 +387,7 @@ class Method:
         return bool(self.structs or self.arrays or self.scalar_arrays
                     or self.contiguous or self.written or self.out_params
                     or self.length_out or self.parallel
-                    or (self.ret.startswith("(") and self.ret.endswith(")")))
+                    or (self.ret.startswith("(") and self.ret.rstrip("?").endswith(")")))
 
 
 # The C# language's implicit numeric conversions (C# spec, section "Implicit
@@ -483,7 +483,7 @@ class Generator:
         cls = self.m.class_for_ctype(c)
         if cls and wrapper_ret == "IntPtr":
             return (f"{cls}?", f"MEOSFactory.Wrap{cls}($)")
-        if wrapper_ret.startswith("(") and wrapper_ret.endswith(")"):
+        if wrapper_ret.startswith("(") and wrapper_ret.rstrip("?").endswith(")"):
             return self.map_tuple_return(f, wrapper_ret)
         if wrapper_ret == "IntPtr[]":
             # An array of MEOS values reaches the wrapper as an array of pointers,
@@ -664,27 +664,55 @@ class Generator:
         an array of MEOS values wraps element by element, an array of instants
         reads as instants, and an array of plain scalars is handed on."""
         shape = f.get("shape") or {}
-        element = ((shape.get("arrayReturn") or {}).get("element") or {}).get("canonical")
+        # A value MEOS answers beside the arrays it fills, with no array taking
+        # the return (`tpoint_as_mvtgeom`: the geometry in the tile, then the
+        # times of its points), is the first item, as codegen.py
+        # #_emit_outputs_wrapper hands it over; the wrapper answers null where
+        # MEOS answers NULL, and so does the method.
+        nullable = wrapper_ret.endswith("?")
+        tuple_ret = wrapper_ret.rstrip("?")
+        array_ret = shape.get("arrayReturn")
+        first = ((array_ret.get("element") or {}).get("canonical") if array_ret
+                 else f["returnType"]["canonical"])
         params = {p["name"]: p["canonical"] for p in f.get("params", [])}
         # `TYPE **bins` is an out-ARRAY of `TYPE`, so two stars come off: one
         # for the handle MEOS writes through, one for the array itself.
-        c_types = [element] + [
+        c_types = [first] + [
             clean(params.get(a["param"], "")).rstrip("* ").strip()
             for a in shape.get("outputArrays") or []]
-        pieces = [p.strip() for p in wrapper_ret[1:-1].split(",")]
+        pieces = [p.strip() for p in tuple_ret[1:-1].split(",")]
         if len(pieces) != len(c_types) or not all(c_types):
             return None
+        item = "$.Value.Item{}" if nullable else "$.Item{}"
         types, readers = [], []
         for i, (piece, c_type) in enumerate(zip(pieces, c_types)):
-            mapped = self.map_array_item(piece, clean(c_type), f"$.Item{i + 1}")
+            if i == 0 and not array_ret:
+                mapped = self.map_value_item(piece, clean(c_type), item.format(1))
+            else:
+                mapped = self.map_array_item(piece, clean(c_type), item.format(i + 1))
             if mapped is None:
                 return None
             types.append(mapped[0])
             readers.append(mapped[1])
         # The body evaluates the call once and reads each item off it, so the
         # template carries the two halves apart: the call, then the reads.
-        reads = ", ".join(r.replace("$", "_answered") for r in readers)
-        return (f"({', '.join(types)})", f"$|>({reads})")
+        reads = f"({', '.join(r.replace('$', '_answered') for r in readers)})"
+        if nullable:
+            return (f"({', '.join(types)})?",
+                    f"$|>_answered is null ? null : {reads}")
+        return (f"({', '.join(types)})", f"$|>{reads}")
+
+    def map_value_item(self, piece: str, c_type: str,
+                       item: str) -> tuple[str, str] | None:
+        """The value item of an answered tuple, read as #map_return reads a
+        value of its own: a MEOS value wraps into its class, a scalar is handed
+        on."""
+        if piece == "IntPtr":
+            cls = self.m.class_for_ctype(c_type)
+            return (f"{cls}?", f"MEOSFactory.Wrap{cls}({item})") if cls else None
+        if is_scalar(piece):
+            return (piece, item)
+        return None
 
     def map_array_item(self, piece: str, c_type: str,
                        item: str) -> tuple[str, str] | None:

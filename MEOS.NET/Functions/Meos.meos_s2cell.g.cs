@@ -225,25 +225,6 @@ namespace MEOS.NET.Functions
         public static IntPtr S2cellsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.S2cellsetIn(str));
 
-        public static string S2cellsetOut(IntPtr s)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.S2cellsetOut(s, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
-
         public static IntPtr S2cellsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.S2cellsetMake(values, count));
 
@@ -310,30 +291,8 @@ namespace MEOS.NET.Functions
         public static IntPtr Ts2cellseqsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.Ts2cellseqsetIn(str));
 
-        public static string Ts2cellOut(IntPtr temp)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.Ts2cellOut(temp, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
-
         public static IntPtr Ts2cellFromMfjson(string mfjson)
             => SafeExecution<IntPtr>(() => Native.Ts2cellFromMfjson(mfjson));
-
-        public static IntPtr Ts2cellMake(ulong value, long t)
-            => SafeExecution<IntPtr>(() => Native.Ts2cellMake(value, t));
 
         public static IntPtr Ts2cellinstMake(ulong value, long t)
             => SafeExecution<IntPtr>(() => Native.Ts2cellinstMake(value, t));

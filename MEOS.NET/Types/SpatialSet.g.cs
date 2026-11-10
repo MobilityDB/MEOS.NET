@@ -44,9 +44,6 @@ namespace MEOS.NET.Types
         public string AsText(int maxdd)
             => Meos.SpatialsetAsText(this.Ptr, maxdd);
 
-        public string Out(int maxdd)
-            => Meos.SpatialsetOut(this.Ptr, maxdd);
-
         public int SRID()
             => Meos.SpatialsetSrid(this.Ptr);
 

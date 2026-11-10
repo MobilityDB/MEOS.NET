@@ -14,10 +14,6 @@ namespace MEOS.NET.Types
     {
         internal FloatSpanSet(IntPtr ptr) : base(ptr) { }
 
-        /// <summary>The text MEOS writes this value as.</summary>
-        public override string ToString()
-            => this.Out(15);
-
         public bool Adjacent(double d)
             => Meos.AdjacentSpansetFloat(this.Ptr, d);
 
@@ -95,9 +91,6 @@ namespace MEOS.NET.Types
 
         public SpanSet? Minus(FloatSpanSet ss2)
             => MEOSFactory.WrapSpanSet(Meos.MinusSpansetSpanset(this.Ptr, ss2.Ptr));
-
-        public string Out(int maxdd)
-            => Meos.FloatspansetOut(this.Ptr, maxdd);
 
         public bool Overlaps(FloatSpan s)
             => Meos.OverlapsSpansetSpan(this.Ptr, s.Ptr);

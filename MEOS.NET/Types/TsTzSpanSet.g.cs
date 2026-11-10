@@ -14,10 +14,6 @@ namespace MEOS.NET.Types
     {
         internal TsTzSpanSet(IntPtr ptr) : base(ptr) { }
 
-        /// <summary>The text MEOS writes this value as.</summary>
-        public override string ToString()
-            => this.Out();
-
         public bool Adjacent(DateTime t)
             => Meos.AdjacentSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
@@ -30,8 +26,8 @@ namespace MEOS.NET.Types
         public bool After(DateTime t)
             => Meos.AfterSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
-        public string AsText()
-            => this.Out();
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
 
         public bool Before(DateTime t)
             => Meos.BeforeSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
@@ -109,9 +105,6 @@ namespace MEOS.NET.Types
 
         public int NumTimestamps()
             => Meos.TstzspansetNumTimestamps(this.Ptr);
-
-        public string Out()
-            => Meos.TstzspansetOut(this.Ptr);
 
         public bool Overafter(DateTime t)
             => Meos.OverafterSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));

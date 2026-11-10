@@ -478,25 +478,6 @@ namespace MEOS.NET.Functions
         public static IntPtr JsonbsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.JsonbsetIn(str));
 
-        public static string JsonbsetOut(IntPtr s)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.JsonbsetOut(s, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
-
         public static IntPtr JsonbsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.JsonbsetMake(values, count));
 
@@ -533,8 +514,11 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
-        public static IntPtr ConcatJsonbsetJsonb(IntPtr s, IntPtr jb, bool invert)
-            => SafeExecution<IntPtr>(() => Native.ConcatJsonbsetJsonb(s, jb, invert));
+        public static IntPtr ConcatJsonbJsonbset(IntPtr jb, IntPtr s)
+            => SafeExecution<IntPtr>(() => Native.ConcatJsonbJsonbset(jb, s));
+
+        public static IntPtr ConcatJsonbsetJsonb(IntPtr s, IntPtr jb)
+            => SafeExecution<IntPtr>(() => Native.ConcatJsonbsetJsonb(s, jb));
 
         public static IntPtr JsonbsetArrayLength(IntPtr set)
             => SafeExecution<IntPtr>(() => Native.JsonbsetArrayLength(set));
@@ -740,25 +724,6 @@ namespace MEOS.NET.Functions
         public static IntPtr TjsonbIn(string str)
             => SafeExecution<IntPtr>(() => Native.TjsonbIn(str));
 
-        public static string TjsonbOut(IntPtr temp)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.TjsonbOut(temp, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
-
         public static IntPtr TjsonbinstIn(string str)
             => SafeExecution<IntPtr>(() => Native.TjsonbinstIn(str));
 
@@ -843,14 +808,29 @@ namespace MEOS.NET.Functions
             }
         }
 
-        public static IntPtr ConcatTjsonbJsonb(IntPtr temp, IntPtr jb, bool invert)
-            => SafeExecution<IntPtr>(() => Native.ConcatTjsonbJsonb(temp, jb, invert));
+        public static IntPtr ConcatJsonbTjsonb(IntPtr jb, IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.ConcatJsonbTjsonb(jb, temp));
+
+        public static IntPtr ConcatTjsonbJsonb(IntPtr temp, IntPtr jb)
+            => SafeExecution<IntPtr>(() => Native.ConcatTjsonbJsonb(temp, jb));
 
         public static IntPtr ConcatTjsonbTjsonb(IntPtr temp1, IntPtr temp2)
             => SafeExecution<IntPtr>(() => Native.ConcatTjsonbTjsonb(temp1, temp2));
 
-        public static IntPtr ContainsTjsonbJsonb(IntPtr temp, IntPtr jb, bool invert)
-            => SafeExecution<IntPtr>(() => Native.ContainsTjsonbJsonb(temp, jb, invert));
+        public static IntPtr ContainedJsonbTjsonb(IntPtr jb, IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.ContainedJsonbTjsonb(jb, temp));
+
+        public static IntPtr ContainedTjsonbJsonb(IntPtr temp, IntPtr jb)
+            => SafeExecution<IntPtr>(() => Native.ContainedTjsonbJsonb(temp, jb));
+
+        public static IntPtr ContainedTjsonbTjsonb(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<IntPtr>(() => Native.ContainedTjsonbTjsonb(temp1, temp2));
+
+        public static IntPtr ContainsJsonbTjsonb(IntPtr jb, IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.ContainsJsonbTjsonb(jb, temp));
+
+        public static IntPtr ContainsTjsonbJsonb(IntPtr temp, IntPtr jb)
+            => SafeExecution<IntPtr>(() => Native.ContainsTjsonbJsonb(temp, jb));
 
         public static IntPtr ContainsTjsonbTjsonb(IntPtr temp1, IntPtr temp2)
             => SafeExecution<IntPtr>(() => Native.ContainsTjsonbTjsonb(temp1, temp2));

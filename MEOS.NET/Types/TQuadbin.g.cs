@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.Out(15);
 
         public bool Above(TQuadbin temp2)
             => Meos.AboveTspatialTspatial(this.Ptr, temp2.Ptr);
@@ -95,9 +95,6 @@ namespace MEOS.NET.Types
 
         public Temporal? MinusValue(ulong cell)
             => MEOSFactory.WrapTemporal(Meos.TquadbinMinusValue(this.Ptr, cell));
-
-        public string Out()
-            => Meos.TquadbinOut(this.Ptr);
 
         public bool Overabove(TQuadbin temp2)
             => Meos.OveraboveTspatialTspatial(this.Ptr, temp2.Ptr);
@@ -234,9 +231,6 @@ namespace MEOS.NET.Types
 
         public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TquadbinIn(str));
-
-        public static Temporal? Make(ulong value, DateTime t)
-            => MEOSFactory.WrapTemporal(Meos.TquadbinMake(value, MEOSConvert.ToTimestampTz(t)));
 
     }
 }

@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.Out(15);
 
         public int AlwaysEq(PCPatch pa)
             => Meos.AlwaysEqTpcpatchPcpatch(this.Ptr, pa.Ptr);
@@ -56,9 +56,6 @@ namespace MEOS.NET.Types
 
         public long Npoints()
             => Meos.TpcpatchNpoints(this.Ptr);
-
-        public string Out()
-            => Meos.TpcpatchOut(this.Ptr);
 
         public uint Pcid()
             => Meos.TpcpatchPcid(this.Ptr);

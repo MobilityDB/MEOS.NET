@@ -285,6 +285,9 @@ namespace MEOS.NET.Types
             }
         }
 
+        public Set? SetConcat(JsonbSet s)
+            => MEOSFactory.WrapSet(Meos.ConcatJsonbJsonbset(this.Ptr, s.Ptr));
+
         public Jsonb? SetLax(Text[] path_elems, Jsonb newjb, bool create, Text handle_null)
         {
             IntPtr[] _path_elemsValues = new IntPtr[path_elems.Length];
@@ -307,8 +310,17 @@ namespace MEOS.NET.Types
         public Jsonb? StripNulls(bool strip_in_arrays)
             => MEOSFactory.WrapJsonb(Meos.JsonbStripNulls(this.Ptr, strip_in_arrays));
 
+        public Temporal? TConcat(TJsonb temp)
+            => MEOSFactory.WrapTemporal(Meos.ConcatJsonbTjsonb(this.Ptr, temp.Ptr));
+
         public Temporal? Teq(TJsonb temp)
             => MEOSFactory.WrapTemporal(Meos.TeqJsonbTjsonb(this.Ptr, temp.Ptr));
+
+        public Temporal? TjsonbContained(TJsonb temp)
+            => MEOSFactory.WrapTemporal(Meos.ContainedJsonbTjsonb(this.Ptr, temp.Ptr));
+
+        public Temporal? TjsonbContains(TJsonb temp)
+            => MEOSFactory.WrapTemporal(Meos.ContainsJsonbTjsonb(this.Ptr, temp.Ptr));
 
         public Temporal? Tne(TJsonb temp)
             => MEOSFactory.WrapTemporal(Meos.TneJsonbTjsonb(this.Ptr, temp.Ptr));
