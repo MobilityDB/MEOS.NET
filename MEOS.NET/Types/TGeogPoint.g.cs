@@ -54,8 +54,8 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TGeogPoint temp2)
             => Meos.AlwaysNeTgeoTgeo(this.Ptr, temp2.Ptr);
 
-        public Temporal? Bearing(Geography gs, bool invert)
-            => MEOSFactory.WrapTemporal(Meos.BearingTpointPoint(this.Ptr, gs.Ptr, invert));
+        public Temporal? Bearing(Geography gs)
+            => MEOSFactory.WrapTemporal(Meos.BearingTpointPoint(this.Ptr, gs.Ptr));
 
         public bool Before(TGeogPoint temp2)
             => Meos.BeforeTspatialTspatial(this.Ptr, temp2.Ptr);

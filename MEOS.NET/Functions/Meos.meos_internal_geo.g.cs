@@ -18,6 +18,54 @@ namespace MEOS.NET.Functions
         public static IntPtr PointRound(IntPtr gs, int maxdd)
             => SafeExecution<IntPtr>(() => Native.PointRound(gs, maxdd));
 
+        public static IntPtr GeogCentroid(IntPtr gs, bool use_spheroid)
+            => SafeExecution<IntPtr>(() => Native.GeogCentroid(gs, use_spheroid));
+
+        public static IntPtr GeogShortestline(IntPtr gs1, IntPtr gs2, bool use_spheroid)
+            => SafeExecution<IntPtr>(() => Native.GeogShortestline(gs1, gs2, use_spheroid));
+
+        public static IntPtr GeomCentroid(IntPtr gs)
+            => SafeExecution<IntPtr>(() => Native.GeomCentroid(gs));
+
+        public static IntPtr GeomShortestline(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<IntPtr>(() => Native.GeomShortestline(gs1, gs2));
+
+        public static bool GeomDwithin2d(IntPtr gs1, IntPtr gs2, double dist)
+            => SafeExecution<bool>(() => Native.GeomDwithin2d(gs1, gs2, dist));
+
+        public static bool GeomDwithin3d(IntPtr gs1, IntPtr gs2, double dist)
+            => SafeExecution<bool>(() => Native.GeomDwithin3d(gs1, gs2, dist));
+
+        public static bool GeomIntersects2d(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<bool>(() => Native.GeomIntersects2d(gs1, gs2));
+
+        public static bool GeomIntersects3d(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<bool>(() => Native.GeomIntersects3d(gs1, gs2));
+
+        public static double GeogArea(IntPtr gs, bool use_spheroid)
+            => SafeExecution<double>(() => Native.GeogArea(gs, use_spheroid));
+
+        public static double GeogLength(IntPtr gs, bool use_spheroid)
+            => SafeExecution<double>(() => Native.GeogLength(gs, use_spheroid));
+
+        public static double GeogPerimeter(IntPtr gs, bool use_spheroid)
+            => SafeExecution<double>(() => Native.GeogPerimeter(gs, use_spheroid));
+
+        public static double GeomArea(IntPtr gs)
+            => SafeExecution<double>(() => Native.GeomArea(gs));
+
+        public static double GeomLength(IntPtr gs)
+            => SafeExecution<double>(() => Native.GeomLength(gs));
+
+        public static double GeomMaxDistance2d(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<double>(() => Native.GeomMaxDistance2d(gs1, gs2));
+
+        public static double GeomMaxDistance3d(IntPtr gs1, IntPtr gs2)
+            => SafeExecution<double>(() => Native.GeomMaxDistance3d(gs1, gs2));
+
+        public static double GeomPerimeter(IntPtr gs)
+            => SafeExecution<double>(() => Native.GeomPerimeter(gs));
+
         public static IntPtr GeoScaleGeoIntl(IntPtr gs, IntPtr scale, IntPtr sorigin)
             => SafeExecution<IntPtr>(() => Native.GeoScaleGeoIntl(gs, scale, sorigin));
 

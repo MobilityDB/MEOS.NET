@@ -16,10 +16,10 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.Out(15);
 
-        public string AsText()
-            => this.Out();
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
 
         public bool Contained(BigIntSet s2)
             => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
@@ -62,9 +62,6 @@ namespace MEOS.NET.Types
 
         public Set? Minus(BigIntSet s2)
             => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
-
-        public string Out()
-            => Meos.BigintsetOut(this.Ptr);
 
         public bool Overlaps(BigIntSet s2)
             => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);

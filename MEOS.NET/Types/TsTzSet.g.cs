@@ -16,13 +16,13 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.Out(15);
 
         public bool After(DateTime t)
             => Meos.AfterSetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
-        public string AsText()
-            => this.Out();
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
 
         public bool Before(DateTime t)
             => Meos.BeforeSetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
@@ -59,9 +59,6 @@ namespace MEOS.NET.Types
 
         public Set? Minus(TsTzSet s2)
             => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
-
-        public string Out()
-            => Meos.TstzsetOut(this.Ptr);
 
         public bool Overafter(DateTime t)
             => Meos.OverafterSetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));

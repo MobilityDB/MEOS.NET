@@ -89,6 +89,9 @@ namespace MEOS.NET.Types
         public int NumValues()
             => Meos.SetNumValues(this.Ptr);
 
+        public string Out(int maxdd)
+            => Meos.SetOut(this.Ptr, maxdd);
+
         public bool Overlaps(Set s2)
             => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 

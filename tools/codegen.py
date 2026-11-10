@@ -688,8 +688,15 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
         sig_types.append((ptype, pname))
         ext_call_args.append(pname)
 
-    # Compose the return tuple type.
+    # Compose the return tuple type.  A value MEOS answers beside the
+    # out-arrays, where no arrayReturn takes the return, is the first entry:
+    # `tpoint_as_mvtgeom` answers the geometry in the tile and writes the times
+    # of its points, as MEOS.js codegen/ObjectGenerator.ts reads it.
+    rt = csharp_return_type(f)
+    value_ret = not array_ret and rt not in ("void", "bool")
     ret_pieces: list[str] = []
+    if value_ret:
+        ret_pieces.append(rt)
     if array_ret:
         ret_elem, _ = _csharp_array_element(f["returnType"]["canonical"], f"{name} return")
         ret_pieces.append(f"{ret_elem}[]")
@@ -708,8 +715,11 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
     # `tpoint_as_mvtgeom` answers false for a trip with no representation in
     # the tile and writes nothing, so the wrapper answers null there rather
     # than reading a count MEOS never wrote.
-    answers_found = not array_ret and csharp_return_type(f) == "bool"
-    if answers_found:
+    # A pointer answered beside them is NULL for the same absence, and the
+    # wrapper answers null there too.
+    answers_found = not array_ret and rt == "bool"
+    answers_value = value_ret and rt == "IntPtr"
+    if answers_found or answers_value:
         ret_type += "?"
 
     user_params = ", ".join(sig_params)
@@ -725,9 +735,17 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
     if array_ret:
         lines.append(f"                IntPtr _resultPtr = SafeExecution<IntPtr>(() => Native.{public_name(name)}({ext_args}));")
     else:
-        # Void or bool return with only outputs.
-        rt = csharp_return_type(f)
-        if rt == "void":
+        # A value, void or bool return beside the outputs.
+        if answers_value:
+            lines.append(f"                IntPtr _value = SafeExecution<IntPtr>(() => Native.{public_name(name)}({ext_args}));")
+            lines.append("                if (_value == IntPtr.Zero)")
+            lines.append("                {")
+            lines.append("                    return null;")
+            lines.append("                }")
+            lines.append("")
+        elif value_ret:
+            lines.append(f"                {rt} _value = SafeExecution<{rt}>(() => Native.{public_name(name)}({ext_args}));")
+        elif rt == "void":
             lines.append(f"                SafeExecution(() => Native.{public_name(name)}({ext_args}));")
         elif answers_found:
             lines.append(f"                if (!SafeExecution<bool>(() => Native.{public_name(name)}({ext_args})))")
@@ -777,6 +795,8 @@ def _emit_outputs_wrapper(f: dict) -> list[str]:
 
     # Build return expression.
     return_pieces: list[str] = []
+    if value_ret:
+        return_pieces.append("_value")
     if array_ret:
         return_pieces.append("_resultArr")
     for local, _, _, _ in output_locals:

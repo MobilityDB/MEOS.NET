@@ -402,11 +402,11 @@ namespace MEOS.NET.Functions
         public static IntPtr TrgeometryAsTinstant(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TrgeometryAsTinstant(temp));
 
-        public static IntPtr TrgeometryAsTsequence(IntPtr temp, string interp_str)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryAsTsequence(temp, interp_str));
+        public static IntPtr TrgeometryAsTsequence(IntPtr temp, int interp)
+            => SafeExecution<IntPtr>(() => Native.TrgeometryAsTsequence(temp, interp));
 
-        public static IntPtr TrgeometryAsTsequenceset(IntPtr temp, string interp_str)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryAsTsequenceset(temp, interp_str));
+        public static IntPtr TrgeometryAsTsequenceset(IntPtr temp, int interp)
+            => SafeExecution<IntPtr>(() => Native.TrgeometryAsTsequenceset(temp, interp));
 
         public static IntPtr TrgeometryAfterTimestamptz(IntPtr temp, long t, bool strict)
             => SafeExecution<IntPtr>(() => Native.TrgeometryAfterTimestamptz(temp, t, strict));

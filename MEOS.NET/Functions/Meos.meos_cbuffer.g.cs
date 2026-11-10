@@ -240,25 +240,6 @@ namespace MEOS.NET.Functions
         public static IntPtr CbuffersetIn(string str)
             => SafeExecution<IntPtr>(() => Native.CbuffersetIn(str));
 
-        public static string CbuffersetOut(IntPtr s, int maxdd)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.CbuffersetOut(s, maxdd, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
-
         public static IntPtr CbuffersetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.CbuffersetMake(values, count));
 

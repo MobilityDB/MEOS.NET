@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.Out(15);
 
         public bool Contained(H3IndexSet s2)
             => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
@@ -50,9 +50,6 @@ namespace MEOS.NET.Types
 
         public Set? Minus(H3IndexSet s2)
             => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
-
-        public string Out()
-            => Meos.H3indexsetOut(this.Ptr);
 
         public bool Overlaps(H3IndexSet s2)
             => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);

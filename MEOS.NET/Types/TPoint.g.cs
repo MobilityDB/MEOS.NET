@@ -17,20 +17,21 @@ namespace MEOS.NET.Types
         public Temporal? AngularDifference()
             => MEOSFactory.WrapTemporal(Meos.TpointAngularDifference(this.Ptr));
 
+        public (Geo?, long[])? AsMVTGeom(STBox bounds, int extent, int buffer, bool clip_geom)
+        {
+            var _answered = Meos.TpointAsMvtgeom(this.Ptr, bounds.Ptr, extent, buffer, clip_geom);
+
+            return _answered is null ? null : (MEOSFactory.WrapGeo(_answered.Value.Item1), _answered.Value.Item2);
+        }
+
         public Temporal? AtElevation(Span s)
             => MEOSFactory.WrapTemporal(Meos.TpointAtElevation(this.Ptr, s.Ptr));
-
-        public new Temporal? AtGeom(Geo gs)
-            => MEOSFactory.WrapTemporal(Meos.TpointAtGeom(this.Ptr, gs.Ptr));
-
-        public new Temporal? AtValue(Geo gs)
-            => MEOSFactory.WrapTemporal(Meos.TpointAtValue(this.Ptr, gs.Ptr));
 
         public Temporal? Azimuth()
             => MEOSFactory.WrapTemporal(Meos.TpointAzimuth(this.Ptr));
 
-        public Temporal? Bearing(Geo gs, bool invert)
-            => MEOSFactory.WrapTemporal(Meos.BearingTpointPoint(this.Ptr, gs.Ptr, invert));
+        public Temporal? Bearing(Geo gs)
+            => MEOSFactory.WrapTemporal(Meos.BearingTpointPoint(this.Ptr, gs.Ptr));
 
         public Temporal? CumulativeLength(bool spheroid)
             => MEOSFactory.WrapTemporal(Meos.TpointCumulativeLength(this.Ptr, spheroid));
@@ -73,12 +74,6 @@ namespace MEOS.NET.Types
 
         public Temporal? MinusElevation(Span s)
             => MEOSFactory.WrapTemporal(Meos.TpointMinusElevation(this.Ptr, s.Ptr));
-
-        public new Temporal? MinusGeom(Geo gs)
-            => MEOSFactory.WrapTemporal(Meos.TpointMinusGeom(this.Ptr, gs.Ptr));
-
-        public new Temporal? MinusValue(Geo gs)
-            => MEOSFactory.WrapTemporal(Meos.TpointMinusValue(this.Ptr, gs.Ptr));
 
         public Temporal? Speed(bool spheroid)
             => MEOSFactory.WrapTemporal(Meos.TpointSpeed(this.Ptr, spheroid));

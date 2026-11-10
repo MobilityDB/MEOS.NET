@@ -286,6 +286,9 @@ namespace MEOS.NET.Types
         public int NumTimestamps()
             => Meos.TemporalNumTimestamps(this.Ptr);
 
+        public string Out(int maxdd)
+            => Meos.TemporalOut(this.Ptr, maxdd);
+
         public bool Overafter(TsTzSpan s)
             => Meos.OverafterTemporalTstzspan(this.Ptr, s.Ptr);
 
@@ -294,6 +297,9 @@ namespace MEOS.NET.Types
 
         public bool Overlaps(TsTzSpan s)
             => Meos.OverlapsTemporalTstzspan(this.Ptr, s.Ptr);
+
+        public Temporal? ReachabilityFilter(double maxspeed)
+            => MEOSFactory.WrapTemporal(Meos.TemporalReachabilityFilter(this.Ptr, maxspeed));
 
         public Temporal? Round(int maxdd)
             => MEOSFactory.WrapTemporal(Meos.TemporalRound(this.Ptr, maxdd));

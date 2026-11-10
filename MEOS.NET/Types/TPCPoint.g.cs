@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.Out(15);
 
         public int AlwaysEq(PCPoint pt)
             => Meos.AlwaysEqTpcpointPcpoint(this.Ptr, pt.Ptr);
@@ -56,9 +56,6 @@ namespace MEOS.NET.Types
 
         public double Nad(Geo gs)
             => Meos.NadTpcpointGeo(this.Ptr, gs.Ptr);
-
-        public string Out()
-            => Meos.TpcpointOut(this.Ptr);
 
         public uint Pcid()
             => Meos.TpcpointPcid(this.Ptr);

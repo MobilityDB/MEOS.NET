@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.Out(15);
 
         public Set? ArrayElement(int idx, string null_handle)
             => MEOSFactory.WrapSet(Meos.JsonbsetArrayElement(this.Ptr, idx, Meos.NullhandletypeFromString(null_handle)));
@@ -27,11 +27,11 @@ namespace MEOS.NET.Types
         public Set? ArrayLength()
             => MEOSFactory.WrapSet(Meos.JsonbsetArrayLength(this.Ptr));
 
-        public string AsText()
-            => this.Out();
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
 
-        public Set? Concat(Jsonb jb, bool invert)
-            => MEOSFactory.WrapSet(Meos.ConcatJsonbsetJsonb(this.Ptr, jb.Ptr, invert));
+        public Set? Concat(Jsonb jb)
+            => MEOSFactory.WrapSet(Meos.ConcatJsonbsetJsonb(this.Ptr, jb.Ptr));
 
         public bool Contained(JsonbSet s2)
             => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
@@ -185,9 +185,6 @@ namespace MEOS.NET.Types
 
         public Set? ObjectFieldText(Text key, string null_handle)
             => MEOSFactory.WrapSet(Meos.JsonbsetObjectFieldText(this.Ptr, key.Ptr, Meos.NullhandletypeFromString(null_handle)));
-
-        public string Out()
-            => Meos.JsonbsetOut(this.Ptr);
 
         public bool Overlaps(JsonbSet s2)
             => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);

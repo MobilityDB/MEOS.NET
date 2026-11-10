@@ -265,25 +265,6 @@ namespace MEOS.NET.Functions
         public static IntPtr PcpointsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.PcpointsetIn(str));
 
-        public static string PcpointsetOut(IntPtr s, int maxdd)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.PcpointsetOut(s, maxdd, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
-
         public static IntPtr PcpointsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.PcpointsetMake(values, count));
 
@@ -343,25 +324,6 @@ namespace MEOS.NET.Functions
 
         public static IntPtr PcpatchsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.PcpatchsetIn(str));
-
-        public static string PcpatchsetOut(IntPtr s, int maxdd)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.PcpatchsetOut(s, maxdd, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
 
         public static IntPtr PcpatchsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.PcpatchsetMake(values, count));
@@ -469,6 +431,25 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TpcboxFromWkb(IntPtr wkb, ulong size)
             => SafeExecution<IntPtr>(() => Native.TpcboxFromWkb(wkb, size));
+
+        public static string TpcboxAsText(IntPtr box, int maxdd)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TpcboxAsText(box, maxdd, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
 
         public static IntPtr TpcboxIn(string str)
             => SafeExecution<IntPtr>(() => Native.TpcboxIn(str));
@@ -660,49 +641,11 @@ namespace MEOS.NET.Functions
         public static IntPtr TpcpointIn(string str)
             => SafeExecution<IntPtr>(() => Native.TpcpointIn(str));
 
-        public static string TpcpointOut(IntPtr temp)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.TpcpointOut(temp, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
-
         public static IntPtr TpcpointFromMfjson(string mfjson)
             => SafeExecution<IntPtr>(() => Native.TpcpointFromMfjson(mfjson));
 
         public static IntPtr TpcpatchIn(string str)
             => SafeExecution<IntPtr>(() => Native.TpcpatchIn(str));
-
-        public static string TpcpatchOut(IntPtr temp)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.TpcpatchOut(temp, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
 
         public static IntPtr TpcpatchFromMfjson(string mfjson)
             => SafeExecution<IntPtr>(() => Native.TpcpatchFromMfjson(mfjson));

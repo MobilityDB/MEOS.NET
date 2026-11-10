@@ -14,10 +14,6 @@ namespace MEOS.NET.Types
     {
         internal FloatSpan(IntPtr ptr) : base(ptr) { }
 
-        /// <summary>The text MEOS writes this value as.</summary>
-        public override string ToString()
-            => this.Out(15);
-
         public bool Adjacent(double d)
             => Meos.AdjacentSpanFloat(this.Ptr, d);
 
@@ -98,9 +94,6 @@ namespace MEOS.NET.Types
 
         public double Nad(TBox box)
             => Meos.NadFloatspanTbox(this.Ptr, box.Ptr);
-
-        public string Out(int maxdd)
-            => Meos.FloatspanOut(this.Ptr, maxdd);
 
         public bool Overlaps(FloatSpan s2)
             => Meos.OverlapsSpanSpan(this.Ptr, s2.Ptr);

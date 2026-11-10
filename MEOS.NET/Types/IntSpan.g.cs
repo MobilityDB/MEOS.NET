@@ -14,10 +14,6 @@ namespace MEOS.NET.Types
     {
         internal IntSpan(IntPtr ptr) : base(ptr) { }
 
-        /// <summary>The text MEOS writes this value as.</summary>
-        public override string ToString()
-            => this.Out();
-
         public bool Adjacent(int i)
             => Meos.AdjacentSpanInt(this.Ptr, i);
 
@@ -27,8 +23,8 @@ namespace MEOS.NET.Types
         public bool Adjacent(IntSpanSet ss)
             => Meos.AdjacentSpanSpanset(this.Ptr, ss.Ptr);
 
-        public string AsText()
-            => this.Out();
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
 
         public Span?[] Bins(int vsize, int vorigin, bool border_inc)
             => MEOSFactory.WrapSpanArray(Meos.IntspanBins(this.Ptr, vsize, vorigin, border_inc));
@@ -89,9 +85,6 @@ namespace MEOS.NET.Types
 
         public int Nad(TBox box)
             => Meos.NadIntspanTbox(this.Ptr, box.Ptr);
-
-        public string Out()
-            => Meos.IntspanOut(this.Ptr);
 
         public bool Overlaps(IntSpan s2)
             => Meos.OverlapsSpanSpan(this.Ptr, s2.Ptr);

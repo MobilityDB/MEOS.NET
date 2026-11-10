@@ -14,7 +14,7 @@ namespace MEOS.NET.Types
     {
         internal TS2CellInst(IntPtr ptr) : base(ptr) { }
 
-        public new static Temporal? Make(ulong value, DateTime t)
+        public static Temporal? Make(ulong value, DateTime t)
             => MEOSFactory.WrapTemporal(Meos.Ts2cellinstMake(value, MEOSConvert.ToTimestampTz(t)));
 
     }

@@ -20,7 +20,7 @@ try
     Console.WriteLine($"  text             : {made}");
     Console.WriteLine("  adding 34 to its value");
     Temporal sum = MEOSFactory.WrapTemporal(Meos.AddTfloatFloat(made.Ptr, 34.0))!;
-    Console.WriteLine($"  text             : {Meos.TfloatOut(sum.Ptr, 15)}");
+    Console.WriteLine($"  text             : {Meos.TemporalOut(sum.Ptr, 15)}");
     Console.WriteLine($"  always <= 30.0?  : {Meos.AlwaysLeTfloatFloat(sum.Ptr, 30.0) == 1}\n");
 
     Console.WriteLine("Reading a float span set from \"{[8, 10], [11, 12]}\"");

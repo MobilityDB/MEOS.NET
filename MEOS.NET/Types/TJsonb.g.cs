@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.Out(15);
 
         public bool Adjacent(TJsonb temp2)
             => Meos.AdjacentTemporalTemporal(this.Ptr, temp2.Ptr);
@@ -45,8 +45,8 @@ namespace MEOS.NET.Types
         public Temporal? ArrayLength()
             => MEOSFactory.WrapTemporal(Meos.TjsonbArrayLength(this.Ptr));
 
-        public string AsText()
-            => this.Out();
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
 
         public Temporal? AtValue(Jsonb jsb)
             => MEOSFactory.WrapTemporal(Meos.TjsonbAtValue(this.Ptr, jsb.Ptr));
@@ -54,8 +54,8 @@ namespace MEOS.NET.Types
         public bool Before(TJsonb temp2)
             => Meos.BeforeTemporalTemporal(this.Ptr, temp2.Ptr);
 
-        public Temporal? Concat(Jsonb jb, bool invert)
-            => MEOSFactory.WrapTemporal(Meos.ConcatTjsonbJsonb(this.Ptr, jb.Ptr, invert));
+        public Temporal? Concat(Jsonb jb)
+            => MEOSFactory.WrapTemporal(Meos.ConcatTjsonbJsonb(this.Ptr, jb.Ptr));
 
         public Temporal? Concat(TJsonb temp2)
             => MEOSFactory.WrapTemporal(Meos.ConcatTjsonbTjsonb(this.Ptr, temp2.Ptr));
@@ -63,11 +63,8 @@ namespace MEOS.NET.Types
         public bool Contained(TJsonb temp2)
             => Meos.ContainedTemporalTemporal(this.Ptr, temp2.Ptr);
 
-        public Temporal? Contains(Jsonb jb, bool invert)
-            => MEOSFactory.WrapTemporal(Meos.ContainsTjsonbJsonb(this.Ptr, jb.Ptr, invert));
-
-        public Temporal? Contains(TJsonb temp2)
-            => MEOSFactory.WrapTemporal(Meos.ContainsTjsonbTjsonb(this.Ptr, temp2.Ptr));
+        public bool Contains(TJsonb temp2)
+            => Meos.ContainsTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public Temporal? Delete(Text key)
             => MEOSFactory.WrapTemporal(Meos.TjsonbDelete(this.Ptr, key.Ptr));
@@ -254,9 +251,6 @@ namespace MEOS.NET.Types
         public Temporal? ObjectFieldText(Text key, string null_handle)
             => MEOSFactory.WrapTemporal(Meos.TjsonbObjectFieldText(this.Ptr, key.Ptr, Meos.NullhandletypeFromString(null_handle)));
 
-        public string Out()
-            => Meos.TjsonbOut(this.Ptr);
-
         public bool Overafter(TJsonb temp2)
             => Meos.OverafterTemporalTemporal(this.Ptr, temp2.Ptr);
 
@@ -333,6 +327,18 @@ namespace MEOS.NET.Types
 
         public Temporal? Teq(TJsonb temp2)
             => MEOSFactory.WrapTemporal(Meos.TeqTemporalTemporal(this.Ptr, temp2.Ptr));
+
+        public Temporal? TjsonbContained(Jsonb jb)
+            => MEOSFactory.WrapTemporal(Meos.ContainedTjsonbJsonb(this.Ptr, jb.Ptr));
+
+        public Temporal? TjsonbContained(TJsonb temp2)
+            => MEOSFactory.WrapTemporal(Meos.ContainedTjsonbTjsonb(this.Ptr, temp2.Ptr));
+
+        public Temporal? TjsonbContains(Jsonb jb)
+            => MEOSFactory.WrapTemporal(Meos.ContainsTjsonbJsonb(this.Ptr, jb.Ptr));
+
+        public Temporal? TjsonbContains(TJsonb temp2)
+            => MEOSFactory.WrapTemporal(Meos.ContainsTjsonbTjsonb(this.Ptr, temp2.Ptr));
 
         public Temporal? Tne(Jsonb jb)
             => MEOSFactory.WrapTemporal(Meos.TneTjsonbJsonb(this.Ptr, jb.Ptr));

@@ -14,10 +14,6 @@ namespace MEOS.NET.Types
     {
         internal DateSpan(IntPtr ptr) : base(ptr) { }
 
-        /// <summary>The text MEOS writes this value as.</summary>
-        public override string ToString()
-            => this.Out();
-
         public bool Adjacent(DateOnly d)
             => Meos.AdjacentSpanDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
@@ -30,8 +26,8 @@ namespace MEOS.NET.Types
         public bool After(DateOnly d)
             => Meos.AfterSpanDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
-        public string AsText()
-            => this.Out();
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
 
         public bool Before(DateOnly d)
             => Meos.BeforeSpanDate(this.Ptr, MEOSConvert.ToDateADT(d));
@@ -100,9 +96,6 @@ namespace MEOS.NET.Types
 
         public SpanSet? Minus(DateSpanSet ss)
             => MEOSFactory.WrapSpanSet(Meos.MinusSpanSpanset(this.Ptr, ss.Ptr));
-
-        public string Out()
-            => Meos.DatespanOut(this.Ptr);
 
         public bool Overafter(DateOnly d)
             => Meos.OverafterSpanDate(this.Ptr, MEOSConvert.ToDateADT(d));

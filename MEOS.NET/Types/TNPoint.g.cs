@@ -150,9 +150,6 @@ namespace MEOS.NET.Types
         public Temporal? Nai(TNPoint temp2)
             => MEOSFactory.WrapTemporal(Meos.NaiTnpointTnpoint(this.Ptr, temp2.Ptr));
 
-        public new string Out(int maxdd)
-            => Meos.TnpointOut(this.Ptr, maxdd);
-
         public bool Overabove(TNPoint temp2)
             => Meos.OveraboveTspatialTspatial(this.Ptr, temp2.Ptr);
 

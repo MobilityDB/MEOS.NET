@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.Out(15);
 
         public Set? CompactCells()
             => MEOSFactory.WrapSet(Meos.QuadbinsetCompactCells(this.Ptr));
@@ -53,9 +53,6 @@ namespace MEOS.NET.Types
 
         public Set? Minus(QuadbinSet s2)
             => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
-
-        public string Out()
-            => Meos.QuadbinsetOut(this.Ptr);
 
         public bool Overlaps(QuadbinSet s2)
             => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);

@@ -364,25 +364,6 @@ namespace MEOS.NET.Functions
         public static IntPtr NpointsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.NpointsetIn(str));
 
-        public static string NpointsetOut(IntPtr s, int maxdd)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.NpointsetOut(s, maxdd, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
-
         public static IntPtr NpointsetMake(IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.NpointsetMake(values, count));
 
@@ -451,25 +432,6 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TnpointFromMfjson(string mfjson)
             => SafeExecution<IntPtr>(() => Native.TnpointFromMfjson(mfjson));
-
-        public static string TnpointOut(IntPtr temp, int maxdd)
-        {
-            nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.TnpointOut(temp, maxdd, out _size));
-            if (_p == IntPtr.Zero)
-            {
-                return null!;
-            }
-
-            try
-            {
-                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
-            }
-            finally
-            {
-                Marshal.FreeCoTaskMem(_p);
-            }
-        }
 
         public static IntPtr TnpointinstMake(IntPtr np, long t)
             => SafeExecution<IntPtr>(() => Native.TnpointinstMake(np, t));

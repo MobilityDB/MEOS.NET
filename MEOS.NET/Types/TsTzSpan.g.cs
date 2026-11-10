@@ -14,10 +14,6 @@ namespace MEOS.NET.Types
     {
         internal TsTzSpan(IntPtr ptr) : base(ptr) { }
 
-        /// <summary>The text MEOS writes this value as.</summary>
-        public override string ToString()
-            => this.Out();
-
         public bool Adjacent(DateTime t)
             => Meos.AdjacentSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
@@ -162,8 +158,8 @@ namespace MEOS.NET.Types
         public bool After(TText temp)
             => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public string AsText()
-            => this.Out();
+        public string AsText(int maxdd)
+            => this.Out(maxdd);
 
         public bool Before(DateTime t)
             => Meos.BeforeSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
@@ -444,9 +440,6 @@ namespace MEOS.NET.Types
 
         public SpanSet? Minus(TsTzSpanSet ss)
             => MEOSFactory.WrapSpanSet(Meos.MinusSpanSpanset(this.Ptr, ss.Ptr));
-
-        public string Out()
-            => Meos.TstzspanOut(this.Ptr);
 
         public bool Overafter(DateTime t)
             => Meos.OverafterSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
