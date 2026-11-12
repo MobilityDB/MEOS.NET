@@ -26,9 +26,6 @@ namespace MEOS.NET.Types
         public bool After(DateOnly d)
             => Meos.AfterSpansetDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
-        public string AsText(int maxdd)
-            => this.Out(maxdd);
-
         public bool Before(DateOnly d)
             => Meos.BeforeSpansetDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
@@ -209,9 +206,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapSpanSet(Meos.DateToSpanset(MEOSConvert.ToDateADT(d)));
 
         public static SpanSet? FromText(string str)
-            => DateSpanSet.In(str);
-
-        public static SpanSet? In(string str)
             => MEOSFactory.WrapSpanSet(Meos.DatespansetIn(str));
 
     }

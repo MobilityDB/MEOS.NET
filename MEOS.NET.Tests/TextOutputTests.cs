@@ -13,7 +13,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ATemporalFloatPrintsAsMeosWritesIt()
         {
-            Temporal temp = TFloat.In("[25.5@2024-12-06, 27.5@2024-12-07]")!;
+            Temporal temp = TFloat.FromText("[25.5@2024-12-06, 27.5@2024-12-07]")!;
 
             Assert.AreEqual(
                 "[25.5@2024-12-06 00:00:00+00, 27.5@2024-12-07 00:00:00+00]",
@@ -23,7 +23,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ASpanPrintsAsMeosWritesIt()
         {
-            SpanSet spanset = FloatSpanSet.In("{[8, 10], [11, 12]}")!;
+            SpanSet spanset = FloatSpanSet.FromText("{[8, 10], [11, 12]}")!;
 
             Assert.AreEqual("[8, 10]", spanset.StartSpan()!.ToString());
             Assert.AreEqual("{[8, 10], [11, 12]}", spanset.ToString());
@@ -32,7 +32,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ABoxPrintsAsMeosWritesIt()
         {
-            STBox box = STBox.In("STBOX X((1,1),(2,2))")!;
+            STBox box = STBox.FromText("STBOX X((1,1),(2,2))")!;
 
             Assert.AreEqual("STBOX X((1,1),(2,2))", box.ToString());
         }
@@ -41,7 +41,7 @@ namespace MEOS.NET.Tests
         public void TheTextComesFromTheClassOfTheValue()
         {
             // Wrapping answers the concrete class, so the text is that class's.
-            Temporal instant = TFloat.In("25.5@2024-12-06")!;
+            Temporal instant = TFloat.FromText("25.5@2024-12-06")!;
 
             Assert.IsInstanceOfType(instant, typeof(TFloatInst));
             Assert.AreEqual("25.5@2024-12-06 00:00:00+00", instant.ToString());

@@ -16,13 +16,10 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public bool After(DateTime t)
             => Meos.AfterSetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
-
-        public string AsText(int maxdd)
-            => this.Out(maxdd);
 
         public bool Before(DateTime t)
             => Meos.BeforeSetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
@@ -198,13 +195,10 @@ namespace MEOS.NET.Types
             => Meos.TstzsetValues(this.Ptr);
 
         public static Set? FromText(string str)
-            => TsTzSet.In(str);
+            => MEOSFactory.WrapSet(Meos.TstzsetIn(str));
 
         public static Set? FromTimestamptz(DateTime t)
             => MEOSFactory.WrapSet(Meos.TimestamptzToSet(MEOSConvert.ToTimestampTz(t)));
-
-        public static Set? In(string str)
-            => MEOSFactory.WrapSet(Meos.TstzsetIn(str));
 
         public static Set? Make(long[] values)
         {

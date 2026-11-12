@@ -211,7 +211,7 @@ namespace MEOS.NET.Types
             => Temporal.FromWKB(wkb);
 
         public static Temporal? FromEWKT(string str)
-            => TGeogPoint.In(str);
+            => TGeogPoint.FromText(str);
 
         public static Temporal? FromHexEWKB(string hexwkb)
             => Temporal.FromHexWKB(hexwkb);
@@ -220,9 +220,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTemporal(Meos.TgeogpointFromMfjson(str));
 
         public static Temporal? FromText(string str)
-            => TGeogPoint.In(str);
-
-        public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TgeogpointIn(str));
 
     }

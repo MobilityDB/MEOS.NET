@@ -82,15 +82,12 @@ namespace MEOS.NET.Types
             => Set.FromWKB(wkb);
 
         public static Set? FromEWKT(string str)
-            => CBufferSet.In(str);
+            => CBufferSet.FromText(str);
 
         public static Set? FromHexEWKB(string hexwkb)
             => Set.FromHexWKB(hexwkb);
 
         public static Set? FromText(string str)
-            => CBufferSet.In(str);
-
-        public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.CbuffersetIn(str));
 
         public static Set? Make(CBuffer[] values)

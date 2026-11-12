@@ -10,12 +10,12 @@ namespace MEOS.NET.Tests
     [TestClass]
     public class ExtendedWkbTests : MeosTest
     {
-        private const string Line = "SRID=4326;LINESTRING(1 1, 2 2, 3 4)";
+        private const string Line = "LINESTRING(1 1, 2 2, 3 4)";
 
         [TestMethod]
         public void TheBufferIsAsLongAsTheHexFormSays()
         {
-            Geo line = Geometry.In(Line, -1)!;
+            Geo line = Geo.FromText(Line, 4326)!;
 
             byte[]? ewkb = line.AsEWKB("ndr");
             string hex = line.AsHexEWKB("ndr");
@@ -28,7 +28,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void AGeometryRoundTripsThroughItsOwnEWKB()
         {
-            Geo line = Geometry.In(Line, -1)!;
+            Geo line = Geo.FromText(Line, 4326)!;
 
             Geo? read = Geo.FromEWKB(line.AsEWKB("ndr")!, 4326);
 

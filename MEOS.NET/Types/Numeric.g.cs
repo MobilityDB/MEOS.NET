@@ -16,12 +16,12 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.AsText();
 
-        public string Out()
+        public string AsText()
             => Meos.NumericOut(this.Ptr);
 
-        public static Numeric? In(string str, int typmod)
+        public static Numeric? FromText(string str, int typmod)
             => MEOSFactory.WrapNumeric(Meos.NumericIn(str, typmod));
 
     }

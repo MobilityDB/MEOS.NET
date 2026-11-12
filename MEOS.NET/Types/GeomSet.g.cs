@@ -61,15 +61,12 @@ namespace MEOS.NET.Types
             => Set.FromWKB(wkb);
 
         public static Set? FromEWKT(string str)
-            => GeomSet.In(str);
+            => GeomSet.FromText(str);
 
         public static Set? FromHexEWKB(string hexwkb)
             => Set.FromHexWKB(hexwkb);
 
         public static Set? FromText(string str)
-            => GeomSet.In(str);
-
-        public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.GeomsetIn(str));
 
     }

@@ -15,9 +15,9 @@ namespace MEOS.NET.Tests
         {
             Temporal[] instants =
             [
-                TFloat.In("25.0@2024-12-06")!,
-                TFloat.In("27.0@2024-12-07")!,
-                TFloat.In("30.0@2024-12-09")!,
+                TFloat.FromText("25.0@2024-12-06")!,
+                TFloat.FromText("27.0@2024-12-07")!,
+                TFloat.FromText("30.0@2024-12-09")!,
             ];
 
             // The interpolation is passed as text, which interptype_from_string reads.
@@ -36,8 +36,8 @@ namespace MEOS.NET.Tests
             // as pointers to them.
             Span[] spans =
             [
-                FloatSpan.In("[1.0, 2.0]")!,
-                FloatSpan.In("[3.0, 4.0]")!,
+                FloatSpan.FromText("[1.0, 2.0]")!,
+                FloatSpan.FromText("[3.0, 4.0]")!,
             ];
 
             SpanSet set = SpanSet.Make(spans)!;
@@ -53,8 +53,8 @@ namespace MEOS.NET.Tests
             // another.
             CBuffer[] values =
             [
-                CBuffer.In("Cbuffer(Point(1 1),0.5)")!,
-                CBuffer.In("Cbuffer(Point(2 2),1.5)")!,
+                CBuffer.FromText("Cbuffer(Point(1 1),0.5)")!,
+                CBuffer.FromText("Cbuffer(Point(2 2),1.5)")!,
             ];
 
             Set set = CBufferSet.Make(values)!;
@@ -69,8 +69,8 @@ namespace MEOS.NET.Tests
         {
             Temporal[] parts =
             [
-                TFloat.In("[25.0@2024-12-06, 27.0@2024-12-07]")!,
-                TFloat.In("[30.0@2024-12-09, 32.0@2024-12-10]")!,
+                TFloat.FromText("[25.0@2024-12-06, 27.0@2024-12-07]")!,
+                TFloat.FromText("[30.0@2024-12-09, 32.0@2024-12-10]")!,
             ];
 
             Temporal merged = Temporal.MergeArray(parts)!;

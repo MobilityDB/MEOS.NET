@@ -192,8 +192,5 @@ namespace MEOS.NET.Types
         public static Geo? FromMFJSON(string geojson)
             => Geo.FromGeoJSON(geojson);
 
-        public static Geo? In(string str, int typmod)
-            => MEOSFactory.WrapGeo(Meos.GeogIn(str, typmod));
-
     }
 }

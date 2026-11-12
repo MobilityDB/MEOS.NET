@@ -167,9 +167,6 @@ namespace MEOS.NET.Types
         public int AlwaysOverlaps(TText temp)
             => Meos.AlwaysOverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
 
-        public string AsText(int maxdd)
-            => this.Out(maxdd);
-
         public bool Before(DateTime t)
             => Meos.BeforeSpanTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
@@ -858,7 +855,7 @@ namespace MEOS.NET.Types
             => MEOSConvert.ToDateTime(Meos.TstzspanUpper(this.Ptr));
 
         public static Span? FromText(string str)
-            => TsTzSpan.In(str);
+            => MEOSFactory.WrapSpan(Meos.TstzspanIn(str));
 
         public static Span? FromTimestamptz(DateTime t)
             => MEOSFactory.WrapSpan(Meos.TimestamptzToSpan(MEOSConvert.ToTimestampTz(t)));
@@ -876,9 +873,6 @@ namespace MEOS.NET.Types
                 Marshal.FreeHGlobal(_duration);
             }
         }
-
-        public static Span? In(string str)
-            => MEOSFactory.WrapSpan(Meos.TstzspanIn(str));
 
         public static Span? Make(DateTime lower, DateTime upper, bool lower_inc, bool upper_inc)
             => MEOSFactory.WrapSpan(Meos.TstzspanMake(MEOSConvert.ToTimestampTz(lower), MEOSConvert.ToTimestampTz(upper), lower_inc, upper_inc));

@@ -190,7 +190,7 @@ namespace MEOS.NET.Types
         }
 
         public string AsEWKT(int maxdd)
-            => this.Out(maxdd);
+            => Meos.StboxOut(this.Ptr, maxdd);
 
         public string AsHexEWKB(byte variant)
             => Meos.StboxAsHexewkb(this.Ptr, variant);
@@ -568,9 +568,6 @@ namespace MEOS.NET.Types
 
         public bool Ne(STBox box2)
             => Meos.StboxNe(this.Ptr, box2.Ptr);
-
-        public string Out(int maxdd)
-            => Meos.StboxOut(this.Ptr, maxdd);
 
         public bool Overabove(STBox box2)
             => Meos.OveraboveStboxStbox(this.Ptr, box2.Ptr);
@@ -1305,7 +1302,7 @@ namespace MEOS.NET.Types
             => STBox.FromWKB(wkb);
 
         public static STBox? FromEWKT(string str)
-            => STBox.In(str);
+            => STBox.FromText(str);
 
         public static STBox? FromGbox(GBOX box)
         {
@@ -1328,7 +1325,7 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapSTBox(Meos.StboxFromHexwkb(hexwkb));
 
         public static STBox? FromText(string str)
-            => STBox.In(str);
+            => MEOSFactory.WrapSTBox(Meos.StboxIn(str));
 
         public static STBox? FromTimestamptz(DateTime t)
             => MEOSFactory.WrapSTBox(Meos.TimestamptzToStbox(MEOSConvert.ToTimestampTz(t)));
@@ -1376,9 +1373,6 @@ namespace MEOS.NET.Types
                 Marshal.FreeHGlobal(_duration);
             }
         }
-
-        public static STBox? In(string str)
-            => MEOSFactory.WrapSTBox(Meos.StboxIn(str));
 
         public static STBox? Make(bool hasx, bool hasz, bool geodetic, int srid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, Span s)
             => MEOSFactory.WrapSTBox(Meos.StboxMake(hasx, hasz, geodetic, srid, xmin, xmax, ymin, ymax, zmin, zmax, s.Ptr));

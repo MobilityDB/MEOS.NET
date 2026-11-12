@@ -67,6 +67,9 @@ namespace MEOS.NET.Types
         public string AsMFJSON(int option, int flags, int precision, string srs)
             => Meos.TemporalAsMfjson(this.Ptr, option, flags, precision, srs);
 
+        public string AsText(int maxdd)
+            => Meos.TemporalOut(this.Ptr, maxdd);
+
         public Temporal? AsTinstant()
             => MEOSFactory.WrapTemporal(Meos.TemporalAsTinstant(this.Ptr));
 
@@ -291,9 +294,6 @@ namespace MEOS.NET.Types
 
         public int NumTimestamps()
             => Meos.TemporalNumTimestamps(this.Ptr);
-
-        public string Out(int maxdd)
-            => Meos.TemporalOut(this.Ptr, maxdd);
 
         public bool Overafter(TsTzSpan s)
             => Meos.OverafterTemporalTstzspan(this.Ptr, s.Ptr);

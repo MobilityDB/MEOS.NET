@@ -26,13 +26,13 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.AsText();
 
         public string AsHexWKB(byte variant)
             => Meos.QuadbinAsHexwkb(this.value, variant);
 
         public string AsText()
-            => this.Out();
+            => Meos.QuadbinOut(this.value);
 
         public byte[]? AsWKB(byte variant)
         {
@@ -130,9 +130,6 @@ namespace MEOS.NET.Types
         public bool Ne(Quadbin b)
             => Meos.QuadbinNe(this.value, b.value);
 
-        public string Out()
-            => Meos.QuadbinOut(this.value);
-
         public STBox? TimestamptzToStbox(DateTime t)
             => MEOSFactory.WrapSTBox(Meos.QuadbinTimestamptzToStbox(this.value, MEOSConvert.ToTimestampTz(t)));
 
@@ -149,7 +146,7 @@ namespace MEOS.NET.Types
             => new Quadbin(Meos.QuadbinFromHexwkb(hexwkb));
 
         public static Quadbin FromText(string str)
-            => Quadbin.In(str);
+            => new Quadbin(Meos.QuadbinIn(str));
 
         public static Quadbin FromWKB(byte[] wkb)
         {
@@ -163,9 +160,6 @@ namespace MEOS.NET.Types
                 _wkb.Free();
             }
         }
-
-        public static Quadbin In(string str)
-            => new Quadbin(Meos.QuadbinIn(str));
 
         public static Quadbin PointToCell(double longitude, double latitude, uint resolution)
             => new Quadbin(Meos.QuadbinPointToCell(longitude, latitude, resolution));

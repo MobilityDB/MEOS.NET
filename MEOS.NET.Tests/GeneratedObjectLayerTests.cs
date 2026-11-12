@@ -19,7 +19,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void InstantTextGivesTheConcreteInstantClass()
         {
-            Temporal? temp = TFloat.In(Instant);
+            Temporal? temp = TFloat.FromText(Instant);
 
             Assert.IsInstanceOfType(temp, typeof(TFloatInst));
         }
@@ -27,7 +27,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void SequenceTextGivesTheConcreteSequenceClass()
         {
-            Temporal? temp = TFloat.In(Sequence);
+            Temporal? temp = TFloat.FromText(Sequence);
 
             Assert.IsInstanceOfType(temp, typeof(TFloatSeq));
         }
@@ -35,7 +35,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void SequenceHoldsItsTwoInstants()
         {
-            Temporal temp = TFloat.In(Sequence)!;
+            Temporal temp = TFloat.FromText(Sequence)!;
 
             Assert.AreEqual(2, temp.NumInstants());
             Assert.AreEqual("Linear", temp.Interp());
@@ -44,7 +44,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void StartTimestamptzIsTheMomentTheTextNames()
         {
-            Temporal temp = TFloat.In(Sequence)!;
+            Temporal temp = TFloat.FromText(Sequence)!;
 
             Assert.AreEqual(new DateTime(2024, 12, 6, 0, 0, 0, DateTimeKind.Utc),
                 temp.StartTimestamptz().ToUniversalTime());
@@ -53,7 +53,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void RestrictingToAnInstantGivesThatInstant()
         {
-            Temporal temp = TFloat.In(Sequence)!;
+            Temporal temp = TFloat.FromText(Sequence)!;
             DateTime start = temp.StartTimestamptz();
 
             Temporal? at = temp.AtTimestamptz(start);
@@ -65,7 +65,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ValueSpanOfTheSequenceIsItsFloatExtent()
         {
-            TNumber temp = (TNumber)TFloat.In(Sequence)!;
+            TNumber temp = (TNumber)TFloat.FromText(Sequence)!;
 
             Span span = temp.ToSpan()!;
 
@@ -77,7 +77,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void SpanSetTextGivesTheConcreteFloatSpanSet()
         {
-            SpanSet? spanset = FloatSpanSet.In(SpanSetText);
+            SpanSet? spanset = FloatSpanSet.FromText(SpanSetText);
 
             Assert.IsInstanceOfType(spanset, typeof(FloatSpanSet));
             Assert.AreEqual(2, spanset!.NumSpans());
@@ -86,7 +86,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void EachSpanOfTheSetIsTheSpanTheTextNames()
         {
-            SpanSet spanset = FloatSpanSet.In(SpanSetText)!;
+            SpanSet spanset = FloatSpanSet.FromText(SpanSetText)!;
 
             Span?[] spans = spanset.Spanarr();
 
@@ -100,16 +100,16 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void SpanTextIsWhatTheSpanHolds()
         {
-            SpanSet spanset = FloatSpanSet.In(SpanSetText)!;
+            SpanSet spanset = FloatSpanSet.FromText(SpanSetText)!;
 
-            Assert.AreEqual("[8, 10]", ((FloatSpan)spanset.StartSpan()!).Out(15));
-            Assert.AreEqual("[11, 12]", ((FloatSpan)spanset.EndSpan()!).Out(15));
+            Assert.AreEqual("[8, 10]", ((FloatSpan)spanset.StartSpan()!).AsText(15));
+            Assert.AreEqual("[11, 12]", ((FloatSpan)spanset.EndSpan()!).AsText(15));
         }
 
         [TestMethod]
         public void TimeDomainOfTheSequenceIsATstzSpanSet()
         {
-            Temporal temp = TFloat.In(Sequence)!;
+            Temporal temp = TFloat.FromText(Sequence)!;
 
             SpanSet time = temp.Time()!;
 
@@ -132,7 +132,7 @@ namespace MEOS.NET.Tests
         public void MalformedTextRaisesTheMeosError()
         {
             MEOSException raised = Assert.ThrowsException<MEOSTextInputException>(
-                () => TFloat.In("e" + Instant));
+                () => TFloat.FromText("e" + Instant));
 
             StringAssert.Contains(raised.Message, "e25.0");
         }

@@ -26,9 +26,6 @@ namespace MEOS.NET.Types
         public bool After(DateOnly d)
             => Meos.AfterSpanDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
-        public string AsText(int maxdd)
-            => this.Out(maxdd);
-
         public bool Before(DateOnly d)
             => Meos.BeforeSpanDate(this.Ptr, MEOSConvert.ToDateADT(d));
 
@@ -176,7 +173,7 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapSpan(Meos.DateToSpan(MEOSConvert.ToDateADT(d)));
 
         public static Span? FromText(string str)
-            => DateSpan.In(str);
+            => MEOSFactory.WrapSpan(Meos.DatespanIn(str));
 
         public static Span? GetBin(DateOnly d, Interval duration, DateOnly torigin)
         {
@@ -191,9 +188,6 @@ namespace MEOS.NET.Types
                 Marshal.FreeHGlobal(_duration);
             }
         }
-
-        public static Span? In(string str)
-            => MEOSFactory.WrapSpan(Meos.DatespanIn(str));
 
         public static Span? Make(DateOnly lower, DateOnly upper, bool lower_inc, bool upper_inc)
             => MEOSFactory.WrapSpan(Meos.DatespanMake(MEOSConvert.ToDateADT(lower), MEOSConvert.ToDateADT(upper), lower_inc, upper_inc));

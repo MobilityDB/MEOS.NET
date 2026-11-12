@@ -17,6 +17,9 @@ namespace MEOS.NET.Types
         public string AsHexWKB(byte variant)
             => Meos.SetAsHexwkb(this.Ptr, variant);
 
+        public string AsText(int maxdd)
+            => Meos.SetOut(this.Ptr, maxdd);
+
         public byte[]? AsWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
@@ -88,9 +91,6 @@ namespace MEOS.NET.Types
 
         public int NumValues()
             => Meos.SetNumValues(this.Ptr);
-
-        public string Out(int maxdd)
-            => Meos.SetOut(this.Ptr, maxdd);
 
         public bool Overlaps(Set s2)
             => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);

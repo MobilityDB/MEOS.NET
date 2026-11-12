@@ -17,8 +17,8 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void AnMvtGeometryAnswersItsGeometryAndItsTimesInOrder()
         {
-            TPoint trip = (TPoint)TGeomPoint.In(Trip)!;
-            STBox bounds = STBox.In("STBOX XT(((0,0),(10,10)),[2000-01-01, 2000-01-04])")!;
+            TPoint trip = (TPoint)TGeomPoint.FromText(Trip)!;
+            STBox bounds = STBox.FromText("STBOX XT(((0,0),(10,10)),[2000-01-01, 2000-01-04])")!;
 
             (Geo? geom, long[] times)? answer = trip.AsMVTGeom(bounds, 4096, 0, true);
 
@@ -41,8 +41,8 @@ namespace MEOS.NET.Tests
         {
             // tpoint_as_mvtgeom answers NULL for a trip with no representation
             // in the tile, and writes no times.
-            TPoint trip = (TPoint)TGeomPoint.In(Trip)!;
-            STBox bounds = STBox.In("STBOX XT(((100,100),(110,110)),[2000-01-01, 2000-01-04])")!;
+            TPoint trip = (TPoint)TGeomPoint.FromText(Trip)!;
+            STBox bounds = STBox.FromText("STBOX XT(((100,100),(110,110)),[2000-01-01, 2000-01-04])")!;
 
             Assert.IsNull(trip.AsMVTGeom(bounds, 4096, 0, true));
         }

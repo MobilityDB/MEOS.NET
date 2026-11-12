@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public bool Adjacent(Span s2)
             => Meos.AdjacentSpanSpan(this.Ptr, s2.Ptr);
@@ -26,6 +26,9 @@ namespace MEOS.NET.Types
 
         public string AsHexWKB(byte variant)
             => Meos.SpanAsHexwkb(this.Ptr, variant);
+
+        public string AsText(int maxdd)
+            => Meos.SpanOut(this.Ptr, maxdd);
 
         public byte[]? AsWKB(byte variant)
         {
@@ -110,9 +113,6 @@ namespace MEOS.NET.Types
 
         public bool Ne(Span s2)
             => Meos.SpanNe(this.Ptr, s2.Ptr);
-
-        public string Out(int maxdd)
-            => Meos.SpanOut(this.Ptr, maxdd);
 
         public bool Overlaps(Span s2)
             => Meos.OverlapsSpanSpan(this.Ptr, s2.Ptr);

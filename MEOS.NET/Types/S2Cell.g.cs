@@ -26,13 +26,13 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.AsText();
 
         public string AsHexWKB(byte variant)
             => Meos.S2cellAsHexwkb(this.value, variant);
 
         public string AsText()
-            => this.Out();
+            => Meos.S2cellOut(this.value);
 
         public byte[]? AsWKB(byte variant)
         {
@@ -133,9 +133,6 @@ namespace MEOS.NET.Types
         public bool Ne(S2Cell b)
             => Meos.S2cellNe(this.value, b.value);
 
-        public string Out()
-            => Meos.S2cellOut(this.value);
-
         public S2Cell RangeMax()
             => new S2Cell(Meos.S2cellRangeMax(this.value));
 
@@ -158,7 +155,7 @@ namespace MEOS.NET.Types
             => new S2Cell(Meos.S2cellFromHexwkb(hexwkb));
 
         public static S2Cell FromText(string str)
-            => S2Cell.In(str);
+            => new S2Cell(Meos.S2cellIn(str));
 
         public static S2Cell FromWKB(byte[] wkb)
         {
@@ -172,9 +169,6 @@ namespace MEOS.NET.Types
                 _wkb.Free();
             }
         }
-
-        public static S2Cell In(string str)
-            => new S2Cell(Meos.S2cellIn(str));
 
         public static S2Cell PointToCell(double longitude, double latitude, uint level)
             => new S2Cell(Meos.S2cellPointToCell(longitude, latitude, level));

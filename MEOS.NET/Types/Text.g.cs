@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => Meos.TextOut(this.Ptr);
 
         public int AlwaysEq(TText temp)
             => Meos.AlwaysEqTextTtext(this.Ptr, temp.Ptr);
@@ -78,9 +78,6 @@ namespace MEOS.NET.Types
         public Set? Minus(TextSet s)
             => MEOSFactory.WrapSet(Meos.MinusTextSet(this.Ptr, s.Ptr));
 
-        public string Out()
-            => Meos.TextOut(this.Ptr);
-
         public bool Overleft(TextSet s)
             => Meos.OverleftTextSet(this.Ptr, s.Ptr);
 
@@ -131,9 +128,6 @@ namespace MEOS.NET.Types
 
         public static Text? FromCstring(string str)
             => MEOSFactory.WrapText(Meos.CstringToText(str));
-
-        public static Text? In(string str)
-            => MEOSFactory.WrapText(Meos.TextIn(str));
 
     }
 }

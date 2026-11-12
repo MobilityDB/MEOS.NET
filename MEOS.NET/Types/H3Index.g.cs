@@ -26,13 +26,13 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.AsText();
 
         public string AsHexWKB(byte variant)
             => Meos.H3indexAsHexwkb(this.value, variant);
 
         public string AsText()
-            => this.Out();
+            => Meos.H3indexOut(this.value);
 
         public byte[]? AsWKB(byte variant)
         {
@@ -100,9 +100,6 @@ namespace MEOS.NET.Types
         public bool Ne(H3Index b)
             => Meos.H3indexNe(this.value, b.value);
 
-        public string Out()
-            => Meos.H3indexOut(this.value);
-
         public STBox? TimestamptzToStbox(DateTime t)
             => MEOSFactory.WrapSTBox(Meos.H3indexTimestamptzToStbox(this.value, MEOSConvert.ToTimestampTz(t)));
 
@@ -119,7 +116,7 @@ namespace MEOS.NET.Types
             => new H3Index(Meos.H3indexFromHexwkb(hexwkb));
 
         public static H3Index FromText(string str)
-            => H3Index.In(str);
+            => new H3Index(Meos.H3indexIn(str));
 
         public static H3Index FromWKB(byte[] wkb)
         {
@@ -133,9 +130,6 @@ namespace MEOS.NET.Types
                 _wkb.Free();
             }
         }
-
-        public static H3Index In(string str)
-            => new H3Index(Meos.H3indexIn(str));
 
     }
 }

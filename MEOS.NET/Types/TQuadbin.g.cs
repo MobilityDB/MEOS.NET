@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public bool Above(TQuadbin temp2)
             => Meos.AboveTspatialTspatial(this.Ptr, temp2.Ptr);
@@ -218,7 +218,7 @@ namespace MEOS.NET.Types
             => Temporal.FromWKB(wkb);
 
         public static Temporal? FromEWKT(string str)
-            => TQuadbin.In(str);
+            => TQuadbin.FromText(str);
 
         public static Temporal? FromHexEWKB(string hexwkb)
             => Temporal.FromHexWKB(hexwkb);
@@ -227,9 +227,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTemporal(Meos.TquadbinFromMfjson(mfjson));
 
         public static Temporal? FromText(string str)
-            => TQuadbin.In(str);
-
-        public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TquadbinIn(str));
 
     }

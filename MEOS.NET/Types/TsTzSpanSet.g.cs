@@ -26,9 +26,6 @@ namespace MEOS.NET.Types
         public bool After(DateTime t)
             => Meos.AfterSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
-        public string AsText(int maxdd)
-            => this.Out(maxdd);
-
         public bool Before(DateTime t)
             => Meos.BeforeSpansetTimestamptz(this.Ptr, MEOSConvert.ToTimestampTz(t));
 
@@ -265,13 +262,10 @@ namespace MEOS.NET.Types
             => MEOSConvert.ToDateTime(Meos.TstzspansetUpper(this.Ptr));
 
         public static SpanSet? FromText(string str)
-            => TsTzSpanSet.In(str);
+            => MEOSFactory.WrapSpanSet(Meos.TstzspansetIn(str));
 
         public static SpanSet? FromTimestamptz(DateTime t)
             => MEOSFactory.WrapSpanSet(Meos.TimestamptzToSpanset(MEOSConvert.ToTimestampTz(t)));
-
-        public static SpanSet? In(string str)
-            => MEOSFactory.WrapSpanSet(Meos.TstzspansetIn(str));
 
     }
 }

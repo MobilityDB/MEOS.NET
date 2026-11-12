@@ -18,7 +18,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void SplittingByTimeAnswersThePiecesAndTheirBins()
         {
-            Temporal trip = TFloat.In(
+            Temporal trip = TFloat.FromText(
                 "[1@2024-12-06, 2@2024-12-07, 3@2024-12-08]")!;
 
             (Temporal?[] pieces, DateTime[] bins) = trip.TimeSplit(
@@ -35,7 +35,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void SplittingBySpaceAnswersThePiecesAndTheirBins()
         {
-            Temporal trip = TGeomPoint.In(Trip)!;
+            Temporal trip = TGeomPoint.FromText(Trip)!;
             IntPtr origin = Meos.GeomIn("POINT(0 0)", -1);
 
             (IntPtr[] fragments, IntPtr[] bins) = Meos.TgeoSpaceSplit(
@@ -55,7 +55,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void EachAnswersTheKeysAndTheirValues()
         {
-            Jsonb jb = Jsonb.In("{\"a\": 1, \"b\": \"two\"}")!;
+            Jsonb jb = Jsonb.FromText("{\"a\": 1, \"b\": \"two\"}")!;
 
             (IntPtr[] keys, IntPtr[] values) = Meos.JsonbEach(jb.Ptr);
 

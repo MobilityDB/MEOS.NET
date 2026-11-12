@@ -162,9 +162,6 @@ namespace MEOS.NET.Types
         public Pose? Normalize()
             => MEOSFactory.WrapPose(Meos.PoseNormalize(this.Ptr));
 
-        public string Out(int maxdd)
-            => Meos.PoseOut(this.Ptr, maxdd);
-
         public double Pitch()
             => Meos.PosePitch(this.Ptr);
 
@@ -255,9 +252,6 @@ namespace MEOS.NET.Types
                 _wkb.Free();
             }
         }
-
-        public static Pose? In(string str)
-            => MEOSFactory.WrapPose(Meos.PoseIn(str));
 
         public static Pose? Make2d(double x, double y, double theta, bool geodetic, int srid)
             => MEOSFactory.WrapPose(Meos.PoseMake2d(x, y, theta, geodetic, srid));

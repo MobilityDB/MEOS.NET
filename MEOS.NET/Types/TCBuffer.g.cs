@@ -431,7 +431,7 @@ namespace MEOS.NET.Types
             => Temporal.FromWKB(wkb);
 
         public static Temporal? FromEWKT(string str)
-            => TCBuffer.In(str);
+            => TCBuffer.FromText(str);
 
         public static Temporal? FromHexEWKB(string hexwkb)
             => Temporal.FromHexWKB(hexwkb);
@@ -440,9 +440,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTemporal(Meos.TcbufferFromMfjson(mfjson));
 
         public static Temporal? FromText(string str)
-            => TCBuffer.In(str);
-
-        public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TcbufferIn(str));
 
     }

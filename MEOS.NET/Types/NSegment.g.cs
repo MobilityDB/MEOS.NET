@@ -99,9 +99,6 @@ namespace MEOS.NET.Types
         public bool Ne(NSegment ns2)
             => Meos.NsegmentNe(this.Ptr, ns2.Ptr);
 
-        public string Out(int maxdd)
-            => Meos.NsegmentOut(this.Ptr, maxdd);
-
         public NSegment? Round(int maxdd)
             => MEOSFactory.WrapNSegment(Meos.NsegmentRound(this.Ptr, maxdd));
 
@@ -127,7 +124,7 @@ namespace MEOS.NET.Types
             => NSegment.FromWKB(wkb);
 
         public static NSegment? FromEWKT(string str)
-            => NSegment.In(str);
+            => NSegment.FromText(str);
 
         public static NSegment? FromHexEWKB(string hexwkb)
             => NSegment.FromHexWKB(hexwkb);
@@ -136,7 +133,7 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapNSegment(Meos.NsegmentFromHexwkb(hexwkb));
 
         public static NSegment? FromText(string str)
-            => NSegment.In(str);
+            => MEOSFactory.WrapNSegment(Meos.NsegmentIn(str));
 
         public static NSegment? FromWKB(byte[] wkb)
         {
@@ -150,9 +147,6 @@ namespace MEOS.NET.Types
                 _wkb.Free();
             }
         }
-
-        public static NSegment? In(string str)
-            => MEOSFactory.WrapNSegment(Meos.NsegmentIn(str));
 
         public static NSegment? Make(long rid, double pos1, double pos2)
             => MEOSFactory.WrapNSegment(Meos.NsegmentMake(rid, pos1, pos2));

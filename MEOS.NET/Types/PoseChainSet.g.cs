@@ -82,15 +82,12 @@ namespace MEOS.NET.Types
             => Set.FromWKB(wkb);
 
         public static Set? FromEWKT(string str)
-            => PoseChainSet.In(str);
+            => PoseChainSet.FromText(str);
 
         public static Set? FromHexEWKB(string hexwkb)
             => Set.FromHexWKB(hexwkb);
 
         public static Set? FromText(string str)
-            => PoseChainSet.In(str);
-
-        public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.PosechainsetIn(str));
 
         public static Set? Make(PoseChain[] values)

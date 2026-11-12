@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public Set? CompactCells()
             => MEOSFactory.WrapSet(Meos.QuadbinsetCompactCells(this.Ptr));
@@ -106,15 +106,12 @@ namespace MEOS.NET.Types
             => Set.FromWKB(wkb);
 
         public static Set? FromEWKT(string str)
-            => QuadbinSet.In(str);
+            => QuadbinSet.FromText(str);
 
         public static Set? FromHexEWKB(string hexwkb)
             => Set.FromHexWKB(hexwkb);
 
         public static Set? FromText(string str)
-            => QuadbinSet.In(str);
-
-        public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.QuadbinsetIn(str));
 
         public static Set? Make(Quadbin[] values)

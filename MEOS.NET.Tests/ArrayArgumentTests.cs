@@ -30,13 +30,13 @@ namespace MEOS.NET.Tests
         {
             // `jsonb_exists_array(jb, text **keys_elems, int keys_len, bool any)`
             // — the length is `keys_len`, and the catalog is what says so.
-            Jsonb jb = Jsonb.In("{\"a\": 1, \"b\": 2}")!;
-            Text[] keys = { Text.In("a")!, Text.In("z")! };
+            Jsonb jb = Jsonb.FromText("{\"a\": 1, \"b\": 2}")!;
+            Text[] keys = { Text.FromCstring("a")!, Text.FromCstring("z")! };
 
             Assert.IsTrue(jb.ExistsArray(keys, true));
             Assert.IsFalse(jb.ExistsArray(keys, false));
 
-            Text[] missing = { Text.In("y")!, Text.In("z")! };
+            Text[] missing = { Text.FromCstring("y")!, Text.FromCstring("z")! };
 
             Assert.IsFalse(jb.ExistsArray(missing, true));
         }

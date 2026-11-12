@@ -189,9 +189,6 @@ namespace MEOS.NET.Types
         public bool Ne(CBuffer cb2)
             => Meos.CbufferNe(this.Ptr, cb2.Ptr);
 
-        public string Out(int maxdd)
-            => Meos.CbufferOut(this.Ptr, maxdd);
-
         public Geo? Point()
             => MEOSFactory.WrapGeo(Meos.CbufferPoint(this.Ptr));
 
@@ -265,7 +262,7 @@ namespace MEOS.NET.Types
             => CBuffer.FromWKB(wkb);
 
         public static CBuffer? FromEWKT(string str)
-            => CBuffer.In(str);
+            => CBuffer.FromText(str);
 
         public static CBuffer? FromHexEWKB(string hexwkb)
             => CBuffer.FromHexWKB(hexwkb);
@@ -274,7 +271,7 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapCBuffer(Meos.CbufferFromHexwkb(hexwkb));
 
         public static CBuffer? FromText(string str)
-            => CBuffer.In(str);
+            => MEOSFactory.WrapCBuffer(Meos.CbufferIn(str));
 
         public static CBuffer? FromWKB(byte[] wkb)
         {
@@ -288,9 +285,6 @@ namespace MEOS.NET.Types
                 _wkb.Free();
             }
         }
-
-        public static CBuffer? In(string str)
-            => MEOSFactory.WrapCBuffer(Meos.CbufferIn(str));
 
         public static CBuffer? Make(Geo point, double radius)
             => MEOSFactory.WrapCBuffer(Meos.CbufferMake(point.Ptr, radius));

@@ -126,9 +126,6 @@ namespace MEOS.NET.Types
         public bool Ne(NPoint np2)
             => Meos.NpointNe(this.Ptr, np2.Ptr);
 
-        public string Out(int maxdd)
-            => Meos.NpointOut(this.Ptr, maxdd);
-
         public double Position()
             => Meos.NpointPosition(this.Ptr);
 
@@ -172,7 +169,7 @@ namespace MEOS.NET.Types
             => NPoint.FromWKB(wkb);
 
         public static NPoint? FromEWKT(string str)
-            => NPoint.In(str);
+            => NPoint.FromText(str);
 
         public static NPoint? FromGeompoint(Geo gs, double tolerance)
             => MEOSFactory.WrapNPoint(Meos.GeompointToNpoint(gs.Ptr, tolerance));
@@ -184,7 +181,7 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapNPoint(Meos.NpointFromHexwkb(hexwkb));
 
         public static NPoint? FromText(string str)
-            => NPoint.In(str);
+            => MEOSFactory.WrapNPoint(Meos.NpointIn(str));
 
         public static NPoint? FromWKB(byte[] wkb)
         {
@@ -198,9 +195,6 @@ namespace MEOS.NET.Types
                 _wkb.Free();
             }
         }
-
-        public static NPoint? In(string str)
-            => MEOSFactory.WrapNPoint(Meos.NpointIn(str));
 
         public static NPoint? Make(long rid, double pos)
             => MEOSFactory.WrapNPoint(Meos.NpointMake(rid, pos));

@@ -8,7 +8,7 @@ MEOSLifecycle.Initialize("UTC");
 try
 {
     Console.WriteLine("Reading a temporal float instant from \"25.0@2024-12-06\"");
-    Temporal tfi = TFloat.In("25.0@2024-12-06")!;
+    Temporal tfi = TFloat.FromText("25.0@2024-12-06")!;
     Console.WriteLine($"  class            : {tfi.GetType().Name}");
     Console.WriteLine($"  text             : {tfi}");
     Console.WriteLine($"  start timestamp  : {tfi.StartTimestamptz():u}");
@@ -24,7 +24,7 @@ try
     Console.WriteLine($"  always <= 30.0?  : {Meos.AlwaysLeTfloatFloat(sum.Ptr, 30.0) == 1}\n");
 
     Console.WriteLine("Reading a float span set from \"{[8, 10], [11, 12]}\"");
-    SpanSet spanset = FloatSpanSet.In("{[8, 10], [11, 12]}")!;
+    SpanSet spanset = FloatSpanSet.FromText("{[8, 10], [11, 12]}")!;
     Console.WriteLine($"  class            : {spanset.GetType().Name}");
     Console.WriteLine($"  spans            : {spanset.NumSpans()}");
     foreach (Span? span in spanset.Spanarr())
@@ -36,7 +36,7 @@ try
     Console.WriteLine($"  width            : {((FloatSpanSet)spanset).Width(false)}\n");
 
     Console.WriteLine("Reading a temporal float instant from \"e25.0@2024-12-06\"");
-    TFloat.In("e25.0@2024-12-06");
+    TFloat.FromText("e25.0@2024-12-06");
 }
 catch (MEOSException e)
 {
