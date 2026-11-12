@@ -41,6 +41,9 @@ namespace MEOS.NET.Types
         public int AlwaysNe(Temporal temp2)
             => Meos.AlwaysNeTemporalTemporal(this.Ptr, temp2.Ptr);
 
+        public int AlwaysOverlaps(Temporal temp2)
+            => Meos.AlwaysOverlapsTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public Temporal? AppendTinstant(Temporal inst, string interp, double maxdist, Interval maxt, bool expand)
         {
             IntPtr _maxt = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
@@ -192,6 +195,9 @@ namespace MEOS.NET.Types
 
         public int EverNe(Temporal temp2)
             => Meos.EverNeTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int EverOverlaps(Temporal temp2)
+            => Meos.EverOverlapsTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public Temporal? ExtKalmanFilter(double gate, double q, double variance, bool to_drop)
             => MEOSFactory.WrapTemporal(Meos.TemporalExtKalmanFilter(this.Ptr, gate, q, variance, to_drop));

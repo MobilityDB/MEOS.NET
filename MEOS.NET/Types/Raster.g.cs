@@ -330,12 +330,12 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static Temporal? TileValueQuadbin(Temporal traj, byte[] pixels, int width, int height, ulong quadbin, string pixtype, double nodata, bool has_nodata)
+        public static Temporal? TileValueQuadbin(Temporal traj, byte[] pixels, int width, int height, Quadbin quadbin, string pixtype, double nodata, bool has_nodata)
         {
             GCHandle _pixels = GCHandle.Alloc(pixels, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapTemporal(Meos.RasterTileValueQuadbin(traj.Ptr, _pixels.AddrOfPinnedObject(), (ulong) pixels.Length, width, height, quadbin, Meos.MeospixtypeFromString(pixtype), nodata, has_nodata));
+                return MEOSFactory.WrapTemporal(Meos.RasterTileValueQuadbin(traj.Ptr, _pixels.AddrOfPinnedObject(), (ulong) pixels.Length, width, height, quadbin.value, Meos.MeospixtypeFromString(pixtype), nodata, has_nodata));
             }
             finally
             {

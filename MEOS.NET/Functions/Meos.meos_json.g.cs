@@ -423,8 +423,8 @@ namespace MEOS.NET.Functions
         public static int JsonbPathExists(IntPtr jb, IntPtr jp, IntPtr vars, bool silent, bool tz)
             => SafeExecution<int>(() => Native.JsonbPathExists(jb, jp, vars, silent, tz));
 
-        public static bool JsonbPathMatch(IntPtr jb, IntPtr jp, IntPtr vars, bool silent, bool tz)
-            => SafeExecution<bool>(() => Native.JsonbPathMatch(jb, jp, vars, silent, tz));
+        public static int JsonbPathMatch(IntPtr jb, IntPtr jp, IntPtr vars, bool silent, bool tz)
+            => SafeExecution<int>(() => Native.JsonbPathMatch(jb, jp, vars, silent, tz));
 
         public static IntPtr[] JsonbPathQueryAll(IntPtr jb, IntPtr jp, IntPtr vars, bool silent, bool tz)
         {

@@ -14,8 +14,8 @@ namespace MEOS.NET.Types
     {
         internal TH3IndexSeqSet(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? FromBaseTstzspanset(ulong value, SpanSet ss)
-            => MEOSFactory.WrapTemporal(Meos.Th3indexseqsetFromBaseTstzspanset(value, ss.Ptr));
+        public static Temporal? FromBaseTstzspanset(H3Index value, SpanSet ss)
+            => MEOSFactory.WrapTemporal(Meos.Th3indexseqsetFromBaseTstzspanset(value.value, ss.Ptr));
 
         public static Temporal? Make(Temporal[] sequences)
         {

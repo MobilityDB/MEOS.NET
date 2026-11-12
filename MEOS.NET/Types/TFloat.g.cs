@@ -69,6 +69,9 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TFloat temp2)
             => Meos.AlwaysNeTemporalTemporal(this.Ptr, temp2.Ptr);
 
+        public int AlwaysOverlaps(TFloat temp2)
+            => Meos.AlwaysOverlapsTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public string AsText(int maxdd)
             => this.Out(maxdd);
 
@@ -143,6 +146,9 @@ namespace MEOS.NET.Types
 
         public int EverNe(TFloat temp2)
             => Meos.EverNeTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int EverOverlaps(TFloat temp2)
+            => Meos.EverOverlapsTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public Temporal? Exp()
             => MEOSFactory.WrapTemporal(Meos.TfloatExp(this.Ptr));

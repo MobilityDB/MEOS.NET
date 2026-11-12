@@ -5,8 +5,9 @@ namespace MEOS.NET.Tests
 {
     /// <summary>
     /// Whatever the wrapper already states as a C# value — an enum the catalog
-    /// names, a scalar behind a MEOS typedef, a struct carried by value — the
-    /// object layer hands on as that value.
+    /// names, a struct carried by value — the object layer hands on as that
+    /// value, and a scalar behind a typedef the catalog gives a class held by
+    /// value comes back as that class.
     /// </summary>
     [TestClass]
     public class CatalogValueTypeTests : MeosTest
@@ -25,13 +26,14 @@ namespace MEOS.NET.Tests
         }
 
         [TestMethod]
-        public void AScalarBehindATypedefComesBackAsThatScalar()
+        public void AScalarBehindACellTypedefComesBackAsItsClass()
         {
             Geo point = Geo.FromText("POINT(1 1)", 4326)!;
 
-            ulong cell = point.ToS2cellCell(10);
+            S2Cell cell = point.ToS2cellCell(10);
 
-            Assert.AreNotEqual(0UL, cell);
+            Assert.AreNotEqual(0UL, (ulong)cell);
+            Assert.AreEqual(10u, cell.GetResolution());
         }
     }
 }

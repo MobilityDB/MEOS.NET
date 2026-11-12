@@ -14,13 +14,13 @@ namespace MEOS.NET.Types
     {
         internal TH3IndexSeq(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? FromBaseTstzset(ulong value, Set s)
-            => MEOSFactory.WrapTemporal(Meos.Th3indexseqFromBaseTstzset(value, s.Ptr));
+        public static Temporal? FromBaseTstzset(H3Index value, Set s)
+            => MEOSFactory.WrapTemporal(Meos.Th3indexseqFromBaseTstzset(value.value, s.Ptr));
 
-        public static Temporal? FromBaseTstzspan(ulong value, Span s)
-            => MEOSFactory.WrapTemporal(Meos.Th3indexseqFromBaseTstzspan(value, s.Ptr));
+        public static Temporal? FromBaseTstzspan(H3Index value, Span s)
+            => MEOSFactory.WrapTemporal(Meos.Th3indexseqFromBaseTstzspan(value.value, s.Ptr));
 
-        public static Temporal? Make(ulong[] values, long[] times, bool lower_inc, bool upper_inc)
+        public static Temporal? Make(H3Index[] values, long[] times, bool lower_inc, bool upper_inc)
         {
             if (values.Length != times.Length)
             {

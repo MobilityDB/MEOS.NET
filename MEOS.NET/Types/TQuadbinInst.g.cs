@@ -14,8 +14,8 @@ namespace MEOS.NET.Types
     {
         internal TQuadbinInst(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? Make(ulong value, DateTime t)
-            => MEOSFactory.WrapTemporal(Meos.TquadbininstMake(value, MEOSConvert.ToTimestampTz(t)));
+        public static Temporal? Make(Quadbin value, DateTime t)
+            => MEOSFactory.WrapTemporal(Meos.TquadbininstMake(value.value, MEOSConvert.ToTimestampTz(t)));
 
     }
 }

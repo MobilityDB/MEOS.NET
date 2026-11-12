@@ -14,15 +14,8 @@ namespace MEOS.NET.Types
     {
         internal RaQuet(IntPtr ptr) : base(ptr) { }
 
-        /// <summary>The text MEOS writes this value as.</summary>
-        public override string ToString()
-            => this.Out();
-
         public string AsHexWKB(byte variant)
             => Meos.RaquetAsHexwkb(this.Ptr, variant);
-
-        public string AsText()
-            => this.Out();
 
         public byte[]? AsWKB(byte variant)
         {
@@ -129,8 +122,8 @@ namespace MEOS.NET.Types
             }
         }
 
-        public ulong Quadbin()
-            => Meos.RaquetQuadbin(this.Ptr);
+        public Quadbin Quadbin()
+            => new Quadbin(Meos.RaquetQuadbin(this.Ptr));
 
         public STBox? ToStbox()
             => MEOSFactory.WrapSTBox(Meos.RaquetToStbox(this.Ptr));
@@ -140,9 +133,6 @@ namespace MEOS.NET.Types
 
         public static RaQuet? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapRaQuet(Meos.RaquetFromHexwkb(hexwkb));
-
-        public static RaQuet? FromText(string str)
-            => RaQuet.In(str);
 
         public static RaQuet? FromWKB(byte[] wkb)
         {
@@ -160,12 +150,12 @@ namespace MEOS.NET.Types
         public static RaQuet? In(string str)
             => MEOSFactory.WrapRaQuet(Meos.RaquetIn(str));
 
-        public static RaQuet? Make(ulong quadbin, int width, int height, string pixtype, double nodata, bool has_nodata, byte[] pixels)
+        public static RaQuet? Make(Quadbin quadbin, int width, int height, string pixtype, double nodata, bool has_nodata, byte[] pixels)
         {
             GCHandle _pixels = GCHandle.Alloc(pixels, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapRaQuet(Meos.RaquetMake(quadbin, width, height, Meos.MeospixtypeFromString(pixtype), nodata, has_nodata, _pixels.AddrOfPinnedObject(), (ulong) pixels.Length));
+                return MEOSFactory.WrapRaQuet(Meos.RaquetMake(quadbin.value, width, height, Meos.MeospixtypeFromString(pixtype), nodata, has_nodata, _pixels.AddrOfPinnedObject(), (ulong) pixels.Length));
             }
             finally
             {
@@ -176,15 +166,15 @@ namespace MEOS.NET.Types
         public static ulong PixtypeSize(string pixtype)
             => Meos.RaquetPixtypeSize(Meos.MeospixtypeFromString(pixtype));
 
-        public static RaQuet? Read(string path, ulong quadbin)
-            => MEOSFactory.WrapRaQuet(Meos.RaquetRead(path, quadbin));
+        public static RaQuet? Read(string path, Quadbin quadbin)
+            => MEOSFactory.WrapRaQuet(Meos.RaquetRead(path, quadbin.value));
 
-        public static RaQuet? ReadBytes(byte[] data, ulong quadbin)
+        public static RaQuet? ReadBytes(byte[] data, Quadbin quadbin)
         {
             GCHandle _data = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                return MEOSFactory.WrapRaQuet(Meos.RaquetReadBytes(_data.AddrOfPinnedObject(), (ulong) data.Length, quadbin));
+                return MEOSFactory.WrapRaQuet(Meos.RaquetReadBytes(_data.AddrOfPinnedObject(), (ulong) data.Length, quadbin.value));
             }
             finally
             {

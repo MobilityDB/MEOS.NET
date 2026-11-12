@@ -138,6 +138,33 @@ namespace MEOS.NET.Types
         public bool After(TS2Cell temp)
             => Meos.AfterStboxTspatial(this.Ptr, temp.Ptr);
 
+        public int AlwaysOverlaps(TGeo temp)
+            => Meos.AlwaysOverlapsStboxTgeo(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TCBuffer temp)
+            => Meos.AlwaysOverlapsStboxTcbuffer(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TNPoint temp)
+            => Meos.AlwaysOverlapsStboxTnpoint(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TPose temp)
+            => Meos.AlwaysOverlapsStboxTpose(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TRGeometry temp)
+            => Meos.AlwaysOverlapsStboxTrgeometry(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TGeogPoint temp)
+            => Meos.AlwaysOverlapsStboxTgeo(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TGeography temp)
+            => Meos.AlwaysOverlapsStboxTgeo(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TGeomPoint temp)
+            => Meos.AlwaysOverlapsStboxTgeo(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TGeometry temp)
+            => Meos.AlwaysOverlapsStboxTgeo(this.Ptr, temp.Ptr);
+
         public double Area(bool spheroid)
             => Meos.StboxArea(this.Ptr, spheroid);
 
@@ -386,6 +413,33 @@ namespace MEOS.NET.Types
 
         public bool Eq(STBox box2)
             => Meos.StboxEq(this.Ptr, box2.Ptr);
+
+        public int EverOverlaps(TGeo temp)
+            => Meos.EverOverlapsStboxTgeo(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TCBuffer temp)
+            => Meos.EverOverlapsStboxTcbuffer(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TNPoint temp)
+            => Meos.EverOverlapsStboxTnpoint(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TPose temp)
+            => Meos.EverOverlapsStboxTpose(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TRGeometry temp)
+            => Meos.EverOverlapsStboxTrgeometry(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TGeogPoint temp)
+            => Meos.EverOverlapsStboxTgeo(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TGeography temp)
+            => Meos.EverOverlapsStboxTgeo(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TGeomPoint temp)
+            => Meos.EverOverlapsStboxTgeo(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TGeometry temp)
+            => Meos.EverOverlapsStboxTgeo(this.Ptr, temp.Ptr);
 
         public STBox? ExpandSpace(double d)
             => MEOSFactory.WrapSTBox(Meos.StboxExpandSpace(this.Ptr, d));
@@ -1267,38 +1321,11 @@ namespace MEOS.NET.Types
             }
         }
 
-        public static STBox? FromH3index(ulong cell)
-            => MEOSFactory.WrapSTBox(Meos.H3indexToStbox(cell));
-
-        public static STBox? FromH3indexTimestamptz(ulong cell, DateTime t)
-            => MEOSFactory.WrapSTBox(Meos.H3indexTimestamptzToStbox(cell, MEOSConvert.ToTimestampTz(t)));
-
-        public static STBox? FromH3indexTstzspan(ulong cell, Span s)
-            => MEOSFactory.WrapSTBox(Meos.H3indexTstzspanToStbox(cell, s.Ptr));
-
         public static STBox? FromHexEWKB(string hexwkb)
             => STBox.FromHexWKB(hexwkb);
 
         public static STBox? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapSTBox(Meos.StboxFromHexwkb(hexwkb));
-
-        public static STBox? FromQuadbin(ulong cell)
-            => MEOSFactory.WrapSTBox(Meos.QuadbinToStbox(cell));
-
-        public static STBox? FromQuadbinTimestamptz(ulong cell, DateTime t)
-            => MEOSFactory.WrapSTBox(Meos.QuadbinTimestamptzToStbox(cell, MEOSConvert.ToTimestampTz(t)));
-
-        public static STBox? FromQuadbinTstzspan(ulong cell, Span s)
-            => MEOSFactory.WrapSTBox(Meos.QuadbinTstzspanToStbox(cell, s.Ptr));
-
-        public static STBox? FromS2cell(ulong cell)
-            => MEOSFactory.WrapSTBox(Meos.S2cellToStbox(cell));
-
-        public static STBox? FromS2cellTimestamptz(ulong cell, DateTime t)
-            => MEOSFactory.WrapSTBox(Meos.S2cellTimestamptzToStbox(cell, MEOSConvert.ToTimestampTz(t)));
-
-        public static STBox? FromS2cellTstzspan(ulong cell, Span s)
-            => MEOSFactory.WrapSTBox(Meos.S2cellTstzspanToStbox(cell, s.Ptr));
 
         public static STBox? FromText(string str)
             => STBox.In(str);

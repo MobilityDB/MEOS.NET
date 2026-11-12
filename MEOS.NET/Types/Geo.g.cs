@@ -234,20 +234,20 @@ namespace MEOS.NET.Types
         public Temporal? Tne(TGeo temp)
             => MEOSFactory.WrapTemporal(Meos.TneGeoTgeo(this.Ptr, temp.Ptr));
 
-        public ulong ToH3indexCell(int resolution)
-            => Meos.GeoToH3indexCell(this.Ptr, resolution);
+        public H3Index ToH3indexCell(int resolution)
+            => new H3Index(Meos.GeoToH3indexCell(this.Ptr, resolution));
 
         public Set? ToH3indexSet(int resolution)
             => MEOSFactory.WrapSet(Meos.GeoToH3indexSet(this.Ptr, resolution));
 
-        public ulong ToQuadbinCell(int resolution)
-            => Meos.GeoToQuadbinCell(this.Ptr, resolution);
+        public Quadbin ToQuadbinCell(int resolution)
+            => new Quadbin(Meos.GeoToQuadbinCell(this.Ptr, resolution));
 
         public Set? ToQuadbinSet(int resolution)
             => MEOSFactory.WrapSet(Meos.GeoToQuadbinSet(this.Ptr, resolution));
 
-        public ulong ToS2cellCell(int level)
-            => Meos.GeoToS2cellCell(this.Ptr, level);
+        public S2Cell ToS2cellCell(int level)
+            => new S2Cell(Meos.GeoToS2cellCell(this.Ptr, level));
 
         public Set? ToS2cellSet(int level)
             => MEOSFactory.WrapSet(Meos.GeoToS2cellSet(this.Ptr, level));

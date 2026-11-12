@@ -20,6 +20,9 @@ namespace MEOS.NET.Types
         public bool After(TAlpha temp2)
             => Meos.AfterTemporalTemporal(this.Ptr, temp2.Ptr);
 
+        public int AlwaysOverlaps(TsTzSpan s)
+            => Meos.AlwaysOverlapsTemporalTstzspan(this.Ptr, s.Ptr);
+
         public bool Before(TAlpha temp2)
             => Meos.BeforeTemporalTemporal(this.Ptr, temp2.Ptr);
 
@@ -28,6 +31,9 @@ namespace MEOS.NET.Types
 
         public bool Contains(TAlpha temp2)
             => Meos.ContainsTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int EverOverlaps(TsTzSpan s)
+            => Meos.EverOverlapsTemporalTstzspan(this.Ptr, s.Ptr);
 
         public bool Overafter(TAlpha temp2)
             => Meos.OverafterTemporalTemporal(this.Ptr, temp2.Ptr);

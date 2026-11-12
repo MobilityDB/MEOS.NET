@@ -158,6 +158,15 @@ namespace MEOS.NET.Types
         public bool After(TText temp)
             => Meos.AfterTstzspanTemporal(this.Ptr, temp.Ptr);
 
+        public int AlwaysOverlaps(TAlpha temp)
+            => Meos.AlwaysOverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TBool temp)
+            => Meos.AlwaysOverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TText temp)
+            => Meos.AlwaysOverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
         public string AsText(int maxdd)
             => this.Out(maxdd);
 
@@ -399,6 +408,15 @@ namespace MEOS.NET.Types
 
         public Interval? Duration()
             => MEOSConvert.ToStruct<Interval>(Meos.TstzspanDuration(this.Ptr));
+
+        public int EverOverlaps(TAlpha temp)
+            => Meos.EverOverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TBool temp)
+            => Meos.EverOverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TText temp)
+            => Meos.EverOverlapsTstzspanTemporal(this.Ptr, temp.Ptr);
 
         public Span? Expand(Interval interv)
         {

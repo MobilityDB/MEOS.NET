@@ -66,6 +66,50 @@ namespace MEOS.NET.Tests
         }
 
         [TestMethod]
+        public void AQuadbinCellRoundTripsThroughItsTextAndWkb()
+        {
+            Quadbin cell = Quadbin.FromText("48427fffffffffff");
+
+            Assert.AreEqual("48427fffffffffff", cell.AsText());
+            Assert.AreEqual("48427fffffffffff", cell.ToString());
+            Assert.AreEqual("01470000FFFFFFFFFF7F4248", cell.AsHexWKB(0));
+            Assert.AreEqual(cell, Quadbin.FromHexWKB("01470000FFFFFFFFFF7F4248"));
+            Assert.AreEqual(cell, Quadbin.FromWKB(cell.AsWKB(0)!));
+        }
+
+        [TestMethod]
+        public void AnS2CellRoundTripsThroughItsTextAndWkb()
+        {
+            S2Cell cell = S2Cell.FromText("47c3c444c");
+
+            Assert.AreEqual("47c3c444c", cell.AsText());
+            Assert.AreEqual("47c3c444c", cell.ToString());
+            Assert.AreEqual("01550000000000C044C4C347", cell.AsHexWKB(0));
+            Assert.AreEqual(cell, S2Cell.FromHexWKB("01550000000000C044C4C347"));
+            Assert.AreEqual(cell, S2Cell.FromWKB(cell.AsWKB(0)!));
+        }
+
+        [TestMethod]
+        public void AnH3CellRoundTripsThroughItsTextAndWkb()
+        {
+            H3Index cell = H3Index.FromText("8a2a1072b59ffff");
+
+            Assert.AreEqual("8a2a1072b59ffff", cell.AsText());
+            Assert.AreEqual("8a2a1072b59ffff", cell.ToString());
+            Assert.AreEqual(cell, H3Index.FromHexWKB(cell.AsHexWKB(0)));
+            Assert.AreEqual(cell, H3Index.FromWKB(cell.AsWKB(0)!));
+        }
+
+        [TestMethod]
+        public void ATemporalCellAnswersItsValueAsTheCellClass()
+        {
+            TH3Index temp = (TH3Index)TH3Index.FromText("8a2a1072b59ffff@2024-12-06")!;
+
+            Assert.AreEqual(H3Index.FromText("8a2a1072b59ffff"), temp.StartValue());
+            Assert.AreEqual("8a2a1072b59ffff", temp.StartValue().ToString());
+        }
+
+        [TestMethod]
         public void AJsonbSetAndATemporalPoseChainHaveTheirClasses()
         {
             Set set = JsonbSet.FromText("{\"{\\\"a\\\": 1}\"}")!;

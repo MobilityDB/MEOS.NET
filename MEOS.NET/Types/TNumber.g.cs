@@ -38,6 +38,9 @@ namespace MEOS.NET.Types
         public bool After(TNumber temp2)
             => Meos.AfterTnumberTnumber(this.Ptr, temp2.Ptr);
 
+        public int AlwaysOverlaps(TBox box)
+            => Meos.AlwaysOverlapsTnumberTbox(this.Ptr, box.Ptr);
+
         public Temporal? AngularDifference()
             => MEOSFactory.WrapTemporal(Meos.TnumberAngularDifference(this.Ptr));
 
@@ -88,6 +91,9 @@ namespace MEOS.NET.Types
 
         public Temporal? Div(TNumber tnumber2)
             => MEOSFactory.WrapTemporal(Meos.DivTnumberTnumber(this.Ptr, tnumber2.Ptr));
+
+        public int EverOverlaps(TBox box)
+            => Meos.EverOverlapsTnumberTbox(this.Ptr, box.Ptr);
 
         public double Integral()
             => Meos.TnumberIntegral(this.Ptr);

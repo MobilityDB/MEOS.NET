@@ -102,35 +102,11 @@ namespace MEOS.NET.Functions
         public static IntPtr TrgeometryToTgeography(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TrgeometryToTgeography(temp));
 
-        public static IntPtr TrgeometryEndInstant(IntPtr temp)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryEndInstant(temp));
-
-        public static IntPtr TrgeometryEndSequence(IntPtr temp)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryEndSequence(temp));
-
         public static IntPtr TrgeometryEndValue(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TrgeometryEndValue(temp));
 
         public static IntPtr TrgeometryGeom(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TrgeometryGeom(temp));
-
-        public static IntPtr TrgeometryInstantN(IntPtr temp, int n)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryInstantN(temp, n));
-
-        public static IntPtr[] TrgeometryInstants(IntPtr temp)
-        {
-            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
-            try
-            {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TrgeometryInstants(temp, _cnt));
-                int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
-                for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
-                return _out;
-            }
-            finally { Marshal.FreeHGlobal(_cnt); }
-        }
 
         public static IntPtr TrgeometryPoints(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TrgeometryPoints(temp));
@@ -143,45 +119,6 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TrgeometryRoll(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TrgeometryRoll(temp));
-
-        public static IntPtr[] TrgeometrySegments(IntPtr temp)
-        {
-            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
-            try
-            {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TrgeometrySegments(temp, _cnt));
-                int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
-                for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
-                return _out;
-            }
-            finally { Marshal.FreeHGlobal(_cnt); }
-        }
-
-        public static IntPtr TrgeometrySequenceN(IntPtr temp, int i)
-            => SafeExecution<IntPtr>(() => Native.TrgeometrySequenceN(temp, i));
-
-        public static IntPtr[] TrgeometrySequences(IntPtr temp)
-        {
-            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
-            try
-            {
-                IntPtr _p = SafeExecution<IntPtr>(() => Native.TrgeometrySequences(temp, _cnt));
-                int _n = Marshal.ReadInt32(_cnt);
-                IntPtr[] _out = new IntPtr[_n];
-                for (int _i = 0; _i < _n; _i++)
-                { _out[_i] = Marshal.ReadIntPtr(_p, _i * IntPtr.Size); }
-                return _out;
-            }
-            finally { Marshal.FreeHGlobal(_cnt); }
-        }
-
-        public static IntPtr TrgeometryStartInstant(IntPtr temp)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryStartInstant(temp));
-
-        public static IntPtr TrgeometryStartSequence(IntPtr temp)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryStartSequence(temp));
 
         public static IntPtr TrgeometryStartValue(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TrgeometryStartValue(temp));
@@ -351,35 +288,8 @@ namespace MEOS.NET.Functions
         public static IntPtr TrgeometryTwcentroid(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TrgeometryTwcentroid(temp));
 
-        public static IntPtr TrgeometryAppendTinstant(IntPtr temp, IntPtr inst, int interp, double maxdist, IntPtr maxt, bool expand)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryAppendTinstant(temp, inst, interp, maxdist, maxt, expand));
-
-        public static IntPtr TrgeometryAppendTsequence(IntPtr temp, IntPtr seq, bool expand)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryAppendTsequence(temp, seq, expand));
-
-        public static IntPtr TrgeometryDeleteTimestamptz(IntPtr temp, long t, bool connect)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryDeleteTimestamptz(temp, t, connect));
-
-        public static IntPtr TrgeometryDeleteTstzset(IntPtr temp, IntPtr s, bool connect)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryDeleteTstzset(temp, s, connect));
-
-        public static IntPtr TrgeometryDeleteTstzspan(IntPtr temp, IntPtr s, bool connect)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryDeleteTstzspan(temp, s, connect));
-
-        public static IntPtr TrgeometryDeleteTstzspanset(IntPtr temp, IntPtr ss, bool connect)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryDeleteTstzspanset(temp, ss, connect));
-
         public static IntPtr TrgeometryForce2d(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TrgeometryForce2d(temp));
-
-        public static IntPtr TrgeometryMerge(IntPtr temp1, IntPtr temp2)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryMerge(temp1, temp2));
-
-        public static IntPtr TrgeometryMergeArray(IntPtr temparr, int count)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryMergeArray(temparr, count));
-
-        public static IntPtr TrgeometryRound(IntPtr temp, int maxdd)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryRound(temp, maxdd));
 
         public static IntPtr TrgeometryRotate(IntPtr temp, double angle, double x0, double y0)
             => SafeExecution<IntPtr>(() => Native.TrgeometryRotate(temp, angle, x0, y0));
@@ -393,9 +303,6 @@ namespace MEOS.NET.Functions
         public static IntPtr TrgeometryRotateZ(IntPtr temp, double angle)
             => SafeExecution<IntPtr>(() => Native.TrgeometryRotateZ(temp, angle));
 
-        public static IntPtr TrgeometrySetInterp(IntPtr temp, int interp)
-            => SafeExecution<IntPtr>(() => Native.TrgeometrySetInterp(temp, interp));
-
         public static IntPtr TrgeometryTranslate(IntPtr temp, double deltax, double deltay, double deltaz)
             => SafeExecution<IntPtr>(() => Native.TrgeometryTranslate(temp, deltax, deltay, deltaz));
 
@@ -407,27 +314,6 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TrgeometryAsTsequenceset(IntPtr temp, int interp)
             => SafeExecution<IntPtr>(() => Native.TrgeometryAsTsequenceset(temp, interp));
-
-        public static IntPtr TrgeometryAfterTimestamptz(IntPtr temp, long t, bool strict)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryAfterTimestamptz(temp, t, strict));
-
-        public static IntPtr TrgeometryBeforeTimestamptz(IntPtr temp, long t, bool strict)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryBeforeTimestamptz(temp, t, strict));
-
-        public static IntPtr TrgeometryRestrictValues(IntPtr temp, IntPtr s, bool atfunc)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryRestrictValues(temp, s, atfunc));
-
-        public static IntPtr TrgeometryRestrictTimestamptz(IntPtr temp, long t, bool atfunc)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryRestrictTimestamptz(temp, t, atfunc));
-
-        public static IntPtr TrgeometryRestrictTstzset(IntPtr temp, IntPtr s, bool atfunc)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryRestrictTstzset(temp, s, atfunc));
-
-        public static IntPtr TrgeometryRestrictTstzspan(IntPtr temp, IntPtr s, bool atfunc)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryRestrictTstzspan(temp, s, atfunc));
-
-        public static IntPtr TrgeometryRestrictTstzspanset(IntPtr temp, IntPtr ss, bool atfunc)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryRestrictTstzspanset(temp, ss, atfunc));
 
         public static IntPtr TrgeometryAtGeom(IntPtr temp, IntPtr gs)
             => SafeExecution<IntPtr>(() => Native.TrgeometryAtGeom(temp, gs));
@@ -446,36 +332,6 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TrgeometryMinusValue(IntPtr temp, IntPtr pose)
             => SafeExecution<IntPtr>(() => Native.TrgeometryMinusValue(temp, pose));
-
-        public static IntPtr TrgeometryAtValues(IntPtr temp, IntPtr s)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryAtValues(temp, s));
-
-        public static IntPtr TrgeometryMinusValues(IntPtr temp, IntPtr s)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryMinusValues(temp, s));
-
-        public static IntPtr TrgeometryAtTimestamptz(IntPtr temp, long t)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryAtTimestamptz(temp, t));
-
-        public static IntPtr TrgeometryMinusTimestamptz(IntPtr temp, long t)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryMinusTimestamptz(temp, t));
-
-        public static IntPtr TrgeometryAtTstzset(IntPtr temp, IntPtr s)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryAtTstzset(temp, s));
-
-        public static IntPtr TrgeometryMinusTstzset(IntPtr temp, IntPtr s)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryMinusTstzset(temp, s));
-
-        public static IntPtr TrgeometryAtTstzspan(IntPtr temp, IntPtr s)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryAtTstzspan(temp, s));
-
-        public static IntPtr TrgeometryMinusTstzspan(IntPtr temp, IntPtr s)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryMinusTstzspan(temp, s));
-
-        public static IntPtr TrgeometryAtTstzspanset(IntPtr temp, IntPtr ss)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryAtTstzspanset(temp, ss));
-
-        public static IntPtr TrgeometryMinusTstzspanset(IntPtr temp, IntPtr ss)
-            => SafeExecution<IntPtr>(() => Native.TrgeometryMinusTstzspanset(temp, ss));
 
         public static IntPtr TdistanceTrgeometryGeo(IntPtr temp, IntPtr gs)
             => SafeExecution<IntPtr>(() => Native.TdistanceTrgeometryGeo(temp, gs));
@@ -564,6 +420,12 @@ namespace MEOS.NET.Functions
         public static int AlwaysNeTrgeometryTrgeometry(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.AlwaysNeTrgeometryTrgeometry(temp1, temp2));
 
+        public static int AlwaysOverlapsStboxTrgeometry(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsStboxTrgeometry(box, temp));
+
+        public static int AlwaysOverlapsTrgeometryStbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTrgeometryStbox(temp, box));
+
         public static int EverEqGeoTrgeometry(IntPtr gs, IntPtr temp)
             => SafeExecution<int>(() => Native.EverEqGeoTrgeometry(gs, temp));
 
@@ -581,6 +443,12 @@ namespace MEOS.NET.Functions
 
         public static int EverNeTrgeometryTrgeometry(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.EverNeTrgeometryTrgeometry(temp1, temp2));
+
+        public static int EverOverlapsStboxTrgeometry(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.EverOverlapsStboxTrgeometry(box, temp));
+
+        public static int EverOverlapsTrgeometryStbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.EverOverlapsTrgeometryStbox(temp, box));
 
         public static IntPtr TeqGeoTrgeometry(IntPtr gs, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TeqGeoTrgeometry(gs, temp));

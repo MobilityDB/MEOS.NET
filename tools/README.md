@@ -74,6 +74,16 @@ struct starts with the Temporal header, so a `TInstant *` or `TSequence *`
 return is a `Temporal` at the surface whose runtime class is the concrete
 one.
 
+A class the model marks `byValue` — a grid cell, `H3Index`, `Quadbin`,
+`S2Cell` — is a value MEOS passes by value rather than through a pointer,
+so it is a `readonly record struct` holding the scalar of its `cType`
+(`S2CellId` is a `uint64_t`, a `ulong`), equal where the scalars are equal,
+with explicit conversions from and to that scalar. Its methods receive the
+value it holds, and every parameter, return, out-parameter and array the
+catalog types with that `cType` is the struct: `TH3Index.StartValue()`
+answers an `H3Index`, `Geo.ToQuadbinCell` a `Quadbin`. It reads and writes
+its formats under the portable names, and its `ToString` is its text.
+
 The operators the model assigns a class (`classes.<C>.operators`) are
 built the same way, one overload of the method their `ooName` names:
 `ever_eq_tfloat_float` is `TFloat.EverEq(double)` beside the inherited

@@ -14,8 +14,8 @@ namespace MEOS.NET.Types
     {
         internal TS2CellSeqSet(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? FromBaseTstzspanset(ulong value, SpanSet ss)
-            => MEOSFactory.WrapTemporal(Meos.Ts2cellseqsetFromBaseTstzspanset(value, ss.Ptr));
+        public static Temporal? FromBaseTstzspanset(S2Cell value, SpanSet ss)
+            => MEOSFactory.WrapTemporal(Meos.Ts2cellseqsetFromBaseTstzspanset(value.value, ss.Ptr));
 
         public static Temporal? Make(Temporal[] sequences)
         {

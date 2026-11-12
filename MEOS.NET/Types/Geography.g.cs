@@ -192,9 +192,6 @@ namespace MEOS.NET.Types
         public static Geo? FromMFJSON(string geojson)
             => Geo.FromGeoJSON(geojson);
 
-        public static Geo? FromS2cellCell(ulong cell)
-            => MEOSFactory.WrapGeo(Meos.S2cellCellToGeog(cell));
-
         public static Geo? In(string str, int typmod)
             => MEOSFactory.WrapGeo(Meos.GeogIn(str, typmod));
 

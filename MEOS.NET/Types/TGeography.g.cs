@@ -54,6 +54,9 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TGeography temp2)
             => Meos.AlwaysNeTgeoTgeo(this.Ptr, temp2.Ptr);
 
+        public int AlwaysOverlaps(TGeography temp2)
+            => Meos.AlwaysOverlapsTgeoTgeo(this.Ptr, temp2.Ptr);
+
         public bool Before(TGeography temp2)
             => Meos.BeforeTspatialTspatial(this.Ptr, temp2.Ptr);
 
@@ -92,6 +95,9 @@ namespace MEOS.NET.Types
 
         public int EverNe(TGeography temp2)
             => Meos.EverNeTgeoTgeo(this.Ptr, temp2.Ptr);
+
+        public int EverOverlaps(TGeography temp2)
+            => Meos.EverOverlapsTgeoTgeo(this.Ptr, temp2.Ptr);
 
         public double Nad(Geography gs, bool spheroid)
             => Meos.NadTgeoGeo(this.Ptr, gs.Ptr, spheroid);
