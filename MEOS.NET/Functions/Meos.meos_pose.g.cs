@@ -700,6 +700,15 @@ namespace MEOS.NET.Functions
         public static int AlwaysNeTposeTpose(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.AlwaysNeTposeTpose(temp1, temp2));
 
+        public static int AlwaysOverlapsStboxTpose(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsStboxTpose(box, temp));
+
+        public static int AlwaysOverlapsTposeStbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTposeStbox(temp, box));
+
+        public static int AlwaysOverlapsTposeTpose(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTposeTpose(temp1, temp2));
+
         public static int EverEqPoseTpose(IntPtr pose, IntPtr temp)
             => SafeExecution<int>(() => Native.EverEqPoseTpose(pose, temp));
 
@@ -717,6 +726,15 @@ namespace MEOS.NET.Functions
 
         public static int EverNeTposeTpose(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.EverNeTposeTpose(temp1, temp2));
+
+        public static int EverOverlapsStboxTpose(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.EverOverlapsStboxTpose(box, temp));
+
+        public static int EverOverlapsTposeStbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.EverOverlapsTposeStbox(temp, box));
+
+        public static int EverOverlapsTposeTpose(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<int>(() => Native.EverOverlapsTposeTpose(temp1, temp2));
 
         public static IntPtr TeqPoseTpose(IntPtr pose, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TeqPoseTpose(pose, temp));

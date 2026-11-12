@@ -24,8 +24,8 @@ namespace MEOS.NET.Types
         public bool Contained(S2CellSet s2)
             => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
 
-        public bool Contains(ulong cell)
-            => Meos.ContainsSetS2cell(this.Ptr, cell);
+        public bool Contains(S2Cell cell)
+            => Meos.ContainsSetS2cell(this.Ptr, cell.value);
 
         public bool Contains(S2CellSet s2)
             => Meos.ContainsSetSet(this.Ptr, s2.Ptr);
@@ -33,20 +33,20 @@ namespace MEOS.NET.Types
         public Set? CoverCells(int resolution)
             => MEOSFactory.WrapSet(Meos.S2cellsetCoverCells(this.Ptr, resolution));
 
-        public ulong EndValue()
-            => Meos.S2cellsetEndValue(this.Ptr);
+        public S2Cell EndValue()
+            => new S2Cell(Meos.S2cellsetEndValue(this.Ptr));
 
         public int EverEq(TS2Cell temp)
             => Meos.EverEqS2cellsetTs2cell(this.Ptr, temp.Ptr);
 
-        public Set? Intersection(ulong cell)
-            => MEOSFactory.WrapSet(Meos.IntersectionSetS2cell(this.Ptr, cell));
+        public Set? Intersection(S2Cell cell)
+            => MEOSFactory.WrapSet(Meos.IntersectionSetS2cell(this.Ptr, cell.value));
 
         public Set? Intersection(S2CellSet s2)
             => MEOSFactory.WrapSet(Meos.IntersectionSetSet(this.Ptr, s2.Ptr));
 
-        public Set? Minus(ulong cell)
-            => MEOSFactory.WrapSet(Meos.MinusSetS2cell(this.Ptr, cell));
+        public Set? Minus(S2Cell cell)
+            => MEOSFactory.WrapSet(Meos.MinusSetS2cell(this.Ptr, cell.value));
 
         public Set? Minus(S2CellSet s2)
             => MEOSFactory.WrapSet(Meos.MinusSetSet(this.Ptr, s2.Ptr));
@@ -54,31 +54,31 @@ namespace MEOS.NET.Types
         public bool Overlaps(S2CellSet s2)
             => Meos.OverlapsSetSet(this.Ptr, s2.Ptr);
 
-        public bool Rcontained(ulong cell)
-            => Meos.ContainedS2cellSet(cell, this.Ptr);
+        public bool Rcontained(S2Cell cell)
+            => Meos.ContainedS2cellSet(cell.value, this.Ptr);
 
-        public Set? Rintersection(ulong cell)
-            => MEOSFactory.WrapSet(Meos.IntersectionS2cellSet(cell, this.Ptr));
+        public Set? Rintersection(S2Cell cell)
+            => MEOSFactory.WrapSet(Meos.IntersectionS2cellSet(cell.value, this.Ptr));
 
-        public Set? Rminus(ulong cell)
-            => MEOSFactory.WrapSet(Meos.MinusS2cellSet(cell, this.Ptr));
+        public Set? Rminus(S2Cell cell)
+            => MEOSFactory.WrapSet(Meos.MinusS2cellSet(cell.value, this.Ptr));
 
-        public Set? Runion(ulong cell)
-            => MEOSFactory.WrapSet(Meos.UnionS2cellSet(cell, this.Ptr));
+        public Set? Runion(S2Cell cell)
+            => MEOSFactory.WrapSet(Meos.UnionS2cellSet(cell.value, this.Ptr));
 
-        public ulong StartValue()
-            => Meos.S2cellsetStartValue(this.Ptr);
+        public S2Cell StartValue()
+            => new S2Cell(Meos.S2cellsetStartValue(this.Ptr));
 
         public Set? UncompactCells(int resolution)
             => MEOSFactory.WrapSet(Meos.S2cellsetUncompactCells(this.Ptr, resolution));
 
-        public Set? Union(ulong cell)
-            => MEOSFactory.WrapSet(Meos.UnionSetS2cell(this.Ptr, cell));
+        public Set? Union(S2Cell cell)
+            => MEOSFactory.WrapSet(Meos.UnionSetS2cell(this.Ptr, cell.value));
 
         public Set? Union(S2CellSet s2)
             => MEOSFactory.WrapSet(Meos.UnionSetSet(this.Ptr, s2.Ptr));
 
-        public ulong? ValueN(int n)
+        public S2Cell? ValueN(int n)
         {
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
@@ -88,7 +88,7 @@ namespace MEOS.NET.Types
                     return null;
                 }
 
-                return Marshal.PtrToStructure<ulong>(_result);
+                return new S2Cell(Marshal.PtrToStructure<ulong>(_result));
             }
             finally
             {
@@ -96,8 +96,8 @@ namespace MEOS.NET.Types
             }
         }
 
-        public ulong[] Values()
-            => Meos.S2cellsetValues(this.Ptr);
+        public S2Cell[] Values()
+            => Array.ConvertAll(Meos.S2cellsetValues(this.Ptr), v => new S2Cell(v));
 
         public static Set? FromEWKB(byte[] wkb)
             => Set.FromWKB(wkb);
@@ -108,16 +108,13 @@ namespace MEOS.NET.Types
         public static Set? FromHexEWKB(string hexwkb)
             => Set.FromHexWKB(hexwkb);
 
-        public static Set? FromS2cell(ulong cell)
-            => MEOSFactory.WrapSet(Meos.S2cellToSet(cell));
-
         public static Set? FromText(string str)
             => S2CellSet.In(str);
 
         public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.S2cellsetIn(str));
 
-        public static Set? Make(ulong[] values)
+        public static Set? Make(S2Cell[] values)
         {
             GCHandle _values = GCHandle.Alloc(values, GCHandleType.Pinned);
             try

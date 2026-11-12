@@ -69,6 +69,9 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TGeometry temp2)
             => Meos.AlwaysNeTgeoTgeo(this.Ptr, temp2.Ptr);
 
+        public int AlwaysOverlaps(TGeometry temp2)
+            => Meos.AlwaysOverlapsTgeoTgeo(this.Ptr, temp2.Ptr);
+
         public int Atouches(Geometry gs)
             => Meos.AtouchesTgeoGeo(this.Ptr, gs.Ptr);
 
@@ -137,6 +140,9 @@ namespace MEOS.NET.Types
 
         public int EverNe(TGeometry temp2)
             => Meos.EverNeTgeoTgeo(this.Ptr, temp2.Ptr);
+
+        public int EverOverlaps(TGeometry temp2)
+            => Meos.EverOverlapsTgeoTgeo(this.Ptr, temp2.Ptr);
 
         public bool Front(TGeometry temp2)
             => Meos.FrontTspatialTspatial(this.Ptr, temp2.Ptr);

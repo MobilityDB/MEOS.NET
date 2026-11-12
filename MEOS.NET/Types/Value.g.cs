@@ -8,7 +8,7 @@ using MEOS.NET.Structures;
 
 namespace MEOS.NET.Types
 {
-    /// <summary>Base values MEOS passes by reference.</summary>
+    /// <summary>Base values a binding holds as instances: those MEOS passes by reference, and the grid cells, which it passes by value.</summary>
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
     public class Value : MEOSObject
     {

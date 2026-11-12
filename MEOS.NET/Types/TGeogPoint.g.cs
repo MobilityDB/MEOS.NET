@@ -54,6 +54,9 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TGeogPoint temp2)
             => Meos.AlwaysNeTgeoTgeo(this.Ptr, temp2.Ptr);
 
+        public int AlwaysOverlaps(TGeogPoint temp2)
+            => Meos.AlwaysOverlapsTgeoTgeo(this.Ptr, temp2.Ptr);
+
         public Temporal? Bearing(Geography gs)
             => MEOSFactory.WrapTemporal(Meos.BearingTpointPoint(this.Ptr, gs.Ptr));
 
@@ -96,14 +99,17 @@ namespace MEOS.NET.Types
         public int EverNe(TGeogPoint temp2)
             => Meos.EverNeTgeoTgeo(this.Ptr, temp2.Ptr);
 
+        public int EverOverlaps(TGeogPoint temp2)
+            => Meos.EverOverlapsTgeoTgeo(this.Ptr, temp2.Ptr);
+
         public Temporal? GreatCircleDistance(Temporal b)
             => MEOSFactory.WrapTemporal(Meos.TgeogpointGreatCircleDistance(this.Ptr, b.Ptr));
 
-        public (Temporal?[], ulong[]) H3indexSplit(int resolution, bool border_inc)
+        public (Temporal?[], H3Index[]) H3indexSplit(int resolution, bool border_inc)
         {
             var _answered = Meos.TgeogpointH3indexSplit(this.Ptr, resolution, border_inc);
 
-            return (MEOSFactory.WrapTemporalArray(_answered.Item1), _answered.Item2);
+            return (MEOSFactory.WrapTemporalArray(_answered.Item1), Array.ConvertAll(_answered.Item2, v => new H3Index(v)));
         }
 
         public double Nad(Geography gs, bool spheroid)
@@ -127,18 +133,18 @@ namespace MEOS.NET.Types
         public bool Overlaps(TGeogPoint temp2)
             => Meos.OverlapsTspatialTspatial(this.Ptr, temp2.Ptr);
 
-        public (Temporal?[], ulong[]) QuadbinSplit(int resolution, bool border_inc)
+        public (Temporal?[], Quadbin[]) QuadbinSplit(int resolution, bool border_inc)
         {
             var _answered = Meos.TgeogpointQuadbinSplit(this.Ptr, resolution, border_inc);
 
-            return (MEOSFactory.WrapTemporalArray(_answered.Item1), _answered.Item2);
+            return (MEOSFactory.WrapTemporalArray(_answered.Item1), Array.ConvertAll(_answered.Item2, v => new Quadbin(v)));
         }
 
-        public (Temporal?[], ulong[]) S2cellSplit(int level, bool border_inc)
+        public (Temporal?[], S2Cell[]) S2cellSplit(int level, bool border_inc)
         {
             var _answered = Meos.TgeogpointS2cellSplit(this.Ptr, level, border_inc);
 
-            return (MEOSFactory.WrapTemporalArray(_answered.Item1), _answered.Item2);
+            return (MEOSFactory.WrapTemporalArray(_answered.Item1), Array.ConvertAll(_answered.Item2, v => new S2Cell(v)));
         }
 
         public bool Same(TGeogPoint temp2)

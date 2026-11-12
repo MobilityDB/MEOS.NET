@@ -14,8 +14,8 @@ namespace MEOS.NET.Types
     {
         internal TQuadbinSeqSet(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? FromBaseTstzspanset(ulong value, SpanSet ss)
-            => MEOSFactory.WrapTemporal(Meos.TquadbinseqsetFromBaseTstzspanset(value, ss.Ptr));
+        public static Temporal? FromBaseTstzspanset(Quadbin value, SpanSet ss)
+            => MEOSFactory.WrapTemporal(Meos.TquadbinseqsetFromBaseTstzspanset(value.value, ss.Ptr));
 
         public static Temporal? Make(Temporal[] sequences)
         {

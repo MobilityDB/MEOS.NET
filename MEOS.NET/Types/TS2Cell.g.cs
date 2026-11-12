@@ -27,20 +27,20 @@ namespace MEOS.NET.Types
         public bool After(TS2Cell temp2)
             => Meos.AfterTspatialTspatial(this.Ptr, temp2.Ptr);
 
-        public int AlwaysEq(ulong cell)
-            => Meos.AlwaysEqTs2cellS2cell(this.Ptr, cell);
+        public int AlwaysEq(S2Cell cell)
+            => Meos.AlwaysEqTs2cellS2cell(this.Ptr, cell.value);
 
         public int AlwaysEq(TS2Cell temp2)
             => Meos.AlwaysEqTs2cellTs2cell(this.Ptr, temp2.Ptr);
 
-        public int AlwaysNe(ulong cell)
-            => Meos.AlwaysNeTs2cellS2cell(this.Ptr, cell);
+        public int AlwaysNe(S2Cell cell)
+            => Meos.AlwaysNeTs2cellS2cell(this.Ptr, cell.value);
 
         public int AlwaysNe(TS2Cell temp2)
             => Meos.AlwaysNeTs2cellTs2cell(this.Ptr, temp2.Ptr);
 
-        public Temporal? AtValue(ulong cell)
-            => MEOSFactory.WrapTemporal(Meos.Ts2cellAtValue(this.Ptr, cell));
+        public Temporal? AtValue(S2Cell cell)
+            => MEOSFactory.WrapTemporal(Meos.Ts2cellAtValue(this.Ptr, cell.value));
 
         public bool Before(TS2Cell temp2)
             => Meos.BeforeTspatialTspatial(this.Ptr, temp2.Ptr);
@@ -57,20 +57,20 @@ namespace MEOS.NET.Types
         public bool Contains(TS2Cell temp2)
             => Meos.ContainsTspatialTspatial(this.Ptr, temp2.Ptr);
 
-        public ulong EndValue()
-            => Meos.Ts2cellEndValue(this.Ptr);
+        public S2Cell EndValue()
+            => new S2Cell(Meos.Ts2cellEndValue(this.Ptr));
 
         public int EverEq(S2CellSet cells)
             => Meos.EverEqTs2cellS2cellset(this.Ptr, cells.Ptr);
 
-        public int EverEq(ulong cell)
-            => Meos.EverEqTs2cellS2cell(this.Ptr, cell);
+        public int EverEq(S2Cell cell)
+            => Meos.EverEqTs2cellS2cell(this.Ptr, cell.value);
 
         public int EverEq(TS2Cell temp2)
             => Meos.EverEqTs2cellTs2cell(this.Ptr, temp2.Ptr);
 
-        public int EverNe(ulong cell)
-            => Meos.EverNeTs2cellS2cell(this.Ptr, cell);
+        public int EverNe(S2Cell cell)
+            => Meos.EverNeTs2cellS2cell(this.Ptr, cell.value);
 
         public int EverNe(TS2Cell temp2)
             => Meos.EverNeTs2cellTs2cell(this.Ptr, temp2.Ptr);
@@ -81,8 +81,8 @@ namespace MEOS.NET.Types
         public bool Left(TS2Cell temp2)
             => Meos.LeftTspatialTspatial(this.Ptr, temp2.Ptr);
 
-        public Temporal? MinusValue(ulong cell)
-            => MEOSFactory.WrapTemporal(Meos.Ts2cellMinusValue(this.Ptr, cell));
+        public Temporal? MinusValue(S2Cell cell)
+            => MEOSFactory.WrapTemporal(Meos.Ts2cellMinusValue(this.Ptr, cell.value));
 
         public bool Overabove(TS2Cell temp2)
             => Meos.OveraboveTspatialTspatial(this.Ptr, temp2.Ptr);
@@ -105,41 +105,41 @@ namespace MEOS.NET.Types
         public bool Overright(TS2Cell temp2)
             => Meos.OverrightTspatialTspatial(this.Ptr, temp2.Ptr);
 
-        public int RalwaysEq(ulong cell)
-            => Meos.AlwaysEqS2cellTs2cell(cell, this.Ptr);
+        public int RalwaysEq(S2Cell cell)
+            => Meos.AlwaysEqS2cellTs2cell(cell.value, this.Ptr);
 
-        public int RalwaysNe(ulong cell)
-            => Meos.AlwaysNeS2cellTs2cell(cell, this.Ptr);
+        public int RalwaysNe(S2Cell cell)
+            => Meos.AlwaysNeS2cellTs2cell(cell.value, this.Ptr);
 
-        public int ReverEq(ulong cell)
-            => Meos.EverEqS2cellTs2cell(cell, this.Ptr);
+        public int ReverEq(S2Cell cell)
+            => Meos.EverEqS2cellTs2cell(cell.value, this.Ptr);
 
-        public int ReverNe(ulong cell)
-            => Meos.EverNeS2cellTs2cell(cell, this.Ptr);
+        public int ReverNe(S2Cell cell)
+            => Meos.EverNeS2cellTs2cell(cell.value, this.Ptr);
 
         public bool Right(TS2Cell temp2)
             => Meos.RightTspatialTspatial(this.Ptr, temp2.Ptr);
 
-        public Temporal? Rteq(ulong cell)
-            => MEOSFactory.WrapTemporal(Meos.TeqS2cellTs2cell(cell, this.Ptr));
+        public Temporal? Rteq(S2Cell cell)
+            => MEOSFactory.WrapTemporal(Meos.TeqS2cellTs2cell(cell.value, this.Ptr));
 
-        public Temporal? Rtne(ulong cell)
-            => MEOSFactory.WrapTemporal(Meos.TneS2cellTs2cell(cell, this.Ptr));
+        public Temporal? Rtne(S2Cell cell)
+            => MEOSFactory.WrapTemporal(Meos.TneS2cellTs2cell(cell.value, this.Ptr));
 
         public bool Same(TS2Cell temp2)
             => Meos.SameTspatialTspatial(this.Ptr, temp2.Ptr);
 
-        public ulong StartValue()
-            => Meos.Ts2cellStartValue(this.Ptr);
+        public S2Cell StartValue()
+            => new S2Cell(Meos.Ts2cellStartValue(this.Ptr));
 
-        public Temporal? Teq(ulong cell)
-            => MEOSFactory.WrapTemporal(Meos.TeqTs2cellS2cell(this.Ptr, cell));
+        public Temporal? Teq(S2Cell cell)
+            => MEOSFactory.WrapTemporal(Meos.TeqTs2cellS2cell(this.Ptr, cell.value));
 
         public Temporal? Teq(TS2Cell temp2)
             => MEOSFactory.WrapTemporal(Meos.TeqTs2cellTs2cell(this.Ptr, temp2.Ptr));
 
-        public Temporal? Tne(ulong cell)
-            => MEOSFactory.WrapTemporal(Meos.TneTs2cellS2cell(this.Ptr, cell));
+        public Temporal? Tne(S2Cell cell)
+            => MEOSFactory.WrapTemporal(Meos.TneTs2cellS2cell(this.Ptr, cell.value));
 
         public Temporal? Tne(TS2Cell temp2)
             => MEOSFactory.WrapTemporal(Meos.TneTs2cellTs2cell(this.Ptr, temp2.Ptr));
@@ -150,17 +150,17 @@ namespace MEOS.NET.Types
         public Temporal? ToTgeompoint()
             => MEOSFactory.WrapTemporal(Meos.Ts2cellToTgeompoint(this.Ptr));
 
-        public (SpanSet?[], ulong[]) Unnest()
+        public (SpanSet?[], S2Cell[]) Unnest()
         {
             var _answered = Meos.Ts2cellUnnest(this.Ptr);
 
-            return (MEOSFactory.WrapSpanSetArray(_answered.Item1), _answered.Item2);
+            return (MEOSFactory.WrapSpanSetArray(_answered.Item1), Array.ConvertAll(_answered.Item2, v => new S2Cell(v)));
         }
 
-        public ulong Value()
-            => Meos.Ts2cellValue(this.Ptr);
+        public S2Cell Value()
+            => new S2Cell(Meos.Ts2cellValue(this.Ptr));
 
-        public ulong? ValueAtTimestamptz(DateTime t, bool strict)
+        public S2Cell? ValueAtTimestamptz(DateTime t, bool strict)
         {
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
@@ -170,7 +170,7 @@ namespace MEOS.NET.Types
                     return null;
                 }
 
-                return Marshal.PtrToStructure<ulong>(_result);
+                return new S2Cell(Marshal.PtrToStructure<ulong>(_result));
             }
             finally
             {
@@ -178,7 +178,7 @@ namespace MEOS.NET.Types
             }
         }
 
-        public ulong? ValueN(int n)
+        public S2Cell? ValueN(int n)
         {
             IntPtr _result = Marshal.AllocHGlobal(8);
             try
@@ -188,7 +188,7 @@ namespace MEOS.NET.Types
                     return null;
                 }
 
-                return Marshal.PtrToStructure<ulong>(_result);
+                return new S2Cell(Marshal.PtrToStructure<ulong>(_result));
             }
             finally
             {
@@ -196,11 +196,11 @@ namespace MEOS.NET.Types
             }
         }
 
-        public ulong[] Values()
-            => Meos.Ts2cellValues(this.Ptr);
+        public S2Cell[] Values()
+            => Array.ConvertAll(Meos.Ts2cellValues(this.Ptr), v => new S2Cell(v));
 
-        public static Temporal? FromBaseTemp(ulong value, Temporal temp)
-            => MEOSFactory.WrapTemporal(Meos.Ts2cellFromBaseTemp(value, temp.Ptr));
+        public static Temporal? FromBaseTemp(S2Cell value, Temporal temp)
+            => MEOSFactory.WrapTemporal(Meos.Ts2cellFromBaseTemp(value.value, temp.Ptr));
 
         public static Temporal? FromEWKB(byte[] wkb)
             => Temporal.FromWKB(wkb);

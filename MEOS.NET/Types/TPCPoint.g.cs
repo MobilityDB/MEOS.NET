@@ -30,6 +30,9 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TPCPoint temp2)
             => Meos.AlwaysNeTpcpointTpcpoint(this.Ptr, temp2.Ptr);
 
+        public Temporal? AtTpcbox(TPCBox box, bool border_inc)
+            => MEOSFactory.WrapTemporal(Meos.TpcpointAtTpcbox(this.Ptr, box.Ptr, border_inc));
+
         public Temporal? AtValue(PCPoint pt)
             => MEOSFactory.WrapTemporal(Meos.TpcpointAtValue(this.Ptr, pt.Ptr));
 
@@ -50,6 +53,9 @@ namespace MEOS.NET.Types
 
         public int EverNe(TPCPoint temp2)
             => Meos.EverNeTpcpointTpcpoint(this.Ptr, temp2.Ptr);
+
+        public Temporal? MinusTpcbox(TPCBox box, bool border_inc)
+            => MEOSFactory.WrapTemporal(Meos.TpcpointMinusTpcbox(this.Ptr, box.Ptr, border_inc));
 
         public Temporal? MinusValue(PCPoint pt)
             => MEOSFactory.WrapTemporal(Meos.TpcpointMinusValue(this.Ptr, pt.Ptr));

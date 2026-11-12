@@ -10,14 +10,14 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `78ebe3b7fe401f25dc4c0372ef6b8a294abd579c` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `c5174b8af15d3ef3f38c77ba60cbf5a5d99dd54c` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
 
 ## The flat surface — `tools/codegen.py`
 
-### parameter nullability — 4335
+### parameter nullability — 4336
 
 `shape.nullable` names the parameters a function accepts NULL for, and the catalog carries no field saying a parameter is required. A pointer parameter named in neither reaches the surface with its contract unstated: the wrapper takes it, and nothing says whether zero is an argument or a fault.
 
@@ -319,6 +319,23 @@ and `tools/objectgen.py`.  Do not edit.
 | always_ne_ts2cell_s2cell | temp |
 | always_ne_ts2cell_ts2cell | temp1, temp2 |
 | always_ne_ttext_text | temp, txt |
+| always_overlaps_stbox_tcbuffer | box, temp |
+| always_overlaps_stbox_tgeo | box, temp |
+| always_overlaps_stbox_tnpoint | box, temp |
+| always_overlaps_stbox_tpose | box, temp |
+| always_overlaps_stbox_trgeometry | box, temp |
+| always_overlaps_tbox_tnumber | box, temp |
+| always_overlaps_tcbuffer_stbox | temp, box |
+| always_overlaps_temporal_temporal | temp1, temp2 |
+| always_overlaps_temporal_tstzspan | temp, s |
+| always_overlaps_tgeo_stbox | temp, box |
+| always_overlaps_tgeo_tgeo | temp1, temp2 |
+| always_overlaps_tnpoint_stbox | temp, box |
+| always_overlaps_tnumber_tbox | temp, box |
+| always_overlaps_tpose_stbox | temp, box |
+| always_overlaps_tpose_tpose | temp1, temp2 |
+| always_overlaps_trgeometry_stbox | temp, box |
+| always_overlaps_tstzspan_temporal | s, temp |
 | araster_value | traj, rast, vspan |
 | araster_value_gdal | traj, path, vspan |
 | atouches_cbuffer_tcbuffer | cb, temp |
@@ -927,6 +944,23 @@ and `tools/objectgen.py`.  Do not edit.
 | ever_ne_ts2cell_s2cell | temp |
 | ever_ne_ts2cell_ts2cell | temp1, temp2 |
 | ever_ne_ttext_text | temp, txt |
+| ever_overlaps_stbox_tcbuffer | box, temp |
+| ever_overlaps_stbox_tgeo | box, temp |
+| ever_overlaps_stbox_tnpoint | box, temp |
+| ever_overlaps_stbox_tpose | box, temp |
+| ever_overlaps_stbox_trgeometry | box, temp |
+| ever_overlaps_tbox_tnumber | box, temp |
+| ever_overlaps_tcbuffer_stbox | temp, box |
+| ever_overlaps_temporal_temporal | temp1, temp2 |
+| ever_overlaps_temporal_tstzspan | temp, s |
+| ever_overlaps_tgeo_stbox | temp, box |
+| ever_overlaps_tgeo_tgeo | temp1, temp2 |
+| ever_overlaps_tnpoint_stbox | temp, box |
+| ever_overlaps_tnumber_tbox | temp, box |
+| ever_overlaps_tpose_stbox | temp, box |
+| ever_overlaps_tpose_tpose | temp1, temp2 |
+| ever_overlaps_trgeometry_stbox | temp, box |
+| ever_overlaps_tstzspan_temporal | s, temp |
 | float4_in | num |
 | float8_in | str |
 | float8_out | size_out |
@@ -1603,9 +1637,7 @@ and `tools/objectgen.py`.  Do not edit.
 | nad_tbigint_tbigint | temp1, temp2 |
 | nad_tbigint_tbox | temp, box |
 | nad_tbox_tbox | box1, box2 |
-| nad_tboxbigint_tboxbigint | box1, box2 |
-| nad_tboxfloat_tboxfloat | box1, box2 |
-| nad_tboxint_tboxint | box1, box2 |
+| nad_tbox_tbox_intl | box1, box2 |
 | nad_tcbuffer_cbuffer | temp, cb |
 | nad_tcbuffer_geo | temp, gs |
 | nad_tcbuffer_stbox | temp, box |
@@ -3754,12 +3786,14 @@ and `tools/objectgen.py`.  Do not edit.
 | tpcbox_ymin | box, result |
 | tpcbox_zmax | box, result |
 | tpcbox_zmin | box, result |
+| tpcpatch_at_tpcbox | temp, box |
 | tpcpatch_at_value | temp, pa |
 | tpcpatch_end_npoints | temp |
 | tpcpatch_end_value | temp |
 | tpcpatch_from_base_temp | pa, temp |
 | tpcpatch_from_mfjson | mfjson |
 | tpcpatch_in | str |
+| tpcpatch_minus_tpcbox | temp, box |
 | tpcpatch_minus_value | temp, pa |
 | tpcpatch_npoints | temp |
 | tpcpatch_pcid | temp |
@@ -3780,11 +3814,13 @@ and `tools/objectgen.py`.  Do not edit.
 | tpcpatchseq_in | str |
 | tpcpatchseqset_from_base_tstzspanset | pa, ss |
 | tpcpatchseqset_in | str |
+| tpcpoint_at_tpcbox | temp, box |
 | tpcpoint_at_value | temp, pt |
 | tpcpoint_end_value | temp |
 | tpcpoint_from_base_temp | pt, temp |
 | tpcpoint_from_mfjson | mfjson |
 | tpcpoint_in | str |
+| tpcpoint_minus_tpcbox | temp, box |
 | tpcpoint_minus_value | temp, pt |
 | tpcpoint_pcid | temp |
 | tpcpoint_start_value | temp |
@@ -3948,10 +3984,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tquadbinseqset_from_base_tstzspanset | ss |
 | tquadbinseqset_in | str |
 | tquadbinseqset_make | sequences |
-| trgeometry_after_timestamptz | temp |
 | trgeometry_angular_speed | temp |
-| trgeometry_append_tinstant | temp, inst |
-| trgeometry_append_tsequence | temp, seq |
 | trgeometry_as_ewkt | temp, size_out |
 | trgeometry_as_text | temp, size_out |
 | trgeometry_as_tinstant | temp |
@@ -3959,65 +3992,33 @@ and `tools/objectgen.py`.  Do not edit.
 | trgeometry_as_tsequenceset | temp |
 | trgeometry_at_geom | temp, gs |
 | trgeometry_at_stbox | temp, box |
-| trgeometry_at_timestamptz | temp |
-| trgeometry_at_tstzset | temp, s |
-| trgeometry_at_tstzspan | temp, s |
-| trgeometry_at_tstzspanset | temp, ss |
 | trgeometry_at_value | temp, pose |
-| trgeometry_at_values | temp, s |
-| trgeometry_before_timestamptz | temp |
 | trgeometry_body_point_trajectory | temp, gs |
 | trgeometry_centroid | temp |
 | trgeometry_convex_hull | temp |
 | trgeometry_cumulative_length | temp |
-| trgeometry_delete_timestamptz | temp |
-| trgeometry_delete_tstzset | temp, s |
-| trgeometry_delete_tstzspan | temp, s |
-| trgeometry_delete_tstzspanset | temp, ss |
-| trgeometry_end_instant | temp |
-| trgeometry_end_sequence | temp |
 | trgeometry_end_value | temp |
 | trgeometry_force2d | temp |
 | trgeometry_from_mfjson | mfjson |
 | trgeometry_geom | temp |
 | trgeometry_in | str |
-| trgeometry_instant_n | temp |
-| trgeometry_instants | temp, count |
 | trgeometry_length | temp |
-| trgeometry_merge_array | temparr |
 | trgeometry_minus_geom | temp, gs |
 | trgeometry_minus_stbox | temp, box |
-| trgeometry_minus_timestamptz | temp |
-| trgeometry_minus_tstzset | temp, s |
-| trgeometry_minus_tstzspan | temp, s |
-| trgeometry_minus_tstzspanset | temp, ss |
 | trgeometry_minus_value | temp, pose |
-| trgeometry_minus_values | temp, s |
 | trgeometry_out | temp, size_out |
 | trgeometry_pitch | temp |
 | trgeometry_points | temp |
-| trgeometry_restrict_timestamptz | temp |
-| trgeometry_restrict_tstzset | temp, s |
-| trgeometry_restrict_tstzspan | temp, s |
-| trgeometry_restrict_tstzspanset | temp, ss |
-| trgeometry_restrict_values | temp, s |
 | trgeometry_roll | temp |
 | trgeometry_rotate | temp |
 | trgeometry_rotate_x | temp |
 | trgeometry_rotate_y | temp |
 | trgeometry_rotate_z | temp |
-| trgeometry_round | temp |
-| trgeometry_segments | temp, count |
-| trgeometry_sequence_n | temp |
-| trgeometry_sequences | temp, count |
-| trgeometry_set_interp | temp |
 | trgeometry_space_boxes | temp, sorigin, count |
 | trgeometry_space_time_boxes | temp, duration, sorigin, count |
 | trgeometry_speed | temp |
 | trgeometry_split_each_n_stboxes | temp, count |
 | trgeometry_split_n_stboxes | temp, count |
-| trgeometry_start_instant | temp |
-| trgeometry_start_sequence | temp |
 | trgeometry_start_value | temp |
 | trgeometry_stboxes | temp, count |
 | trgeometry_time_boxes | temp, duration, count |

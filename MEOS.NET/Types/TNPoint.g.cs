@@ -39,6 +39,9 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TNPoint temp2)
             => Meos.AlwaysNeTnpointTnpoint(this.Ptr, temp2.Ptr);
 
+        public int AlwaysOverlaps(STBox box)
+            => Meos.AlwaysOverlapsTnpointStbox(this.Ptr, box.Ptr);
+
         public Temporal? AtGeom(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.TnpointAtGeom(this.Ptr, gs.Ptr));
 
@@ -110,6 +113,9 @@ namespace MEOS.NET.Types
 
         public int EverNe(TNPoint temp2)
             => Meos.EverNeTnpointTnpoint(this.Ptr, temp2.Ptr);
+
+        public int EverOverlaps(STBox box)
+            => Meos.EverOverlapsTnpointStbox(this.Ptr, box.Ptr);
 
         public bool Left(TNPoint temp2)
             => Meos.LeftTspatialTspatial(this.Ptr, temp2.Ptr);

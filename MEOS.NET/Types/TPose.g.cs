@@ -39,6 +39,12 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TPose temp2)
             => Meos.AlwaysNeTposeTpose(this.Ptr, temp2.Ptr);
 
+        public int AlwaysOverlaps(STBox box)
+            => Meos.AlwaysOverlapsTposeStbox(this.Ptr, box.Ptr);
+
+        public int AlwaysOverlaps(TPose temp2)
+            => Meos.AlwaysOverlapsTposeTpose(this.Ptr, temp2.Ptr);
+
         public Temporal? AngularSpeed()
             => MEOSFactory.WrapTemporal(Meos.TposeAngularSpeed(this.Ptr));
 
@@ -122,6 +128,12 @@ namespace MEOS.NET.Types
 
         public int EverNe(TPose temp2)
             => Meos.EverNeTposeTpose(this.Ptr, temp2.Ptr);
+
+        public int EverOverlaps(STBox box)
+            => Meos.EverOverlapsTposeStbox(this.Ptr, box.Ptr);
+
+        public int EverOverlaps(TPose temp2)
+            => Meos.EverOverlapsTposeTpose(this.Ptr, temp2.Ptr);
 
         public Temporal? Force2d()
             => MEOSFactory.WrapTemporal(Meos.TposeForce2d(this.Ptr));

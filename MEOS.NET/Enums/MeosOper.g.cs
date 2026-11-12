@@ -141,5 +141,11 @@ namespace MEOS.NET.Enums
         /// <summary><c>TEMPCONTAINED_OP</c></summary>
         TempcontainedOp = 44,
 
+        /// <summary><c>EVEROVERLAPS_OP</c></summary>
+        EveroverlapsOp = 45,
+
+        /// <summary><c>ALWAYSOVERLAPS_OP</c></summary>
+        AlwaysoverlapsOp = 46,
+
     }
 }

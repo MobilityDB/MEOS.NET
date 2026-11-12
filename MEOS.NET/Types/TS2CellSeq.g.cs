@@ -14,13 +14,13 @@ namespace MEOS.NET.Types
     {
         internal TS2CellSeq(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? FromBaseTstzset(ulong value, Set s)
-            => MEOSFactory.WrapTemporal(Meos.Ts2cellseqFromBaseTstzset(value, s.Ptr));
+        public static Temporal? FromBaseTstzset(S2Cell value, Set s)
+            => MEOSFactory.WrapTemporal(Meos.Ts2cellseqFromBaseTstzset(value.value, s.Ptr));
 
-        public static Temporal? FromBaseTstzspan(ulong value, Span s)
-            => MEOSFactory.WrapTemporal(Meos.Ts2cellseqFromBaseTstzspan(value, s.Ptr));
+        public static Temporal? FromBaseTstzspan(S2Cell value, Span s)
+            => MEOSFactory.WrapTemporal(Meos.Ts2cellseqFromBaseTstzspan(value.value, s.Ptr));
 
-        public static Temporal? Make(ulong[] values, long[] times, bool lower_inc, bool upper_inc)
+        public static Temporal? Make(S2Cell[] values, long[] times, bool lower_inc, bool upper_inc)
         {
             if (values.Length != times.Length)
             {

@@ -499,9 +499,6 @@ namespace MEOS.NET.Types
         public static Geo? FromMFJSON(string geojson)
             => Geo.FromGeoJSON(geojson);
 
-        public static Geo? FromQuadbinCell(ulong cell)
-            => MEOSFactory.WrapGeo(Meos.QuadbinCellToGeom(cell));
-
         public static Geo? In(string str, int typmod)
             => MEOSFactory.WrapGeo(Meos.GeomIn(str, typmod));
 

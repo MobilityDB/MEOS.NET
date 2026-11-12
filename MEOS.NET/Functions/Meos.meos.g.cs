@@ -4343,6 +4343,21 @@ namespace MEOS.NET.Functions
         public static int AlwaysNeTtextText(IntPtr temp, IntPtr txt)
             => SafeExecution<int>(() => Native.AlwaysNeTtextText(temp, txt));
 
+        public static int AlwaysOverlapsTboxTnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTboxTnumber(box, temp));
+
+        public static int AlwaysOverlapsTemporalTemporal(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTemporalTemporal(temp1, temp2));
+
+        public static int AlwaysOverlapsTemporalTstzspan(IntPtr temp, IntPtr s)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTemporalTstzspan(temp, s));
+
+        public static int AlwaysOverlapsTnumberTbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTnumberTbox(temp, box));
+
+        public static int AlwaysOverlapsTstzspanTemporal(IntPtr s, IntPtr temp)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTstzspanTemporal(s, temp));
+
         public static int EverEqBoolTbool(bool b, IntPtr temp)
             => SafeExecution<int>(() => Native.EverEqBoolTbool(b, temp));
 
@@ -4516,6 +4531,21 @@ namespace MEOS.NET.Functions
 
         public static int EverNeTtextText(IntPtr temp, IntPtr txt)
             => SafeExecution<int>(() => Native.EverNeTtextText(temp, txt));
+
+        public static int EverOverlapsTboxTnumber(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.EverOverlapsTboxTnumber(box, temp));
+
+        public static int EverOverlapsTemporalTemporal(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<int>(() => Native.EverOverlapsTemporalTemporal(temp1, temp2));
+
+        public static int EverOverlapsTemporalTstzspan(IntPtr temp, IntPtr s)
+            => SafeExecution<int>(() => Native.EverOverlapsTemporalTstzspan(temp, s));
+
+        public static int EverOverlapsTnumberTbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.EverOverlapsTnumberTbox(temp, box));
+
+        public static int EverOverlapsTstzspanTemporal(IntPtr s, IntPtr temp)
+            => SafeExecution<int>(() => Native.EverOverlapsTstzspanTemporal(s, temp));
 
         public static IntPtr TeqBigintTbigint(long i, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TeqBigintTbigint(i, temp));
@@ -5210,14 +5240,11 @@ namespace MEOS.NET.Functions
         public static long NadBigintspanTbox(IntPtr s, IntPtr box)
             => SafeExecution<long>(() => Native.NadBigintspanTbox(s, box));
 
-        public static double NadTboxfloatTboxfloat(IntPtr box1, IntPtr box2)
-            => SafeExecution<double>(() => Native.NadTboxfloatTboxfloat(box1, box2));
+        public static double NadTboxTbox(IntPtr box1, IntPtr box2)
+            => SafeExecution<double>(() => Native.NadTboxTbox(box1, box2));
 
         public static double NadFloatspanTbox(IntPtr s, IntPtr box)
             => SafeExecution<double>(() => Native.NadFloatspanTbox(s, box));
-
-        public static int NadTboxintTboxint(IntPtr box1, IntPtr box2)
-            => SafeExecution<int>(() => Native.NadTboxintTboxint(box1, box2));
 
         public static int NadIntspanTbox(IntPtr s, IntPtr box)
             => SafeExecution<int>(() => Native.NadIntspanTbox(s, box));
@@ -5245,9 +5272,6 @@ namespace MEOS.NET.Functions
 
         public static long NadTbigintTbigint(IntPtr temp1, IntPtr temp2)
             => SafeExecution<long>(() => Native.NadTbigintTbigint(temp1, temp2));
-
-        public static long NadTboxbigintTboxbigint(IntPtr box1, IntPtr box2)
-            => SafeExecution<long>(() => Native.NadTboxbigintTboxbigint(box1, box2));
 
         public static int NadTintInt(IntPtr temp, int i)
             => SafeExecution<int>(() => Native.NadTintInt(temp, i));

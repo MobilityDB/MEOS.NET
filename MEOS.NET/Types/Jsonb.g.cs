@@ -251,7 +251,7 @@ namespace MEOS.NET.Types
         public int PathExists(JsonPath jp, Jsonb vars, bool silent, bool tz)
             => Meos.JsonbPathExists(this.Ptr, jp.Ptr, vars.Ptr, silent, tz);
 
-        public bool PathMatch(JsonPath jp, Jsonb vars, bool silent, bool tz)
+        public int PathMatch(JsonPath jp, Jsonb vars, bool silent, bool tz)
             => Meos.JsonbPathMatch(this.Ptr, jp.Ptr, vars.Ptr, silent, tz);
 
         public Jsonb?[] PathQueryAll(JsonPath jp, Jsonb vars, bool silent, bool tz)

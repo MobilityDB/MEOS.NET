@@ -14,8 +14,8 @@ namespace MEOS.NET.Types
     {
         internal TH3IndexInst(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? Make(ulong value, DateTime t)
-            => MEOSFactory.WrapTemporal(Meos.Th3indexinstMake(value, MEOSConvert.ToTimestampTz(t)));
+        public static Temporal? Make(H3Index value, DateTime t)
+            => MEOSFactory.WrapTemporal(Meos.Th3indexinstMake(value.value, MEOSConvert.ToTimestampTz(t)));
 
     }
 }

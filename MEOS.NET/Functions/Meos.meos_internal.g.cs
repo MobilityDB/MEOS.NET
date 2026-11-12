@@ -1729,8 +1729,8 @@ namespace MEOS.NET.Functions
         public static IntPtr TdistanceTnumberNumber(IntPtr temp, ulong value)
             => SafeExecution<IntPtr>(() => Native.TdistanceTnumberNumber(temp, value));
 
-        public static ulong NadTboxTbox(IntPtr box1, IntPtr box2)
-            => SafeExecution<ulong>(() => Native.NadTboxTbox(box1, box2));
+        public static ulong NadTboxTboxIntl(IntPtr box1, IntPtr box2)
+            => SafeExecution<ulong>(() => Native.NadTboxTboxIntl(box1, box2));
 
         public static ulong NadTnumberNumber(IntPtr temp, ulong value)
             => SafeExecution<ulong>(() => Native.NadTnumberNumber(temp, value));

@@ -66,6 +66,18 @@ namespace MEOS.NET.Types
         public bool After(TInt temp)
             => Meos.AfterTboxTnumber(this.Ptr, temp.Ptr);
 
+        public int AlwaysOverlaps(TNumber temp)
+            => Meos.AlwaysOverlapsTboxTnumber(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TBigInt temp)
+            => Meos.AlwaysOverlapsTboxTnumber(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TFloat temp)
+            => Meos.AlwaysOverlapsTboxTnumber(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TInt temp)
+            => Meos.AlwaysOverlapsTboxTnumber(this.Ptr, temp.Ptr);
+
         public string AsHexWKB(byte variant)
             => Meos.TboxAsHexwkb(this.Ptr, variant);
 
@@ -180,6 +192,18 @@ namespace MEOS.NET.Types
         public bool Eq(TBox box2)
             => Meos.TboxEq(this.Ptr, box2.Ptr);
 
+        public int EverOverlaps(TNumber temp)
+            => Meos.EverOverlapsTboxTnumber(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TBigInt temp)
+            => Meos.EverOverlapsTboxTnumber(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TFloat temp)
+            => Meos.EverOverlapsTboxTnumber(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TInt temp)
+            => Meos.EverOverlapsTboxTnumber(this.Ptr, temp.Ptr);
+
         public TBox? ExpandBigint(long i)
             => MEOSFactory.WrapTBox(Meos.TbigintboxExpand(this.Ptr, i));
 
@@ -256,6 +280,9 @@ namespace MEOS.NET.Types
 
         public bool Lt(TBox box2)
             => Meos.TboxLt(this.Ptr, box2.Ptr);
+
+        public double Nad(TBox box2)
+            => Meos.NadTboxTbox(this.Ptr, box2.Ptr);
 
         public bool Ne(TBox box2)
             => Meos.TboxNe(this.Ptr, box2.Ptr);

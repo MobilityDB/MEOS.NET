@@ -755,6 +755,12 @@ namespace MEOS.NET.Functions
         public static IntPtr TpcpointMinusValue(IntPtr temp, IntPtr pt)
             => SafeExecution<IntPtr>(() => Native.TpcpointMinusValue(temp, pt));
 
+        public static IntPtr TpcpointAtTpcbox(IntPtr temp, IntPtr box, bool border_inc)
+            => SafeExecution<IntPtr>(() => Native.TpcpointAtTpcbox(temp, box, border_inc));
+
+        public static IntPtr TpcpointMinusTpcbox(IntPtr temp, IntPtr box, bool border_inc)
+            => SafeExecution<IntPtr>(() => Native.TpcpointMinusTpcbox(temp, box, border_inc));
+
         public static uint TpcpointPcid(IntPtr temp)
             => SafeExecution<uint>(() => Native.TpcpointPcid(temp));
 
@@ -832,6 +838,12 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TpcpatchMinusValue(IntPtr temp, IntPtr pa)
             => SafeExecution<IntPtr>(() => Native.TpcpatchMinusValue(temp, pa));
+
+        public static IntPtr TpcpatchAtTpcbox(IntPtr temp, IntPtr box, bool border_inc)
+            => SafeExecution<IntPtr>(() => Native.TpcpatchAtTpcbox(temp, box, border_inc));
+
+        public static IntPtr TpcpatchMinusTpcbox(IntPtr temp, IntPtr box, bool border_inc)
+            => SafeExecution<IntPtr>(() => Native.TpcpatchMinusTpcbox(temp, box, border_inc));
 
         public static uint TpcpatchPcid(IntPtr temp)
             => SafeExecution<uint>(() => Native.TpcpatchPcid(temp));

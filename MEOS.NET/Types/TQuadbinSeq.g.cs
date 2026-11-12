@@ -14,13 +14,13 @@ namespace MEOS.NET.Types
     {
         internal TQuadbinSeq(IntPtr ptr) : base(ptr) { }
 
-        public static Temporal? FromBaseTstzset(ulong value, Set s)
-            => MEOSFactory.WrapTemporal(Meos.TquadbinseqFromBaseTstzset(value, s.Ptr));
+        public static Temporal? FromBaseTstzset(Quadbin value, Set s)
+            => MEOSFactory.WrapTemporal(Meos.TquadbinseqFromBaseTstzset(value.value, s.Ptr));
 
-        public static Temporal? FromBaseTstzspan(ulong value, Span s)
-            => MEOSFactory.WrapTemporal(Meos.TquadbinseqFromBaseTstzspan(value, s.Ptr));
+        public static Temporal? FromBaseTstzspan(Quadbin value, Span s)
+            => MEOSFactory.WrapTemporal(Meos.TquadbinseqFromBaseTstzspan(value.value, s.Ptr));
 
-        public static Temporal? Make(ulong[] values, long[] times, bool lower_inc, bool upper_inc)
+        public static Temporal? Make(Quadbin[] values, long[] times, bool lower_inc, bool upper_inc)
         {
             if (values.Length != times.Length)
             {

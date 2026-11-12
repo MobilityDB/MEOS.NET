@@ -69,6 +69,9 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TBigInt temp2)
             => Meos.AlwaysNeTemporalTemporal(this.Ptr, temp2.Ptr);
 
+        public int AlwaysOverlaps(TBigInt temp2)
+            => Meos.AlwaysOverlapsTemporalTemporal(this.Ptr, temp2.Ptr);
+
         public string AsText(int maxdd)
             => this.Out(maxdd);
 
@@ -134,6 +137,9 @@ namespace MEOS.NET.Types
 
         public int EverNe(TBigInt temp2)
             => Meos.EverNeTemporalTemporal(this.Ptr, temp2.Ptr);
+
+        public int EverOverlaps(TBigInt temp2)
+            => Meos.EverOverlapsTemporalTemporal(this.Ptr, temp2.Ptr);
 
         public bool Left(BigIntSpan s)
             => Meos.LeftTnumberNumspan(this.Ptr, s.Ptr);

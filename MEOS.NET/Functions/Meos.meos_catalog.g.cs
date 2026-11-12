@@ -198,6 +198,9 @@ namespace MEOS.NET.Functions
         public static short MeostypeLength(int type)
             => SafeExecution<short>(() => Native.MeostypeLength(type));
 
+        public static bool WkbHeaderStatesType(int type)
+            => SafeExecution<bool>(() => Native.WkbHeaderStatesType(type));
+
         public static bool TalphanumType(int type)
             => SafeExecution<bool>(() => Native.TalphanumType(type));
 

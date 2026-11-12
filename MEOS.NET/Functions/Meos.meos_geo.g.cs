@@ -1400,6 +1400,15 @@ namespace MEOS.NET.Functions
         public static int AlwaysNeTgeoTgeo(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.AlwaysNeTgeoTgeo(temp1, temp2));
 
+        public static int AlwaysOverlapsStboxTgeo(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsStboxTgeo(box, temp));
+
+        public static int AlwaysOverlapsTgeoStbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTgeoStbox(temp, box));
+
+        public static int AlwaysOverlapsTgeoTgeo(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTgeoTgeo(temp1, temp2));
+
         public static int EverEqGeoTgeo(IntPtr gs, IntPtr temp)
             => SafeExecution<int>(() => Native.EverEqGeoTgeo(gs, temp));
 
@@ -1417,6 +1426,15 @@ namespace MEOS.NET.Functions
 
         public static int EverNeTgeoTgeo(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.EverNeTgeoTgeo(temp1, temp2));
+
+        public static int EverOverlapsStboxTgeo(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.EverOverlapsStboxTgeo(box, temp));
+
+        public static int EverOverlapsTgeoStbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.EverOverlapsTgeoStbox(temp, box));
+
+        public static int EverOverlapsTgeoTgeo(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<int>(() => Native.EverOverlapsTgeoTgeo(temp1, temp2));
 
         public static IntPtr TeqGeoTgeo(IntPtr gs, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TeqGeoTgeo(gs, temp));

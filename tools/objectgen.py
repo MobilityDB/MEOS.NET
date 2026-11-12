@@ -201,6 +201,11 @@ class Model:
         }
         self.parent: dict[str, str | None] = {}
         self.ctype: dict[str, str] = {}
+        # C typedef -> the class the catalog marks `byValue` for it (a grid
+        # cell: `H3Index`, `Quadbin`, `S2CellId`), and that typedef -> the C
+        # type it is at the ABI, as the catalog's slots naming it state it.
+        self.value_of: dict[str, str] = {}
+        self.value_canonical: dict[str, str] = {}
         self.meostype: dict[str, str] = {}      # class -> its MeosType constant
         self.subtype_of: dict[str, str] = {}    # concrete class -> template subtype
         self.wrap_root: dict[str, str] = {}     # C struct -> the class it wraps as
@@ -272,10 +277,29 @@ class Model:
             if spec.get("cType"):
                 self.ctype[name] = spec["cType"]
 
+        # A class the catalog marks `byValue` holds its value, never a pointer:
+        # its `cType` is the typedef MEOS passes by value, which each slot naming
+        # it states beside its `canonical` (`"typedef": "H3Index"` on a
+        # `uint64_t`). It is a C# value type, and a value type has no base
+        # class, so it stands outside the hierarchy its model parent heads; nor
+        # is it the class a pointer is wrapped in. The by-value counterpart of
+        # #wrap_root below, which maps a pointer.
+        for name, spec in self.om["classes"].items():
+            if spec.get("byValue") and spec.get("cType"):
+                self.value_of[spec["cType"]] = name
+                self.parent[name] = None
+        for f in self.idl["functions"]:
+            for slot in [f["returnType"]] + list(f.get("params", [])):
+                typedef = slot.get("typedef")
+                if typedef in self.value_of and "*" not in slot["canonical"]:
+                    self.value_canonical.setdefault(typedef, clean(slot["canonical"]))
+
         # A pointer to a C struct is wrapped in the SHALLOWEST class carrying it,
         # so a `GSERIALIZED *` is a Geo and its Geometry and Geography leaves stay
         # distinct classes under it, exactly as a `Set *` is a Set.
         for name, ct in self.ctype.items():
+            if ct in self.value_of:
+                continue
             best = self.wrap_root.get(ct)
             if best is None or self._depth(name) < self._depth(best):
                 self.wrap_root[ct] = name
@@ -342,6 +366,15 @@ class Model:
         if base in TEMPORAL_STRUCTS:
             return "Temporal"
         return self.wrap_root.get(base)
+
+    def class_for_value(self, slot: dict | None) -> str | None:
+        """The class a value MEOS passes BY VALUE is held in, beside
+        #class_for_ctype, which answers it for a pointer: the class the catalog
+        marks `byValue` for the typedef the slot names, `th3index_value`
+        answering an H3Index. A pointer to such a value (an array of cells, an
+        out-parameter) is the slot's typedef too, and its element is the class
+        as well; the caller reads which of the two the slot is."""
+        return self.value_of.get((slot or {}).get("typedef"))
 
 
 class Method:
@@ -471,6 +504,14 @@ class Generator:
             return ("DateTime", "MEOSConvert.ToDateTime($)")
         if c == "DateADT":
             return ("DateOnly", "MEOSConvert.ToDateOnly($)")
+        # A value of a class held by value (#class_for_value) is the class
+        # around the scalar the wrapper answers, and an array of them is the
+        # class's array, as a pointer return is wrapped in its class below.
+        value = self.m.class_for_value(f["returnType"])
+        if value and "*" not in c and is_scalar(wrapper_ret):
+            return (value, f"new {value}($)")
+        if value and wrapper_ret.endswith("[]") and is_scalar(wrapper_ret[:-2]):
+            return (f"{value}[]", f"Array.ConvertAll($, v => new {value}(v))")
         if wrapper_ret in ("string", "string?"):
             return (wrapper_ret, "$")
         text = self.enum_text(c) if c in codegen.ENUM_TYPES else None
@@ -642,6 +683,19 @@ class Generator:
             return None
         return (cs_type, size, f"Marshal.PtrToStructure<{cs_type}>({{0}})")
 
+    def value_out_reader(self, pointee: str, value: str | None,
+                         where: str) -> tuple[str, int, str] | None:
+        """The reader for a value of a class held by value (#class_for_value)
+        MEOS writes through a pointer: the scalar #scalar_out_reader reads,
+        held in that class, as #wrapped_out_reader wraps the address it reads
+        in the class a pointer is wrapped in."""
+        if value is None or pointee.count("*") != 1:
+            return None
+        scalar = self.scalar_out_reader(pointee, where)
+        if scalar is None:
+            return None
+        return (value, scalar[1], f"new {value}({scalar[2]})")
+
     def wrapped_out_reader(self, pointee: str) -> tuple[str, int, str] | None:
         """The reader for a value MEOS writes through a pointer to a pointer.
 
@@ -675,10 +729,15 @@ class Generator:
         first = ((array_ret.get("element") or {}).get("canonical") if array_ret
                  else f["returnType"]["canonical"])
         params = {p["name"]: p["canonical"] for p in f.get("params", [])}
+        slots = {p["name"]: p for p in f.get("params", [])}
         # `TYPE **bins` is an out-ARRAY of `TYPE`, so two stars come off: one
         # for the handle MEOS writes through, one for the array itself.
         c_types = [first] + [
             clean(params.get(a["param"], "")).rstrip("* ").strip()
+            for a in shape.get("outputArrays") or []]
+        # The class each item's values are held in by value, if any.
+        values = [self.m.class_for_value(f["returnType"])] + [
+            self.m.class_for_value(slots.get(a["param"]))
             for a in shape.get("outputArrays") or []]
         pieces = [p.strip() for p in tuple_ret[1:-1].split(",")]
         if len(pieces) != len(c_types) or not all(c_types):
@@ -687,9 +746,11 @@ class Generator:
         types, readers = [], []
         for i, (piece, c_type) in enumerate(zip(pieces, c_types)):
             if i == 0 and not array_ret:
-                mapped = self.map_value_item(piece, clean(c_type), item.format(1))
+                mapped = self.map_value_item(piece, clean(c_type), item.format(1),
+                                             values[i])
             else:
-                mapped = self.map_array_item(piece, clean(c_type), item.format(i + 1))
+                mapped = self.map_array_item(piece, clean(c_type), item.format(i + 1),
+                                             values[i])
             if mapped is None:
                 return None
             types.append(mapped[0])
@@ -702,21 +763,25 @@ class Generator:
                     f"$|>_answered is null ? null : {reads}")
         return (f"({', '.join(types)})", f"$|>{reads}")
 
-    def map_value_item(self, piece: str, c_type: str,
-                       item: str) -> tuple[str, str] | None:
+    def map_value_item(self, piece: str, c_type: str, item: str,
+                       value: str | None = None) -> tuple[str, str] | None:
         """The value item of an answered tuple, read as #map_return reads a
-        value of its own: a MEOS value wraps into its class, a scalar is handed
-        on."""
+        value of its own: a MEOS value wraps into its class, a value of a class
+        held by value is that class, a scalar is handed on."""
         if piece == "IntPtr":
             cls = self.m.class_for_ctype(c_type)
             return (f"{cls}?", f"MEOSFactory.Wrap{cls}({item})") if cls else None
+        if value and is_scalar(piece):
+            return (value, f"new {value}({item})")
         if is_scalar(piece):
             return (piece, item)
         return None
 
-    def map_array_item(self, piece: str, c_type: str,
-                       item: str) -> tuple[str, str] | None:
+    def map_array_item(self, piece: str, c_type: str, item: str,
+                       value: str | None = None) -> tuple[str, str] | None:
         """One item of an answered tuple: its C# type and how it is read."""
+        if value and piece.endswith("[]") and is_scalar(piece[:-2]):
+            return (f"{value}[]", f"Array.ConvertAll({item}, v => new {value}(v))")
         if piece == "IntPtr[]":
             cls = (self.m.class_for_ctype(c_type)
                    or self.m.class_for_ctype(f"{c_type} *"))
@@ -753,9 +818,16 @@ class Generator:
             return text
         return None
 
-    def map_param(self, c_type: str, cs_type: str, name: str) -> tuple[str, str] | None:
-        """``(csharp_type, argument expression)`` for one parameter, or None."""
+    def map_param(self, c_type: str, cs_type: str, name: str,
+                  value: str | None = None) -> tuple[str, str] | None:
+        """``(csharp_type, argument expression)`` for one parameter, or None.
+
+        `value` is the class the parameter's value is held in by value
+        (#class_for_value): the caller passes that class and the call the
+        scalar it holds, as a pointer's class passes its `Ptr`."""
         c = clean(c_type)
+        if value and "*" not in c and is_scalar(cs_type):
+            return (value, f"{name}.value")
         if c in ("TimestampTz", "Timestamp"):
             return ("DateTime", f"MEOSConvert.ToTimestampTz({name})")
         if c == "DateADT":
@@ -808,6 +880,13 @@ class Generator:
             (codegen.csharp_param_name(p["name"]) if p["name"] else "arg"): p["canonical"]
             for p in f.get("params", [])
         }
+        # The class each parameter's value is held in by value, if any.
+        value_by_name = {
+            (codegen.csharp_param_name(p["name"]) if p["name"] else "arg"):
+                self.m.class_for_value(p)
+            for p in f.get("params", [])
+        }
+        by_value = cls in self.m.value_of.values()
 
         # An array ARGUMENT is one parameter to the caller and two to MEOS, the
         # pointer and its length. Which parameters those are is the catalog's to
@@ -827,8 +906,12 @@ class Generator:
         params = list(wrapper_params)
         static = True
         args: list[str] = []
+        # A class held by value receives its own value rather than a pointer
+        # to it (#class_for_value).
         if (len(params) > at
-                and clean(c_by_name.get(params[at][1], "")) == f"{recv_ctype} *"):
+                and (clean(c_by_name.get(params[at][1], "")) == f"{recv_ctype} *"
+                     or (by_value and value_by_name.get(params[at][1]) == cls
+                         and "*" not in c_by_name.get(params[at][1], "")))):
             static = False
             params = params[:at] + params[at + 1:]
         elif operator:
@@ -894,6 +977,9 @@ class Generator:
                  if p["name"] == name), ""))
             reader = (OUT_PARAM_READERS.get(pointee)
                       or self.wrapped_out_reader(pointee)
+                      or self.value_out_reader(
+                          pointee, value_by_name.get(codegen.csharp_param_name(name)),
+                          f"{fname} parameter {name}")
                       or self.scalar_out_reader(pointee, f"{fname} parameter {name}"))
             if reader:
                 result_outs.append((codegen.csharp_param_name(name), reader))
@@ -981,11 +1067,14 @@ class Generator:
                     args.append(scratch(pname))
                     continue
                 # A scalar element is the array itself: the values need no
-                # gathering, so what is pinned is the caller's own array.
+                # gathering, so what is pinned is the caller's own array. An
+                # element held by value in a class (#class_for_value) is that
+                # class, a struct of the one scalar, laid out as the scalar is,
+                # so its array is pinned the same way.
                 scalar = codegen.scalar_cs(
                     pointee, f"{fname} parameter {pname} (array element)")
                 if scalar is not None:
-                    sig.append((f"{scalar}[]", pname))
+                    sig.append((f"{value_by_name.get(pname) or scalar}[]", pname))
                     scalar_arrays.append(pname)
                     args.append(f"{scratch(pname)}.AddrOfPinnedObject()")
                     continue
@@ -993,7 +1082,8 @@ class Generator:
                            f"argument {pname} is an array of "
                            f"{pointee}, which has no class")
                 return None
-            mapped = self.map_param(c_by_name.get(pname, ""), cs_type, pname)
+            mapped = self.map_param(c_by_name.get(pname, ""), cs_type, pname,
+                                    value_by_name.get(pname))
             if mapped is None:
                 self.defer(cls, oo, "argument needs a class",
                            f"argument {pname} of type "
@@ -1012,7 +1102,7 @@ class Generator:
         if not static:
             # Every other parameter gave the call one argument in its own place,
             # so the receiver's goes back where the wrapper takes it.
-            args.insert(at, "this.Ptr")
+            args.insert(at, "this.value" if by_value else "this.Ptr")
         call = f"Meos.{codegen.public_name(fname)}({', '.join(args)})"
         outs = [(name, size, reader.format(scratch(name)))
                 for name, (_t, size, reader) in result_outs]
@@ -1293,11 +1383,16 @@ class Generator:
             "{",
             f"    /// <summary>{self.doc_for(cls)}</summary>",
             f'    [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "{GENERATOR_VERSION}")]',
-            f"    public class {cls} : {parent}",
-            "    {",
-            f"        internal {cls}(IntPtr ptr) : base(ptr) {{ }}",
-            "",
         ]
+        if cls in self.m.value_of.values():
+            lines += self.value_head(cls)
+        else:
+            lines += [
+                f"    public class {cls} : {parent}",
+                "    {",
+                f"        internal {cls}(IntPtr ptr) : base(ptr) {{ }}",
+                "",
+            ]
         lines += self.to_string(cls, functions)
         for m in methods:
             args = ", ".join(f"{t} {ident(n)}" for t, n in m.params)
@@ -1311,6 +1406,31 @@ class Generator:
             lines.append("")
         lines += ["    }", "}", ""]
         return "\n".join(lines)
+
+    def value_head(self, cls: str) -> list[str]:
+        """The head of a class the catalog marks `byValue` (#class_for_value):
+        a value type holding the scalar MEOS passes, as a pointer's class holds
+        the `Ptr` it passes (#base_file), with an equality of the value and the
+        two conversions from and to the scalar, as #held_struct_file declares a
+        struct of values a record struct."""
+        ctype = self.m.ctype[cls]
+        scalar = codegen.scalar_cs(self.m.value_canonical[ctype], f"class {cls}")
+        return [
+            f"    public readonly record struct {cls}",
+            "    {",
+            f"        /// <summary>The <c>{ctype}</c> MEOS passes this value as.</summary>",
+            f"        internal readonly {scalar} value;",
+            "",
+            f"        /// <summary>The {cls} MEOS passes as <paramref name=\"value\"/>.</summary>",
+            f"        public {cls}({scalar} value) => this.value = value;",
+            "",
+            f"        /// <summary>The <c>{ctype}</c> MEOS passes this value as.</summary>",
+            f"        public static explicit operator {scalar}({cls} self) => self.value;",
+            "",
+            f"        /// <summary>The {cls} MEOS passes as <paramref name=\"value\"/>.</summary>",
+            f"        public static explicit operator {cls}({scalar} value) => new {cls}(value);",
+            "",
+        ]
 
     def call_body(self, method: Method) -> list[str]:
         """The body of a method whose call needs something around it.
