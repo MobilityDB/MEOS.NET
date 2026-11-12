@@ -10,14 +10,14 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `c5174b8af15d3ef3f38c77ba60cbf5a5d99dd54c` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `0bc5f54084207e4c0e48d2b55c7f6b9cbb944045` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
 
 ## The flat surface — `tools/codegen.py`
 
-### parameter nullability — 4336
+### parameter nullability — 4344
 
 `shape.nullable` names the parameters a function accepts NULL for, and the catalog carries no field saying a parameter is required. A pointer parameter named in neither reaches the surface with its contract unstated: the wrapper takes it, and nothing says whether zero is an argument or a fault.
 
@@ -332,6 +332,10 @@ and `tools/objectgen.py`.  Do not edit.
 | always_overlaps_tgeo_tgeo | temp1, temp2 |
 | always_overlaps_tnpoint_stbox | temp, box |
 | always_overlaps_tnumber_tbox | temp, box |
+| always_overlaps_tpcbox_tpcpatch | box, temp |
+| always_overlaps_tpcbox_tpcpoint | box, temp |
+| always_overlaps_tpcpatch_tpcbox | temp, box |
+| always_overlaps_tpcpoint_tpcbox | temp, box |
 | always_overlaps_tpose_stbox | temp, box |
 | always_overlaps_tpose_tpose | temp1, temp2 |
 | always_overlaps_trgeometry_stbox | temp, box |
@@ -957,6 +961,10 @@ and `tools/objectgen.py`.  Do not edit.
 | ever_overlaps_tgeo_tgeo | temp1, temp2 |
 | ever_overlaps_tnpoint_stbox | temp, box |
 | ever_overlaps_tnumber_tbox | temp, box |
+| ever_overlaps_tpcbox_tpcpatch | box, temp |
+| ever_overlaps_tpcbox_tpcpoint | box, temp |
+| ever_overlaps_tpcpatch_tpcbox | temp, box |
+| ever_overlaps_tpcpoint_tpcbox | temp, box |
 | ever_overlaps_tpose_stbox | temp, box |
 | ever_overlaps_tpose_tpose | temp1, temp2 |
 | ever_overlaps_trgeometry_stbox | temp, box |

@@ -30,6 +30,9 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TPCPatch temp2)
             => Meos.AlwaysNeTpcpatchTpcpatch(this.Ptr, temp2.Ptr);
 
+        public int AlwaysOverlaps(TPCBox box)
+            => Meos.AlwaysOverlapsTpcpatchTpcbox(this.Ptr, box.Ptr);
+
         public Temporal? AtTpcbox(TPCBox box, bool border_inc)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchAtTpcbox(this.Ptr, box.Ptr, border_inc));
 
@@ -53,6 +56,9 @@ namespace MEOS.NET.Types
 
         public int EverNe(TPCPatch temp2)
             => Meos.EverNeTpcpatchTpcpatch(this.Ptr, temp2.Ptr);
+
+        public int EverOverlaps(TPCBox box)
+            => Meos.EverOverlapsTpcpatchTpcbox(this.Ptr, box.Ptr);
 
         public Temporal? MinusTpcbox(TPCBox box, bool border_inc)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchMinusTpcbox(this.Ptr, box.Ptr, border_inc));

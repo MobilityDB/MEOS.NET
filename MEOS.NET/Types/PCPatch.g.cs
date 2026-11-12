@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.HexOut(15);
+            => this.AsText(15);
 
         public int AlwaysEq(TPCPatch temp)
             => Meos.AlwaysEqPcpatchTpcpatch(this.Ptr, temp.Ptr);
@@ -28,7 +28,7 @@ namespace MEOS.NET.Types
             => Meos.PcpatchAsHexwkb(this.Ptr);
 
         public string AsText(int maxdd)
-            => this.HexOut(maxdd);
+            => Meos.PcpatchHexOut(this.Ptr, maxdd);
 
         public int Cmp(PCPatch pa2)
             => Meos.PcpatchCmp(this.Ptr, pa2.Ptr);
@@ -62,9 +62,6 @@ namespace MEOS.NET.Types
 
         public ulong HashExtended(ulong seed)
             => Meos.PcpatchHashExtended(this.Ptr, seed);
-
-        public string HexOut(int maxdd)
-            => Meos.PcpatchHexOut(this.Ptr, maxdd);
 
         public Set? Intersection(PCPatchSet s)
             => MEOSFactory.WrapSet(Meos.IntersectionPcpatchSet(this.Ptr, s.Ptr));
@@ -118,9 +115,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapPCPatch(Meos.PcpatchFromHexwkb(hexwkb));
 
         public static PCPatch? FromText(string str)
-            => PCPatch.HexIn(str);
-
-        public static PCPatch? HexIn(string str)
             => MEOSFactory.WrapPCPatch(Meos.PcpatchHexIn(str));
 
         public static PCPatch? Make(PCPoint[] points)

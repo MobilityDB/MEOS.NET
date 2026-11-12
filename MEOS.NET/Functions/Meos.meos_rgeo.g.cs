@@ -15,10 +15,10 @@ namespace MEOS.NET.Functions
         public static IntPtr TrgeometryFromMfjson(string mfjson)
             => SafeExecution<IntPtr>(() => Native.TrgeometryFromMfjson(mfjson));
 
-        public static string TrgeometryOut(IntPtr temp)
+        public static string TrgeometryOut(IntPtr temp, int maxdd)
         {
             nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.TrgeometryOut(temp, out _size));
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TrgeometryOut(temp, maxdd, out _size));
             if (_p == IntPtr.Zero)
             {
                 return null!;

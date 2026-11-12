@@ -1616,9 +1616,11 @@ class Generator:
     @staticmethod
     def role_named(entry: dict) -> bool:
         """Whether the object model calls a method by its role, the reader or
-        writer of a type (ooName `in` or `out`), a name the object layer never
-        gives (rule 1 of the bindings in the I/O plan, MobilityDB #3353)."""
-        return entry["ooName"] in ("in", "out")
+        writer of a type (ooName `in`, `out`, or `hexIn` and `hexOut`, the
+        hex text of the point cloud types), a name the object layer never
+        gives (rule 1 of the bindings in the I/O plan, MobilityDB #3353), the
+        roles #take_portable_names of GoMEOS's tools/objectgen.py reads."""
+        return entry["ooName"] in ("in", "out", "hexIn", "hexOut")
 
     def take_portable_names(self, cls: str, paired: list, entries: list) -> list:
         """Emit each reader or writer the object model calls by its role
