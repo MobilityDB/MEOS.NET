@@ -896,6 +896,18 @@ namespace MEOS.NET.Functions
         public static int AlwaysNeTpcpointTpcpoint(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.AlwaysNeTpcpointTpcpoint(temp1, temp2));
 
+        public static int EverOverlapsTpcboxTpcpoint(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.EverOverlapsTpcboxTpcpoint(box, temp));
+
+        public static int EverOverlapsTpcpointTpcbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.EverOverlapsTpcpointTpcbox(temp, box));
+
+        public static int AlwaysOverlapsTpcboxTpcpoint(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTpcboxTpcpoint(box, temp));
+
+        public static int AlwaysOverlapsTpcpointTpcbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTpcpointTpcbox(temp, box));
+
         public static int EverEqPcpatchTpcpatch(IntPtr pa, IntPtr temp)
             => SafeExecution<int>(() => Native.EverEqPcpatchTpcpatch(pa, temp));
 
@@ -931,6 +943,18 @@ namespace MEOS.NET.Functions
 
         public static int AlwaysNeTpcpatchTpcpatch(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.AlwaysNeTpcpatchTpcpatch(temp1, temp2));
+
+        public static int EverOverlapsTpcboxTpcpatch(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.EverOverlapsTpcboxTpcpatch(box, temp));
+
+        public static int EverOverlapsTpcpatchTpcbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.EverOverlapsTpcpatchTpcbox(temp, box));
+
+        public static int AlwaysOverlapsTpcboxTpcpatch(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTpcboxTpcpatch(box, temp));
+
+        public static int AlwaysOverlapsTpcpatchTpcbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTpcpatchTpcbox(temp, box));
 
         public static IntPtr TeqPcpointTpcpoint(IntPtr pt, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TeqPcpointTpcpoint(pt, temp));

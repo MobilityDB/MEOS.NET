@@ -54,6 +54,12 @@ namespace MEOS.NET.Types
         public bool After(TPCPoint temp)
             => Meos.AfterTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
+        public int AlwaysOverlaps(TPCPoint temp)
+            => Meos.AlwaysOverlapsTpcboxTpcpoint(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TPCPatch temp)
+            => Meos.AlwaysOverlapsTpcboxTpcpatch(this.Ptr, temp.Ptr);
+
         public byte[]? AsEWKB(byte variant)
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
@@ -176,6 +182,12 @@ namespace MEOS.NET.Types
 
         public bool Eq(TPCBox box2)
             => Meos.TpcboxEq(this.Ptr, box2.Ptr);
+
+        public int EverOverlaps(TPCPoint temp)
+            => Meos.EverOverlapsTpcboxTpcpoint(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TPCPatch temp)
+            => Meos.EverOverlapsTpcboxTpcpatch(this.Ptr, temp.Ptr);
 
         public bool Front(TPCBox box2)
             => Meos.FrontTpcboxTpcbox(this.Ptr, box2.Ptr);
