@@ -13,7 +13,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void TheSpansOfASpanSetComeBackAsSpans()
         {
-            SpanSet spanset = FloatSpanSet.In("{[8, 10], [11, 12]}")!;
+            SpanSet spanset = FloatSpanSet.FromText("{[8, 10], [11, 12]}")!;
 
             Span?[] spans = spanset.Spans();
 
@@ -26,7 +26,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void TheQuadrantsOfABoxComeBackAsBoxes()
         {
-            STBox box = STBox.In("STBOX X((0,0),(4,4))")!;
+            STBox box = STBox.FromText("STBOX X((0,0),(4,4))")!;
 
             STBox?[] quadrants = box.QuadSplit();
 
@@ -40,7 +40,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void TheInstantsOfASequenceComeBackAsTemporalValues()
         {
-            Temporal temp = TFloat.In("[25.0@2024-12-06, 27.0@2024-12-07]")!;
+            Temporal temp = TFloat.FromText("[25.0@2024-12-06, 27.0@2024-12-07]")!;
 
             Temporal?[] instants = temp.Instants();
 

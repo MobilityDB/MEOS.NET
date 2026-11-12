@@ -16,10 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
-
-        public string AsText(int maxdd)
-            => this.Out(maxdd);
+            => this.AsText(15);
 
         public bool Contained(TextSet s2)
             => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
@@ -118,9 +115,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTextArray(Meos.TextsetValues(this.Ptr));
 
         public static Set? FromText(string str)
-            => TextSet.In(str);
-
-        public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.TextsetIn(str));
 
         public static Set? Make(Text[] values)

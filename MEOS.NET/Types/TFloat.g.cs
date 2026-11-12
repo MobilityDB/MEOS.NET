@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public Temporal? Add(double d)
             => MEOSFactory.WrapTemporal(Meos.AddTfloatFloat(this.Ptr, d));
@@ -71,9 +71,6 @@ namespace MEOS.NET.Types
 
         public int AlwaysOverlaps(TFloat temp2)
             => Meos.AlwaysOverlapsTemporalTemporal(this.Ptr, temp2.Ptr);
-
-        public string AsText(int maxdd)
-            => this.Out(maxdd);
 
         public Temporal? AtValue(double d)
             => MEOSFactory.WrapTemporal(Meos.TfloatAtValue(this.Ptr, d));
@@ -485,9 +482,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTemporal(Meos.TfloatFromMfjson(str));
 
         public static Temporal? FromText(string str)
-            => TFloat.In(str);
-
-        public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TfloatIn(str));
 
     }

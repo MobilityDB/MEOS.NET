@@ -79,15 +79,12 @@ namespace MEOS.NET.Types
             => Set.FromWKB(wkb);
 
         public static Set? FromEWKT(string str)
-            => PCPointSet.In(str);
+            => PCPointSet.FromText(str);
 
         public static Set? FromHexEWKB(string hexwkb)
             => Set.FromHexWKB(hexwkb);
 
         public static Set? FromText(string str)
-            => PCPointSet.In(str);
-
-        public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.PcpointsetIn(str));
 
         public static Set? Make(PCPoint[] values)

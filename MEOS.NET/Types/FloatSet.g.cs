@@ -16,10 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
-
-        public string AsText(int maxdd)
-            => this.Out(maxdd);
+            => this.AsText(15);
 
         public Set? Ceil()
             => MEOSFactory.WrapSet(Meos.FloatsetCeil(this.Ptr));
@@ -154,9 +151,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapSet(Meos.FloatToSet(d));
 
         public static Set? FromText(string str)
-            => FloatSet.In(str);
-
-        public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.FloatsetIn(str));
 
         public static Set? Make(double[] values)

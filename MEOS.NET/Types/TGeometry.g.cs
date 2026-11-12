@@ -265,7 +265,7 @@ namespace MEOS.NET.Types
             => Temporal.FromWKB(wkb);
 
         public static Temporal? FromEWKT(string str)
-            => TGeometry.In(str);
+            => TGeometry.FromText(str);
 
         public static Temporal? FromHexEWKB(string hexwkb)
             => Temporal.FromHexWKB(hexwkb);
@@ -274,9 +274,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTemporal(Meos.TgeometryFromMfjson(str));
 
         public static Temporal? FromText(string str)
-            => TGeometry.In(str);
-
-        public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TgeometryIn(str));
 
     }

@@ -15,7 +15,7 @@ namespace MEOS.NET.Tests
             Text[] texts = new Text[parts.Length];
             for (int i = 0; i < parts.Length; i++)
             {
-                texts[i] = Text.In(parts[i])!;
+                texts[i] = Text.FromCstring(parts[i])!;
             }
 
             return texts;

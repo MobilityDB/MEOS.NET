@@ -98,9 +98,6 @@ namespace MEOS.NET.Types
         public bool Ne(RaQuet rq2)
             => Meos.RaquetNe(this.Ptr, rq2.Ptr);
 
-        public string Out()
-            => Meos.RaquetOut(this.Ptr);
-
         public byte[]? Pixels()
         {
             IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
@@ -146,9 +143,6 @@ namespace MEOS.NET.Types
                 _wkb.Free();
             }
         }
-
-        public static RaQuet? In(string str)
-            => MEOSFactory.WrapRaQuet(Meos.RaquetIn(str));
 
         public static RaQuet? Make(Quadbin quadbin, int width, int height, string pixtype, double nodata, bool has_nodata, byte[] pixels)
         {

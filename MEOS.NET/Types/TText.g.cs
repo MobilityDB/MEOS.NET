@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public bool Adjacent(TText temp2)
             => Meos.AdjacentTemporalTemporal(this.Ptr, temp2.Ptr);
@@ -62,9 +62,6 @@ namespace MEOS.NET.Types
 
         public int AlwaysOverlaps(TText temp2)
             => Meos.AlwaysOverlapsTemporalTemporal(this.Ptr, temp2.Ptr);
-
-        public string AsText(int maxdd)
-            => this.Out(maxdd);
 
         public Temporal? AtValue(Text txt)
             => MEOSFactory.WrapTemporal(Meos.TtextAtValue(this.Ptr, txt.Ptr));
@@ -254,9 +251,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTemporal(Meos.TtextFromMfjson(str));
 
         public static Temporal? FromText(string str)
-            => TText.In(str);
-
-        public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TtextIn(str));
 
     }

@@ -23,9 +23,6 @@ namespace MEOS.NET.Types
         public bool Adjacent(IntSpanSet ss2)
             => Meos.AdjacentSpansetSpanset(this.Ptr, ss2.Ptr);
 
-        public string AsText(int maxdd)
-            => this.Out(maxdd);
-
         public Span?[] Bins(int vsize, int vorigin, bool border_inc)
             => MEOSFactory.WrapSpanArray(Meos.IntspansetBins(this.Ptr, vsize, vorigin, border_inc));
 
@@ -168,9 +165,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapSpanSet(Meos.IntToSpanset(i));
 
         public static SpanSet? FromText(string str)
-            => IntSpanSet.In(str);
-
-        public static SpanSet? In(string str)
             => MEOSFactory.WrapSpanSet(Meos.IntspansetIn(str));
 
     }

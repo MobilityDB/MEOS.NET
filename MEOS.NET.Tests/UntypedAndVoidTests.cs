@@ -17,8 +17,8 @@ namespace MEOS.NET.Tests
 
             Assert.IsNotNull(tree);
 
-            Span first = FloatSpan.In("[1, 3]")!;
-            Span second = FloatSpan.In("[8, 10]")!;
+            Span first = FloatSpan.FromText("[1, 3]")!;
+            Span second = FloatSpan.FromText("[8, 10]")!;
 
             Assert.IsTrue(tree!.Insert(first.Ptr, 1));
             Assert.IsTrue(tree.Insert(second.Ptr, 2));

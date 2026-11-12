@@ -14,7 +14,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ASpanAnswersItsDurationAsAnInterval()
         {
-            TsTzSpan span = (TsTzSpan)TsTzSpan.In("[2024-12-06, 2024-12-08]")!;
+            TsTzSpan span = (TsTzSpan)TsTzSpan.FromText("[2024-12-06, 2024-12-08]")!;
 
             Interval? duration = span.Duration();
 
@@ -40,7 +40,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ASpanIsShiftedByAnIntervalItIsGivenAsAValue()
         {
-            TsTzSpan span = (TsTzSpan)TsTzSpan.In("[2024-12-06, 2024-12-08]")!;
+            TsTzSpan span = (TsTzSpan)TsTzSpan.FromText("[2024-12-06, 2024-12-08]")!;
 
             Span? shifted = span.ShiftScale(Interval.In("1 day")!.Value,
                                             Interval.In("4 days")!.Value);
@@ -53,8 +53,8 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void AFrechetPathComesBackAsTheMatchesThemselves()
         {
-            Temporal trip = TFloat.In("[1@2024-12-06, 3@2024-12-08]")!;
-            Temporal other = TFloat.In("[2@2024-12-06, 4@2024-12-08]")!;
+            Temporal trip = TFloat.FromText("[1@2024-12-06, 3@2024-12-08]")!;
+            Temporal other = TFloat.FromText("[2@2024-12-06, 4@2024-12-08]")!;
 
             Match[] path = trip.FrechetPath(other, true);
 

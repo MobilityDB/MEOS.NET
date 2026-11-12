@@ -13,7 +13,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ATextAnswersTheTextMeosWritesItAs()
         {
-            Text text = Text.In("mobility")!;
+            Text text = Text.FromCstring("mobility")!;
 
             Assert.AreEqual("mobility", text.ToString());
             Assert.AreEqual("MOBILITY", text.Upper()!.ToString());
@@ -33,7 +33,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ACbufferAnswersItsCentreAsAGeometry()
         {
-            CBuffer buffer = CBuffer.In("Cbuffer(Point(1 1),5)")!;
+            CBuffer buffer = CBuffer.FromText("Cbuffer(Point(1 1),5)")!;
 
             Assert.AreEqual(5.0, buffer.Radius());
 
@@ -46,7 +46,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ATemporalGeoIsRestrictedByAGeometry()
         {
-            Temporal trip = TGeomPoint.In(
+            Temporal trip = TGeomPoint.FromText(
                 "[POINT(0 0)@2024-12-06, POINT(4 4)@2024-12-08]")!;
             Geo half = Geo.FromText("POLYGON((0 0,0 2,2 2,2 0,0 0))", 0)!;
 

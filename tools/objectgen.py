@@ -473,6 +473,11 @@ class Generator:
         # emitted before this one, its ancestors among them, so a class reaches a
         # reader an ancestor carries (`Temporal.FromWKB`).
         self.static_functions: dict[str, tuple[str, Method]] = {}
+        # class -> {C function: method} for each reader or writer the object
+        # model calls by its role that serves no portable format, left out of
+        # the class (#role_named) and kept only for a ToString that writes
+        # through it.
+        self.flat_functions: dict[str, dict[str, Method]] = {}
         self.emitted = 0
         # Instantiated pairs a class's own operator already answers.
         self.restated = 0
@@ -1346,6 +1351,7 @@ class Generator:
         entries = [e for e in self.m.om["classes"].get(cls, {}).get("methods", [])
                    if not e.get("ooExclude")]
         paired = [(e["function"], self.method_for(cls, e)) for e in entries]
+        paired = self.take_portable_names(cls, paired, entries)
         methods = [m for _f, m in paired if m]
         methods.sort(key=lambda m: (m.static, m.name))
         self.emitted += len(methods)
@@ -1584,6 +1590,73 @@ class Generator:
                        "hexwkb": "HexWKB", "ewkb": "EWKB", "hexewkb": "HexEWKB",
                        "mfjson": "MFJSON"}
 
+    def portable_format(self, function: str) -> tuple[str, str] | None:
+        """The verb and spelling of the first format, in #FORMAT_SPELLING's
+        order, that the catalog's `typeEncodings` reads or writes with the
+        function, for any type, as #portable_format of GoMEOS's
+        tools/objectgen.py reads it: ("From", "Text") for tgeompoint_in, which
+        reads the text and the EWKT of tgeompoint, ("As", "Text") for set_out,
+        the text writer of every set type, and ("As", "EWKT") for stbox_out."""
+        found = set()
+        for enc in self.m.idl.get("typeEncodings", {}).values():
+            for verb, by_type, by_class in (("As", "writers", "encoders"),
+                                            ("From", "readers", "decoders")):
+                for e, per_type in (enc.get(by_type) or {}).items():
+                    if function in per_type.values():
+                        found.add((verb, e))
+                for e, fn in (enc.get(by_class) or {}).items():
+                    if fn == function:
+                        found.add((verb, e))
+        for e, spelling in self.FORMAT_SPELLING.items():
+            for verb in ("As", "From"):
+                if (verb, e) in found:
+                    return verb, spelling
+        return None
+
+    @staticmethod
+    def role_named(entry: dict) -> bool:
+        """Whether the object model calls a method by its role, the reader or
+        writer of a type (ooName `in` or `out`), a name the object layer never
+        gives (rule 1 of the bindings in the I/O plan, MobilityDB #3353)."""
+        return entry["ooName"] in ("in", "out")
+
+    def take_portable_names(self, cls: str, paired: list, entries: list) -> list:
+        """Emit each reader or writer the object model calls by its role
+        (#role_named) under the portable name of the format it serves
+        (#portable_format), never `In` or `Out`, as #take_portable_names of
+        GoMEOS's tools/objectgen.py does: tgeompoint_in is
+        `TGeomPoint.FromText`, set_out `Set.AsText`, stbox_out `STBox.AsEWKT`.
+        The method keeps its body, so the portable reader or writer that would
+        forward to it (#portable_methods) is not emitted beside it.  One whose
+        portable name the class already declares with the same parameters is
+        left out as that method's duplicate.  One serving no portable format
+        leaves the object layer, as #plumbing of GoMEOS's tools/objectgen.py
+        leaves a type support function serving none: the dialect never names
+        it (pose_out writes the PostgreSQL wire form, which `Pose.FromText`
+        reads; the text of a geometry is read and written by geo_from_text and
+        geo_as_text, not geom_in and geo_out) and its function stays in the
+        flat `Meos` layer, kept in #flat_functions for a ToString that writes
+        through it (text_out)."""
+        out = []
+        for (fn, method), entry in zip(paired, entries):
+            if method is None or not self.role_named(entry):
+                out.append((fn, method))
+                continue
+            format_ = self.portable_format(fn)
+            if format_ is None or (format_[0] == "From") != method.static:
+                self.flat_functions.setdefault(cls, {})[fn] = method
+                out.append((fn, None))
+                continue
+            name = format_[0] + format_[1]
+            if any(m is not method and m.name == name
+                   and signature_of(m) == signature_of(method)
+                   for _f, m in paired if m):
+                out.append((fn, None))
+                continue
+            method.name = name
+            out.append((fn, method))
+        return out
+
     def portable_methods(self, cls: str, methods: list, functions: dict) -> list[Method]:
         """The portable reader and writer of every encoding the catalog's
         `typeEncodings` gives the class's type (rule 1 of the bindings in the I/O
@@ -1592,8 +1665,8 @@ class Generator:
         `decoders`/`encoders`.  Where the class or an ancestor emits no method of
         that name, `As<Format>` forwards to the instance method behind the writer
         and `From<Format>` to the static method behind the reader, so
-        `TGeomPoint.FromEWKB` is `Temporal.FromWKB` and `FloatSpan.FromText` is
-        `FloatSpan.In`, one function under two names as in SQL."""
+        `TGeomPoint.FromEWKB` is `Temporal.FromWKB` and `STBox.FromEWKT` is
+        `STBox.FromText`, one function under two names as in SQL."""
         meostype = self.m.meostype.get(cls)
         encoding = self.m.idl.get("typeEncodings", {}).get(self.m.ctype.get(cls))
         if not meostype or not encoding:
@@ -1642,7 +1715,8 @@ class Generator:
             # parser/enrich.py of MEOS-API counts with the strings since a binding
             # passes a `text *` as one: the class writes itself through its own
             # `*_out` (`text_out`), the function the SQL text output calls.
-            return next((f for f in self.class_functions.get(cls, {})
+            return next((f for f in (*self.class_functions.get(cls, {}),
+                                     *self.flat_functions.get(cls, {}))
                          if f.endswith("_out")), None)
         encoding = encodings[ctype]
         meostype = self.m.meostype.get(cls)
@@ -1656,8 +1730,9 @@ class Generator:
     def to_string(self, cls: str, functions: dict) -> list[str]:
         """`ToString` over the text writer #text_writer names for the class, the
         function behind the SQL `asText` of its type (rule 2 of the bindings in
-        the I/O plan, MobilityDB #3353): `AsText` for a spatial value, which
-        writes its points as WKT, and `Out` for the others.  The writer may be a
+        the I/O plan, MobilityDB #3353): `AsText`, which for a spatial value
+        writes its points as WKT, else the writer's function in `Meos` where it
+        serves no portable format (text_out of `Text`).  The writer may be a
         method of an ancestor (`tspatial_as_text` is `TSpatial.AsText`), and a
         class whose writer is the one it inherits emits no `ToString` of its own.
         The decimal digits are the default the catalog records for that C type's
@@ -1668,6 +1743,16 @@ class Generator:
         if writer is None or writer == inherited:
             return []
         out = functions.get(writer)
+        # A writer serving no portable format is out of the object layer
+        # (#take_portable_names), so ToString calls its function in `Meos`.
+        flat = out is None and self.flat_functions.get(cls, {}).get(writer)
+        if flat and not flat.params:
+            return [
+                "        /// <summary>The text MEOS writes this value as.</summary>",
+                f"        public override string{'?' if flat.ret.endswith('?') else ''} ToString()",
+                f"            => {flat.body};",
+                "",
+            ]
         if out is None or [t for t, _ in out.params] not in ([], ["int"]):
             return []
         ctype = self.m.ctype.get(cls)

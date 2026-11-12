@@ -14,7 +14,7 @@ namespace MEOS.NET.Tests
     {
         private const string Sequence = "[1.0@2024-12-06, 3.0@2024-12-07]";
 
-        private static TFloat Rising() => (TFloat)TFloat.In(Sequence)!;
+        private static TFloat Rising() => (TFloat)TFloat.FromText(Sequence)!;
 
         [TestMethod]
         public void EverEqualToAScalarIsTheOverloadTakingThatScalar()
@@ -37,9 +37,9 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void LeftOfABoxAndLeftOfATemporalNumberAreOverloadsOfOneName()
         {
-            TBox low = TBox.In("TBOXFLOAT X([1.0, 2.0])")!;
-            TBox high = TBox.In("TBOXFLOAT X([5.0, 6.0])")!;
-            TNumber temp = (TNumber)TFloat.In("[7.0@2024-12-06, 8.0@2024-12-07]")!;
+            TBox low = TBox.FromText("TBOXFLOAT X([1.0, 2.0])")!;
+            TBox high = TBox.FromText("TBOXFLOAT X([5.0, 6.0])")!;
+            TNumber temp = (TNumber)TFloat.FromText("[7.0@2024-12-06, 8.0@2024-12-07]")!;
 
             // left_tbox_tbox and left_tbox_tnumber.
             Assert.IsTrue(low.Left(high));
@@ -60,7 +60,7 @@ namespace MEOS.NET.Tests
         public void ContainsOnAnIntSetTakesAnInt()
         {
             // contains_set_int, instantiated onto IntSet from the template Set.
-            IntSet set = (IntSet)IntSet.In("{1, 3, 5}")!;
+            IntSet set = (IntSet)IntSet.FromText("{1, 3, 5}")!;
 
             Assert.IsTrue(set.Contains(3));
             Assert.IsFalse(set.Contains(4));
@@ -71,8 +71,8 @@ namespace MEOS.NET.Tests
         {
             // contains_tnumber_numspan, a member of TNumber whose SQL signatures
             // pair a tfloat with a floatspan, instantiated onto TFloat.
-            FloatSpan inside = (FloatSpan)FloatSpan.In("[1.5, 2.5]")!;
-            FloatSpan outside = (FloatSpan)FloatSpan.In("[5.0, 6.0]")!;
+            FloatSpan inside = (FloatSpan)FloatSpan.FromText("[1.5, 2.5]")!;
+            FloatSpan outside = (FloatSpan)FloatSpan.FromText("[5.0, 6.0]")!;
 
             Assert.IsTrue(Rising().Contains(inside));
             Assert.IsFalse(Rising().Contains(outside));
@@ -85,10 +85,10 @@ namespace MEOS.NET.Tests
             // span, and the time span still reaches contains_temporal_tstzspan,
             // the Temporal member TNumber declares again beside it.
             TNumber temp = Rising();
-            Span values = FloatSpan.In("[1.5, 2.5]")!;
-            Span far = FloatSpan.In("[5.0, 6.0]")!;
-            TsTzSpan period = (TsTzSpan)TsTzSpan.In("[2024-12-06, 2024-12-07]")!;
-            TsTzSpan later = (TsTzSpan)TsTzSpan.In("[2025-01-01, 2025-01-02]")!;
+            Span values = FloatSpan.FromText("[1.5, 2.5]")!;
+            Span far = FloatSpan.FromText("[5.0, 6.0]")!;
+            TsTzSpan period = (TsTzSpan)TsTzSpan.FromText("[2024-12-06, 2024-12-07]")!;
+            TsTzSpan later = (TsTzSpan)TsTzSpan.FromText("[2025-01-01, 2025-01-02]")!;
 
             Assert.IsTrue(temp.Contains(values));
             Assert.IsFalse(temp.Contains(far));
@@ -101,9 +101,9 @@ namespace MEOS.NET.Tests
         {
             // teq_th3index_th3index, which SQL does not declare: its other
             // operand is the TH3Index its type token names.
-            TH3Index cells = (TH3Index)TH3Index.In(
+            TH3Index cells = (TH3Index)TH3Index.FromText(
                 "[831c02fffffffff@2001-01-01, 831c00fffffffff@2001-01-02]")!;
-            TH3Index first = (TH3Index)TH3Index.In("831c02fffffffff@2001-01-01")!;
+            TH3Index first = (TH3Index)TH3Index.FromText("831c02fffffffff@2001-01-01")!;
 
             // The overload is TH3Index's own, not the inherited Teq(Temporal).
             Assert.AreEqual(typeof(TH3Index),

@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public int AlwaysEq(PCPoint pt)
             => Meos.AlwaysEqTpcpointPcpoint(this.Ptr, pt.Ptr);
@@ -143,7 +143,7 @@ namespace MEOS.NET.Types
             => Temporal.FromWKB(wkb);
 
         public static Temporal? FromEWKT(string str)
-            => TPCPoint.In(str);
+            => TPCPoint.FromText(str);
 
         public static Temporal? FromHexEWKB(string hexwkb)
             => Temporal.FromHexWKB(hexwkb);
@@ -152,9 +152,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTemporal(Meos.TpcpointFromMfjson(mfjson));
 
         public static Temporal? FromText(string str)
-            => TPCPoint.In(str);
-
-        public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TpcpointIn(str));
 
     }

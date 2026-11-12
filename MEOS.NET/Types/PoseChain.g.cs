@@ -150,9 +150,6 @@ namespace MEOS.NET.Types
         public int NumPoses()
             => Meos.PosechainNumPoses(this.Ptr);
 
-        public string Out(int maxdd)
-            => Meos.PosechainOut(this.Ptr, maxdd);
-
         public Pose? PoseN(int n)
             => MEOSFactory.WrapPose(Meos.PosechainPoseN(this.Ptr, n));
 
@@ -214,7 +211,7 @@ namespace MEOS.NET.Types
             => PoseChain.FromWKB(wkb);
 
         public static PoseChain? FromEWKT(string str)
-            => PoseChain.In(str);
+            => PoseChain.FromText(str);
 
         public static PoseChain? FromHexEWKB(string hexwkb)
             => PoseChain.FromHexWKB(hexwkb);
@@ -223,7 +220,7 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapPoseChain(Meos.PosechainFromHexwkb(hexwkb));
 
         public static PoseChain? FromText(string str)
-            => PoseChain.In(str);
+            => MEOSFactory.WrapPoseChain(Meos.PosechainIn(str));
 
         public static PoseChain? FromWKB(byte[] wkb)
         {
@@ -237,9 +234,6 @@ namespace MEOS.NET.Types
                 _wkb.Free();
             }
         }
-
-        public static PoseChain? In(string str)
-            => MEOSFactory.WrapPoseChain(Meos.PosechainIn(str));
 
         public static PoseChain? Make(Pose[] poses)
         {

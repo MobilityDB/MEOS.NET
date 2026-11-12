@@ -15,7 +15,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void AnEnumArgumentIsTheTextMeosReadsThroughItsPair()
         {
-            TJsonb temp = (TJsonb)TJsonb.In(
+            TJsonb temp = (TJsonb)TJsonb.FromText(
                 "[{\"a\": [1, 2]}@2024-12-06, {\"a\": [1, 2]}@2024-12-08]")!;
 
             // The handling of a SQL NULL is passed as the SQL functions take it,

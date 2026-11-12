@@ -296,7 +296,7 @@ namespace MEOS.NET.Types
             => Temporal.FromWKB(wkb);
 
         public static Temporal? FromEWKT(string str)
-            => TPoseChain.In(str);
+            => TPoseChain.FromText(str);
 
         public static Temporal? FromGeopose(string json)
             => MEOSFactory.WrapTemporal(Meos.TposechainFromGeopose(json));
@@ -308,9 +308,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTemporal(Meos.TposechainFromMfjson(mfjson));
 
         public static Temporal? FromText(string str)
-            => TPoseChain.In(str);
-
-        public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TposechainIn(str));
 
     }

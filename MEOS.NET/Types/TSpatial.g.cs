@@ -59,7 +59,7 @@ namespace MEOS.NET.Types
         public string AsHexEWKB(byte variant)
             => Meos.TspatialAsHexewkb(this.Ptr, variant);
 
-        public string AsText(int maxdd)
+        public new string AsText(int maxdd)
             => Meos.TspatialAsText(this.Ptr, maxdd);
 
         public bool Back(STBox box)

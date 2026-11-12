@@ -85,15 +85,12 @@ namespace MEOS.NET.Types
             => Set.FromWKB(wkb);
 
         public static Set? FromEWKT(string str)
-            => NPointSet.In(str);
+            => NPointSet.FromText(str);
 
         public static Set? FromHexEWKB(string hexwkb)
             => Set.FromHexWKB(hexwkb);
 
         public static Set? FromText(string str)
-            => NPointSet.In(str);
-
-        public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.NpointsetIn(str));
 
         public static Set? Make(NPoint[] values)

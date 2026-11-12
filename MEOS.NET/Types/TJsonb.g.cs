@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public bool Adjacent(TJsonb temp2)
             => Meos.AdjacentTemporalTemporal(this.Ptr, temp2.Ptr);
@@ -44,9 +44,6 @@ namespace MEOS.NET.Types
 
         public Temporal? ArrayLength()
             => MEOSFactory.WrapTemporal(Meos.TjsonbArrayLength(this.Ptr));
-
-        public string AsText(int maxdd)
-            => this.Out(maxdd);
 
         public Temporal? AtValue(Jsonb jsb)
             => MEOSFactory.WrapTemporal(Meos.TjsonbAtValue(this.Ptr, jsb.Ptr));
@@ -432,9 +429,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTemporal(Meos.TjsonbFromMfjson(str));
 
         public static Temporal? FromText(string str)
-            => TJsonb.In(str);
-
-        public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TjsonbIn(str));
 
     }

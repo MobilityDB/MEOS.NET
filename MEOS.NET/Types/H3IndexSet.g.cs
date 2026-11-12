@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public bool Contained(H3IndexSet s2)
             => Meos.ContainedSetSet(this.Ptr, s2.Ptr);
@@ -100,15 +100,12 @@ namespace MEOS.NET.Types
             => Set.FromWKB(wkb);
 
         public static Set? FromEWKT(string str)
-            => H3IndexSet.In(str);
+            => H3IndexSet.FromText(str);
 
         public static Set? FromHexEWKB(string hexwkb)
             => Set.FromHexWKB(hexwkb);
 
         public static Set? FromText(string str)
-            => H3IndexSet.In(str);
-
-        public static Set? In(string str)
             => MEOSFactory.WrapSet(Meos.H3indexsetIn(str));
 
         public static Set? Make(H3Index[] values)

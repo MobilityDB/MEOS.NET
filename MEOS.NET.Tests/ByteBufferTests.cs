@@ -12,7 +12,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ASpanRoundTripsThroughItsOwnWKB()
         {
-            Span span = FloatSpan.In("[8, 10]")!;
+            Span span = FloatSpan.FromText("[8, 10]")!;
 
             byte[]? wkb = span.AsWKB(0);
 
@@ -28,7 +28,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ATemporalValueRoundTripsThroughItsOwnWKB()
         {
-            Temporal temp = TFloat.In("[25.5@2024-12-06, 27.5@2024-12-08]")!;
+            Temporal temp = TFloat.FromText("[25.5@2024-12-06, 27.5@2024-12-08]")!;
 
             byte[]? wkb = temp.AsWKB(0);
 
@@ -43,7 +43,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void TheHexFormNeedsNoLengthOfItsOwn()
         {
-            Span span = FloatSpan.In("[8, 10]")!;
+            Span span = FloatSpan.FromText("[8, 10]")!;
 
             string hex = span.AsHexWKB(0);
 

@@ -207,9 +207,6 @@ namespace MEOS.NET.Types
         public Temporal? Nai(TRGeometry temp2)
             => MEOSFactory.WrapTemporal(Meos.NaiTrgeometryTrgeometry(this.Ptr, temp2.Ptr));
 
-        public string Out()
-            => Meos.TrgeometryOut(this.Ptr);
-
         public bool Overabove(TRGeometry temp2)
             => Meos.OveraboveTspatialTspatial(this.Ptr, temp2.Ptr);
 
@@ -438,7 +435,7 @@ namespace MEOS.NET.Types
             => Temporal.FromWKB(wkb);
 
         public static Temporal? FromEWKT(string str)
-            => TRGeometry.In(str);
+            => TRGeometry.FromText(str);
 
         public static Temporal? FromHexEWKB(string hexwkb)
             => Temporal.FromHexWKB(hexwkb);
@@ -447,9 +444,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTemporal(Meos.TrgeometryFromMfjson(mfjson));
 
         public static Temporal? FromText(string str)
-            => TRGeometry.In(str);
-
-        public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryIn(str));
 
     }

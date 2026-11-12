@@ -150,9 +150,6 @@ namespace MEOS.NET.Types
         public int NumPoints()
             => Meos.GeoNumPoints(this.Ptr);
 
-        public string Out()
-            => Meos.GeoOut(this.Ptr);
-
         public double Perimeter(bool spheroid)
             => Meos.GeoPerimeter(this.Ptr, spheroid);
 

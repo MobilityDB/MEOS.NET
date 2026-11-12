@@ -41,7 +41,7 @@ namespace MEOS.NET.Types
         public string AsHexEWKB(byte variant)
             => Meos.SpatialsetAsHexewkb(this.Ptr, variant);
 
-        public string AsText(int maxdd)
+        public new string AsText(int maxdd)
             => Meos.SpatialsetAsText(this.Ptr, maxdd);
 
         public int SRID()

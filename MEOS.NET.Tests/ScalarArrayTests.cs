@@ -13,7 +13,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ATemporalBooleanAnswersItsValuesAsBooleans()
         {
-            TBool temp = (TBool)TBool.In(
+            TBool temp = (TBool)TBool.FromText(
                 "{true@2024-12-06, false@2024-12-07, true@2024-12-08}")!;
 
             bool[] values = temp.Values();
@@ -25,7 +25,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ATemporalFloatAnswersItsValuesAsDoubles()
         {
-            TFloat temp = (TFloat)TFloat.In(
+            TFloat temp = (TFloat)TFloat.FromText(
                 "{1.5@2024-12-06, 2.5@2024-12-07}")!;
 
             double[] values = temp.Values();

@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public bool Above(TS2Cell temp2)
             => Meos.AboveTspatialTspatial(this.Ptr, temp2.Ptr);
@@ -206,7 +206,7 @@ namespace MEOS.NET.Types
             => Temporal.FromWKB(wkb);
 
         public static Temporal? FromEWKT(string str)
-            => TS2Cell.In(str);
+            => TS2Cell.FromText(str);
 
         public static Temporal? FromHexEWKB(string hexwkb)
             => Temporal.FromHexWKB(hexwkb);
@@ -215,9 +215,6 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTemporal(Meos.Ts2cellFromMfjson(mfjson));
 
         public static Temporal? FromText(string str)
-            => TS2Cell.In(str);
-
-        public static Temporal? In(string str)
             => MEOSFactory.WrapTemporal(Meos.Ts2cellIn(str));
 
     }

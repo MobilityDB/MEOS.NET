@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.AsText();
 
         public int AlwaysEq(TJsonb temp)
             => Meos.AlwaysEqJsonbTjsonb(this.Ptr, temp.Ptr);
@@ -40,7 +40,7 @@ namespace MEOS.NET.Types
             => Meos.JsonbArrayLength(this.Ptr);
 
         public string AsText()
-            => this.Out();
+            => Meos.JsonbOut(this.Ptr);
 
         public int Cmp(Jsonb jb2)
             => Meos.JsonbCmp(this.Ptr, jb2.Ptr);
@@ -245,9 +245,6 @@ namespace MEOS.NET.Types
         public Text?[] ObjectKeys()
             => MEOSFactory.WrapTextArray(Meos.JsonbObjectKeys(this.Ptr));
 
-        public string Out()
-            => Meos.JsonbOut(this.Ptr);
-
         public int PathExists(JsonPath jp, Jsonb vars, bool silent, bool tz)
             => Meos.JsonbPathExists(this.Ptr, jp.Ptr, vars.Ptr, silent, tz);
 
@@ -361,7 +358,7 @@ namespace MEOS.NET.Types
         public static Jsonb? FromText(Text txt, bool unique_keys)
             => MEOSFactory.WrapJsonb(Meos.JsonbFromText(txt.Ptr, unique_keys));
 
-        public static Jsonb? In(string str)
+        public static Jsonb? FromText(string str)
             => MEOSFactory.WrapJsonb(Meos.JsonbIn(str));
 
         public static Jsonb? Make(Text[] keys_vals)

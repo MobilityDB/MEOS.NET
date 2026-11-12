@@ -16,10 +16,10 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out();
+            => this.AsText();
 
         public string AsText()
-            => this.Out();
+            => Meos.JsonpathOut(this.Ptr);
 
         public JsonPath? Copy()
             => MEOSFactory.WrapJsonPath(Meos.JsonpathCopy(this.Ptr));
@@ -27,13 +27,7 @@ namespace MEOS.NET.Types
         public int MemSize()
             => Meos.JsonpathMemSize(this.Ptr);
 
-        public string Out()
-            => Meos.JsonpathOut(this.Ptr);
-
         public static JsonPath? FromText(string str)
-            => JsonPath.In(str);
-
-        public static JsonPath? In(string str)
             => MEOSFactory.WrapJsonPath(Meos.JsonpathIn(str));
 
     }

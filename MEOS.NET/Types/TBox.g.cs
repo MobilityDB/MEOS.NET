@@ -16,7 +16,7 @@ namespace MEOS.NET.Types
 
         /// <summary>The text MEOS writes this value as.</summary>
         public override string ToString()
-            => this.Out(15);
+            => this.AsText(15);
 
         public bool Adjacent(TBox box2)
             => Meos.AdjacentTboxTbox(this.Ptr, box2.Ptr);
@@ -82,7 +82,7 @@ namespace MEOS.NET.Types
             => Meos.TboxAsHexwkb(this.Ptr, variant);
 
         public string AsText(int maxdd)
-            => this.Out(maxdd);
+            => Meos.TboxOut(this.Ptr, maxdd);
 
         public byte[]? AsWKB(byte variant)
         {
@@ -286,9 +286,6 @@ namespace MEOS.NET.Types
 
         public bool Ne(TBox box2)
             => Meos.TboxNe(this.Ptr, box2.Ptr);
-
-        public string Out(int maxdd)
-            => Meos.TboxOut(this.Ptr, maxdd);
 
         public bool Overafter(TBox box2)
             => Meos.OverafterTboxTbox(this.Ptr, box2.Ptr);
@@ -848,7 +845,7 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTBox(Meos.NumspanTstzspanToTbox(s.Ptr, p.Ptr));
 
         public static TBox? FromText(string str)
-            => TBox.In(str);
+            => MEOSFactory.WrapTBox(Meos.TboxIn(str));
 
         public static TBox? FromTimestamptz(DateTime t)
             => MEOSFactory.WrapTBox(Meos.TimestamptzToTbox(MEOSConvert.ToTimestampTz(t)));
@@ -896,9 +893,6 @@ namespace MEOS.NET.Types
                 Marshal.FreeHGlobal(_duration);
             }
         }
-
-        public static TBox? In(string str)
-            => MEOSFactory.WrapTBox(Meos.TboxIn(str));
 
         public static TBox? Make(Span s, Span p)
             => MEOSFactory.WrapTBox(Meos.TboxMake(s.Ptr, p.Ptr));

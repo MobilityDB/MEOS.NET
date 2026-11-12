@@ -76,7 +76,7 @@ namespace MEOS.NET.Types
         }
 
         public string AsEWKT(int maxdd)
-            => this.Out(maxdd);
+            => Meos.TpcboxOut(this.Ptr, maxdd);
 
         public string AsHexEWKB(byte variant)
             => Meos.TpcboxAsHexewkb(this.Ptr, variant);
@@ -233,9 +233,6 @@ namespace MEOS.NET.Types
 
         public bool Ne(TPCBox box2)
             => Meos.TpcboxNe(this.Ptr, box2.Ptr);
-
-        public string Out(int maxdd)
-            => Meos.TpcboxOut(this.Ptr, maxdd);
 
         public bool Overabove(TPCBox box2)
             => Meos.OveraboveTpcboxTpcbox(this.Ptr, box2.Ptr);
@@ -592,7 +589,7 @@ namespace MEOS.NET.Types
             => TPCBox.FromWKB(wkb);
 
         public static TPCBox? FromEWKT(string str)
-            => TPCBox.In(str);
+            => TPCBox.FromText(str);
 
         public static TPCBox? FromHexEWKB(string hexwkb)
             => TPCBox.FromHexWKB(hexwkb);
@@ -601,7 +598,7 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapTPCBox(Meos.TpcboxFromHexwkb(hexwkb));
 
         public static TPCBox? FromText(string str)
-            => TPCBox.In(str);
+            => MEOSFactory.WrapTPCBox(Meos.TpcboxIn(str));
 
         public static TPCBox? FromTpointcloud(Temporal temp)
             => MEOSFactory.WrapTPCBox(Meos.TpointcloudToTpcbox(temp.Ptr));
@@ -618,9 +615,6 @@ namespace MEOS.NET.Types
                 _wkb.Free();
             }
         }
-
-        public static TPCBox? In(string str)
-            => MEOSFactory.WrapTPCBox(Meos.TpcboxIn(str));
 
         public static TPCBox? Make(bool hasx, bool hasz, bool geodetic, uint pcid, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, Span period)
             => MEOSFactory.WrapTPCBox(Meos.TpcboxMake(hasx, hasz, geodetic, pcid, xmin, xmax, ymin, ymax, zmin, zmax, period.Ptr));

@@ -16,7 +16,7 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void ADatumCrossesAsAnUnsignedWord()
         {
-            Set set = BigIntSet.In("{-1, 7}")!;
+            Set set = BigIntSet.FromText("{-1, 7}")!;
 
             ulong[] values = Meos.SetValues(set.Ptr);
 
@@ -26,18 +26,18 @@ namespace MEOS.NET.Tests
         [TestMethod]
         public void AnOidCrossesAsAnUnsignedInt()
         {
-            Text a = Text.In("abc")!;
-            Text b = Text.In("abd")!;
+            Text a = Text.FromCstring("abc")!;
+            Text b = Text.FromCstring("abd")!;
 
             // 100 is DEFAULT_COLLATION_OID.
             Assert.IsTrue(Meos.TextCmp(a.Ptr, b.Ptr, 100u) < 0);
-            Assert.AreEqual(a.Hash(100u), Text.In("abc")!.Hash(100u));
+            Assert.AreEqual(a.Hash(100u), Text.FromCstring("abc")!.Hash(100u));
         }
 
         [TestMethod]
         public void AStructFieldTypedThroughATypedefIsLaidOut()
         {
-            STBox box = STBox.In("STBOX X((1.0,2.0),(3.0,4.0))")!;
+            STBox box = STBox.FromText("STBOX X((1.0,2.0),(3.0,4.0))")!;
 
             GBOX gbox = box.ToGbox()!.Value;
 

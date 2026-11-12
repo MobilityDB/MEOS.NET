@@ -123,6 +123,57 @@ namespace MEOS.NET.Tests
         }
 
         [TestMethod]
+        public void ASetASpanASpanSetATemporalValueAndABoxRoundTripThroughTheirText()
+        {
+            string[] texts =
+            {
+                IntSet.FromText("{1, 3, 5}")!.AsText(15),
+                FloatSpan.FromText("[8, 10]")!.AsText(15),
+                FloatSpanSet.FromText("{[8, 10], [11, 12]}")!.AsText(15),
+                TFloat.FromText("[25.5@2024-12-06, 27.5@2024-12-07]")!.AsText(15),
+                TBox.FromText("TBOXFLOAT XT([1, 3),[2024-12-06, 2024-12-08])")!.AsText(15),
+            };
+
+            Assert.AreEqual("{1, 3, 5}", texts[0]);
+            Assert.AreEqual("[8, 10]", texts[1]);
+            Assert.AreEqual("{[8, 10], [11, 12]}", texts[2]);
+            Assert.AreEqual(
+                "[25.5@2024-12-06 00:00:00+00, 27.5@2024-12-07 00:00:00+00]", texts[3]);
+            Assert.AreEqual(texts[0], IntSet.FromText(texts[0])!.AsText(15));
+            Assert.AreEqual(texts[1], FloatSpan.FromText(texts[1])!.AsText(15));
+            Assert.AreEqual(texts[2], FloatSpanSet.FromText(texts[2])!.AsText(15));
+            Assert.AreEqual(texts[3], TFloat.FromText(texts[3])!.AsText(15));
+            Assert.AreEqual(texts[4], TBox.FromText(texts[4])!.AsText(15));
+        }
+
+        [TestMethod]
+        public void ABoxRoundTripsThroughItsExtendedText()
+        {
+            const string Box = "SRID=4326;STBOX X((1,1),(2,2))";
+
+            STBox box = STBox.FromText(Box)!;
+
+            Assert.AreEqual(Box, box.AsEWKT(15));
+            Assert.AreEqual(Box, STBox.FromEWKT(box.AsEWKT(15))!.AsEWKT(15));
+            Assert.AreEqual("STBOX X((1,1),(2,2))", box.AsText(15));
+        }
+
+        [TestMethod]
+        public void AJsonbAJsonPathAndANumericRoundTripThroughTheirText()
+        {
+            Jsonb jb = Jsonb.FromText("{\"a\": 1, \"b\": \"two\"}")!;
+            JsonPath path = JsonPath.FromText("$.a")!;
+            Numeric num = Numeric.FromText("12.50", -1)!;
+
+            Assert.AreEqual("{\"a\": 1, \"b\": \"two\"}", jb.AsText());
+            Assert.AreEqual(jb.AsText(), Jsonb.FromText(jb.AsText())!.AsText());
+            Assert.AreEqual("$.\"a\"", path.AsText());
+            Assert.AreEqual(path.AsText(), JsonPath.FromText(path.AsText())!.AsText());
+            Assert.AreEqual("12.50", num.AsText());
+            Assert.AreEqual(num.AsText(), Numeric.FromText(num.AsText(), -1)!.AsText());
+        }
+
+        [TestMethod]
         public void ASpanReadsItsTextUnderThePortableName()
         {
             Span span = FloatSpan.FromText("[8, 10]")!;
