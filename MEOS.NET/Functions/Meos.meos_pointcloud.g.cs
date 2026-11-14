@@ -845,6 +845,12 @@ namespace MEOS.NET.Functions
         public static IntPtr TpcpatchMinusTpcbox(IntPtr temp, IntPtr box, bool border_inc)
             => SafeExecution<IntPtr>(() => Native.TpcpatchMinusTpcbox(temp, box, border_inc));
 
+        public static IntPtr TpcpatchAtTpcboxFine(IntPtr temp, IntPtr box, bool border_inc)
+            => SafeExecution<IntPtr>(() => Native.TpcpatchAtTpcboxFine(temp, box, border_inc));
+
+        public static IntPtr TpcpatchMinusTpcboxFine(IntPtr temp, IntPtr box, bool border_inc)
+            => SafeExecution<IntPtr>(() => Native.TpcpatchMinusTpcboxFine(temp, box, border_inc));
+
         public static uint TpcpatchPcid(IntPtr temp)
             => SafeExecution<uint>(() => Native.TpcpatchPcid(temp));
 

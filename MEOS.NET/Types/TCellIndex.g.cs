@@ -14,6 +14,9 @@ namespace MEOS.NET.Types
     {
         internal TCellIndex(IntPtr ptr) : base(ptr) { }
 
+        public Temporal? AtStbox(STBox box, bool border_inc)
+            => MEOSFactory.WrapTemporal(Meos.TcellindexAtStbox(this.Ptr, box.Ptr, border_inc));
+
         public Temporal? CellArea()
             => MEOSFactory.WrapTemporal(Meos.TcellindexCellArea(this.Ptr));
 
@@ -31,6 +34,9 @@ namespace MEOS.NET.Types
 
         public Temporal? IsValidCell()
             => MEOSFactory.WrapTemporal(Meos.TcellindexIsValidCell(this.Ptr));
+
+        public Temporal? MinusStbox(STBox box, bool border_inc)
+            => MEOSFactory.WrapTemporal(Meos.TcellindexMinusStbox(this.Ptr, box.Ptr, border_inc));
 
     }
 }

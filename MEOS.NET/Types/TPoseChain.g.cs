@@ -39,8 +39,14 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TPoseChain temp2)
             => Meos.AlwaysNeTposechainTposechain(this.Ptr, temp2.Ptr);
 
+        public int AlwaysOverlaps(STBox box)
+            => Meos.AlwaysOverlapsTposechainStbox(this.Ptr, box.Ptr);
+
         public string AsGeopose(int precision)
             => Meos.TposechainAsGeopose(this.Ptr, precision);
+
+        public Temporal? AtStbox(STBox box, bool border_inc)
+            => MEOSFactory.WrapTemporal(Meos.TposechainAtStbox(this.Ptr, box.Ptr, border_inc));
 
         public Temporal? AtValue(PoseChain pc)
             => MEOSFactory.WrapTemporal(Meos.TposechainAtValue(this.Ptr, pc.Ptr));
@@ -93,11 +99,17 @@ namespace MEOS.NET.Types
         public int EverNe(TPoseChain temp2)
             => Meos.EverNeTposechainTposechain(this.Ptr, temp2.Ptr);
 
+        public int EverOverlaps(STBox box)
+            => Meos.EverOverlapsTposechainStbox(this.Ptr, box.Ptr);
+
         public bool Front(TPoseChain temp2)
             => Meos.FrontTspatialTspatial(this.Ptr, temp2.Ptr);
 
         public bool Left(TPoseChain temp2)
             => Meos.LeftTspatialTspatial(this.Ptr, temp2.Ptr);
+
+        public Temporal? MinusStbox(STBox box, bool border_inc)
+            => MEOSFactory.WrapTemporal(Meos.TposechainMinusStbox(this.Ptr, box.Ptr, border_inc));
 
         public Temporal? MinusValue(PoseChain pc)
             => MEOSFactory.WrapTemporal(Meos.TposechainMinusValue(this.Ptr, pc.Ptr));

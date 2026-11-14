@@ -1178,8 +1178,14 @@ namespace MEOS.NET.Functions
         public static IntPtr TposechainTranslate(IntPtr temp, double deltax, double deltay, double deltaz)
             => SafeExecution<IntPtr>(() => Native.TposechainTranslate(temp, deltax, deltay, deltaz));
 
+        public static IntPtr TposechainAtStbox(IntPtr temp, IntPtr box, bool border_inc)
+            => SafeExecution<IntPtr>(() => Native.TposechainAtStbox(temp, box, border_inc));
+
         public static IntPtr TposechainAtValue(IntPtr temp, IntPtr pc)
             => SafeExecution<IntPtr>(() => Native.TposechainAtValue(temp, pc));
+
+        public static IntPtr TposechainMinusStbox(IntPtr temp, IntPtr box, bool border_inc)
+            => SafeExecution<IntPtr>(() => Native.TposechainMinusStbox(temp, box, border_inc));
 
         public static IntPtr TposechainMinusValue(IntPtr temp, IntPtr pc)
             => SafeExecution<IntPtr>(() => Native.TposechainMinusValue(temp, pc));
@@ -1241,6 +1247,12 @@ namespace MEOS.NET.Functions
         public static int AlwaysNeTposechainTposechain(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.AlwaysNeTposechainTposechain(temp1, temp2));
 
+        public static int AlwaysOverlapsStboxTposechain(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsStboxTposechain(box, temp));
+
+        public static int AlwaysOverlapsTposechainStbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTposechainStbox(temp, box));
+
         public static int EverEqPosechainTposechain(IntPtr posechain, IntPtr temp)
             => SafeExecution<int>(() => Native.EverEqPosechainTposechain(posechain, temp));
 
@@ -1258,6 +1270,12 @@ namespace MEOS.NET.Functions
 
         public static int EverNeTposechainTposechain(IntPtr temp1, IntPtr temp2)
             => SafeExecution<int>(() => Native.EverNeTposechainTposechain(temp1, temp2));
+
+        public static int EverOverlapsStboxTposechain(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.EverOverlapsStboxTposechain(box, temp));
+
+        public static int EverOverlapsTposechainStbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.EverOverlapsTposechainStbox(temp, box));
 
         public static IntPtr TeqPosechainTposechain(IntPtr posechain, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TeqPosechainTposechain(posechain, temp));

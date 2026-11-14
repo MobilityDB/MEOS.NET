@@ -501,6 +501,9 @@ namespace MEOS.NET.Functions
         public static int AlwaysOverlapsTcbufferStbox(IntPtr temp, IntPtr box)
             => SafeExecution<int>(() => Native.AlwaysOverlapsTcbufferStbox(temp, box));
 
+        public static int AlwaysOverlapsTcbufferTcbuffer(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTcbufferTcbuffer(temp1, temp2));
+
         public static int EverEqCbufferTcbuffer(IntPtr cb, IntPtr temp)
             => SafeExecution<int>(() => Native.EverEqCbufferTcbuffer(cb, temp));
 
@@ -524,6 +527,9 @@ namespace MEOS.NET.Functions
 
         public static int EverOverlapsTcbufferStbox(IntPtr temp, IntPtr box)
             => SafeExecution<int>(() => Native.EverOverlapsTcbufferStbox(temp, box));
+
+        public static int EverOverlapsTcbufferTcbuffer(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<int>(() => Native.EverOverlapsTcbufferTcbuffer(temp1, temp2));
 
         public static IntPtr TeqCbufferTcbuffer(IntPtr cb, IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TeqCbufferTcbuffer(cb, temp));

@@ -523,6 +523,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "date_to_spanset", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr DateToSpanset(int d);
 
+            [LibraryImport(DllPath, EntryPoint = "date_to_unix_days", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int DateToUnixDays(int d);
+
             [LibraryImport(DllPath, EntryPoint = "dateset_to_tstzset", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr DatesetToTstzset(IntPtr s);
 
@@ -580,6 +583,13 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "intspanset_to_floatspanset", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr IntspansetToFloatspanset(IntPtr ss);
 
+            [LibraryImport(DllPath, EntryPoint = "interval_from_parts", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr IntervalFromParts(int months, int days, long us);
+
+            [LibraryImport(DllPath, EntryPoint = "interval_to_parts", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool IntervalToParts(IntPtr interv, IntPtr months, IntPtr days, IntPtr us);
+
             [LibraryImport(DllPath, EntryPoint = "set_to_span", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr SetToSpan(IntPtr s);
 
@@ -591,6 +601,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "text_to_set", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TextToSet(IntPtr txt);
+
+            [LibraryImport(DllPath, EntryPoint = "timestamp_to_unix_us", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial long TimestampToUnixUs(long ts);
 
             [LibraryImport(DllPath, EntryPoint = "timestamptz_to_set", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TimestamptzToSet(long t);
@@ -612,6 +625,12 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "tstzspanset_to_datespanset", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TstzspansetToDatespanset(IntPtr ss);
+
+            [LibraryImport(DllPath, EntryPoint = "unix_days_to_date", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int UnixDaysToDate(int days);
+
+            [LibraryImport(DllPath, EntryPoint = "unix_us_to_timestamp", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial long UnixUsToTimestamp(long us);
 
             [LibraryImport(DllPath, EntryPoint = "unix_us_to_timestamptz", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial long UnixUsToTimestamptz(long us);
@@ -7462,6 +7481,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "always_overlaps_tcbuffer_stbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int AlwaysOverlapsTcbufferStbox(IntPtr temp, IntPtr box);
 
+            [LibraryImport(DllPath, EntryPoint = "always_overlaps_tcbuffer_tcbuffer", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int AlwaysOverlapsTcbufferTcbuffer(IntPtr temp1, IntPtr temp2);
+
             [LibraryImport(DllPath, EntryPoint = "ever_eq_cbuffer_tcbuffer", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int EverEqCbufferTcbuffer(IntPtr cb, IntPtr temp);
 
@@ -7485,6 +7507,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "ever_overlaps_tcbuffer_stbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int EverOverlapsTcbufferStbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, EntryPoint = "ever_overlaps_tcbuffer_tcbuffer", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int EverOverlapsTcbufferTcbuffer(IntPtr temp1, IntPtr temp2);
 
             [LibraryImport(DllPath, EntryPoint = "teq_cbuffer_tcbuffer", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TeqCbufferTcbuffer(IntPtr cb, IntPtr temp);
@@ -7785,6 +7810,24 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "tcellindex_cell_area", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TcellindexCellArea(IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "tcellindex_at_stbox", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TcellindexAtStbox(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc);
+
+            [LibraryImport(DllPath, EntryPoint = "tcellindex_minus_stbox", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TcellindexMinusStbox(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc);
+
+            [LibraryImport(DllPath, EntryPoint = "ever_overlaps_tcellindex_stbox", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int EverOverlapsTcellindexStbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, EntryPoint = "always_overlaps_tcellindex_stbox", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int AlwaysOverlapsTcellindexStbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, EntryPoint = "ever_overlaps_stbox_tcellindex", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int EverOverlapsStboxTcellindex(IntPtr box, IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "always_overlaps_stbox_tcellindex", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int AlwaysOverlapsStboxTcellindex(IntPtr box, IntPtr temp);
 
             [LibraryImport(DllPath, EntryPoint = "h3index_in", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial ulong H3indexIn(string str);
@@ -11409,6 +11452,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "always_overlaps_tnpoint_stbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int AlwaysOverlapsTnpointStbox(IntPtr temp, IntPtr box);
 
+            [LibraryImport(DllPath, EntryPoint = "always_overlaps_tnpoint_tnpoint", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int AlwaysOverlapsTnpointTnpoint(IntPtr temp1, IntPtr temp2);
+
             [LibraryImport(DllPath, EntryPoint = "ever_eq_npoint_tnpoint", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int EverEqNpointTnpoint(IntPtr np, IntPtr temp);
 
@@ -11432,6 +11478,9 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "ever_overlaps_tnpoint_stbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int EverOverlapsTnpointStbox(IntPtr temp, IntPtr box);
+
+            [LibraryImport(DllPath, EntryPoint = "ever_overlaps_tnpoint_tnpoint", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int EverOverlapsTnpointTnpoint(IntPtr temp1, IntPtr temp2);
 
             [LibraryImport(DllPath, EntryPoint = "teq_tnpoint_npoint", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TeqTnpointNpoint(IntPtr temp, IntPtr np);
@@ -12193,6 +12242,12 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "tpcpatch_minus_tpcbox", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TpcpatchMinusTpcbox(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc);
+
+            [LibraryImport(DllPath, EntryPoint = "tpcpatch_at_tpcbox_fine", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TpcpatchAtTpcboxFine(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc);
+
+            [LibraryImport(DllPath, EntryPoint = "tpcpatch_minus_tpcbox_fine", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TpcpatchMinusTpcboxFine(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc);
 
             [LibraryImport(DllPath, EntryPoint = "tpcpatch_pcid", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial uint TpcpatchPcid(IntPtr temp);
@@ -13370,8 +13425,14 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "tposechain_translate", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TposechainTranslate(IntPtr temp, double deltax, double deltay, double deltaz);
 
+            [LibraryImport(DllPath, EntryPoint = "tposechain_at_stbox", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TposechainAtStbox(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc);
+
             [LibraryImport(DllPath, EntryPoint = "tposechain_at_value", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TposechainAtValue(IntPtr temp, IntPtr pc);
+
+            [LibraryImport(DllPath, EntryPoint = "tposechain_minus_stbox", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TposechainMinusStbox(IntPtr temp, IntPtr box, [MarshalAs(UnmanagedType.U1)] bool border_inc);
 
             [LibraryImport(DllPath, EntryPoint = "tposechain_minus_value", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TposechainMinusValue(IntPtr temp, IntPtr pc);
@@ -13433,6 +13494,12 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "always_ne_tposechain_tposechain", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int AlwaysNeTposechainTposechain(IntPtr temp1, IntPtr temp2);
 
+            [LibraryImport(DllPath, EntryPoint = "always_overlaps_stbox_tposechain", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int AlwaysOverlapsStboxTposechain(IntPtr box, IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "always_overlaps_tposechain_stbox", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int AlwaysOverlapsTposechainStbox(IntPtr temp, IntPtr box);
+
             [LibraryImport(DllPath, EntryPoint = "ever_eq_posechain_tposechain", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int EverEqPosechainTposechain(IntPtr posechain, IntPtr temp);
 
@@ -13450,6 +13517,12 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "ever_ne_tposechain_tposechain", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial int EverNeTposechainTposechain(IntPtr temp1, IntPtr temp2);
+
+            [LibraryImport(DllPath, EntryPoint = "ever_overlaps_stbox_tposechain", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int EverOverlapsStboxTposechain(IntPtr box, IntPtr temp);
+
+            [LibraryImport(DllPath, EntryPoint = "ever_overlaps_tposechain_stbox", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial int EverOverlapsTposechainStbox(IntPtr temp, IntPtr box);
 
             [LibraryImport(DllPath, EntryPoint = "teq_posechain_tposechain", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TeqPosechainTposechain(IntPtr posechain, IntPtr temp);
@@ -16261,6 +16334,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "time_extract", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TimeExtract(long time, IntPtr units);
 
+            [LibraryImport(DllPath, EntryPoint = "time_from_parts", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial long TimeFromParts(long us);
+
             [LibraryImport(DllPath, EntryPoint = "time_ge", StringMarshalling = StringMarshalling.Utf8)]
             [return: MarshalAs(UnmanagedType.U1)]
             internal static partial bool TimeGe(long time1, long time2);
@@ -16308,6 +16384,10 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "time_to_interval", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TimeToInterval(long time);
+
+            [LibraryImport(DllPath, EntryPoint = "time_to_parts", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool TimeToParts(long time, IntPtr us);
 
             [LibraryImport(DllPath, EntryPoint = "time_to_timetz", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TimeToTimetz(long time);
@@ -16372,6 +16452,9 @@ namespace MEOS.NET.Functions
             [LibraryImport(DllPath, EntryPoint = "timetz_copy", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TimetzCopy(IntPtr timetz);
 
+            [LibraryImport(DllPath, EntryPoint = "timetz_from_parts", StringMarshalling = StringMarshalling.Utf8)]
+            internal static partial IntPtr TimetzFromParts(long us, int offset);
+
             [LibraryImport(DllPath, EntryPoint = "timetz_out", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TimetzOut(IntPtr timetz, out nuint size_out);
 
@@ -16387,6 +16470,10 @@ namespace MEOS.NET.Functions
 
             [LibraryImport(DllPath, EntryPoint = "timetz_smaller", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial IntPtr TimetzSmaller(IntPtr timetz1, IntPtr timetz2);
+
+            [LibraryImport(DllPath, EntryPoint = "timetz_to_parts", StringMarshalling = StringMarshalling.Utf8)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static partial bool TimetzToParts(IntPtr timetz, IntPtr us, IntPtr offset);
 
             [LibraryImport(DllPath, EntryPoint = "timetz_to_time", StringMarshalling = StringMarshalling.Utf8)]
             internal static partial long TimetzToTime(IntPtr timetz);

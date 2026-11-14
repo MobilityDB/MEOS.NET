@@ -824,6 +824,9 @@ namespace MEOS.NET.Functions
         public static IntPtr DateToSpanset(int d)
             => SafeExecution<IntPtr>(() => Native.DateToSpanset(d));
 
+        public static int DateToUnixDays(int d)
+            => SafeExecution<int>(() => Native.DateToUnixDays(d));
+
         public static IntPtr DatesetToTstzset(IntPtr s)
             => SafeExecution<IntPtr>(() => Native.DatesetToTstzset(s));
 
@@ -881,6 +884,12 @@ namespace MEOS.NET.Functions
         public static IntPtr IntspansetToFloatspanset(IntPtr ss)
             => SafeExecution<IntPtr>(() => Native.IntspansetToFloatspanset(ss));
 
+        public static IntPtr IntervalFromParts(int months, int days, long us)
+            => SafeExecution<IntPtr>(() => Native.IntervalFromParts(months, days, us));
+
+        public static bool IntervalToParts(IntPtr interv, IntPtr months, IntPtr days, IntPtr us)
+            => SafeExecution<bool>(() => Native.IntervalToParts(interv, months, days, us));
+
         public static IntPtr SetToSpan(IntPtr s)
             => SafeExecution<IntPtr>(() => Native.SetToSpan(s));
 
@@ -892,6 +901,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TextToSet(IntPtr txt)
             => SafeExecution<IntPtr>(() => Native.TextToSet(txt));
+
+        public static long TimestampToUnixUs(long ts)
+            => SafeExecution<long>(() => Native.TimestampToUnixUs(ts));
 
         public static IntPtr TimestamptzToSet(long t)
             => SafeExecution<IntPtr>(() => Native.TimestamptzToSet(t));
@@ -913,6 +925,12 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TstzspansetToDatespanset(IntPtr ss)
             => SafeExecution<IntPtr>(() => Native.TstzspansetToDatespanset(ss));
+
+        public static int UnixDaysToDate(int days)
+            => SafeExecution<int>(() => Native.UnixDaysToDate(days));
+
+        public static long UnixUsToTimestamp(long us)
+            => SafeExecution<long>(() => Native.UnixUsToTimestamp(us));
 
         public static long UnixUsToTimestamptz(long us)
             => SafeExecution<long>(() => Native.UnixUsToTimestamptz(us));
