@@ -36,6 +36,9 @@ namespace MEOS.NET.Types
         public Temporal? AtTpcbox(TPCBox box, bool border_inc)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchAtTpcbox(this.Ptr, box.Ptr, border_inc));
 
+        public Temporal? AtTpcboxFine(TPCBox box, bool border_inc)
+            => MEOSFactory.WrapTemporal(Meos.TpcpatchAtTpcboxFine(this.Ptr, box.Ptr, border_inc));
+
         public Temporal? AtValue(PCPatch pa)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchAtValue(this.Ptr, pa.Ptr));
 
@@ -62,6 +65,9 @@ namespace MEOS.NET.Types
 
         public Temporal? MinusTpcbox(TPCBox box, bool border_inc)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchMinusTpcbox(this.Ptr, box.Ptr, border_inc));
+
+        public Temporal? MinusTpcboxFine(TPCBox box, bool border_inc)
+            => MEOSFactory.WrapTemporal(Meos.TpcpatchMinusTpcboxFine(this.Ptr, box.Ptr, border_inc));
 
         public Temporal? MinusValue(PCPatch pa)
             => MEOSFactory.WrapTemporal(Meos.TpcpatchMinusValue(this.Ptr, pa.Ptr));

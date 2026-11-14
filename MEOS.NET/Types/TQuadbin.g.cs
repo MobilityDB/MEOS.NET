@@ -39,6 +39,9 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TQuadbin temp2)
             => Meos.AlwaysNeTquadbinTquadbin(this.Ptr, temp2.Ptr);
 
+        public int AlwaysOverlaps(STBox box)
+            => Meos.AlwaysOverlapsTcellindexStbox(this.Ptr, box.Ptr);
+
         public Temporal? AtValue(Quadbin cell)
             => MEOSFactory.WrapTemporal(Meos.TquadbinAtValue(this.Ptr, cell.value));
 
@@ -86,6 +89,9 @@ namespace MEOS.NET.Types
 
         public int EverNe(TQuadbin temp2)
             => Meos.EverNeTquadbinTquadbin(this.Ptr, temp2.Ptr);
+
+        public int EverOverlaps(STBox box)
+            => Meos.EverOverlapsTcellindexStbox(this.Ptr, box.Ptr);
 
         public Temporal? GridDistance(Temporal dest)
             => MEOSFactory.WrapTemporal(Meos.TquadbinGridDistance(this.Ptr, dest.Ptr));

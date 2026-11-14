@@ -10,14 +10,14 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `0bc5f54084207e4c0e48d2b55c7f6b9cbb944045` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `b49672e5450e50899effb3a22aa5112da9145f80` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
 
 ## The flat surface — `tools/codegen.py`
 
-### parameter nullability — 4344
+### parameter nullability — 4365
 
 `shape.nullable` names the parameters a function accepts NULL for, and the catalog carries no field saying a parameter is required. A pointer parameter named in neither reaches the surface with its contract unstated: the wrapper takes it, and nothing says whether zero is an argument or a fault.
 
@@ -320,17 +320,22 @@ and `tools/objectgen.py`.  Do not edit.
 | always_ne_ts2cell_ts2cell | temp1, temp2 |
 | always_ne_ttext_text | temp, txt |
 | always_overlaps_stbox_tcbuffer | box, temp |
+| always_overlaps_stbox_tcellindex | box, temp |
 | always_overlaps_stbox_tgeo | box, temp |
 | always_overlaps_stbox_tnpoint | box, temp |
 | always_overlaps_stbox_tpose | box, temp |
+| always_overlaps_stbox_tposechain | box, temp |
 | always_overlaps_stbox_trgeometry | box, temp |
 | always_overlaps_tbox_tnumber | box, temp |
 | always_overlaps_tcbuffer_stbox | temp, box |
+| always_overlaps_tcbuffer_tcbuffer | temp1, temp2 |
+| always_overlaps_tcellindex_stbox | temp, box |
 | always_overlaps_temporal_temporal | temp1, temp2 |
 | always_overlaps_temporal_tstzspan | temp, s |
 | always_overlaps_tgeo_stbox | temp, box |
 | always_overlaps_tgeo_tgeo | temp1, temp2 |
 | always_overlaps_tnpoint_stbox | temp, box |
+| always_overlaps_tnpoint_tnpoint | temp1, temp2 |
 | always_overlaps_tnumber_tbox | temp, box |
 | always_overlaps_tpcbox_tpcpatch | box, temp |
 | always_overlaps_tpcbox_tpcpoint | box, temp |
@@ -338,6 +343,7 @@ and `tools/objectgen.py`.  Do not edit.
 | always_overlaps_tpcpoint_tpcbox | temp, box |
 | always_overlaps_tpose_stbox | temp, box |
 | always_overlaps_tpose_tpose | temp1, temp2 |
+| always_overlaps_tposechain_stbox | temp, box |
 | always_overlaps_trgeometry_stbox | temp, box |
 | always_overlaps_tstzspan_temporal | s, temp |
 | araster_value | traj, rast, vspan |
@@ -949,17 +955,22 @@ and `tools/objectgen.py`.  Do not edit.
 | ever_ne_ts2cell_ts2cell | temp1, temp2 |
 | ever_ne_ttext_text | temp, txt |
 | ever_overlaps_stbox_tcbuffer | box, temp |
+| ever_overlaps_stbox_tcellindex | box, temp |
 | ever_overlaps_stbox_tgeo | box, temp |
 | ever_overlaps_stbox_tnpoint | box, temp |
 | ever_overlaps_stbox_tpose | box, temp |
+| ever_overlaps_stbox_tposechain | box, temp |
 | ever_overlaps_stbox_trgeometry | box, temp |
 | ever_overlaps_tbox_tnumber | box, temp |
 | ever_overlaps_tcbuffer_stbox | temp, box |
+| ever_overlaps_tcbuffer_tcbuffer | temp1, temp2 |
+| ever_overlaps_tcellindex_stbox | temp, box |
 | ever_overlaps_temporal_temporal | temp1, temp2 |
 | ever_overlaps_temporal_tstzspan | temp, s |
 | ever_overlaps_tgeo_stbox | temp, box |
 | ever_overlaps_tgeo_tgeo | temp1, temp2 |
 | ever_overlaps_tnpoint_stbox | temp, box |
+| ever_overlaps_tnpoint_tnpoint | temp1, temp2 |
 | ever_overlaps_tnumber_tbox | temp, box |
 | ever_overlaps_tpcbox_tpcpatch | box, temp |
 | ever_overlaps_tpcbox_tpcpoint | box, temp |
@@ -967,6 +978,7 @@ and `tools/objectgen.py`.  Do not edit.
 | ever_overlaps_tpcpoint_tpcbox | temp, box |
 | ever_overlaps_tpose_stbox | temp, box |
 | ever_overlaps_tpose_tpose | temp1, temp2 |
+| ever_overlaps_tposechain_stbox | temp, box |
 | ever_overlaps_trgeometry_stbox | temp, box |
 | ever_overlaps_tstzspan_temporal | s, temp |
 | float4_in | num |
@@ -1308,6 +1320,7 @@ and `tools/objectgen.py`.  Do not edit.
 | interval_part | interv, units |
 | interval_scale | interv |
 | interval_smaller | interv1, interv2 |
+| interval_to_parts | interv, months, days, us |
 | interval_to_time | interv |
 | interval_trunc | interv, units |
 | intset_end_value | s |
@@ -2838,12 +2851,14 @@ and `tools/objectgen.py`.  Do not edit.
 | tcbufferseq_from_base_tstzset | cb, s |
 | tcbufferseq_from_base_tstzspan | cb, s |
 | tcbufferseqset_from_base_tstzspanset | cb, ss |
+| tcellindex_at_stbox | temp, box |
 | tcellindex_cell_area | temp |
 | tcellindex_cell_to_boundary | temp |
 | tcellindex_cell_to_parent | temp |
 | tcellindex_cell_to_point | temp |
 | tcellindex_get_resolution | temp |
 | tcellindex_is_valid_cell | temp |
+| tcellindex_minus_stbox | temp, box |
 | tcontains_cbuffer_tcbuffer | cb, temp |
 | tcontains_geo_tcbuffer | gs, temp |
 | tcontains_geo_tgeo | gs, temp |
@@ -3402,6 +3417,7 @@ and `tools/objectgen.py`.  Do not edit.
 | time_in | str |
 | time_out | size_out |
 | time_part | units |
+| time_to_parts | us |
 | timestamp_bin | stride |
 | timestamp_extract | units |
 | timestamp_in | str |
@@ -3445,6 +3461,7 @@ and `tools/objectgen.py`.  Do not edit.
 | timetz_part | timetz, units |
 | timetz_scale | timetz |
 | timetz_smaller | timetz1, timetz2 |
+| timetz_to_parts | timetz, us, offset |
 | timetz_to_time | timetz |
 | timetz_zone | timetz, zone |
 | tinstant_after_timestamptz | inst |
@@ -3795,6 +3812,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tpcbox_zmax | box, result |
 | tpcbox_zmin | box, result |
 | tpcpatch_at_tpcbox | temp, box |
+| tpcpatch_at_tpcbox_fine | temp, box |
 | tpcpatch_at_value | temp, pa |
 | tpcpatch_end_npoints | temp |
 | tpcpatch_end_value | temp |
@@ -3802,6 +3820,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tpcpatch_from_mfjson | mfjson |
 | tpcpatch_in | str |
 | tpcpatch_minus_tpcbox | temp, box |
+| tpcpatch_minus_tpcbox_fine | temp, box |
 | tpcpatch_minus_value | temp, pa |
 | tpcpatch_npoints | temp |
 | tpcpatch_pcid | temp |
@@ -3937,12 +3956,14 @@ and `tools/objectgen.py`.  Do not edit.
 | tpose_values | temp, count |
 | tpose_yaw | temp |
 | tposechain_as_geopose | temp, size_out |
+| tposechain_at_stbox | temp, box |
 | tposechain_at_value | temp, pc |
 | tposechain_end_value | temp |
 | tposechain_from_base_temp | pc, temp |
 | tposechain_from_geopose | json |
 | tposechain_from_mfjson | mfjson |
 | tposechain_in | str |
+| tposechain_minus_stbox | temp, box |
 | tposechain_minus_value | temp, pc |
 | tposechain_num_poses | temp |
 | tposechain_rotate | temp |

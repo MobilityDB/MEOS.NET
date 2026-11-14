@@ -27,5 +27,23 @@ namespace MEOS.NET.Functions
         public static IntPtr TcellindexCellArea(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TcellindexCellArea(temp));
 
+        public static IntPtr TcellindexAtStbox(IntPtr temp, IntPtr box, bool border_inc)
+            => SafeExecution<IntPtr>(() => Native.TcellindexAtStbox(temp, box, border_inc));
+
+        public static IntPtr TcellindexMinusStbox(IntPtr temp, IntPtr box, bool border_inc)
+            => SafeExecution<IntPtr>(() => Native.TcellindexMinusStbox(temp, box, border_inc));
+
+        public static int EverOverlapsTcellindexStbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.EverOverlapsTcellindexStbox(temp, box));
+
+        public static int AlwaysOverlapsTcellindexStbox(IntPtr temp, IntPtr box)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTcellindexStbox(temp, box));
+
+        public static int EverOverlapsStboxTcellindex(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.EverOverlapsStboxTcellindex(box, temp));
+
+        public static int AlwaysOverlapsStboxTcellindex(IntPtr box, IntPtr temp)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsStboxTcellindex(box, temp));
+
     }
 }

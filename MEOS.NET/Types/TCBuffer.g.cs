@@ -87,6 +87,9 @@ namespace MEOS.NET.Types
         public int AlwaysOverlaps(STBox box)
             => Meos.AlwaysOverlapsTcbufferStbox(this.Ptr, box.Ptr);
 
+        public int AlwaysOverlaps(TCBuffer temp2)
+            => Meos.AlwaysOverlapsTcbufferTcbuffer(this.Ptr, temp2.Ptr);
+
         public Temporal? AtCbuffer(CBuffer cb)
             => MEOSFactory.WrapTemporal(Meos.TcbufferAtCbuffer(this.Ptr, cb.Ptr));
 
@@ -191,6 +194,9 @@ namespace MEOS.NET.Types
 
         public int EverOverlaps(STBox box)
             => Meos.EverOverlapsTcbufferStbox(this.Ptr, box.Ptr);
+
+        public int EverOverlaps(TCBuffer temp2)
+            => Meos.EverOverlapsTcbufferTcbuffer(this.Ptr, temp2.Ptr);
 
         public Temporal? Expand(double dist)
             => MEOSFactory.WrapTemporal(Meos.TcbufferExpand(this.Ptr, dist));

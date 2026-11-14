@@ -39,6 +39,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TimeExtract(long time, IntPtr units)
             => SafeExecution<IntPtr>(() => Native.TimeExtract(time, units));
 
+        public static long TimeFromParts(long us)
+            => SafeExecution<long>(() => Native.TimeFromParts(us));
+
         public static bool TimeGe(long time1, long time2)
             => SafeExecution<bool>(() => Native.TimeGe(time1, time2));
 
@@ -80,6 +83,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TimeToInterval(long time)
             => SafeExecution<IntPtr>(() => Native.TimeToInterval(time));
+
+        public static bool TimeToParts(long time, IntPtr us)
+            => SafeExecution<bool>(() => Native.TimeToParts(time, us));
 
         public static IntPtr TimeToTimetz(long time)
             => SafeExecution<IntPtr>(() => Native.TimeToTimetz(time));
@@ -138,6 +144,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TimetzCopy(IntPtr timetz)
             => SafeExecution<IntPtr>(() => Native.TimetzCopy(timetz));
 
+        public static IntPtr TimetzFromParts(long us, int offset)
+            => SafeExecution<IntPtr>(() => Native.TimetzFromParts(us, offset));
+
         public static string TimetzOut(IntPtr timetz)
         {
             nuint _size = 0;
@@ -168,6 +177,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TimetzSmaller(IntPtr timetz1, IntPtr timetz2)
             => SafeExecution<IntPtr>(() => Native.TimetzSmaller(timetz1, timetz2));
+
+        public static bool TimetzToParts(IntPtr timetz, IntPtr us, IntPtr offset)
+            => SafeExecution<bool>(() => Native.TimetzToParts(timetz, us, offset));
 
         public static long TimetzToTime(IntPtr timetz)
             => SafeExecution<long>(() => Native.TimetzToTime(timetz));

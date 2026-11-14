@@ -144,11 +144,17 @@ namespace MEOS.NET.Types
         public int AlwaysOverlaps(TCBuffer temp)
             => Meos.AlwaysOverlapsStboxTcbuffer(this.Ptr, temp.Ptr);
 
+        public int AlwaysOverlaps(TQuadbin temp)
+            => Meos.AlwaysOverlapsStboxTcellindex(this.Ptr, temp.Ptr);
+
         public int AlwaysOverlaps(TNPoint temp)
             => Meos.AlwaysOverlapsStboxTnpoint(this.Ptr, temp.Ptr);
 
         public int AlwaysOverlaps(TPose temp)
             => Meos.AlwaysOverlapsStboxTpose(this.Ptr, temp.Ptr);
+
+        public int AlwaysOverlaps(TPoseChain temp)
+            => Meos.AlwaysOverlapsStboxTposechain(this.Ptr, temp.Ptr);
 
         public int AlwaysOverlaps(TRGeometry temp)
             => Meos.AlwaysOverlapsStboxTrgeometry(this.Ptr, temp.Ptr);
@@ -420,11 +426,17 @@ namespace MEOS.NET.Types
         public int EverOverlaps(TCBuffer temp)
             => Meos.EverOverlapsStboxTcbuffer(this.Ptr, temp.Ptr);
 
+        public int EverOverlaps(TQuadbin temp)
+            => Meos.EverOverlapsStboxTcellindex(this.Ptr, temp.Ptr);
+
         public int EverOverlaps(TNPoint temp)
             => Meos.EverOverlapsStboxTnpoint(this.Ptr, temp.Ptr);
 
         public int EverOverlaps(TPose temp)
             => Meos.EverOverlapsStboxTpose(this.Ptr, temp.Ptr);
+
+        public int EverOverlaps(TPoseChain temp)
+            => Meos.EverOverlapsStboxTposechain(this.Ptr, temp.Ptr);
 
         public int EverOverlaps(TRGeometry temp)
             => Meos.EverOverlapsStboxTrgeometry(this.Ptr, temp.Ptr);

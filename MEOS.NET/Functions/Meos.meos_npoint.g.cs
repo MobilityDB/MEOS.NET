@@ -637,6 +637,9 @@ namespace MEOS.NET.Functions
         public static int AlwaysOverlapsTnpointStbox(IntPtr temp, IntPtr box)
             => SafeExecution<int>(() => Native.AlwaysOverlapsTnpointStbox(temp, box));
 
+        public static int AlwaysOverlapsTnpointTnpoint(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<int>(() => Native.AlwaysOverlapsTnpointTnpoint(temp1, temp2));
+
         public static int EverEqNpointTnpoint(IntPtr np, IntPtr temp)
             => SafeExecution<int>(() => Native.EverEqNpointTnpoint(np, temp));
 
@@ -660,6 +663,9 @@ namespace MEOS.NET.Functions
 
         public static int EverOverlapsTnpointStbox(IntPtr temp, IntPtr box)
             => SafeExecution<int>(() => Native.EverOverlapsTnpointStbox(temp, box));
+
+        public static int EverOverlapsTnpointTnpoint(IntPtr temp1, IntPtr temp2)
+            => SafeExecution<int>(() => Native.EverOverlapsTnpointTnpoint(temp1, temp2));
 
         public static IntPtr TeqTnpointNpoint(IntPtr temp, IntPtr np)
             => SafeExecution<IntPtr>(() => Native.TeqTnpointNpoint(temp, np));
