@@ -1,3 +1,4 @@
+using MEOS.NET.Functions;
 using MEOS.NET.Types;
 
 namespace MEOS.NET.Tests
@@ -63,6 +64,63 @@ namespace MEOS.NET.Tests
             Span span = DateSpan.Make(day, day, true, true)!;
 
             Assert.AreEqual(day, ((DateSpan)span).Lower());
+        }
+
+        [TestMethod]
+        public void IntervalOfDaysAndTimeIsATimeSpan()
+        {
+            IntPtr interval = Meos.IntervalIn("2 days 03:00:00.5", -1);
+
+            Assert.AreEqual(new TimeSpan(2, 3, 0, 0, 500), MEOSConvert.ToTimeSpan(interval));
+        }
+
+        [TestMethod]
+        public void TimeSpanIsAnIntervalOfWholeDaysAndTheRest()
+        {
+            IntPtr interval = MEOSConvert.ToInterval(TimeSpan.FromHours(36));
+
+            Assert.AreEqual("1 day 12:00:00", Meos.IntervalOut(interval));
+        }
+
+        [TestMethod]
+        public void IntervalWithMonthsIsRefused()
+        {
+            IntPtr interval = Meos.IntervalIn("1 mon 2 days", -1);
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(
+                () => MEOSConvert.ToTimeSpan(interval));
+        }
+
+        [TestMethod]
+        public void TimeRoundTripsAsATimeOnly()
+        {
+            long time = Meos.TimeIn("13:45:30.5", -1);
+
+            TimeOnly clock = MEOSConvert.ToTimeOnly(time);
+
+            Assert.AreEqual(new TimeOnly(13, 45, 30, 500), clock);
+            Assert.AreEqual("13:45:30.5", Meos.TimeOut(MEOSConvert.ToTimeADT(clock)));
+        }
+
+        [TestMethod]
+        public void EndOfDayIsRefusedByATimeOnly()
+        {
+            long time = Meos.TimeIn("24:00:00", -1);
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(
+                () => MEOSConvert.ToTimeOnly(time));
+        }
+
+        [TestMethod]
+        public void TimeWithTimeZoneRoundTripsAsATimeAndItsOffset()
+        {
+            IntPtr timetz = Meos.TimetzIn("13:45:30+02", -1);
+
+            (TimeOnly Time, TimeSpan Offset) parts = MEOSConvert.ToTimeWithOffset(timetz);
+
+            Assert.AreEqual(new TimeOnly(13, 45, 30), parts.Time);
+            Assert.AreEqual(TimeSpan.FromHours(2), parts.Offset);
+            Assert.AreEqual("13:45:30+02", Meos.TimetzOut(MEOSConvert.ToTimetzADT(parts)));
         }
     }
 }
