@@ -16,7 +16,11 @@ try
     Console.WriteLine($"  always 25.0?     : {Meos.AlwaysEqTfloatFloat(tfi.Ptr, 25.0) == 1}\n");
 
     Console.WriteLine("Making one from a value and a moment");
-    Temporal made = TFloatInst.Make(26.0, DateTime.UtcNow)!;
+    // A MEOS timestamp holds whole microseconds and a DateTime counts ticks of
+    // 100 ns, so the caller drops the ticks below a microsecond; the cast
+    // refuses a moment that keeps them.
+    DateTime now = DateTime.UtcNow;
+    Temporal made = TFloatInst.Make(26.0, now.AddTicks(-(now.Ticks % 10)))!;
     Console.WriteLine($"  text             : {made}");
     Console.WriteLine("  adding 34 to its value");
     Temporal sum = MEOSFactory.WrapTemporal(Meos.AddTfloatFloat(made.Ptr, 34.0))!;
