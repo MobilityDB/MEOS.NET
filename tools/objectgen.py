@@ -2437,6 +2437,18 @@ def main() -> int:
 
     model = Model(idl)
     gen = Generator(model)
+    # A type the catalog marks bindingScope (host: the time types a binding
+    # casts to its language's own; none: a type no binding carries) has no
+    # class, as #check_scope_classes of MEOS-API refuses one in the model, so a
+    # class over one stops the generation rather than reaching the object layer.
+    encodings = idl.get("typeEncodings", {})
+    scoped = sorted(f"{cls} ({model.ctype[cls]}, bindingScope "
+                    f"{encodings[model.ctype[cls]]['bindingScope']})"
+                    for cls in model.classes()
+                    if encodings.get(model.ctype.get(cls), {}).get("bindingScope"))
+    if scoped:
+        sys.exit("objectgen: classes over types out of the object layer: "
+                 + "; ".join(scoped))
     repo_root = Path(__file__).resolve().parent.parent
     gen.run(repo_root / "MEOS.NET" / "Types")
     gen.run_errors(repo_root / "MEOS.NET" / "Errors",
