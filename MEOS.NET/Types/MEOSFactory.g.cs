@@ -185,30 +185,6 @@ namespace MEOS.NET.Types
             return wrapped;
         }
 
-        /// <summary>The value at <paramref name="ptr"/> as the Numeric
-        /// class the model gives its runtime type.</summary>
-        public static Numeric? WrapNumeric(IntPtr ptr)
-        {
-            if (ptr == IntPtr.Zero)
-            {
-                return null;
-            }
-
-            return new Numeric(ptr);
-        }
-
-        /// <summary>Every element of a C array of Numeric pointers, wrapped.</summary>
-        public static Numeric?[] WrapNumericArray(IntPtr[] ptrs)
-        {
-            Numeric?[] wrapped = new Numeric?[ptrs.Length];
-            for (int i = 0; i < ptrs.Length; i++)
-            {
-                wrapped[i] = WrapNumeric(ptrs[i]);
-            }
-
-            return wrapped;
-        }
-
         /// <summary>The value at <paramref name="ptr"/> as the Pcschema
         /// class the model gives its runtime type.</summary>
         public static Pcschema? WrapPcschema(IntPtr ptr)

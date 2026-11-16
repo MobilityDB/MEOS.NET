@@ -399,6 +399,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TpointseqLinearTrajectory(IntPtr seq, bool unary_union)
             => SafeExecution<IntPtr>(() => Native.TpointseqLinearTrajectory(seq, unary_union));
 
+        public static IntPtr TgeoinstStboxes(IntPtr inst)
+            => SafeExecution<IntPtr>(() => Native.TgeoinstStboxes(inst));
+
         public static IntPtr[] TgeoseqStboxes(IntPtr seq)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
@@ -420,6 +423,21 @@ namespace MEOS.NET.Functions
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoseqSplitNStboxes(seq, max_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 80); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TgeoseqSplitEachNStboxes(IntPtr seq, int elem_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoseqSplitEachNStboxes(seq, elem_count, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -462,6 +480,21 @@ namespace MEOS.NET.Functions
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoseqsetSplitNStboxes(ss, max_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 80); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TgeoseqsetSplitEachNStboxes(IntPtr ss, int elem_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoseqsetSplitEachNStboxes(ss, elem_count, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)

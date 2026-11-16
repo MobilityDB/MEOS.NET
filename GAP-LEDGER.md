@@ -10,14 +10,14 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `b49672e5450e50899effb3a22aa5112da9145f80` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `af8640985336c41cf98467783f7eb4e9e0d1e0f0` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
 
 ## The flat surface — `tools/codegen.py`
 
-### parameter nullability — 4365
+### parameter nullability — 4401
 
 `shape.nullable` names the parameters a function accepts NULL for, and the catalog carries no field saying a parameter is required. A pointer parameter named in neither reaches the surface with its contract unstated: the wrapper takes it, and nothing says whether zero is an argument or a fault.
 
@@ -1076,6 +1076,8 @@ and `tools/objectgen.py`.  Do not edit.
 | geo_makeline_garray | gsarr |
 | geo_mem_size | gs |
 | geo_meos_coverage | gs |
+| geo_merge_each_n_stboxes | gs, count |
+| geo_merge_n_stboxes | gs, count |
 | geo_num_geos | gs |
 | geo_num_points | gs |
 | geo_out | gs, size_out |
@@ -1523,7 +1525,9 @@ and `tools/objectgen.py`.  Do not edit.
 | line_point_n | geom |
 | line_substring | gs |
 | meos_array_add | array, value |
+| meos_array_add_intl | array, value |
 | meos_array_count | array |
+| meos_array_count_intl | array |
 | meos_array_get | array |
 | meos_array_get_intl | array |
 | meos_array_reset | array |
@@ -1783,8 +1787,6 @@ and `tools/objectgen.py`.  Do not edit.
 | nullhandletype_from_string | str |
 | number_set_tbox | box |
 | number_tstzspan_to_tbox | s |
-| numeric_in | str |
-| numeric_out | num, size_out |
 | numset_set_tbox | s, box |
 | numset_shift_scale | s |
 | numspan_expand | s |
@@ -2427,6 +2429,8 @@ and `tools/objectgen.py`.  Do not edit.
 | set_make_exp | values |
 | set_make_free | values |
 | set_mem_size | s |
+| set_merge_each_n_spans | s, count |
+| set_merge_n_spans | s, count |
 | set_ne | s1, s2 |
 | set_num_values | s |
 | set_out | s, size_out |
@@ -2529,6 +2533,8 @@ and `tools/objectgen.py`.  Do not edit.
 | spanset_make_exp | spans |
 | spanset_make_free | spans |
 | spanset_mem_size | ss |
+| spanset_merge_each_n_spans | ss, count |
+| spanset_merge_n_spans | ss, count |
 | spanset_ne | ss1, ss2 |
 | spanset_num_spans | ss |
 | spanset_out | ss, size_out |
@@ -3000,6 +3006,8 @@ and `tools/objectgen.py`.  Do not edit.
 | temporal_mem_size | temp |
 | temporal_merge_array | temparr |
 | temporal_merge_combinefn | state1, state2 |
+| temporal_merge_each_n_spans | temp, count |
+| temporal_merge_n_spans | temp, count |
 | temporal_min_inst_p | temp |
 | temporal_min_instant | temp |
 | temporal_min_value | temp |
@@ -3250,6 +3258,8 @@ and `tools/objectgen.py`.  Do not edit.
 | tgeo_force2d | temp |
 | tgeo_force3d | temp |
 | tgeo_from_base_temp | gs, temp |
+| tgeo_merge_each_n_stboxes | temp, count |
+| tgeo_merge_n_stboxes | temp, count |
 | tgeo_minus_geom | temp, gs |
 | tgeo_minus_stbox | temp, box |
 | tgeo_minus_value | temp, gs |
@@ -3315,6 +3325,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tgeoinst_restrict_geom | inst, gs |
 | tgeoinst_restrict_stbox | inst, box |
 | tgeoinst_set_stbox | inst, box |
+| tgeoinst_stboxes | inst |
 | tgeom_tgeog | temp |
 | tgeometry_from_mfjson | str |
 | tgeometry_in | str |
@@ -3351,11 +3362,13 @@ and `tools/objectgen.py`.  Do not edit.
 | tgeoseq_from_base_tstzspan | gs, s |
 | tgeoseq_restrict_geom | seq, gs |
 | tgeoseq_restrict_stbox | seq, box |
+| tgeoseq_split_each_n_stboxes | seq, count |
 | tgeoseq_split_n_stboxes | seq, count |
 | tgeoseq_stboxes | seq, count |
 | tgeoseqset_from_base_tstzspanset | gs, ss |
 | tgeoseqset_restrict_geom | ss, gs |
 | tgeoseqset_restrict_stbox | ss, box |
+| tgeoseqset_split_each_n_stboxes | ss, count |
 | tgeoseqset_split_n_stboxes | ss, count |
 | tgeoseqset_stboxes | ss, count |
 | tgt_base_temporal | temp |
@@ -3488,6 +3501,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tinstant_set_bbox | inst, box |
 | tinstant_set_tstzspan | inst, s |
 | tinstant_shift_time | inst, interv |
+| tinstant_spans | inst |
 | tinstant_time | inst |
 | tinstant_timestamps | inst, count |
 | tinstant_timestamptz | inst |
@@ -3720,6 +3734,8 @@ and `tools/objectgen.py`.  Do not edit.
 | tnumber_avg_value | temp |
 | tnumber_delta_value | temp |
 | tnumber_integral | temp |
+| tnumber_merge_each_n_tboxes | temp, count |
+| tnumber_merge_n_tboxes | temp, count |
 | tnumber_minus_span | temp, span |
 | tnumber_minus_spanset | temp, ss |
 | tnumber_minus_tbox | temp, box |
@@ -3749,6 +3765,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tnumberinst_restrict_spanset | inst, ss |
 | tnumberinst_set_tbox | inst, box |
 | tnumberinst_shift_value | inst |
+| tnumberinst_tboxes | inst |
 | tnumberinst_valuespans | inst |
 | tnumberseq_abs | seq |
 | tnumberseq_angular_difference | seq |
@@ -3757,6 +3774,9 @@ and `tools/objectgen.py`.  Do not edit.
 | tnumberseq_integral | seq |
 | tnumberseq_set_tbox | seq, box |
 | tnumberseq_shift_scale_value | seq |
+| tnumberseq_split_each_n_tboxes | seq, count |
+| tnumberseq_split_n_tboxes | seq, count |
+| tnumberseq_tboxes | seq, count |
 | tnumberseq_twavg | seq |
 | tnumberseq_valuespans | seq |
 | tnumberseqset_abs | ss |
@@ -3768,6 +3788,9 @@ and `tools/objectgen.py`.  Do not edit.
 | tnumberseqset_restrict_spanset | ss, spanset |
 | tnumberseqset_set_tbox | ss, box |
 | tnumberseqset_shift_scale_value | ss |
+| tnumberseqset_split_each_n_tboxes | ss, count |
+| tnumberseqset_split_n_tboxes | ss, count |
+| tnumberseqset_tboxes | ss, count |
 | tnumberseqset_twavg | ss |
 | tnumberseqset_valuespans | ss |
 | tor_bool_tbool | temp |
@@ -3892,7 +3915,12 @@ and `tools/objectgen.py`.  Do not edit.
 | tpoint_to_geomeas | tpoint |
 | tpoint_trajectory | temp |
 | tpoint_twcentroid | temp |
+| tpointcloud_merge_each_n_tpcboxes | temp, count |
+| tpointcloud_merge_n_tpcboxes | temp, count |
+| tpointcloud_split_each_n_tpcboxes | temp, count |
+| tpointcloud_split_n_tpcboxes | temp, count |
 | tpointcloud_to_tpcbox | temp |
+| tpointcloud_tpcboxes | temp, count |
 | tpointinst_make | gs |
 | tpointseq_azimuth | seq |
 | tpointseq_cumulative_length | seq |
@@ -4032,6 +4060,8 @@ and `tools/objectgen.py`.  Do not edit.
 | trgeometry_geom | temp |
 | trgeometry_in | str |
 | trgeometry_length | temp |
+| trgeometry_merge_each_n_stboxes | temp, count |
+| trgeometry_merge_n_stboxes | temp, count |
 | trgeometry_minus_geom | temp, gs |
 | trgeometry_minus_stbox | temp, box |
 | trgeometry_minus_value | temp, pose |
@@ -4139,6 +4169,9 @@ and `tools/objectgen.py`.  Do not edit.
 | tsequence_set_interp | seq |
 | tsequence_set_tstzspan | seq, s |
 | tsequence_shift_scale_time | seq, shift, duration |
+| tsequence_spans | seq, count |
+| tsequence_split_each_n_spans | seq, count |
+| tsequence_split_n_spans | seq, count |
 | tsequence_start_timestamptz | seq |
 | tsequence_subseq | seq |
 | tsequence_time | seq |
@@ -4201,6 +4234,9 @@ and `tools/objectgen.py`.  Do not edit.
 | tsequenceset_set_interp | ss |
 | tsequenceset_set_tstzspan | ss, s |
 | tsequenceset_shift_scale_time | ss, start, duration |
+| tsequenceset_spans | ss, count |
+| tsequenceset_split_each_n_spans | ss, count |
+| tsequenceset_split_n_spans | ss, count |
 | tsequenceset_start_timestamptz | ss |
 | tsequenceset_time | ss |
 | tsequenceset_timestamps | ss, count |
@@ -4389,15 +4425,22 @@ and `tools/objectgen.py`.  Do not edit.
 | unistr | txt |
 | value_set_span | s |
 
-### unreadable return — 3
+### unreadable return — 10
 
 A pointer answer whose pointed-to type no emitted function accepts. The caller receives an address and the catalog names nothing this binding reaches that renders it, operates on it or takes it back.
 
 | function | api | pointed-to type |
 | --- | --- | --- |
+| date_extract | internal | NumericData |
 | geopose_frame | public | GeoPoseFrame |
 | geopose_frames | public | GeoPoseFrame |
+| interval_extract | internal | NumericData |
+| jsonb_to_numeric | internal | NumericData |
 | meos_proj_get_context | internal | pj_ctx |
+| time_extract | internal | NumericData |
+| timestamp_extract | internal | NumericData |
+| timestamptz_extract | internal | NumericData |
+| timetz_extract | internal | NumericData |
 
 ### array element type — 1
 

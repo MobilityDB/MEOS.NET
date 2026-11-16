@@ -177,6 +177,12 @@ namespace MEOS.NET.Types
         public double Length()
             => Meos.TrgeometryLength(this.Ptr);
 
+        public STBox?[] MergeEachNStboxes(int elem_count)
+            => MEOSFactory.WrapSTBoxArray(Meos.TrgeometryMergeEachNStboxes(this.Ptr, elem_count));
+
+        public STBox?[] MergeNStboxes(int box_count)
+            => MEOSFactory.WrapSTBoxArray(Meos.TrgeometryMergeNStboxes(this.Ptr, box_count));
+
         public Temporal? MinusGeom(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryMinusGeom(this.Ptr, gs.Ptr));
 
