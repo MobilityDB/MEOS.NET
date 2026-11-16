@@ -113,6 +113,12 @@ namespace MEOS.NET.Types
         public Temporal? Force3d(double zvalue)
             => MEOSFactory.WrapTemporal(Meos.TgeoForce3d(this.Ptr, zvalue));
 
+        public STBox?[] MergeEachNStboxes(int elem_count)
+            => MEOSFactory.WrapSTBoxArray(Meos.TgeoMergeEachNStboxes(this.Ptr, elem_count));
+
+        public STBox?[] MergeNStboxes(int box_count)
+            => MEOSFactory.WrapSTBoxArray(Meos.TgeoMergeNStboxes(this.Ptr, box_count));
+
         public Temporal? MinusGeom(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.TgeoMinusGeom(this.Ptr, gs.Ptr));
 

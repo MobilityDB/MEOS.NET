@@ -107,6 +107,12 @@ namespace MEOS.NET.Types
         public bool Left(TNumber temp2)
             => Meos.LeftTnumberTnumber(this.Ptr, temp2.Ptr);
 
+        public TBox?[] MergeEachNTboxes(int elem_count)
+            => MEOSFactory.WrapTBoxArray(Meos.TnumberMergeEachNTboxes(this.Ptr, elem_count));
+
+        public TBox?[] MergeNTboxes(int box_count)
+            => MEOSFactory.WrapTBoxArray(Meos.TnumberMergeNTboxes(this.Ptr, box_count));
+
         public Temporal? MinusSpan(Span span)
             => MEOSFactory.WrapTemporal(Meos.TnumberMinusSpan(this.Ptr, span.Ptr));
 

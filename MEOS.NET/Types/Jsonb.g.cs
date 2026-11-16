@@ -343,9 +343,6 @@ namespace MEOS.NET.Types
         public long ToInt64()
             => Meos.JsonbToInt64(this.Ptr);
 
-        public Numeric? ToNumeric()
-            => MEOSFactory.WrapNumeric(Meos.JsonbToNumeric(this.Ptr));
-
         public Set? ToSet()
             => MEOSFactory.WrapSet(Meos.JsonbToSet(this.Ptr));
 

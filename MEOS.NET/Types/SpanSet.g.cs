@@ -111,6 +111,12 @@ namespace MEOS.NET.Types
         public int MemSize()
             => Meos.SpansetMemSize(this.Ptr);
 
+        public Span?[] MergeEachNSpans(int elems_per_span)
+            => MEOSFactory.WrapSpanArray(Meos.SpansetMergeEachNSpans(this.Ptr, elems_per_span));
+
+        public Span?[] MergeNSpans(int span_count)
+            => MEOSFactory.WrapSpanArray(Meos.SpansetMergeNSpans(this.Ptr, span_count));
+
         public SpanSet? Minus(Span s)
             => MEOSFactory.WrapSpanSet(Meos.MinusSpansetSpan(this.Ptr, s.Ptr));
 

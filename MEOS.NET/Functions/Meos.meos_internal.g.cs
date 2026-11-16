@@ -9,8 +9,14 @@ namespace MEOS.NET.Functions
     /// <summary>The MEOS functions <c>meos_internal.h</c> declares.</summary>
     public static partial class Meos
     {
+        public static void MeosArrayAddIntl(IntPtr array, IntPtr value)
+            => SafeExecution(() => Native.MeosArrayAddIntl(array, value));
+
         public static IntPtr MeosArrayGetIntl(IntPtr array, int n)
             => SafeExecution<IntPtr>(() => Native.MeosArrayGetIntl(array, n));
+
+        public static int MeosArrayCountIntl(IntPtr array)
+            => SafeExecution<int>(() => Native.MeosArrayCountIntl(array));
 
         public static IntPtr PrngGetGenerationRng()
             => SafeExecution<IntPtr>(() => Native.PrngGetGenerationRng());
@@ -805,6 +811,9 @@ namespace MEOS.NET.Functions
         public static IntPtr TinstantMake(ulong value, int temptype, long t)
             => SafeExecution<IntPtr>(() => Native.TinstantMake(value, temptype, t));
 
+        public static IntPtr TinstantMakeIntl(ulong value, int temptype, long t)
+            => SafeExecution<IntPtr>(() => Native.TinstantMakeIntl(value, temptype, t));
+
         public static IntPtr TinstantMakeFree(ulong value, int temptype, long t)
             => SafeExecution<IntPtr>(() => Native.TinstantMakeFree(value, temptype, t));
 
@@ -873,6 +882,192 @@ namespace MEOS.NET.Functions
 
         public static void TsequencesetSetTstzspan(IntPtr ss, IntPtr s)
             => SafeExecution(() => Native.TsequencesetSetTstzspan(ss, s));
+
+        public static IntPtr TinstantSpans(IntPtr inst)
+            => SafeExecution<IntPtr>(() => Native.TinstantSpans(inst));
+
+        public static IntPtr[] TsequenceSpans(IntPtr seq)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TsequenceSpans(seq, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TsequencesetSpans(IntPtr ss)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TsequencesetSpans(ss, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TsequenceSplitNSpans(IntPtr seq, int span_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TsequenceSplitNSpans(seq, span_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TsequencesetSplitNSpans(IntPtr ss, int span_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TsequencesetSplitNSpans(ss, span_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TsequenceSplitEachNSpans(IntPtr seq, int elem_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TsequenceSplitEachNSpans(seq, elem_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TsequencesetSplitEachNSpans(IntPtr ss, int elem_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TsequencesetSplitEachNSpans(ss, elem_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr TnumberinstTboxes(IntPtr inst)
+            => SafeExecution<IntPtr>(() => Native.TnumberinstTboxes(inst));
+
+        public static IntPtr[] TnumberseqTboxes(IntPtr seq)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberseqTboxes(seq, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TnumberseqsetTboxes(IntPtr ss)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberseqsetTboxes(ss, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TnumberseqSplitNTboxes(IntPtr seq, int box_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberseqSplitNTboxes(seq, box_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TnumberseqsetSplitNTboxes(IntPtr ss, int box_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberseqsetSplitNTboxes(ss, box_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TnumberseqSplitEachNTboxes(IntPtr seq, int elem_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberseqSplitEachNTboxes(seq, elem_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TnumberseqsetSplitEachNTboxes(IntPtr ss, int elem_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberseqsetSplitEachNTboxes(ss, elem_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
 
         public static IntPtr TemporalEndInst(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TemporalEndInst(temp));

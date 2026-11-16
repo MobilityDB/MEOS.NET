@@ -141,6 +141,12 @@ namespace MEOS.NET.Types
         public int MemSize()
             => Meos.GeoMemSize(this.Ptr);
 
+        public STBox?[] MergeEachNStboxes(int elem_count)
+            => MEOSFactory.WrapSTBoxArray(Meos.GeoMergeEachNStboxes(this.Ptr, elem_count));
+
+        public STBox?[] MergeNStboxes(int box_count)
+            => MEOSFactory.WrapSTBoxArray(Meos.GeoMergeNStboxes(this.Ptr, box_count));
+
         public Set? Minus(GeoSet s)
             => MEOSFactory.WrapSet(Meos.MinusGeoSet(this.Ptr, s.Ptr));
 

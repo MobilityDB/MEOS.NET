@@ -159,18 +159,20 @@ namespace MEOS.NET.Tests
         }
 
         [TestMethod]
-        public void AJsonbAJsonPathAndANumericRoundTripThroughTheirText()
+        public void AJsonbAJsonPathAndAJsonNumberRoundTripThroughTheirText()
         {
             Jsonb jb = Jsonb.FromText("{\"a\": 1, \"b\": \"two\"}")!;
             JsonPath path = JsonPath.FromText("$.a")!;
-            Numeric num = Numeric.FromText("12.50", -1)!;
+            Jsonb num = Jsonb.FromText("12.50")!;
 
             Assert.AreEqual("{\"a\": 1, \"b\": \"two\"}", jb.AsText());
             Assert.AreEqual(jb.AsText(), Jsonb.FromText(jb.AsText())!.AsText());
             Assert.AreEqual("$.\"a\"", path.AsText());
             Assert.AreEqual(path.AsText(), JsonPath.FromText(path.AsText())!.AsText());
+            // A JSON number keeps every digit as its text and reads as a double
             Assert.AreEqual("12.50", num.AsText());
-            Assert.AreEqual(num.AsText(), Numeric.FromText(num.AsText(), -1)!.AsText());
+            Assert.AreEqual(num.AsText(), Jsonb.FromText(num.AsText())!.AsText());
+            Assert.AreEqual(12.5, num.ToFloat8());
         }
 
         [TestMethod]
