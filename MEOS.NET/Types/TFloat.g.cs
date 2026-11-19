@@ -72,6 +72,9 @@ namespace MEOS.NET.Types
         public int AlwaysOverlaps(TFloat temp2)
             => Meos.AlwaysOverlapsTemporalTemporal(this.Ptr, temp2.Ptr);
 
+        public string AsCoveragejson(Temporal traj)
+            => Meos.TfloatAsCoveragejson(this.Ptr, traj.Ptr);
+
         public Temporal? AtValue(double d)
             => MEOSFactory.WrapTemporal(Meos.TfloatAtValue(this.Ptr, d));
 

@@ -26,8 +26,127 @@ namespace MEOS.NET.Types
         public Raster? AddBandRaster(Raster fromrast, int fromband, int toindex)
             => MEOSFactory.WrapRaster(Meos.RasterAddBandRaster(this.Ptr, fromrast.Ptr, fromband, toindex));
 
+        public string AsCoveragejson()
+            => Meos.RasterAsCoveragejson(this.Ptr);
+
+        public byte[]? AsGdal(string format, Text[] options, int srid)
+        {
+            IntPtr[] _optionsValues = new IntPtr[options.Length];
+            for (int i = 0; i < options.Length; i++)
+            {
+                _optionsValues[i] = options[i].Ptr;
+            }
+
+            GCHandle _options = GCHandle.Alloc(_optionsValues, GCHandleType.Pinned);
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.RasterAsGdal(this.Ptr, format, _options.AddrOfPinnedObject(), options.Length, srid, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                _options.Free();
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
         public string AsHexWKB(byte variant)
             => Meos.RasterAsHexwkb(this.Ptr, variant);
+
+        public byte[]? AsJpeg(Text[] options)
+        {
+            IntPtr[] _optionsValues = new IntPtr[options.Length];
+            for (int i = 0; i < options.Length; i++)
+            {
+                _optionsValues[i] = options[i].Ptr;
+            }
+
+            GCHandle _options = GCHandle.Alloc(_optionsValues, GCHandleType.Pinned);
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.RasterAsJpeg(this.Ptr, _options.AddrOfPinnedObject(), options.Length, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                _options.Free();
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public byte[]? AsPng(Text[] options)
+        {
+            IntPtr[] _optionsValues = new IntPtr[options.Length];
+            for (int i = 0; i < options.Length; i++)
+            {
+                _optionsValues[i] = options[i].Ptr;
+            }
+
+            GCHandle _options = GCHandle.Alloc(_optionsValues, GCHandleType.Pinned);
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.RasterAsPng(this.Ptr, _options.AddrOfPinnedObject(), options.Length, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                _options.Free();
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
+
+        public byte[]? AsTiff(Text[] options, int srid)
+        {
+            IntPtr[] _optionsValues = new IntPtr[options.Length];
+            for (int i = 0; i < options.Length; i++)
+            {
+                _optionsValues[i] = options[i].Ptr;
+            }
+
+            GCHandle _options = GCHandle.Alloc(_optionsValues, GCHandleType.Pinned);
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.RasterAsTiff(this.Ptr, _options.AddrOfPinnedObject(), options.Length, srid, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                _options.Free();
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
 
         public byte[]? AsWKB(byte variant)
         {
@@ -183,29 +302,6 @@ namespace MEOS.NET.Types
         public double ScaleY()
             => Meos.RasterScaleY(this.Ptr);
 
-        public Raster? SetValues(int band, int x, int y, int width, int height, double[] values, bool[] nodata, bool[] noset, int nosetheight, int count, bool keepnodata)
-        {
-            if (values.Length != nodata.Length || values.Length != noset.Length)
-            {
-                throw new ArgumentException(
-                    "values, nodata and noset are read in step, so they hold the same number of elements.");
-            }
-
-            GCHandle _values = GCHandle.Alloc(values, GCHandleType.Pinned);
-            GCHandle _nodata = GCHandle.Alloc(nodata, GCHandleType.Pinned);
-            GCHandle _noset = GCHandle.Alloc(noset, GCHandleType.Pinned);
-            try
-            {
-                return MEOSFactory.WrapRaster(Meos.RasterSetValues(this.Ptr, band, x, y, width, height, _values.AddrOfPinnedObject(), _nodata.AddrOfPinnedObject(), _noset.AddrOfPinnedObject(), values.Length, nosetheight, count, keepnodata));
-            }
-            finally
-            {
-                _values.Free();
-                _nodata.Free();
-                _noset.Free();
-            }
-        }
-
         public double SkewX()
             => Meos.RasterSkewX(this.Ptr);
 
@@ -222,7 +318,7 @@ namespace MEOS.NET.Types
             => MEOSFactory.WrapRaster(Meos.SubRasterRaster(this.Ptr, rast2.Ptr));
 
         public BandStats? SummaryStats(int band, bool exclude_nodata)
-            => MEOSConvert.ToStruct<BandStats>(Meos.RasterSummaryStats(this.Ptr, band, exclude_nodata));
+            => MEOSFactory.WrapBandStats(Meos.RasterSummaryStats(this.Ptr, band, exclude_nodata));
 
         public STBox? ToStbox()
             => MEOSFactory.WrapSTBox(Meos.RasterToStbox(this.Ptr));
@@ -264,11 +360,80 @@ namespace MEOS.NET.Types
         public int Width()
             => Meos.RasterWidth(this.Ptr);
 
+        public static int ATileValue(Temporal traj, RaQuet rq, Span vspan)
+            => Meos.ArasterTileValue(traj.Ptr, rq.Ptr, vspan.Ptr);
+
+        public static int ATileValueArray(Temporal traj, RaQuet[] rqarr, Span vspan)
+        {
+            IntPtr[] _rqarrValues = new IntPtr[rqarr.Length];
+            for (int i = 0; i < rqarr.Length; i++)
+            {
+                _rqarrValues[i] = rqarr[i].Ptr;
+            }
+
+            GCHandle _rqarr = GCHandle.Alloc(_rqarrValues, GCHandleType.Pinned);
+            try
+            {
+                return Meos.ArasterTileValueArray(traj.Ptr, _rqarr.AddrOfPinnedObject(), rqarr.Length, vspan.Ptr);
+            }
+            finally
+            {
+                _rqarr.Free();
+            }
+        }
+
+        public static int AValue(Temporal traj, Raster rast, int band, Span vspan)
+            => Meos.ArasterValue(traj.Ptr, rast.Ptr, band, vspan.Ptr);
+
+        public static int AValueGdal(Temporal traj, string path, int band, Span vspan)
+            => Meos.ArasterValueGdal(traj.Ptr, path, band, vspan.Ptr);
+
         public static Temporal? AtValue(Temporal traj, Raster rast, int band, Span vspan)
             => MEOSFactory.WrapTemporal(Meos.RasterAtValue(traj.Ptr, rast.Ptr, band, vspan.Ptr));
 
         public static Temporal? AtValueGdal(Temporal traj, string path, int band, Span vspan)
             => MEOSFactory.WrapTemporal(Meos.RasterAtValueGdal(traj.Ptr, path, band, vspan.Ptr));
+
+        public static int ETileValue(Temporal traj, RaQuet rq, Span vspan)
+            => Meos.ErasterTileValue(traj.Ptr, rq.Ptr, vspan.Ptr);
+
+        public static int ETileValueArray(Temporal traj, RaQuet[] rqarr, Span vspan)
+        {
+            IntPtr[] _rqarrValues = new IntPtr[rqarr.Length];
+            for (int i = 0; i < rqarr.Length; i++)
+            {
+                _rqarrValues[i] = rqarr[i].Ptr;
+            }
+
+            GCHandle _rqarr = GCHandle.Alloc(_rqarrValues, GCHandleType.Pinned);
+            try
+            {
+                return Meos.ErasterTileValueArray(traj.Ptr, _rqarr.AddrOfPinnedObject(), rqarr.Length, vspan.Ptr);
+            }
+            finally
+            {
+                _rqarr.Free();
+            }
+        }
+
+        public static int EValue(Temporal traj, Raster rast, int band, Span vspan)
+            => Meos.ErasterValue(traj.Ptr, rast.Ptr, band, vspan.Ptr);
+
+        public static int EValueGdal(Temporal traj, string path, int band, Span vspan)
+            => Meos.ErasterValueGdal(traj.Ptr, path, band, vspan.Ptr);
+
+        public static Raster? FromGdal(byte[] data, int srid)
+        {
+            GCHandle _data = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapRaster(Meos.RasterFromGdal(_data.AddrOfPinnedObject(), (ulong) data.Length, srid));
+            }
+            finally
+            {
+                _data.Free();
+            }
+        }
 
         public static Raster? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapRaster(Meos.RasterFromHexwkb(hexwkb));
@@ -307,6 +472,50 @@ namespace MEOS.NET.Types
 
         public static Temporal? MinusValueGdal(Temporal traj, string path, int band, Span vspan)
             => MEOSFactory.WrapTemporal(Meos.RasterMinusValueGdal(traj.Ptr, path, band, vspan.Ptr));
+
+        public static Temporal? TileAtValue(Temporal traj, RaQuet rq, Span vspan)
+            => MEOSFactory.WrapTemporal(Meos.RasterTileAtValue(traj.Ptr, rq.Ptr, vspan.Ptr));
+
+        public static Temporal? TileAtValueArray(Temporal traj, RaQuet[] rqarr, Span vspan)
+        {
+            IntPtr[] _rqarrValues = new IntPtr[rqarr.Length];
+            for (int i = 0; i < rqarr.Length; i++)
+            {
+                _rqarrValues[i] = rqarr[i].Ptr;
+            }
+
+            GCHandle _rqarr = GCHandle.Alloc(_rqarrValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTemporal(Meos.RasterTileAtValueArray(traj.Ptr, _rqarr.AddrOfPinnedObject(), rqarr.Length, vspan.Ptr));
+            }
+            finally
+            {
+                _rqarr.Free();
+            }
+        }
+
+        public static Temporal? TileMinusValue(Temporal traj, RaQuet rq, Span vspan)
+            => MEOSFactory.WrapTemporal(Meos.RasterTileMinusValue(traj.Ptr, rq.Ptr, vspan.Ptr));
+
+        public static Temporal? TileMinusValueArray(Temporal traj, RaQuet[] rqarr, Span vspan)
+        {
+            IntPtr[] _rqarrValues = new IntPtr[rqarr.Length];
+            for (int i = 0; i < rqarr.Length; i++)
+            {
+                _rqarrValues[i] = rqarr[i].Ptr;
+            }
+
+            GCHandle _rqarr = GCHandle.Alloc(_rqarrValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTemporal(Meos.RasterTileMinusValueArray(traj.Ptr, _rqarr.AddrOfPinnedObject(), rqarr.Length, vspan.Ptr));
+            }
+            finally
+            {
+                _rqarr.Free();
+            }
+        }
 
         public static Temporal? TileValue(Temporal traj, RaQuet rq)
             => MEOSFactory.WrapTemporal(Meos.RasterTileValue(traj.Ptr, rq.Ptr));

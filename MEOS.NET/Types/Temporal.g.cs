@@ -265,6 +265,9 @@ namespace MEOS.NET.Types
         public Span?[] MergeNSpans(int span_count)
             => MEOSFactory.WrapSpanArray(Meos.TemporalMergeNSpans(this.Ptr, span_count));
 
+        public Span?[] MergeQuerySpans(Span query)
+            => MEOSFactory.WrapSpanArray(Meos.TemporalMergeQuerySpans(this.Ptr, query.Ptr));
+
         public Temporal? MinInstant()
             => MEOSFactory.WrapTemporal(Meos.TemporalMinInstant(this.Ptr));
 

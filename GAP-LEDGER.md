@@ -10,14 +10,14 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `af8640985336c41cf98467783f7eb4e9e0d1e0f0` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `eb4454101301017dc26c4ec00ca1ac7a72f53910` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
 
 ## The flat surface — `tools/codegen.py`
 
-### parameter nullability — 4401
+### parameter nullability — 4446
 
 `shape.nullable` names the parameters a function accepts NULL for, and the catalog carries no field saying a parameter is required. A pointer parameter named in neither reaches the surface with its contract unstated: the wrapper takes it, and nothing says whether zero is an argument or a fault.
 
@@ -346,8 +346,12 @@ and `tools/objectgen.py`.  Do not edit.
 | always_overlaps_tposechain_stbox | temp, box |
 | always_overlaps_trgeometry_stbox | temp, box |
 | always_overlaps_tstzspan_temporal | s, temp |
+| araster_tile_value | traj, rq, vspan |
+| araster_tile_value_array | traj, rqarr, vspan |
+| araster_tile_value_series | traj, rqarr, spans, vspan |
 | araster_value | traj, rast, vspan |
 | araster_value_gdal | traj, path, vspan |
+| araster_value_series | traj, rasts, spans, vspan |
 | atouches_cbuffer_tcbuffer | cb, temp |
 | atouches_geo_tcbuffer | gs, temp |
 | atouches_geo_tgeo | gs, temp |
@@ -792,8 +796,12 @@ and `tools/objectgen.py`.  Do not edit.
 | eintersects_trgeometry_trgeometry | temp1, temp2 |
 | ensure_bbox_temporal_compatible | temp |
 | ensure_index_result | result |
+| eraster_tile_value | traj, rq, vspan |
+| eraster_tile_value_array | traj, rqarr, vspan |
+| eraster_tile_value_series | traj, rqarr, spans, vspan |
 | eraster_value | traj, rast, vspan |
 | eraster_value_gdal | traj, path, vspan |
+| eraster_value_series | traj, rasts, spans, vspan |
 | etouches_cbuffer_tcbuffer | cb, temp |
 | etouches_geo_tcbuffer | gs, temp |
 | etouches_geo_tgeo | gs, temp |
@@ -1045,7 +1053,9 @@ and `tools/objectgen.py`.  Do not edit.
 | geo_as_ewkt | gs, size_out |
 | geo_as_geojson | gs, size_out |
 | geo_as_hexewkb | gs, size_out |
+| geo_as_hexwkb | gs, size_out |
 | geo_as_text | gs, size_out |
+| geo_as_wkb | gs, size |
 | geo_centroid | gs |
 | geo_clip_linear_geom | line, gs |
 | geo_clip_subject | gs |
@@ -1078,6 +1088,7 @@ and `tools/objectgen.py`.  Do not edit.
 | geo_meos_coverage | gs |
 | geo_merge_each_n_stboxes | gs, count |
 | geo_merge_n_stboxes | gs, count |
+| geo_merge_query_stboxes | gs, query, count |
 | geo_num_geos | gs |
 | geo_num_points | gs |
 | geo_out | gs, size_out |
@@ -1127,6 +1138,9 @@ and `tools/objectgen.py`.  Do not edit.
 | geog_disjoint | gs1, gs2 |
 | geog_distance | g1, g2 |
 | geog_dwithin | g1, g2 |
+| geog_from_ewkb | wkb |
+| geog_from_ewkt | ewkt |
+| geog_from_geojson | geojson |
 | geog_from_hexewkb | hexwkb |
 | geog_in | str |
 | geog_intersects | gs1, gs2 |
@@ -1154,6 +1168,7 @@ and `tools/objectgen.py`.  Do not edit.
 | geom_dwithin | gs1, gs2 |
 | geom_dwithin2d | gs1, gs2 |
 | geom_dwithin3d | gs1, gs2 |
+| geom_from_ewkt | ewkt |
 | geom_from_hexewkb | hexwkb |
 | geom_in | str |
 | geom_intersection2d | gs1, gs2 |
@@ -2012,10 +2027,12 @@ and `tools/objectgen.py`.  Do not edit.
 | overright_value_span | s |
 | overright_value_spanset | ss |
 | pcpatch_as_hexwkb | pa, size_out |
+| pcpatch_as_wkb | pa, size_out |
 | pcpatch_cmp | pa1, pa2 |
 | pcpatch_copy | pa |
 | pcpatch_eq | pa1, pa2 |
 | pcpatch_from_hexwkb | hexwkb |
+| pcpatch_from_wkb | wkb |
 | pcpatch_ge | pa1, pa2 |
 | pcpatch_get_pcid | pa |
 | pcpatch_gt | pa1, pa2 |
@@ -2044,10 +2061,12 @@ and `tools/objectgen.py`.  Do not edit.
 | pcpatchset_value_n | s, result |
 | pcpatchset_values | s, count |
 | pcpoint_as_hexwkb | pt, size_out |
+| pcpoint_as_wkb | pt, size_out |
 | pcpoint_cmp | pt1, pt2 |
 | pcpoint_copy | pt |
 | pcpoint_eq | pt1, pt2 |
 | pcpoint_from_hexwkb | hexwkb |
+| pcpoint_from_wkb | wkb |
 | pcpoint_ge | pt1, pt2 |
 | pcpoint_get_dim | pt, name, out |
 | pcpoint_get_pcid | pt |
@@ -2206,6 +2225,7 @@ and `tools/objectgen.py`.  Do not edit.
 | quadbinset_uncompact_cells | cells |
 | quadbinset_value_n | s, result |
 | quadbinset_values | s, count |
+| raquet_as_coveragejson | rq, size_out |
 | raquet_as_hexwkb | rq, size_out |
 | raquet_as_wkb | rq, size_out |
 | raquet_band_has_nodata_value | rq |
@@ -2215,6 +2235,7 @@ and `tools/objectgen.py`.  Do not edit.
 | raquet_copy | rq |
 | raquet_eq | rq1, rq2 |
 | raquet_from_hexwkb | hexwkb |
+| raquet_from_row | data, metadata |
 | raquet_from_wkb | wkb |
 | raquet_ge | rq1, rq2 |
 | raquet_gt | rq1, rq2 |
@@ -2236,10 +2257,16 @@ and `tools/objectgen.py`.  Do not edit.
 | raquet_width | rq |
 | raster_add_band | rast, pixeltype |
 | raster_add_band_raster | torast, fromrast |
+| raster_as_coveragejson | rast, size_out |
+| raster_as_gdal | rast, format, size_out |
 | raster_as_hexwkb | rast, size_out |
+| raster_as_jpeg | rast, size_out |
+| raster_as_png | rast, size_out |
+| raster_as_tiff | rast, size_out |
 | raster_as_wkb | rast, size_out |
 | raster_at_value | traj, rast, vspan |
 | raster_at_value_gdal | traj, path, vspan |
+| raster_at_value_series | traj, rasts, spans, vspan |
 | raster_band_has_nodata_value | rast |
 | raster_band_nodata_value | rast, result |
 | raster_band_pixel_type | rast, size_out |
@@ -2248,6 +2275,7 @@ and `tools/objectgen.py`.  Do not edit.
 | raster_copy | rast |
 | raster_dump_as_polygons | rast, count |
 | raster_dump_values | rast, nodata, count |
+| raster_from_gdal | data |
 | raster_from_hexwkb | hexwkb |
 | raster_from_wkb | wkb |
 | raster_height | rast |
@@ -2256,6 +2284,7 @@ and `tools/objectgen.py`.  Do not edit.
 | raster_mem_size | rast |
 | raster_minus_value | traj, rast, vspan |
 | raster_minus_value_gdal | traj, path, vspan |
+| raster_minus_value_series | traj, rasts, spans, vspan |
 | raster_not_same_alignment_reason | rast1, rast2, size_out |
 | raster_num_bands | rast |
 | raster_pixel_as_points | rast, count |
@@ -2270,9 +2299,16 @@ and `tools/objectgen.py`.  Do not edit.
 | raster_slope | rast, pixeltype, units |
 | raster_srid | rast |
 | raster_summary_stats | rast |
+| raster_tile_at_value | traj, rq, vspan |
+| raster_tile_at_value_array | traj, rqarr, vspan |
+| raster_tile_at_value_series | traj, rqarr, spans, vspan |
+| raster_tile_minus_value | traj, rq, vspan |
+| raster_tile_minus_value_array | traj, rqarr, vspan |
+| raster_tile_minus_value_series | traj, rqarr, spans, vspan |
 | raster_tile_value | traj, rq |
 | raster_tile_value_array | traj, rqarr |
 | raster_tile_value_quadbin | traj, pixels |
+| raster_tile_value_series | traj, rqarr, spans |
 | raster_to_stbox | rast |
 | raster_tpi | rast, pixeltype |
 | raster_transform | rast, algorithm |
@@ -2284,6 +2320,7 @@ and `tools/objectgen.py`.  Do not edit.
 | raster_value | traj, rast, resample |
 | raster_value_count | rast, count |
 | raster_value_gdal | traj, path |
+| raster_value_series | traj, rasts, spans |
 | raster_width | rast |
 | rasteralignstate_deserialize | bytes |
 | rasteralignstate_serialize | state, size_out |
@@ -2431,6 +2468,7 @@ and `tools/objectgen.py`.  Do not edit.
 | set_mem_size | s |
 | set_merge_each_n_spans | s, count |
 | set_merge_n_spans | s, count |
+| set_merge_query_spans | s, query, count |
 | set_ne | s1, s2 |
 | set_num_values | s |
 | set_out | s, size_out |
@@ -2535,6 +2573,7 @@ and `tools/objectgen.py`.  Do not edit.
 | spanset_mem_size | ss |
 | spanset_merge_each_n_spans | ss, count |
 | spanset_merge_n_spans | ss, count |
+| spanset_merge_query_spans | ss, query, count |
 | spanset_ne | ss1, ss2 |
 | spanset_num_spans | ss |
 | spanset_out | ss, size_out |
@@ -3008,6 +3047,7 @@ and `tools/objectgen.py`.  Do not edit.
 | temporal_merge_combinefn | state1, state2 |
 | temporal_merge_each_n_spans | temp, count |
 | temporal_merge_n_spans | temp, count |
+| temporal_merge_query_spans | temp, query, count |
 | temporal_min_inst_p | temp |
 | temporal_min_instant | temp |
 | temporal_min_value | temp |
@@ -3185,6 +3225,7 @@ and `tools/objectgen.py`.  Do not edit.
 | textset_upper | s |
 | textset_value_n | s, result |
 | textset_values | s, count |
+| tfloat_as_coveragejson | temp, traj, size_out |
 | tfloat_at_value | temp |
 | tfloat_ceil | temp |
 | tfloat_cos | temp |
@@ -3260,6 +3301,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tgeo_from_base_temp | gs, temp |
 | tgeo_merge_each_n_stboxes | temp, count |
 | tgeo_merge_n_stboxes | temp, count |
+| tgeo_merge_query_stboxes | temp, query, count |
 | tgeo_minus_geom | temp, gs |
 | tgeo_minus_stbox | temp, box |
 | tgeo_minus_value | temp, gs |
@@ -3736,6 +3778,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tnumber_integral | temp |
 | tnumber_merge_each_n_tboxes | temp, count |
 | tnumber_merge_n_tboxes | temp, count |
+| tnumber_merge_query_tboxes | temp, query, count |
 | tnumber_minus_span | temp, span |
 | tnumber_minus_spanset | temp, ss |
 | tnumber_minus_tbox | temp, box |
@@ -3917,6 +3960,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tpoint_twcentroid | temp |
 | tpointcloud_merge_each_n_tpcboxes | temp, count |
 | tpointcloud_merge_n_tpcboxes | temp, count |
+| tpointcloud_merge_query_tpcboxes | temp, query, count |
 | tpointcloud_split_each_n_tpcboxes | temp, count |
 | tpointcloud_split_n_tpcboxes | temp, count |
 | tpointcloud_to_tpcbox | temp |
@@ -4062,6 +4106,7 @@ and `tools/objectgen.py`.  Do not edit.
 | trgeometry_length | temp |
 | trgeometry_merge_each_n_stboxes | temp, count |
 | trgeometry_merge_n_stboxes | temp, count |
+| trgeometry_merge_query_stboxes | temp, query, count |
 | trgeometry_minus_geom | temp, gs |
 | trgeometry_minus_stbox | temp, box |
 | trgeometry_minus_value | temp, pose |
@@ -4462,13 +4507,12 @@ An `outputArrays` parameter with no length source, so the count of what the call
 
 None in this run.
 
-### value text I/O — 5
+### value text I/O — 4
 
 A struct the binding carries as a value and the catalog names no complete text reader and writer for, so the value states itself in no form a caller can read or write.
 
 | struct | what is missing |
 | --- | --- |
-| BandStats | serialization names in=None out=None |
 | Match | serialization names in=None out=None |
 | RasterStatsState | serialization names in=None out=None |
 | ValueCount | serialization names in=None out=None |
@@ -4498,11 +4542,23 @@ The function answers a type no class stands for and no scalar, value struct or a
 
 None in this run.
 
-### argument needs a class — 0
+### argument needs a class — 11
 
 The function takes a type no class stands for and no marshalling rule reads, so there is nothing for a caller to pass.
 
-None in this run.
+| class | member | what is missing |
+| --- | --- | --- |
+| Raster | aTileValueSeries | argument rqarr of type Raquet ** needs marshalling |
+| Raster | aValueSeries | argument rasts of type Raster ** needs marshalling |
+| Raster | atValueSeries | argument rasts of type Raster ** needs marshalling |
+| Raster | eTileValueSeries | argument rqarr of type Raquet ** needs marshalling |
+| Raster | eValueSeries | argument rasts of type Raster ** needs marshalling |
+| Raster | minusValueSeries | argument rasts of type Raster ** needs marshalling |
+| Raster | setValues | argument noset of type bool * needs marshalling |
+| Raster | tileAtValueSeries | argument rqarr of type Raquet ** needs marshalling |
+| Raster | tileMinusValueSeries | argument rqarr of type Raquet ** needs marshalling |
+| Raster | tileValueSeries | argument rqarr of type Raquet ** needs marshalling |
+| Raster | valueSeries | argument rasts of type Raster ** needs marshalling |
 
 ### overloads of one C# signature — 0
 

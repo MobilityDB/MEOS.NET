@@ -270,8 +270,11 @@ namespace MEOS.NET.Enums
         /// <summary><c>T_TS2CELL</c></summary>
         TTs2cell = 87,
 
+        /// <summary><c>T_RASTER</c></summary>
+        TRaster = 88,
+
         /// <summary><c>NUM_MEOS_TYPES</c></summary>
-        NumMeosTypes = 88,
+        NumMeosTypes = 89,
 
     }
 }

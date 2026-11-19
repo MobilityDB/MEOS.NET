@@ -113,6 +113,9 @@ namespace MEOS.NET.Types
         public TBox?[] MergeNTboxes(int box_count)
             => MEOSFactory.WrapTBoxArray(Meos.TnumberMergeNTboxes(this.Ptr, box_count));
 
+        public TBox?[] MergeQueryTboxes(TBox query)
+            => MEOSFactory.WrapTBoxArray(Meos.TnumberMergeQueryTboxes(this.Ptr, query.Ptr));
+
         public Temporal? MinusSpan(Span span)
             => MEOSFactory.WrapTemporal(Meos.TnumberMinusSpan(this.Ptr, span.Ptr));
 

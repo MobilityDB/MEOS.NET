@@ -1518,6 +1518,21 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
+        public static IntPtr[] SetMergeQuerySpans(IntPtr s, IntPtr query)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.SetMergeQuerySpans(s, query, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
         public static IntPtr[] SetSplitEachNSpans(IntPtr s, int elems_per_span)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
@@ -1584,6 +1599,21 @@ namespace MEOS.NET.Functions
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.SpansetMergeNSpans(ss, span_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] SpansetMergeQuerySpans(IntPtr ss, IntPtr query)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.SpansetMergeQuerySpans(ss, query, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -4844,6 +4874,21 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
+        public static IntPtr[] TemporalMergeQuerySpans(IntPtr temp, IntPtr query)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalMergeQuerySpans(temp, query, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
         public static IntPtr[] TemporalSplitEachNSpans(IntPtr temp, int elem_count)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
@@ -4895,6 +4940,21 @@ namespace MEOS.NET.Functions
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberMergeNTboxes(temp, box_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TnumberMergeQueryTboxes(IntPtr temp, IntPtr query)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberMergeQueryTboxes(temp, query, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)

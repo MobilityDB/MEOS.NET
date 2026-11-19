@@ -493,11 +493,20 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static Geo? FromEWKT(string ewkt)
+            => MEOSFactory.WrapGeo(Meos.GeomFromEwkt(ewkt));
+
         public static Geo? FromHexEWKB(string hexwkb)
             => MEOSFactory.WrapGeo(Meos.GeomFromHexewkb(hexwkb));
 
+        public static Geo? FromHexWKB(string hexwkb)
+            => Geometry.FromHexEWKB(hexwkb);
+
         public static Geo? FromMFJSON(string geojson)
             => Geo.FromGeoJSON(geojson);
+
+        public static Geo? FromWKB(byte[] wkb, int srid)
+            => Geo.FromEWKB(wkb, srid);
 
     }
 }

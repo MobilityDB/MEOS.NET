@@ -119,6 +119,25 @@ namespace MEOS.NET.Functions
             }
         }
 
+        public static string GeoAsHexwkb(IntPtr gs, string endian)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.GeoAsHexwkb(gs, endian, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
         public static string GeoAsText(IntPtr gs, int precision)
         {
             nuint _size = 0;
@@ -137,6 +156,9 @@ namespace MEOS.NET.Functions
                 Marshal.FreeCoTaskMem(_p);
             }
         }
+
+        public static IntPtr GeoAsWkb(IntPtr gs, string endian, IntPtr size)
+            => SafeExecution<IntPtr>(() => Native.GeoAsWkb(gs, endian, size));
 
         public static IntPtr GeoFromEwkb(IntPtr wkb, ulong wkb_size, int srid)
             => SafeExecution<IntPtr>(() => Native.GeoFromEwkb(wkb, wkb_size, srid));
@@ -166,11 +188,23 @@ namespace MEOS.NET.Functions
             }
         }
 
+        public static IntPtr GeogFromEwkb(IntPtr wkb, ulong wkb_size)
+            => SafeExecution<IntPtr>(() => Native.GeogFromEwkb(wkb, wkb_size));
+
+        public static IntPtr GeogFromEwkt(string ewkt)
+            => SafeExecution<IntPtr>(() => Native.GeogFromEwkt(ewkt));
+
+        public static IntPtr GeogFromGeojson(string geojson)
+            => SafeExecution<IntPtr>(() => Native.GeogFromGeojson(geojson));
+
         public static IntPtr GeogFromHexewkb(string hexwkb)
             => SafeExecution<IntPtr>(() => Native.GeogFromHexewkb(hexwkb));
 
         public static IntPtr GeogIn(string str, int typmod)
             => SafeExecution<IntPtr>(() => Native.GeogIn(str, typmod));
+
+        public static IntPtr GeomFromEwkt(string ewkt)
+            => SafeExecution<IntPtr>(() => Native.GeomFromEwkt(ewkt));
 
         public static IntPtr GeomFromHexewkb(string hexwkb)
             => SafeExecution<IntPtr>(() => Native.GeomFromHexewkb(hexwkb));
@@ -464,6 +498,21 @@ namespace MEOS.NET.Functions
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.GeoMergeNStboxes(gs, box_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 80); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] GeoMergeQueryStboxes(IntPtr gs, IntPtr query)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.GeoMergeQueryStboxes(gs, query, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)
@@ -1559,6 +1608,21 @@ namespace MEOS.NET.Functions
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoMergeNStboxes(temp, box_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 80); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TgeoMergeQueryStboxes(IntPtr temp, IntPtr query)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoMergeQueryStboxes(temp, query, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)

@@ -183,6 +183,9 @@ namespace MEOS.NET.Types
         public STBox?[] MergeNStboxes(int box_count)
             => MEOSFactory.WrapSTBoxArray(Meos.TrgeometryMergeNStboxes(this.Ptr, box_count));
 
+        public STBox?[] MergeQueryStboxes(STBox query)
+            => MEOSFactory.WrapSTBoxArray(Meos.TrgeometryMergeQueryStboxes(this.Ptr, query.Ptr));
+
         public Temporal? MinusGeom(Geo gs)
             => MEOSFactory.WrapTemporal(Meos.TrgeometryMinusGeom(this.Ptr, gs.Ptr));
 
