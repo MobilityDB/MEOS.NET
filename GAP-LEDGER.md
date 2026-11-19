@@ -4578,4 +4578,34 @@ An operator takes the name and parameter types of a member of an ancestor, a sec
 
 None in this run.
 
+### aggregate served by several transitions — 7
+
+Several transition functions serve one aggregate name over values of the class, and nothing in the values tells them apart.
+
+| class | member | what is missing |
+| --- | --- | --- |
+| Temporal | tCentroid | tpoint_tcentroid_transfn, tnpoint_tcentroid_transfn |
+| Temporal | tMaxAgg | tint_tmax_transfn, tbigint_tmax_transfn, tfloat_tmax_transfn, ttext_tmax_transfn |
+| Temporal | tMinAgg | tint_tmin_transfn, tbigint_tmin_transfn, tfloat_tmin_transfn, ttext_tmin_transfn |
+| Temporal | tSum | tint_tsum_transfn, tbigint_tsum_transfn, tfloat_tsum_transfn |
+| Temporal | wMax | tint_wmax_transfn, tbigint_wmax_transfn, tfloat_wmax_transfn |
+| Temporal | wMin | tint_wmin_transfn, tbigint_wmin_transfn, tfloat_wmin_transfn |
+| Temporal | wSum | tint_wsum_transfn, tbigint_wsum_transfn, tfloat_wsum_transfn |
+
+### aggregate state not threadable — 0
+
+The transition and the final function of the aggregate do not pass one state pointer from call to call.
+
+None in this run.
+
+### aggregate argument or result needs marshalling — 3
+
+An argument of the transition or the result of the final function has no rule of this generator.
+
+| class | member | what is missing |
+| --- | --- | --- |
+| Temporal | appendInstantAgg | temporal_app_tinst_transfn / temporal_append_finalfn |
+| Temporal | wAvgAgg | tnumber_wavg_transfn / tnumber_tavg_finalfn |
+| Temporal | wCount | temporal_wcount_transfn / temporal_tagg_finalfn |
+
 <!-- gap-ledger:end object layer -->

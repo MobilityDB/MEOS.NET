@@ -439,6 +439,17 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static Set? SetUnionAgg(Geo[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.GeoUnionTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapSet(Meos.SetUnionFinalfn(_state));
+        }
+
         public static string? Typename(int type)
             => Meos.GeoTypename(type);
 

@@ -289,5 +289,16 @@ namespace MEOS.NET.Types
         public static CBuffer? Make(Geo point, double radius)
             => MEOSFactory.WrapCBuffer(Meos.CbufferMake(point.Ptr, radius));
 
+        public static Set? SetUnionAgg(CBuffer[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.CbufferUnionTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapSet(Meos.SetUnionFinalfn(_state));
+        }
+
     }
 }

@@ -63,6 +63,15 @@ DEFERRAL_KINDS: dict[str, str] = {
         "ancestor, a second function for one call, or would take the calls of "
         "an ancestor's member the layer does not emit and so cannot declare "
         "again beside it.",
+    "aggregate served by several transitions":
+        "Several transition functions serve one aggregate name over values of "
+        "the class, and nothing in the values tells them apart.",
+    "aggregate state not threadable":
+        "The transition and the final function of the aggregate do not pass "
+        "one state pointer from call to call.",
+    "aggregate argument or result needs marshalling":
+        "An argument of the transition or the result of the final function has "
+        "no rule of this generator.",
 }
 
 GENERATOR_VERSION = "0.1.0"
@@ -414,6 +423,9 @@ class Method:
         # (parameter name, struct) for each array of structs of scalars and
         # strings the method lays out for MEOS (#written_struct).
         self.written: list[tuple[str, str]] = []
+        # The whole body, braces included, of a method no call template
+        # spells, as an aggregate threads its transition over the values.
+        self.lines: list[str] | None = None
 
     def needs_a_body(self) -> bool:
         """Whether the call needs anything allocated, pinned or read around it."""
@@ -1352,6 +1364,90 @@ class Generator:
             p = self.m.parent.get(p)
         return names
 
+    def aggregate_methods(self, cls: str) -> list[Method]:
+        """The aggregates over the values of a class, one static method each.
+
+        Built beside #method_for, whose #map_param and #map_return it calls for
+        the transition's arguments and the final function's result, as
+        #aggregateMethods of MEOS.js's codegen/ObjectGenerator.ts builds them:
+        the catalog's `aggregates` whose transition takes the class's C type
+        after its state, named as an engine holding one function per name calls
+        them, the aggregate's `altSqlName` or else its `sqlName`, as MobilityDuck
+        registers one. The method threads the transition over the values from a
+        NULL state, as MEOS's C callers do, and answers the final function's
+        result; the final function frees the state. An aggregate two transitions
+        serve under one name over this class has no method of its own: its
+        overloads take the same values and nothing tells them apart."""
+        by_name: dict[str, list[tuple[str, str]]] = {}
+        for agg in self.m.idl.get("aggregates") or []:
+            transition = (agg.get("transition") or {}).get("meos")
+            final = (agg.get("final") or {}).get("meos")
+            f = transition and self.m.functions.get(transition)
+            if not f or not final or len(f.get("params", [])) < 2:
+                continue
+            if self.m.class_for_ctype(clean(f["params"][1]["canonical"])) != cls:
+                continue
+            name = agg.get("altSqlName") or agg["sqlName"]
+            seen = by_name.setdefault(name, [])
+            if (transition, final) not in seen:
+                seen.append((transition, final))
+        methods = []
+        for name, overloads in by_name.items():
+            if len({t for t, _f in overloads}) > 1:
+                self.defer(cls, name, "aggregate served by several transitions",
+                           ", ".join(t for t, _f in overloads))
+                continue
+            transition, final = overloads[0]
+            tsig = codegen.SIGNATURES.get(transition)
+            fsig = codegen.SIGNATURES.get(final)
+            ff = self.m.functions.get(final)
+            if (not tsig or not fsig or not ff or tsig[0] != "IntPtr"
+                    or len(tsig[1]) < 2 or tsig[1][0][0] != "IntPtr"
+                    or len(fsig[1]) != 1):
+                self.defer(cls, name, "aggregate state not threadable",
+                           f"{transition} and {final} do not pass one state pointer")
+                continue
+            f = self.m.functions[transition]
+            c_by_name = {
+                (codegen.csharp_param_name(p["name"]) if p["name"] else "arg"): p
+                for p in f.get("params", [])
+            }
+            mapped = []
+            for i, (cs_type, pname) in enumerate(tsig[1][1:]):
+                p = c_by_name.get(pname, {})
+                arg = "_v" if i == 0 else ident(pname)
+                m = self.map_param(p.get("canonical", cs_type), cs_type, arg,
+                                   self.m.class_for_value(p) if p else None)
+                if m is None or m[1] == scratch(arg):
+                    mapped = None
+                    break
+                mapped.append((m, pname))
+            ret = self.map_return(ff, fsig[0]) if mapped else None
+            if not mapped or ret is None:
+                self.defer(cls, name, "aggregate argument or result needs marshalling",
+                           f"{transition} / {final}")
+                continue
+            (item_type, item_arg), _ = mapped[0]
+            params = [(f"{item_type}[]", "values")] + [
+                (t, pname) for (t, _a), pname in mapped[1:]]
+            args = ", ".join(["_state", item_arg] + [a for (_t, a), _p in mapped[1:]])
+            call = f"Meos.{codegen.public_name(transition)}({args})"
+            answer = ret[1].replace("$", f"Meos.{codegen.public_name(final)}(_state)")
+            method = Method(pascal(name), ret[0], params, answer, True)
+            method.lines = [
+                "        {",
+                "            IntPtr _state = IntPtr.Zero;",
+                "            foreach (var _v in values)",
+                "            {",
+                f"                _state = {call};",
+                "            }",
+                "",
+                f"            return {answer};",
+                "        }",
+            ]
+            methods.append(method)
+        return methods
+
     def emit_class(self, cls: str) -> str:
         parent = self.m.parent.get(cls) or "MEOSObject"
         entries = [e for e in self.m.om["classes"].get(cls, {}).get("methods", [])
@@ -1359,6 +1455,14 @@ class Generator:
         paired = [(e["function"], self.method_for(cls, e)) for e in entries]
         paired = self.take_portable_names(cls, paired, entries)
         methods = [m for _f, m in paired if m]
+        inherited_names = self.inherited_names(cls)
+        for m in self.aggregate_methods(cls):
+            if any(o.name == m.name for o in methods) or any(
+                    name == m.name for name, _t in inherited_names):
+                self.defer(cls, m.name, "signature taken by a method",
+                           "an aggregate takes the name of a method")
+                continue
+            methods.append(m)
         methods.sort(key=lambda m: (m.static, m.name))
         self.emitted += len(methods)
         # The C function behind each instance method this class or an ancestor
@@ -1411,7 +1515,9 @@ class Generator:
             new = "new " if (m.name, tuple(t for t, _ in m.params)) in inherited else ""
             kind = "static " if m.static else ""
             lines.append(f"        public {new}{kind}{m.ret} {m.name}({args})")
-            if m.needs_a_body():
+            if m.lines is not None:
+                lines.extend(m.lines)
+            elif m.needs_a_body():
                 lines.extend(self.call_body(m))
             else:
                 lines.append(f"            => {m.body};")

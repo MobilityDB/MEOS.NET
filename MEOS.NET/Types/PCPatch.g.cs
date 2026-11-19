@@ -183,5 +183,16 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static Set? SetUnionAgg(PCPatch[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.PcpatchUnionTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapSet(Meos.SetUnionFinalfn(_state));
+        }
+
     }
 }

@@ -193,5 +193,27 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static SpanSet? SpanUnionAgg(Span[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.SpanUnionTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapSpanSet(Meos.SpansetUnionFinalfn(_state));
+        }
+
+        public static Temporal? TCount(Span[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.TstzspanTcountTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapTemporal(Meos.TemporalTaggFinalfn(_state));
+        }
+
     }
 }

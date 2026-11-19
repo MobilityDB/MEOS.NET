@@ -473,6 +473,39 @@ namespace MEOS.NET.Types
         public static Temporal? MinusValueGdal(Temporal traj, string path, int band, Span vspan)
             => MEOSFactory.WrapTemporal(Meos.RasterMinusValueGdal(traj.Ptr, path, band, vspan.Ptr));
 
+        public static Raster? RasterUnion(Raster[] values, int band, string uniontype)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.RasterUnionTransfn(_state, _v.Ptr, band, uniontype);
+            }
+
+            return MEOSFactory.WrapRaster(Meos.RasterUnionFinalfn(_state));
+        }
+
+        public static bool SameAlignmentAgg(Raster[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.RasterSameAlignmentTransfn(_state, _v.Ptr);
+            }
+
+            return Meos.RasterSameAlignmentFinalfn(_state);
+        }
+
+        public static BandStats? SummaryStatsAgg(Raster[] values, int band, bool exclude_nodata)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.RasterSummaryStatsTransfn(_state, _v.Ptr, band, exclude_nodata);
+            }
+
+            return MEOSFactory.WrapBandStats(Meos.RasterSummaryStatsFinalfn(_state));
+        }
+
         public static Temporal? TileAtValue(Temporal traj, RaQuet rq, Span vspan)
             => MEOSFactory.WrapTemporal(Meos.RasterTileAtValue(traj.Ptr, rq.Ptr, vspan.Ptr));
 

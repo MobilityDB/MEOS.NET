@@ -199,5 +199,16 @@ namespace MEOS.NET.Types
         public static NPoint? Make(long rid, double pos)
             => MEOSFactory.WrapNPoint(Meos.NpointMake(rid, pos));
 
+        public static Set? SetUnionAgg(NPoint[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.NpointUnionTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapSet(Meos.SetUnionFinalfn(_state));
+        }
+
     }
 }
