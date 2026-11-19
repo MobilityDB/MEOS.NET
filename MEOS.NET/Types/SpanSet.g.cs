@@ -117,6 +117,9 @@ namespace MEOS.NET.Types
         public Span?[] MergeNSpans(int span_count)
             => MEOSFactory.WrapSpanArray(Meos.SpansetMergeNSpans(this.Ptr, span_count));
 
+        public Span?[] MergeQuerySpans(Span query)
+            => MEOSFactory.WrapSpanArray(Meos.SpansetMergeQuerySpans(this.Ptr, query.Ptr));
+
         public SpanSet? Minus(Span s)
             => MEOSFactory.WrapSpanSet(Meos.MinusSpansetSpan(this.Ptr, s.Ptr));
 

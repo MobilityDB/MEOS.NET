@@ -68,6 +68,25 @@ namespace MEOS.NET.Functions
             }
         }
 
+        public static string RaquetAsCoveragejson(IntPtr rq)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.RaquetAsCoveragejson(rq, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
         public static IntPtr RaquetMake(ulong quadbin, int width, int height, int pixtype, double nodata, bool has_nodata, IntPtr pixels, ulong pixels_size)
             => SafeExecution<IntPtr>(() => Native.RaquetMake(quadbin, width, height, pixtype, nodata, has_nodata, pixels, pixels_size));
 
@@ -79,6 +98,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr RaquetReadBytes(IntPtr data, ulong size, ulong quadbin)
             => SafeExecution<IntPtr>(() => Native.RaquetReadBytes(data, size, quadbin));
+
+        public static IntPtr RaquetFromRow(ulong block, IntPtr data, ulong size, string metadata, int band)
+            => SafeExecution<IntPtr>(() => Native.RaquetFromRow(block, data, size, metadata, band));
 
         public static ulong RaquetQuadbin(IntPtr rq)
             => SafeExecution<ulong>(() => Native.RaquetQuadbin(rq));
@@ -128,6 +150,40 @@ namespace MEOS.NET.Functions
 
         public static IntPtr RasterFromWkb(IntPtr wkb, ulong size)
             => SafeExecution<IntPtr>(() => Native.RasterFromWkb(wkb, size));
+
+        public static string RasterAsCoveragejson(IntPtr rast)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.RasterAsCoveragejson(rast, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static IntPtr RasterAsGdal(IntPtr rast, string format, IntPtr options, int count, int srid, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.RasterAsGdal(rast, format, options, count, srid, size_out));
+
+        public static IntPtr RasterAsTiff(IntPtr rast, IntPtr options, int count, int srid, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.RasterAsTiff(rast, options, count, srid, size_out));
+
+        public static IntPtr RasterAsPng(IntPtr rast, IntPtr options, int count, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.RasterAsPng(rast, options, count, size_out));
+
+        public static IntPtr RasterAsJpeg(IntPtr rast, IntPtr options, int count, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.RasterAsJpeg(rast, options, count, size_out));
+
+        public static IntPtr RasterFromGdal(IntPtr data, ulong size, int srid)
+            => SafeExecution<IntPtr>(() => Native.RasterFromGdal(data, size, srid));
 
         public static IntPtr RasterFromHexwkb(string hexwkb)
             => SafeExecution<IntPtr>(() => Native.RasterFromHexwkb(hexwkb));
@@ -521,11 +577,84 @@ namespace MEOS.NET.Functions
         public static IntPtr RasterTileValueQuadbin(IntPtr traj, IntPtr pixels, ulong pixels_size, int width, int height, ulong quadbin, int pixtype, double nodata, bool has_nodata)
             => SafeExecution<IntPtr>(() => Native.RasterTileValueQuadbin(traj, pixels, pixels_size, width, height, quadbin, pixtype, nodata, has_nodata));
 
+        public static string TfloatAsCoveragejson(IntPtr temp, IntPtr traj)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.TfloatAsCoveragejson(temp, traj, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
         public static IntPtr RasterTileValue(IntPtr traj, IntPtr rq)
             => SafeExecution<IntPtr>(() => Native.RasterTileValue(traj, rq));
 
         public static IntPtr RasterTileValueArray(IntPtr traj, IntPtr rqarr, int count)
             => SafeExecution<IntPtr>(() => Native.RasterTileValueArray(traj, rqarr, count));
+
+        public static IntPtr RasterTileAtValue(IntPtr traj, IntPtr rq, IntPtr vspan)
+            => SafeExecution<IntPtr>(() => Native.RasterTileAtValue(traj, rq, vspan));
+
+        public static IntPtr RasterTileMinusValue(IntPtr traj, IntPtr rq, IntPtr vspan)
+            => SafeExecution<IntPtr>(() => Native.RasterTileMinusValue(traj, rq, vspan));
+
+        public static int ErasterTileValue(IntPtr traj, IntPtr rq, IntPtr vspan)
+            => SafeExecution<int>(() => Native.ErasterTileValue(traj, rq, vspan));
+
+        public static int ArasterTileValue(IntPtr traj, IntPtr rq, IntPtr vspan)
+            => SafeExecution<int>(() => Native.ArasterTileValue(traj, rq, vspan));
+
+        public static IntPtr RasterTileAtValueArray(IntPtr traj, IntPtr rqarr, int count, IntPtr vspan)
+            => SafeExecution<IntPtr>(() => Native.RasterTileAtValueArray(traj, rqarr, count, vspan));
+
+        public static IntPtr RasterTileMinusValueArray(IntPtr traj, IntPtr rqarr, int count, IntPtr vspan)
+            => SafeExecution<IntPtr>(() => Native.RasterTileMinusValueArray(traj, rqarr, count, vspan));
+
+        public static int ErasterTileValueArray(IntPtr traj, IntPtr rqarr, int count, IntPtr vspan)
+            => SafeExecution<int>(() => Native.ErasterTileValueArray(traj, rqarr, count, vspan));
+
+        public static int ArasterTileValueArray(IntPtr traj, IntPtr rqarr, int count, IntPtr vspan)
+            => SafeExecution<int>(() => Native.ArasterTileValueArray(traj, rqarr, count, vspan));
+
+        public static IntPtr RasterValueSeries(IntPtr traj, IntPtr rasts, IntPtr spans, int count, int band)
+            => SafeExecution<IntPtr>(() => Native.RasterValueSeries(traj, rasts, spans, count, band));
+
+        public static IntPtr RasterAtValueSeries(IntPtr traj, IntPtr rasts, IntPtr spans, int count, int band, IntPtr vspan)
+            => SafeExecution<IntPtr>(() => Native.RasterAtValueSeries(traj, rasts, spans, count, band, vspan));
+
+        public static IntPtr RasterMinusValueSeries(IntPtr traj, IntPtr rasts, IntPtr spans, int count, int band, IntPtr vspan)
+            => SafeExecution<IntPtr>(() => Native.RasterMinusValueSeries(traj, rasts, spans, count, band, vspan));
+
+        public static int ErasterValueSeries(IntPtr traj, IntPtr rasts, IntPtr spans, int count, int band, IntPtr vspan)
+            => SafeExecution<int>(() => Native.ErasterValueSeries(traj, rasts, spans, count, band, vspan));
+
+        public static int ArasterValueSeries(IntPtr traj, IntPtr rasts, IntPtr spans, int count, int band, IntPtr vspan)
+            => SafeExecution<int>(() => Native.ArasterValueSeries(traj, rasts, spans, count, band, vspan));
+
+        public static IntPtr RasterTileValueSeries(IntPtr traj, IntPtr rqarr, IntPtr spans, int count)
+            => SafeExecution<IntPtr>(() => Native.RasterTileValueSeries(traj, rqarr, spans, count));
+
+        public static IntPtr RasterTileAtValueSeries(IntPtr traj, IntPtr rqarr, IntPtr spans, int count, IntPtr vspan)
+            => SafeExecution<IntPtr>(() => Native.RasterTileAtValueSeries(traj, rqarr, spans, count, vspan));
+
+        public static IntPtr RasterTileMinusValueSeries(IntPtr traj, IntPtr rqarr, IntPtr spans, int count, IntPtr vspan)
+            => SafeExecution<IntPtr>(() => Native.RasterTileMinusValueSeries(traj, rqarr, spans, count, vspan));
+
+        public static int ErasterTileValueSeries(IntPtr traj, IntPtr rqarr, IntPtr spans, int count, IntPtr vspan)
+            => SafeExecution<int>(() => Native.ErasterTileValueSeries(traj, rqarr, spans, count, vspan));
+
+        public static int ArasterTileValueSeries(IntPtr traj, IntPtr rqarr, IntPtr spans, int count, IntPtr vspan)
+            => SafeExecution<int>(() => Native.ArasterTileValueSeries(traj, rqarr, spans, count, vspan));
 
     }
 }

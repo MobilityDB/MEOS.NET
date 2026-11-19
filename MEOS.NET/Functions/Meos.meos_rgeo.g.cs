@@ -288,6 +288,21 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
+        public static IntPtr[] TrgeometryMergeQueryStboxes(IntPtr temp, IntPtr query)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TrgeometryMergeQueryStboxes(temp, query, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 80); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
         public static IntPtr[] TrgeometrySplitEachNStboxes(IntPtr temp, int elem_count)
         {
             IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));

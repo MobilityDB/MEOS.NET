@@ -14,6 +14,9 @@ namespace MEOS.NET.Types
     {
         internal RaQuet(IntPtr ptr) : base(ptr) { }
 
+        public string AsCoveragejson()
+            => Meos.RaquetAsCoveragejson(this.Ptr);
+
         public string AsHexWKB(byte variant)
             => Meos.RaquetAsHexwkb(this.Ptr, variant);
 
@@ -130,6 +133,19 @@ namespace MEOS.NET.Types
 
         public static RaQuet? FromHexWKB(string hexwkb)
             => MEOSFactory.WrapRaQuet(Meos.RaquetFromHexwkb(hexwkb));
+
+        public static RaQuet? FromRow(Quadbin block, byte[] data, string metadata, int band)
+        {
+            GCHandle _data = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapRaQuet(Meos.RaquetFromRow(block.value, _data.AddrOfPinnedObject(), (ulong) data.Length, metadata, band));
+            }
+            finally
+            {
+                _data.Free();
+            }
+        }
 
         public static RaQuet? FromWKB(byte[] wkb)
         {

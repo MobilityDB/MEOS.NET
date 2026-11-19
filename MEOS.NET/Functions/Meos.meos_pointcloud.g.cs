@@ -31,13 +31,10 @@ namespace MEOS.NET.Functions
             }
         }
 
-        public static IntPtr PcpointFromHexwkb(string hexwkb)
-            => SafeExecution<IntPtr>(() => Native.PcpointFromHexwkb(hexwkb));
-
-        public static string PcpointAsHexwkb(IntPtr pt)
+        public static string PcpointAsHexwkb(IntPtr pt, byte variant)
         {
             nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.PcpointAsHexwkb(pt, out _size));
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PcpointAsHexwkb(pt, variant, out _size));
             if (_p == IntPtr.Zero)
             {
                 return null!;
@@ -52,6 +49,15 @@ namespace MEOS.NET.Functions
                 Marshal.FreeCoTaskMem(_p);
             }
         }
+
+        public static IntPtr PcpointAsWkb(IntPtr pt, byte variant, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.PcpointAsWkb(pt, variant, size_out));
+
+        public static IntPtr PcpointFromHexwkb(string hexwkb)
+            => SafeExecution<IntPtr>(() => Native.PcpointFromHexwkb(hexwkb));
+
+        public static IntPtr PcpointFromWkb(IntPtr wkb, ulong size)
+            => SafeExecution<IntPtr>(() => Native.PcpointFromWkb(wkb, size));
 
         public static IntPtr PcpointMake(uint pcid, IntPtr values, int count)
             => SafeExecution<IntPtr>(() => Native.PcpointMake(pcid, values, count));
@@ -171,13 +177,10 @@ namespace MEOS.NET.Functions
             }
         }
 
-        public static IntPtr PcpatchFromHexwkb(string hexwkb)
-            => SafeExecution<IntPtr>(() => Native.PcpatchFromHexwkb(hexwkb));
-
-        public static string PcpatchAsHexwkb(IntPtr pa)
+        public static string PcpatchAsHexwkb(IntPtr pa, byte variant)
         {
             nuint _size = 0;
-            IntPtr _p = SafeExecution<IntPtr>(() => Native.PcpatchAsHexwkb(pa, out _size));
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.PcpatchAsHexwkb(pa, variant, out _size));
             if (_p == IntPtr.Zero)
             {
                 return null!;
@@ -192,6 +195,15 @@ namespace MEOS.NET.Functions
                 Marshal.FreeCoTaskMem(_p);
             }
         }
+
+        public static IntPtr PcpatchAsWkb(IntPtr pa, byte variant, IntPtr size_out)
+            => SafeExecution<IntPtr>(() => Native.PcpatchAsWkb(pa, variant, size_out));
+
+        public static IntPtr PcpatchFromHexwkb(string hexwkb)
+            => SafeExecution<IntPtr>(() => Native.PcpatchFromHexwkb(hexwkb));
+
+        public static IntPtr PcpatchFromWkb(IntPtr wkb, ulong size)
+            => SafeExecution<IntPtr>(() => Native.PcpatchFromWkb(wkb, size));
 
         public static IntPtr PcpatchMake(IntPtr points, int count)
             => SafeExecution<IntPtr>(() => Native.PcpatchMake(points, count));
@@ -536,6 +548,21 @@ namespace MEOS.NET.Functions
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.TpointcloudMergeNTpcboxes(temp, box_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 88); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TpointcloudMergeQueryTpcboxes(IntPtr temp, IntPtr query)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TpointcloudMergeQueryTpcboxes(temp, query, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)

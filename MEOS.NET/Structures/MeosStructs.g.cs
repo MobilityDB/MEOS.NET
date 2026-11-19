@@ -43,19 +43,6 @@ namespace MEOS.NET.Structures
         }
     }
 
-    /// <summary>The MEOS <c>BandStats</c> struct, as MEOS returns it.</summary>
-    [GeneratedCode("MEOS.NET.Codegen", "0.1.0")]
-    [StructLayout(LayoutKind.Sequential)]
-    public struct BandStats
-    {
-        public uint count;
-        public double sum;
-        public double mean;
-        public double stddev;
-        public double min;
-        public double max;
-    }
-
     /// <summary>The MEOS <c>GBOX</c> struct, as MEOS returns it.</summary>
     [GeneratedCode("MEOS.NET.Codegen", "0.1.0")]
     [StructLayout(LayoutKind.Sequential)]

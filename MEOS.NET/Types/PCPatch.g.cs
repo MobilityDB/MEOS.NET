@@ -24,11 +24,32 @@ namespace MEOS.NET.Types
         public int AlwaysNe(TPCPatch temp)
             => Meos.AlwaysNePcpatchTpcpatch(this.Ptr, temp.Ptr);
 
-        public string AsHexWKB()
-            => Meos.PcpatchAsHexwkb(this.Ptr);
+        public string AsHexWKB(byte variant)
+            => Meos.PcpatchAsHexwkb(this.Ptr, variant);
 
         public string AsText(int maxdd)
             => Meos.PcpatchHexOut(this.Ptr, maxdd);
+
+        public byte[]? AsWKB(byte variant)
+        {
+            IntPtr _size_out = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.PcpatchAsWkb(this.Ptr, variant, _size_out);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size_out)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size_out);
+            }
+        }
 
         public int Cmp(PCPatch pa2)
             => Meos.PcpatchCmp(this.Ptr, pa2.Ptr);
@@ -116,6 +137,19 @@ namespace MEOS.NET.Types
 
         public static PCPatch? FromText(string str)
             => MEOSFactory.WrapPCPatch(Meos.PcpatchHexIn(str));
+
+        public static PCPatch? FromWKB(byte[] wkb)
+        {
+            GCHandle _wkb = GCHandle.Alloc(wkb, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapPCPatch(Meos.PcpatchFromWkb(_wkb.AddrOfPinnedObject(), (ulong) wkb.Length));
+            }
+            finally
+            {
+                _wkb.Free();
+            }
+        }
 
         public static PCPatch? Make(PCPoint[] points)
         {

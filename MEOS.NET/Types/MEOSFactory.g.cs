@@ -17,6 +17,30 @@ namespace MEOS.NET.Types
     [System.CodeDom.Compiler.GeneratedCode("MEOS.NET.ObjectGen", "0.1.0")]
     public static class MEOSFactory
     {
+        /// <summary>The value at <paramref name="ptr"/> as the BandStats
+        /// class the model gives its runtime type.</summary>
+        public static BandStats? WrapBandStats(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new BandStats(ptr);
+        }
+
+        /// <summary>Every element of a C array of BandStats pointers, wrapped.</summary>
+        public static BandStats?[] WrapBandStatsArray(IntPtr[] ptrs)
+        {
+            BandStats?[] wrapped = new BandStats?[ptrs.Length];
+            for (int i = 0; i < ptrs.Length; i++)
+            {
+                wrapped[i] = WrapBandStats(ptrs[i]);
+            }
+
+            return wrapped;
+        }
+
         /// <summary>The value at <paramref name="ptr"/> as the CBuffer
         /// class the model gives its runtime type.</summary>
         public static CBuffer? WrapCBuffer(IntPtr ptr)

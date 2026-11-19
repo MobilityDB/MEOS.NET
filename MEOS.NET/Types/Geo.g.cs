@@ -69,8 +69,32 @@ namespace MEOS.NET.Types
         public string AsHexEWKB(string endian)
             => Meos.GeoAsHexewkb(this.Ptr, endian);
 
+        public string AsHexWKB(string endian)
+            => Meos.GeoAsHexwkb(this.Ptr, endian);
+
         public string AsText(int precision)
             => Meos.GeoAsText(this.Ptr, precision);
+
+        public byte[]? AsWKB(string endian)
+        {
+            IntPtr _size = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.GeoAsWkb(this.Ptr, endian, _size);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size);
+            }
+        }
 
         public double? Bearing(Geo gs2)
         {
@@ -146,6 +170,9 @@ namespace MEOS.NET.Types
 
         public STBox?[] MergeNStboxes(int box_count)
             => MEOSFactory.WrapSTBoxArray(Meos.GeoMergeNStboxes(this.Ptr, box_count));
+
+        public STBox?[] MergeQueryStboxes(STBox query)
+            => MEOSFactory.WrapSTBoxArray(Meos.GeoMergeQueryStboxes(this.Ptr, query.Ptr));
 
         public Set? Minus(GeoSet s)
             => MEOSFactory.WrapSet(Meos.MinusGeoSet(this.Ptr, s.Ptr));
