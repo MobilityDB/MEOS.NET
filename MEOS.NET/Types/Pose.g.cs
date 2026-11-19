@@ -268,5 +268,16 @@ namespace MEOS.NET.Types
         public static Pose? MakePoint3dYpr(Geo gs, double yaw, double pitch, double roll)
             => MEOSFactory.WrapPose(Meos.PoseMakePoint3dYpr(gs.Ptr, yaw, pitch, roll));
 
+        public static Set? SetUnionAgg(Pose[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.PoseUnionTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapSet(Meos.SetUnionFinalfn(_state));
+        }
+
     }
 }

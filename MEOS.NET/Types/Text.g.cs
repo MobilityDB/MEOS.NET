@@ -129,5 +129,16 @@ namespace MEOS.NET.Types
         public static Text? FromCstring(string str)
             => MEOSFactory.WrapText(Meos.CstringToText(str));
 
+        public static Set? SetUnionAgg(Text[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.TextUnionTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapSet(Meos.SetUnionFinalfn(_state));
+        }
+
     }
 }

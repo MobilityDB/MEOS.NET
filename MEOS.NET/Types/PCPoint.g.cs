@@ -221,5 +221,16 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static Set? SetUnionAgg(PCPoint[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.PcpointUnionTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapSet(Meos.SetUnionFinalfn(_state));
+        }
+
     }
 }
