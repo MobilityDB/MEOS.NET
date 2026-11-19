@@ -319,6 +319,37 @@ namespace MEOS.NET.Types
         public NPoint?[] Values()
             => MEOSFactory.WrapNPointArray(Meos.TnpointValues(this.Ptr));
 
+        public static Temporal? AppendInstantAgg(TNPoint[] values, string interp, double maxdist, Interval maxt)
+        {
+            IntPtr _maxt = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(maxt, _maxt, false);
+                IntPtr _state = IntPtr.Zero;
+                foreach (var _v in values)
+                {
+                    _state = Meos.TemporalAppTinstTransfn(_state, _v.Ptr, Meos.InterptypeFromString(interp), maxdist, _maxt);
+                }
+
+                return MEOSFactory.WrapTemporal(Meos.TemporalAppendFinalfn(_state));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_maxt);
+            }
+        }
+
+        public static Temporal? AppendSequenceAgg(TNPoint[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.TemporalAppTseqTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapTemporal(Meos.TemporalAppendFinalfn(_state));
+        }
+
         public static Temporal? FromBaseTemp(NPoint np, Temporal temp)
             => MEOSFactory.WrapTemporal(Meos.TnpointFromBaseTemp(np.Ptr, temp.Ptr));
 
@@ -336,6 +367,59 @@ namespace MEOS.NET.Types
 
         public static Temporal? FromText(string str)
             => MEOSFactory.WrapTemporal(Meos.TnpointIn(str));
+
+        public static Temporal? MergeAgg(TNPoint[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.TemporalMergeTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapTemporal(Meos.TemporalTaggFinalfn(_state));
+        }
+
+        public static Temporal? TCentroid(TNPoint[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.TnpointTcentroidTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapTemporal(Meos.TpointTcentroidFinalfn(_state));
+        }
+
+        public static Temporal? TCount(TNPoint[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.TemporalTcountTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapTemporal(Meos.TemporalTaggFinalfn(_state));
+        }
+
+        public static Temporal? WCount(TNPoint[] values, Interval interv)
+        {
+            IntPtr _interv = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(interv, _interv, false);
+                IntPtr _state = IntPtr.Zero;
+                foreach (var _v in values)
+                {
+                    _state = Meos.TemporalWcountTransfn(_state, _v.Ptr, _interv);
+                }
+
+                return MEOSFactory.WrapTemporal(Meos.TemporalTaggFinalfn(_state));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_interv);
+            }
+        }
 
     }
 }

@@ -193,6 +193,37 @@ namespace MEOS.NET.Types
         public SpanSet? WhenTrue()
             => MEOSFactory.WrapSpanSet(Meos.TboolWhenTrue(this.Ptr));
 
+        public static Temporal? AppendInstantAgg(TBool[] values, string interp, double maxdist, Interval maxt)
+        {
+            IntPtr _maxt = Marshal.AllocHGlobal(Marshal.SizeOf<Interval>());
+            try
+            {
+                Marshal.StructureToPtr(maxt, _maxt, false);
+                IntPtr _state = IntPtr.Zero;
+                foreach (var _v in values)
+                {
+                    _state = Meos.TemporalAppTinstTransfn(_state, _v.Ptr, Meos.InterptypeFromString(interp), maxdist, _maxt);
+                }
+
+                return MEOSFactory.WrapTemporal(Meos.TemporalAppendFinalfn(_state));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_maxt);
+            }
+        }
+
+        public static Temporal? AppendSequenceAgg(TBool[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.TemporalAppTseqTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapTemporal(Meos.TemporalAppendFinalfn(_state));
+        }
+
         public static Temporal? FromBaseTemp(bool b, Temporal temp)
             => MEOSFactory.WrapTemporal(Meos.TboolFromBaseTemp(b, temp.Ptr));
 
@@ -201,6 +232,50 @@ namespace MEOS.NET.Types
 
         public static Temporal? FromText(string str)
             => MEOSFactory.WrapTemporal(Meos.TboolIn(str));
+
+        public static Temporal? MergeAgg(TBool[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.TemporalMergeTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapTemporal(Meos.TemporalTaggFinalfn(_state));
+        }
+
+        public static Temporal? TAndAgg(TBool[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.TboolTandTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapTemporal(Meos.TemporalTaggFinalfn(_state));
+        }
+
+        public static Temporal? TCount(TBool[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.TemporalTcountTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapTemporal(Meos.TemporalTaggFinalfn(_state));
+        }
+
+        public static Temporal? TOrAgg(TBool[] values)
+        {
+            IntPtr _state = IntPtr.Zero;
+            foreach (var _v in values)
+            {
+                _state = Meos.TboolTorTransfn(_state, _v.Ptr);
+            }
+
+            return MEOSFactory.WrapTemporal(Meos.TemporalTaggFinalfn(_state));
+        }
 
     }
 }
