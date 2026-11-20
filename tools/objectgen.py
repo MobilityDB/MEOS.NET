@@ -1364,14 +1364,27 @@ class Generator:
             p = self.m.parent.get(p)
         return names
 
+    def aggregate_class(self, agg: dict, value_ctype: str) -> str | None:
+        """The class of an aggregate, as #aggregateClass of MEOS.js's
+        codegen/ObjectGenerator.ts reads it: the leaf of the lattice whose prefix
+        is the SQL type of its values (`tint` names TInt), as the object model
+        reads a function's class off its prefix, else the class of the C type its
+        transition takes them as."""
+        sql = (agg.get("args") or [None])[0]
+        for name, node in self.m.om["lattice"].items():
+            if node.get("kind") == "leaf" and sql in (node.get("prefixes") or []):
+                return name
+        return self.m.class_for_ctype(clean(value_ctype))
+
     def aggregate_methods(self, cls: str) -> list[Method]:
         """The aggregates over the values of a class, one static method each.
 
         Built beside #method_for, whose #map_param and #map_return it calls for
         the transition's arguments and the final function's result, as
         #aggregateMethods of MEOS.js's codegen/ObjectGenerator.ts builds them:
-        the catalog's `aggregates` whose transition takes the class's C type
-        after its state, named as an engine holding one function per name calls
+        the catalog's `aggregates` #aggregate_class gives the class, so each
+        transition of tMinAgg is a method of its own class (TInt.TMinAgg,
+        TFloat.TMinAgg), named as an engine holding one function per name calls
         them, the aggregate's `altSqlName` or else its `sqlName`, as MobilityDuck
         registers one. The method threads the transition over the values from a
         NULL state, as MEOS's C callers do, and answers the final function's
@@ -1385,7 +1398,7 @@ class Generator:
             f = transition and self.m.functions.get(transition)
             if not f or not final or len(f.get("params", [])) < 2:
                 continue
-            if self.m.class_for_ctype(clean(f["params"][1]["canonical"])) != cls:
+            if self.aggregate_class(agg, f["params"][1]["canonical"]) != cls:
                 continue
             name = agg.get("altSqlName") or agg["sqlName"]
             seen = by_name.setdefault(name, [])
@@ -1412,13 +1425,20 @@ class Generator:
                 (codegen.csharp_param_name(p["name"]) if p["name"] else "arg"): p
                 for p in f.get("params", [])
             }
-            mapped = []
+            mapped, structs = [], []
             for i, (cs_type, pname) in enumerate(tsig[1][1:]):
                 p = c_by_name.get(pname, {})
                 arg = "_v" if i == 0 else ident(pname)
                 m = self.map_param(p.get("canonical", cs_type), cs_type, arg,
                                    self.m.class_for_value(p) if p else None)
-                if m is None or m[1] == scratch(arg):
+                if m is not None and m[1] == scratch(arg):
+                    # A struct argument passed by value is laid out once for
+                    # every call, as #call_body lays one out for its call.
+                    if i == 0:
+                        m = None
+                    else:
+                        structs.append((arg, m[0]))
+                if m is None:
                     mapped = None
                     break
                 mapped.append((m, pname))
@@ -1428,14 +1448,16 @@ class Generator:
                            f"{transition} / {final}")
                 continue
             (item_type, item_arg), _ = mapped[0]
+            # A value of an ancestor's C type is taken as this class's own.
+            if item_type in self.m.ancestors(cls):
+                item_type = cls
             params = [(f"{item_type}[]", "values")] + [
                 (t, pname) for (t, _a), pname in mapped[1:]]
             args = ", ".join(["_state", item_arg] + [a for (_t, a), _p in mapped[1:]])
             call = f"Meos.{codegen.public_name(transition)}({args})"
             answer = ret[1].replace("$", f"Meos.{codegen.public_name(final)}(_state)")
             method = Method(pascal(name), ret[0], params, answer, True)
-            method.lines = [
-                "        {",
+            loop = [
                 "            IntPtr _state = IntPtr.Zero;",
                 "            foreach (var _v in values)",
                 "            {",
@@ -1443,8 +1465,18 @@ class Generator:
                 "            }",
                 "",
                 f"            return {answer};",
-                "        }",
             ]
+            if structs:
+                setup = [f"            IntPtr {scratch(n)} = "
+                         f"Marshal.AllocHGlobal(Marshal.SizeOf<{t}>());" for n, t in structs]
+                fill = [f"                Marshal.StructureToPtr({n}, {scratch(n)}, false);"
+                        for n, _t in structs]
+                free = [f"                Marshal.FreeHGlobal({scratch(n)});" for n, _t in structs]
+                loop = (setup + ["            try", "            {"] + fill
+                        + [f"    {line}" if line else "" for line in loop]
+                        + ["            }", "            finally", "            {"] + free
+                        + ["            }"])
+            method.lines = ["        {"] + loop + ["        }"]
             methods.append(method)
         return methods
 

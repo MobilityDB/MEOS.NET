@@ -10,7 +10,7 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `eb4454101301017dc26c4ec00ca1ac7a72f53910` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `d2a7ca45caf9c4c93b9540326e888a8c1fb48427` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
@@ -4578,19 +4578,11 @@ An operator takes the name and parameter types of a member of an ancestor, a sec
 
 None in this run.
 
-### aggregate served by several transitions — 7
+### aggregate served by several transitions — 0
 
 Several transition functions serve one aggregate name over values of the class, and nothing in the values tells them apart.
 
-| class | member | what is missing |
-| --- | --- | --- |
-| Temporal | tCentroid | tpoint_tcentroid_transfn, tnpoint_tcentroid_transfn |
-| Temporal | tMaxAgg | tint_tmax_transfn, tbigint_tmax_transfn, tfloat_tmax_transfn, ttext_tmax_transfn |
-| Temporal | tMinAgg | tint_tmin_transfn, tbigint_tmin_transfn, tfloat_tmin_transfn, ttext_tmin_transfn |
-| Temporal | tSum | tint_tsum_transfn, tbigint_tsum_transfn, tfloat_tsum_transfn |
-| Temporal | wMax | tint_wmax_transfn, tbigint_wmax_transfn, tfloat_wmax_transfn |
-| Temporal | wMin | tint_wmin_transfn, tbigint_wmin_transfn, tfloat_wmin_transfn |
-| Temporal | wSum | tint_wsum_transfn, tbigint_wsum_transfn, tfloat_wsum_transfn |
+None in this run.
 
 ### aggregate state not threadable — 0
 
@@ -4598,14 +4590,10 @@ The transition and the final function of the aggregate do not pass one state poi
 
 None in this run.
 
-### aggregate argument or result needs marshalling — 3
+### aggregate argument or result needs marshalling — 0
 
 An argument of the transition or the result of the final function has no rule of this generator.
 
-| class | member | what is missing |
-| --- | --- | --- |
-| Temporal | appendInstantAgg | temporal_app_tinst_transfn / temporal_append_finalfn |
-| Temporal | wAvgAgg | tnumber_wavg_transfn / tnumber_tavg_finalfn |
-| Temporal | wCount | temporal_wcount_transfn / temporal_tagg_finalfn |
+None in this run.
 
 <!-- gap-ledger:end object layer -->
