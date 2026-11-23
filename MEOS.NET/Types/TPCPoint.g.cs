@@ -60,6 +60,18 @@ namespace MEOS.NET.Types
         public int EverOverlaps(TPCBox box)
             => Meos.EverOverlapsTpcpointTpcbox(this.Ptr, box.Ptr);
 
+        public Temporal? GetDim(string name)
+            => MEOSFactory.WrapTemporal(Meos.TpcpointGetDim(this.Ptr, name));
+
+        public Temporal? GetX()
+            => MEOSFactory.WrapTemporal(Meos.TpcpointGetX(this.Ptr));
+
+        public Temporal? GetY()
+            => MEOSFactory.WrapTemporal(Meos.TpcpointGetY(this.Ptr));
+
+        public Temporal? GetZ()
+            => MEOSFactory.WrapTemporal(Meos.TpcpointGetZ(this.Ptr));
+
         public Temporal? MinusTpcbox(TPCBox box, bool border_inc)
             => MEOSFactory.WrapTemporal(Meos.TpcpointMinusTpcbox(this.Ptr, box.Ptr, border_inc));
 

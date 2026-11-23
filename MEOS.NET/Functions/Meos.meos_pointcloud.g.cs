@@ -92,6 +92,9 @@ namespace MEOS.NET.Functions
         public static IntPtr PcpointToTpcbox(IntPtr pt)
             => SafeExecution<IntPtr>(() => Native.PcpointToTpcbox(pt));
 
+        public static IntPtr PcpointTransform(IntPtr pt, uint pcid)
+            => SafeExecution<IntPtr>(() => Native.PcpointTransform(pt, pcid));
+
         public static IntPtr MeosPcSchema(uint pcid)
             => SafeExecution<IntPtr>(() => Native.MeosPcSchema(pcid));
 
@@ -253,6 +256,9 @@ namespace MEOS.NET.Functions
         public static IntPtr PcpatchToGeog(IntPtr pa)
             => SafeExecution<IntPtr>(() => Native.PcpatchToGeog(pa));
 
+        public static IntPtr PcpatchTransform(IntPtr pa, uint pcid)
+            => SafeExecution<IntPtr>(() => Native.PcpatchTransform(pa, pcid));
+
         public static int PcpatchCmp(IntPtr pa1, IntPtr pa2)
             => SafeExecution<int>(() => Native.PcpatchCmp(pa1, pa2));
 
@@ -394,6 +400,9 @@ namespace MEOS.NET.Functions
         public static IntPtr PcpatchUnionTransfn(IntPtr state, IntPtr pa)
             => SafeExecution<IntPtr>(() => Native.PcpatchUnionTransfn(state, pa));
 
+        public static IntPtr PointcloudsetTransform(IntPtr s, uint pcid)
+            => SafeExecution<IntPtr>(() => Native.PointcloudsetTransform(s, pcid));
+
         public static IntPtr TpcboxAsEwkb(IntPtr box, byte variant, IntPtr size_out)
             => SafeExecution<IntPtr>(() => Native.TpcboxAsEwkb(box, variant, size_out));
 
@@ -496,6 +505,9 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TpointcloudToTpcbox(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TpointcloudToTpcbox(temp));
+
+        public static IntPtr TpointcloudTransform(IntPtr temp, uint pcid)
+            => SafeExecution<IntPtr>(() => Native.TpointcloudTransform(temp, pcid));
 
         public static IntPtr[] TpointcloudTpcboxes(IntPtr temp)
         {
@@ -641,8 +653,8 @@ namespace MEOS.NET.Functions
         public static IntPtr TpcboxRound(IntPtr box, int maxdd)
             => SafeExecution<IntPtr>(() => Native.TpcboxRound(box, maxdd));
 
-        public static IntPtr TpcboxSetSrid(IntPtr box, int srid)
-            => SafeExecution<IntPtr>(() => Native.TpcboxSetSrid(box, srid));
+        public static IntPtr TpcboxTransform(IntPtr box, uint pcid)
+            => SafeExecution<IntPtr>(() => Native.TpcboxTransform(box, pcid));
 
         public static IntPtr UnionTpcboxTpcbox(IntPtr box1, IntPtr box2, bool strict)
             => SafeExecution<IntPtr>(() => Native.UnionTpcboxTpcbox(box1, box2, strict));
@@ -805,6 +817,18 @@ namespace MEOS.NET.Functions
 
         public static IntPtr TpcpointValue(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TpcpointValue(temp));
+
+        public static IntPtr TpcpointGetX(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TpcpointGetX(temp));
+
+        public static IntPtr TpcpointGetY(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TpcpointGetY(temp));
+
+        public static IntPtr TpcpointGetZ(IntPtr temp)
+            => SafeExecution<IntPtr>(() => Native.TpcpointGetZ(temp));
+
+        public static IntPtr TpcpointGetDim(IntPtr temp, string name)
+            => SafeExecution<IntPtr>(() => Native.TpcpointGetDim(temp, name));
 
         public static bool TpcpointValueN(IntPtr temp, int n, IntPtr result)
             => SafeExecution<bool>(() => Native.TpcpointValueN(temp, n, result));

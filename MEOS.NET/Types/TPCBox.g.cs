@@ -387,9 +387,6 @@ namespace MEOS.NET.Types
         public bool Same(TPCPoint temp)
             => Meos.SameTpcboxTpointcloud(this.Ptr, temp.Ptr);
 
-        public TPCBox? SetSRID(int srid)
-            => MEOSFactory.WrapTPCBox(Meos.TpcboxSetSrid(this.Ptr, srid));
-
         public byte[]? Sortkey()
         {
             IntPtr _size = Marshal.AllocHGlobal(sizeof(long));
@@ -485,6 +482,9 @@ namespace MEOS.NET.Types
 
         public STBox? ToStbox()
             => MEOSFactory.WrapSTBox(Meos.TpcboxToStbox(this.Ptr));
+
+        public TPCBox? Transform(uint pcid)
+            => MEOSFactory.WrapTPCBox(Meos.TpcboxTransform(this.Ptr, pcid));
 
         public TPCBox? Union(TPCBox box2, bool strict)
             => MEOSFactory.WrapTPCBox(Meos.UnionTpcboxTpcbox(this.Ptr, box2.Ptr, strict));

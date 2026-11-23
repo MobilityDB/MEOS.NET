@@ -248,6 +248,12 @@ namespace MEOS.NET.Types
             return (_answered.Item1, _answered.Item2);
         }
 
+        public uint Hash()
+            => Meos.RasterHash(this.Ptr);
+
+        public ulong HashExtended(ulong seed)
+            => Meos.RasterHashExtended(this.Ptr, seed);
+
         public int Height()
             => Meos.RasterHeight(this.Ptr);
 
@@ -382,17 +388,119 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static int ATileValueSeries(Temporal traj, RaQuet[] rqarr, Span[] spans, Span vspan)
+        {
+            if (rqarr.Length != spans.Length)
+            {
+                throw new ArgumentException(
+                    "rqarr and spans are read in step, so they hold the same number of elements.");
+            }
+
+            IntPtr _spans = Marshal.AllocHGlobal(24 * Math.Max(spans.Length, 1));
+            byte[] _spansValue = new byte[24];
+            for (int i = 0; i < spans.Length; i++)
+            {
+                Marshal.Copy(spans[i].Ptr, _spansValue, 0, 24);
+                Marshal.Copy(_spansValue, 0, IntPtr.Add(_spans, i * 24), 24);
+            }
+
+            IntPtr[] _rqarrValues = new IntPtr[rqarr.Length];
+            for (int i = 0; i < rqarr.Length; i++)
+            {
+                _rqarrValues[i] = rqarr[i].Ptr;
+            }
+
+            GCHandle _rqarr = GCHandle.Alloc(_rqarrValues, GCHandleType.Pinned);
+            try
+            {
+                return Meos.ArasterTileValueSeries(traj.Ptr, _rqarr.AddrOfPinnedObject(), _spans, rqarr.Length, vspan.Ptr);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_spans);
+                _rqarr.Free();
+            }
+        }
+
         public static int AValue(Temporal traj, Raster rast, int band, Span vspan)
             => Meos.ArasterValue(traj.Ptr, rast.Ptr, band, vspan.Ptr);
 
         public static int AValueGdal(Temporal traj, string path, int band, Span vspan)
             => Meos.ArasterValueGdal(traj.Ptr, path, band, vspan.Ptr);
 
+        public static int AValueSeries(Temporal traj, Raster[] rasts, Span[] spans, int band, Span vspan)
+        {
+            if (rasts.Length != spans.Length)
+            {
+                throw new ArgumentException(
+                    "rasts and spans are read in step, so they hold the same number of elements.");
+            }
+
+            IntPtr _spans = Marshal.AllocHGlobal(24 * Math.Max(spans.Length, 1));
+            byte[] _spansValue = new byte[24];
+            for (int i = 0; i < spans.Length; i++)
+            {
+                Marshal.Copy(spans[i].Ptr, _spansValue, 0, 24);
+                Marshal.Copy(_spansValue, 0, IntPtr.Add(_spans, i * 24), 24);
+            }
+
+            IntPtr[] _rastsValues = new IntPtr[rasts.Length];
+            for (int i = 0; i < rasts.Length; i++)
+            {
+                _rastsValues[i] = rasts[i].Ptr;
+            }
+
+            GCHandle _rasts = GCHandle.Alloc(_rastsValues, GCHandleType.Pinned);
+            try
+            {
+                return Meos.ArasterValueSeries(traj.Ptr, _rasts.AddrOfPinnedObject(), _spans, rasts.Length, band, vspan.Ptr);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_spans);
+                _rasts.Free();
+            }
+        }
+
         public static Temporal? AtValue(Temporal traj, Raster rast, int band, Span vspan)
             => MEOSFactory.WrapTemporal(Meos.RasterAtValue(traj.Ptr, rast.Ptr, band, vspan.Ptr));
 
         public static Temporal? AtValueGdal(Temporal traj, string path, int band, Span vspan)
             => MEOSFactory.WrapTemporal(Meos.RasterAtValueGdal(traj.Ptr, path, band, vspan.Ptr));
+
+        public static Temporal? AtValueSeries(Temporal traj, Raster[] rasts, Span[] spans, int band, Span vspan)
+        {
+            if (rasts.Length != spans.Length)
+            {
+                throw new ArgumentException(
+                    "rasts and spans are read in step, so they hold the same number of elements.");
+            }
+
+            IntPtr _spans = Marshal.AllocHGlobal(24 * Math.Max(spans.Length, 1));
+            byte[] _spansValue = new byte[24];
+            for (int i = 0; i < spans.Length; i++)
+            {
+                Marshal.Copy(spans[i].Ptr, _spansValue, 0, 24);
+                Marshal.Copy(_spansValue, 0, IntPtr.Add(_spans, i * 24), 24);
+            }
+
+            IntPtr[] _rastsValues = new IntPtr[rasts.Length];
+            for (int i = 0; i < rasts.Length; i++)
+            {
+                _rastsValues[i] = rasts[i].Ptr;
+            }
+
+            GCHandle _rasts = GCHandle.Alloc(_rastsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTemporal(Meos.RasterAtValueSeries(traj.Ptr, _rasts.AddrOfPinnedObject(), _spans, rasts.Length, band, vspan.Ptr));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_spans);
+                _rasts.Free();
+            }
+        }
 
         public static int ETileValue(Temporal traj, RaQuet rq, Span vspan)
             => Meos.ErasterTileValue(traj.Ptr, rq.Ptr, vspan.Ptr);
@@ -416,11 +524,79 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static int ETileValueSeries(Temporal traj, RaQuet[] rqarr, Span[] spans, Span vspan)
+        {
+            if (rqarr.Length != spans.Length)
+            {
+                throw new ArgumentException(
+                    "rqarr and spans are read in step, so they hold the same number of elements.");
+            }
+
+            IntPtr _spans = Marshal.AllocHGlobal(24 * Math.Max(spans.Length, 1));
+            byte[] _spansValue = new byte[24];
+            for (int i = 0; i < spans.Length; i++)
+            {
+                Marshal.Copy(spans[i].Ptr, _spansValue, 0, 24);
+                Marshal.Copy(_spansValue, 0, IntPtr.Add(_spans, i * 24), 24);
+            }
+
+            IntPtr[] _rqarrValues = new IntPtr[rqarr.Length];
+            for (int i = 0; i < rqarr.Length; i++)
+            {
+                _rqarrValues[i] = rqarr[i].Ptr;
+            }
+
+            GCHandle _rqarr = GCHandle.Alloc(_rqarrValues, GCHandleType.Pinned);
+            try
+            {
+                return Meos.ErasterTileValueSeries(traj.Ptr, _rqarr.AddrOfPinnedObject(), _spans, rqarr.Length, vspan.Ptr);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_spans);
+                _rqarr.Free();
+            }
+        }
+
         public static int EValue(Temporal traj, Raster rast, int band, Span vspan)
             => Meos.ErasterValue(traj.Ptr, rast.Ptr, band, vspan.Ptr);
 
         public static int EValueGdal(Temporal traj, string path, int band, Span vspan)
             => Meos.ErasterValueGdal(traj.Ptr, path, band, vspan.Ptr);
+
+        public static int EValueSeries(Temporal traj, Raster[] rasts, Span[] spans, int band, Span vspan)
+        {
+            if (rasts.Length != spans.Length)
+            {
+                throw new ArgumentException(
+                    "rasts and spans are read in step, so they hold the same number of elements.");
+            }
+
+            IntPtr _spans = Marshal.AllocHGlobal(24 * Math.Max(spans.Length, 1));
+            byte[] _spansValue = new byte[24];
+            for (int i = 0; i < spans.Length; i++)
+            {
+                Marshal.Copy(spans[i].Ptr, _spansValue, 0, 24);
+                Marshal.Copy(_spansValue, 0, IntPtr.Add(_spans, i * 24), 24);
+            }
+
+            IntPtr[] _rastsValues = new IntPtr[rasts.Length];
+            for (int i = 0; i < rasts.Length; i++)
+            {
+                _rastsValues[i] = rasts[i].Ptr;
+            }
+
+            GCHandle _rasts = GCHandle.Alloc(_rastsValues, GCHandleType.Pinned);
+            try
+            {
+                return Meos.ErasterValueSeries(traj.Ptr, _rasts.AddrOfPinnedObject(), _spans, rasts.Length, band, vspan.Ptr);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_spans);
+                _rasts.Free();
+            }
+        }
 
         public static Raster? FromGdal(byte[] data, int srid)
         {
@@ -472,6 +648,40 @@ namespace MEOS.NET.Types
 
         public static Temporal? MinusValueGdal(Temporal traj, string path, int band, Span vspan)
             => MEOSFactory.WrapTemporal(Meos.RasterMinusValueGdal(traj.Ptr, path, band, vspan.Ptr));
+
+        public static Temporal? MinusValueSeries(Temporal traj, Raster[] rasts, Span[] spans, int band, Span vspan)
+        {
+            if (rasts.Length != spans.Length)
+            {
+                throw new ArgumentException(
+                    "rasts and spans are read in step, so they hold the same number of elements.");
+            }
+
+            IntPtr _spans = Marshal.AllocHGlobal(24 * Math.Max(spans.Length, 1));
+            byte[] _spansValue = new byte[24];
+            for (int i = 0; i < spans.Length; i++)
+            {
+                Marshal.Copy(spans[i].Ptr, _spansValue, 0, 24);
+                Marshal.Copy(_spansValue, 0, IntPtr.Add(_spans, i * 24), 24);
+            }
+
+            IntPtr[] _rastsValues = new IntPtr[rasts.Length];
+            for (int i = 0; i < rasts.Length; i++)
+            {
+                _rastsValues[i] = rasts[i].Ptr;
+            }
+
+            GCHandle _rasts = GCHandle.Alloc(_rastsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTemporal(Meos.RasterMinusValueSeries(traj.Ptr, _rasts.AddrOfPinnedObject(), _spans, rasts.Length, band, vspan.Ptr));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_spans);
+                _rasts.Free();
+            }
+        }
 
         public static Raster? RasterUnion(Raster[] values, int band, string uniontype)
         {
@@ -528,6 +738,40 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static Temporal? TileAtValueSeries(Temporal traj, RaQuet[] rqarr, Span[] spans, Span vspan)
+        {
+            if (rqarr.Length != spans.Length)
+            {
+                throw new ArgumentException(
+                    "rqarr and spans are read in step, so they hold the same number of elements.");
+            }
+
+            IntPtr _spans = Marshal.AllocHGlobal(24 * Math.Max(spans.Length, 1));
+            byte[] _spansValue = new byte[24];
+            for (int i = 0; i < spans.Length; i++)
+            {
+                Marshal.Copy(spans[i].Ptr, _spansValue, 0, 24);
+                Marshal.Copy(_spansValue, 0, IntPtr.Add(_spans, i * 24), 24);
+            }
+
+            IntPtr[] _rqarrValues = new IntPtr[rqarr.Length];
+            for (int i = 0; i < rqarr.Length; i++)
+            {
+                _rqarrValues[i] = rqarr[i].Ptr;
+            }
+
+            GCHandle _rqarr = GCHandle.Alloc(_rqarrValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTemporal(Meos.RasterTileAtValueSeries(traj.Ptr, _rqarr.AddrOfPinnedObject(), _spans, rqarr.Length, vspan.Ptr));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_spans);
+                _rqarr.Free();
+            }
+        }
+
         public static Temporal? TileMinusValue(Temporal traj, RaQuet rq, Span vspan)
             => MEOSFactory.WrapTemporal(Meos.RasterTileMinusValue(traj.Ptr, rq.Ptr, vspan.Ptr));
 
@@ -546,6 +790,40 @@ namespace MEOS.NET.Types
             }
             finally
             {
+                _rqarr.Free();
+            }
+        }
+
+        public static Temporal? TileMinusValueSeries(Temporal traj, RaQuet[] rqarr, Span[] spans, Span vspan)
+        {
+            if (rqarr.Length != spans.Length)
+            {
+                throw new ArgumentException(
+                    "rqarr and spans are read in step, so they hold the same number of elements.");
+            }
+
+            IntPtr _spans = Marshal.AllocHGlobal(24 * Math.Max(spans.Length, 1));
+            byte[] _spansValue = new byte[24];
+            for (int i = 0; i < spans.Length; i++)
+            {
+                Marshal.Copy(spans[i].Ptr, _spansValue, 0, 24);
+                Marshal.Copy(_spansValue, 0, IntPtr.Add(_spans, i * 24), 24);
+            }
+
+            IntPtr[] _rqarrValues = new IntPtr[rqarr.Length];
+            for (int i = 0; i < rqarr.Length; i++)
+            {
+                _rqarrValues[i] = rqarr[i].Ptr;
+            }
+
+            GCHandle _rqarr = GCHandle.Alloc(_rqarrValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTemporal(Meos.RasterTileMinusValueSeries(traj.Ptr, _rqarr.AddrOfPinnedObject(), _spans, rqarr.Length, vspan.Ptr));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_spans);
                 _rqarr.Free();
             }
         }
@@ -585,11 +863,79 @@ namespace MEOS.NET.Types
             }
         }
 
+        public static Temporal? TileValueSeries(Temporal traj, RaQuet[] rqarr, Span[] spans)
+        {
+            if (rqarr.Length != spans.Length)
+            {
+                throw new ArgumentException(
+                    "rqarr and spans are read in step, so they hold the same number of elements.");
+            }
+
+            IntPtr _spans = Marshal.AllocHGlobal(24 * Math.Max(spans.Length, 1));
+            byte[] _spansValue = new byte[24];
+            for (int i = 0; i < spans.Length; i++)
+            {
+                Marshal.Copy(spans[i].Ptr, _spansValue, 0, 24);
+                Marshal.Copy(_spansValue, 0, IntPtr.Add(_spans, i * 24), 24);
+            }
+
+            IntPtr[] _rqarrValues = new IntPtr[rqarr.Length];
+            for (int i = 0; i < rqarr.Length; i++)
+            {
+                _rqarrValues[i] = rqarr[i].Ptr;
+            }
+
+            GCHandle _rqarr = GCHandle.Alloc(_rqarrValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTemporal(Meos.RasterTileValueSeries(traj.Ptr, _rqarr.AddrOfPinnedObject(), _spans, rqarr.Length));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_spans);
+                _rqarr.Free();
+            }
+        }
+
         public static Temporal? Value(Temporal traj, Raster rast, int band, bool exclude_nodata, string resample)
             => MEOSFactory.WrapTemporal(Meos.RasterValue(traj.Ptr, rast.Ptr, band, exclude_nodata, resample));
 
         public static Temporal? ValueGdal(Temporal traj, string path, int band)
             => MEOSFactory.WrapTemporal(Meos.RasterValueGdal(traj.Ptr, path, band));
+
+        public static Temporal? ValueSeries(Temporal traj, Raster[] rasts, Span[] spans, int band)
+        {
+            if (rasts.Length != spans.Length)
+            {
+                throw new ArgumentException(
+                    "rasts and spans are read in step, so they hold the same number of elements.");
+            }
+
+            IntPtr _spans = Marshal.AllocHGlobal(24 * Math.Max(spans.Length, 1));
+            byte[] _spansValue = new byte[24];
+            for (int i = 0; i < spans.Length; i++)
+            {
+                Marshal.Copy(spans[i].Ptr, _spansValue, 0, 24);
+                Marshal.Copy(_spansValue, 0, IntPtr.Add(_spans, i * 24), 24);
+            }
+
+            IntPtr[] _rastsValues = new IntPtr[rasts.Length];
+            for (int i = 0; i < rasts.Length; i++)
+            {
+                _rastsValues[i] = rasts[i].Ptr;
+            }
+
+            GCHandle _rasts = GCHandle.Alloc(_rastsValues, GCHandleType.Pinned);
+            try
+            {
+                return MEOSFactory.WrapTemporal(Meos.RasterValueSeries(traj.Ptr, _rasts.AddrOfPinnedObject(), _spans, rasts.Length, band));
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_spans);
+                _rasts.Free();
+            }
+        }
 
     }
 }

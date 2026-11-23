@@ -304,6 +304,31 @@ namespace MEOS.NET.Functions
         public static bool BandstatsMax(IntPtr stats, IntPtr result)
             => SafeExecution<bool>(() => Native.BandstatsMax(stats, result));
 
+        public static IntPtr BandstatsIn(string str)
+            => SafeExecution<IntPtr>(() => Native.BandstatsIn(str));
+
+        public static string BandstatsOut(IntPtr stats)
+        {
+            nuint _size = 0;
+            IntPtr _p = SafeExecution<IntPtr>(() => Native.BandstatsOut(stats, out _size));
+            if (_p == IntPtr.Zero)
+            {
+                return null!;
+            }
+
+            try
+            {
+                return Marshal.PtrToStringUTF8(_p, (int)_size - 1);
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(_p);
+            }
+        }
+
+        public static IntPtr BandstatsCopy(IntPtr stats)
+            => SafeExecution<IntPtr>(() => Native.BandstatsCopy(stats));
+
         public static IntPtr RasterClip(IntPtr rast, IntPtr bands, int nbands, IntPtr gs, IntPtr nodata, int nnodata, bool crop, bool touched)
             => SafeExecution<IntPtr>(() => Native.RasterClip(rast, bands, nbands, gs, nodata, nnodata, crop, touched));
 
@@ -523,6 +548,18 @@ namespace MEOS.NET.Functions
         public static IntPtr RasterToStbox(IntPtr rast)
             => SafeExecution<IntPtr>(() => Native.RasterToStbox(rast));
 
+        public static bool RasterEq(IntPtr rast1, IntPtr rast2)
+            => SafeExecution<bool>(() => Native.RasterEq(rast1, rast2));
+
+        public static bool RasterNe(IntPtr rast1, IntPtr rast2)
+            => SafeExecution<bool>(() => Native.RasterNe(rast1, rast2));
+
+        public static uint RasterHash(IntPtr rast)
+            => SafeExecution<uint>(() => Native.RasterHash(rast));
+
+        public static ulong RasterHashExtended(IntPtr rast, ulong seed)
+            => SafeExecution<ulong>(() => Native.RasterHashExtended(rast, seed));
+
         public static int RaquetCmp(IntPtr rq1, IntPtr rq2)
             => SafeExecution<int>(() => Native.RaquetCmp(rq1, rq2));
 
@@ -543,6 +580,9 @@ namespace MEOS.NET.Functions
 
         public static bool RaquetGt(IntPtr rq1, IntPtr rq2)
             => SafeExecution<bool>(() => Native.RaquetGt(rq1, rq2));
+
+        public static IntPtr RaquetSortkey(IntPtr rq, IntPtr size)
+            => SafeExecution<IntPtr>(() => Native.RaquetSortkey(rq, size));
 
         public static IntPtr RasterValue(IntPtr traj, IntPtr rast, int band, bool exclude_nodata, string resample)
             => SafeExecution<IntPtr>(() => Native.RasterValue(traj, rast, band, exclude_nodata, resample));

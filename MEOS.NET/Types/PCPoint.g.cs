@@ -186,6 +186,9 @@ namespace MEOS.NET.Types
         public TPCBox? ToTpcbox()
             => MEOSFactory.WrapTPCBox(Meos.PcpointToTpcbox(this.Ptr));
 
+        public PCPoint? Transform(uint pcid)
+            => MEOSFactory.WrapPCPoint(Meos.PcpointTransform(this.Ptr, pcid));
+
         public Set? Union(PCPointSet s)
             => MEOSFactory.WrapSet(Meos.UnionPcpointSet(this.Ptr, s.Ptr));
 

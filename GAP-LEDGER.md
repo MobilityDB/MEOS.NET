@@ -10,14 +10,14 @@ A kind with no rows is a site the generators watch and that nothing reached in
 this run.  It prints so that an empty class reads as a measurement rather than
 as a class nobody looked at.
 
-Generated from `meos-idl.json` at MobilityDB `d2a7ca45caf9c4c93b9540326e888a8c1fb48427` by `tools/codegen.py`
+Generated from `meos-idl.json` at MobilityDB `4fd2d9e6f4f9a3ce68ee986ac18409290ee950ab` by `tools/codegen.py`
 and `tools/objectgen.py`.  Do not edit.
 
 <!-- gap-ledger:begin flat surface -->
 
 ## The flat surface — `tools/codegen.py`
 
-### parameter nullability — 4446
+### parameter nullability — 4482
 
 `shape.nullable` names the parameters a function accepts NULL for, and the catalog carries no field saying a parameter is required. A pointer parameter named in neither reaches the surface with its contract unstated: the wrapper takes it, and nothing says whether zero is an argument or a fault.
 
@@ -372,10 +372,13 @@ and `tools/objectgen.py`.  Do not edit.
 | back_tpointcloud_tpointcloud | temp1, temp2 |
 | back_tspatial_stbox | temp, box |
 | back_tspatial_tspatial | temp1, temp2 |
+| bandstats_copy | stats |
 | bandstats_count | stats |
+| bandstats_in | str |
 | bandstats_max | stats, result |
 | bandstats_mean | stats, result |
 | bandstats_min | stats, result |
+| bandstats_out | stats, size_out |
 | bandstats_stddev | stats, result |
 | bandstats_sum | stats, result |
 | basetype_in | str, result |
@@ -1558,7 +1561,7 @@ and `tools/objectgen.py`.  Do not edit.
 | meos_pc_patch_serialized_size | patch |
 | meos_pc_point_deserialize | serpt, schema |
 | meos_pc_point_serialize | pcpt |
-| meos_pc_schema_from_dims | compression, dims |
+| meos_pc_schema_from_dims | dims |
 | meos_pc_schema_register | schema |
 | meos_pc_schema_register_dims | compression, dims |
 | meos_pc_schema_register_xml | schema, xml_text |
@@ -1794,6 +1797,7 @@ and `tools/objectgen.py`.  Do not edit.
 | nsegment_out | ns, size_out |
 | nsegment_round | ns |
 | nsegment_route | ns |
+| nsegment_sortkey | ns, size |
 | nsegment_srid | ns |
 | nsegment_start_position | ns |
 | nsegment_to_geog | ns |
@@ -2053,6 +2057,7 @@ and `tools/objectgen.py`.  Do not edit.
 | pcpatch_to_geom | pa |
 | pcpatch_to_set | pa |
 | pcpatch_to_tpcbox | pa |
+| pcpatch_transform | pa |
 | pcpatch_union_transfn | pa |
 | pcpatchset_end_value | s |
 | pcpatchset_in | str |
@@ -2085,6 +2090,7 @@ and `tools/objectgen.py`.  Do not edit.
 | pcpoint_ne | pt1, pt2 |
 | pcpoint_to_set | pt |
 | pcpoint_to_tpcbox | pt |
+| pcpoint_transform | pt |
 | pcpoint_union_transfn | pt |
 | pcpointset_end_value | s |
 | pcpointset_in | str |
@@ -2095,6 +2101,7 @@ and `tools/objectgen.py`.  Do not edit.
 | plus_time_interval | interv |
 | plus_timetz_interval | timetz, interv |
 | point_round | gs |
+| pointcloudset_transform | s |
 | pose_angular_distance | pose1, pose2 |
 | pose_apply_geo | pose, body |
 | pose_as_ewkb | pose, size_out |
@@ -2253,6 +2260,7 @@ and `tools/objectgen.py`.  Do not edit.
 | raquet_quadbin | rq |
 | raquet_read | path |
 | raquet_read_bytes | data |
+| raquet_sortkey | rq, size |
 | raquet_to_stbox | rq |
 | raquet_width | rq |
 | raster_add_band | rast, pixeltype |
@@ -2275,9 +2283,12 @@ and `tools/objectgen.py`.  Do not edit.
 | raster_copy | rast |
 | raster_dump_as_polygons | rast, count |
 | raster_dump_values | rast, nodata, count |
+| raster_eq | rast1, rast2 |
 | raster_from_gdal | data |
 | raster_from_hexwkb | hexwkb |
 | raster_from_wkb | wkb |
+| raster_hash | rast |
+| raster_hash_extended | rast |
 | raster_height | rast |
 | raster_make | pixeltype, pixels |
 | raster_map_algebra | rast, stat |
@@ -2285,6 +2296,7 @@ and `tools/objectgen.py`.  Do not edit.
 | raster_minus_value | traj, rast, vspan |
 | raster_minus_value_gdal | traj, path, vspan |
 | raster_minus_value_series | traj, rasts, spans, vspan |
+| raster_ne | rast1, rast2 |
 | raster_not_same_alignment_reason | rast1, rast2, size_out |
 | raster_num_bands | rast |
 | raster_pixel_as_points | rast, count |
@@ -3046,8 +3058,11 @@ and `tools/objectgen.py`.  Do not edit.
 | temporal_merge_array | temparr |
 | temporal_merge_combinefn | state1, state2 |
 | temporal_merge_each_n_spans | temp, count |
+| temporal_merge_each_n_spans_intl | temp, count |
 | temporal_merge_n_spans | temp, count |
+| temporal_merge_n_spans_intl | temp, count |
 | temporal_merge_query_spans | temp, query, count |
+| temporal_merge_query_spans_intl | temp, query, count |
 | temporal_min_inst_p | temp |
 | temporal_min_instant | temp |
 | temporal_min_value | temp |
@@ -3095,8 +3110,11 @@ and `tools/objectgen.py`.  Do not edit.
 | temporal_sortkey | temp, size |
 | temporal_sortkey_intl | temp, size |
 | temporal_spans | temp, count |
+| temporal_spans_intl | temp, count |
 | temporal_split_each_n_spans | temp, count |
+| temporal_split_each_n_spans_intl | temp, count |
 | temporal_split_n_spans | temp, count |
+| temporal_split_n_spans_intl | temp, count |
 | temporal_start_inst | temp |
 | temporal_start_instant | temp |
 | temporal_start_sequence | temp |
@@ -3107,6 +3125,7 @@ and `tools/objectgen.py`.  Do not edit.
 | temporal_tcount_combinefn | state1, state2 |
 | temporal_time | temp |
 | temporal_time_bins | temp, duration, count |
+| temporal_time_bins_intl | temp, duration, count |
 | temporal_time_overlaps | temp1, temp2 |
 | temporal_time_split | temp, duration, bins, count |
 | temporal_timestamps | temp, count |
@@ -3300,8 +3319,11 @@ and `tools/objectgen.py`.  Do not edit.
 | tgeo_force3d | temp |
 | tgeo_from_base_temp | gs, temp |
 | tgeo_merge_each_n_stboxes | temp, count |
+| tgeo_merge_each_n_stboxes_intl | temp, count |
 | tgeo_merge_n_stboxes | temp, count |
+| tgeo_merge_n_stboxes_intl | temp, count |
 | tgeo_merge_query_stboxes | temp, query, count |
+| tgeo_merge_query_stboxes_intl | temp, query, count |
 | tgeo_minus_geom | temp, gs |
 | tgeo_minus_stbox | temp, box |
 | tgeo_minus_value | temp, gs |
@@ -3323,9 +3345,12 @@ and `tools/objectgen.py`.  Do not edit.
 | tgeo_space_time_boxes | temp, duration, sorigin, count |
 | tgeo_space_time_split | temp, duration, sorigin, count |
 | tgeo_split_each_n_stboxes | temp, count |
+| tgeo_split_each_n_stboxes_intl | temp, count |
 | tgeo_split_n_stboxes | temp, count |
+| tgeo_split_n_stboxes_intl | temp, count |
 | tgeo_start_value | temp |
 | tgeo_stboxes | temp, count |
+| tgeo_stboxes_intl | temp, count |
 | tgeo_time_boxes | temp, duration, count |
 | tgeo_tpoint | temp |
 | tgeo_translate | temp |
@@ -3777,8 +3802,11 @@ and `tools/objectgen.py`.  Do not edit.
 | tnumber_delta_value | temp |
 | tnumber_integral | temp |
 | tnumber_merge_each_n_tboxes | temp, count |
+| tnumber_merge_each_n_tboxes_intl | temp, count |
 | tnumber_merge_n_tboxes | temp, count |
+| tnumber_merge_n_tboxes_intl | temp, count |
 | tnumber_merge_query_tboxes | temp, query, count |
+| tnumber_merge_query_tboxes_intl | temp, query, count |
 | tnumber_minus_span | temp, span |
 | tnumber_minus_spanset | temp, ss |
 | tnumber_minus_tbox | temp, box |
@@ -3788,9 +3816,12 @@ and `tools/objectgen.py`.  Do not edit.
 | tnumber_set_tbox | temp, box |
 | tnumber_shift_scale_value | temp |
 | tnumber_split_each_n_tboxes | temp, count |
+| tnumber_split_each_n_tboxes_intl | temp, count |
 | tnumber_split_n_tboxes | temp, count |
+| tnumber_split_n_tboxes_intl | temp, count |
 | tnumber_tavg_combinefn | state1, state2 |
 | tnumber_tboxes | temp, count |
+| tnumber_tboxes_intl | temp, count |
 | tnumber_to_span | temp |
 | tnumber_to_tbox | temp |
 | tnumber_trend | temp |
@@ -3863,7 +3894,6 @@ and `tools/objectgen.py`.  Do not edit.
 | tpcbox_out | box, size_out |
 | tpcbox_pcid | box |
 | tpcbox_round | box |
-| tpcbox_set_srid | box |
 | tpcbox_sortkey | box, size |
 | tpcbox_srid | box |
 | tpcbox_tmax | box, result |
@@ -3871,6 +3901,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tpcbox_tmin | box, result |
 | tpcbox_tmin_inc | box, result |
 | tpcbox_to_stbox | box |
+| tpcbox_transform | box |
 | tpcbox_xmax | box, result |
 | tpcbox_xmin | box, result |
 | tpcbox_ymax | box, result |
@@ -3912,6 +3943,10 @@ and `tools/objectgen.py`.  Do not edit.
 | tpcpoint_end_value | temp |
 | tpcpoint_from_base_temp | pt, temp |
 | tpcpoint_from_mfjson | mfjson |
+| tpcpoint_get_dim | temp, name |
+| tpcpoint_get_x | temp |
+| tpcpoint_get_y | temp |
+| tpcpoint_get_z | temp |
 | tpcpoint_in | str |
 | tpcpoint_minus_tpcbox | temp, box |
 | tpcpoint_minus_value | temp, pt |
@@ -3965,6 +4000,7 @@ and `tools/objectgen.py`.  Do not edit.
 | tpointcloud_split_n_tpcboxes | temp, count |
 | tpointcloud_to_tpcbox | temp |
 | tpointcloud_tpcboxes | temp, count |
+| tpointcloud_transform | temp |
 | tpointinst_make | gs |
 | tpointseq_azimuth | seq |
 | tpointseq_cumulative_length | seq |
@@ -4542,23 +4578,13 @@ The function answers a type no class stands for and no scalar, value struct or a
 
 None in this run.
 
-### argument needs a class — 11
+### argument needs a class — 1
 
 The function takes a type no class stands for and no marshalling rule reads, so there is nothing for a caller to pass.
 
 | class | member | what is missing |
 | --- | --- | --- |
-| Raster | aTileValueSeries | argument rqarr of type Raquet ** needs marshalling |
-| Raster | aValueSeries | argument rasts of type Raster ** needs marshalling |
-| Raster | atValueSeries | argument rasts of type Raster ** needs marshalling |
-| Raster | eTileValueSeries | argument rqarr of type Raquet ** needs marshalling |
-| Raster | eValueSeries | argument rasts of type Raster ** needs marshalling |
-| Raster | minusValueSeries | argument rasts of type Raster ** needs marshalling |
 | Raster | setValues | argument noset of type bool * needs marshalling |
-| Raster | tileAtValueSeries | argument rqarr of type Raquet ** needs marshalling |
-| Raster | tileMinusValueSeries | argument rqarr of type Raquet ** needs marshalling |
-| Raster | tileValueSeries | argument rqarr of type Raquet ** needs marshalling |
-| Raster | valueSeries | argument rasts of type Raster ** needs marshalling |
 
 ### overloads of one C# signature — 0
 

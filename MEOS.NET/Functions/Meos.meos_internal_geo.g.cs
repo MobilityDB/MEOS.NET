@@ -504,6 +504,96 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
+        public static IntPtr[] TgeoStboxesIntl(IntPtr temp)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoStboxesIntl(temp, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 80); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TgeoSplitNStboxesIntl(IntPtr temp, int box_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoSplitNStboxesIntl(temp, box_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 80); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TgeoSplitEachNStboxesIntl(IntPtr temp, int elem_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoSplitEachNStboxesIntl(temp, elem_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 80); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TgeoMergeNStboxesIntl(IntPtr temp, int box_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoMergeNStboxesIntl(temp, box_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 80); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TgeoMergeEachNStboxesIntl(IntPtr temp, int elem_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoMergeEachNStboxesIntl(temp, elem_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 80); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TgeoMergeQueryStboxesIntl(IntPtr temp, IntPtr query)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TgeoMergeQueryStboxesIntl(temp, query, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 80); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
         public static IntPtr TpointGetCoord(IntPtr temp, int coord)
             => SafeExecution<IntPtr>(() => Native.TpointGetCoord(temp, coord));
 

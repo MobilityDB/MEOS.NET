@@ -1069,6 +1069,186 @@ namespace MEOS.NET.Functions
             finally { Marshal.FreeHGlobal(_cnt); }
         }
 
+        public static IntPtr[] TemporalSpansIntl(IntPtr temp)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalSpansIntl(temp, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TemporalSplitNSpansIntl(IntPtr temp, int span_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalSplitNSpansIntl(temp, span_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TemporalSplitEachNSpansIntl(IntPtr temp, int elem_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalSplitEachNSpansIntl(temp, elem_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TemporalMergeNSpansIntl(IntPtr temp, int span_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalMergeNSpansIntl(temp, span_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TemporalMergeEachNSpansIntl(IntPtr temp, int elem_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalMergeEachNSpansIntl(temp, elem_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TemporalMergeQuerySpansIntl(IntPtr temp, IntPtr query)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalMergeQuerySpansIntl(temp, query, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TnumberTboxesIntl(IntPtr temp)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberTboxesIntl(temp, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TnumberSplitNTboxesIntl(IntPtr temp, int box_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberSplitNTboxesIntl(temp, box_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TnumberSplitEachNTboxesIntl(IntPtr temp, int elem_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberSplitEachNTboxesIntl(temp, elem_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TnumberMergeNTboxesIntl(IntPtr temp, int box_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberMergeNTboxesIntl(temp, box_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TnumberMergeEachNTboxesIntl(IntPtr temp, int elem_count)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberMergeEachNTboxesIntl(temp, elem_count, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TnumberMergeQueryTboxesIntl(IntPtr temp, IntPtr query)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TnumberMergeQueryTboxesIntl(temp, query, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 56); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
         public static IntPtr TemporalEndInst(IntPtr temp)
             => SafeExecution<IntPtr>(() => Native.TemporalEndInst(temp));
 
@@ -2008,6 +2188,21 @@ namespace MEOS.NET.Functions
             try
             {
                 IntPtr _p = SafeExecution<IntPtr>(() => Native.SpansetBins(ss, vsize, vorigin, border_inc, _cnt));
+                int _n = Marshal.ReadInt32(_cnt);
+                IntPtr[] _out = new IntPtr[_n];
+                for (int _i = 0; _i < _n; _i++)
+                { _out[_i] = IntPtr.Add(_p, _i * 24); }
+                return _out;
+            }
+            finally { Marshal.FreeHGlobal(_cnt); }
+        }
+
+        public static IntPtr[] TemporalTimeBinsIntl(IntPtr temp, IntPtr duration, long torigin, bool border_inc)
+        {
+            IntPtr _cnt = Marshal.AllocHGlobal(sizeof(int));
+            try
+            {
+                IntPtr _p = SafeExecution<IntPtr>(() => Native.TemporalTimeBinsIntl(temp, duration, torigin, border_inc, _cnt));
                 int _n = Marshal.ReadInt32(_cnt);
                 IntPtr[] _out = new IntPtr[_n];
                 for (int _i = 0; _i < _n; _i++)

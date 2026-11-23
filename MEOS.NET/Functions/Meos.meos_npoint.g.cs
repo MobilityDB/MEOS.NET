@@ -361,6 +361,9 @@ namespace MEOS.NET.Functions
         public static bool NsegmentNe(IntPtr ns1, IntPtr ns2)
             => SafeExecution<bool>(() => Native.NsegmentNe(ns1, ns2));
 
+        public static IntPtr NsegmentSortkey(IntPtr ns, IntPtr size)
+            => SafeExecution<IntPtr>(() => Native.NsegmentSortkey(ns, size));
+
         public static IntPtr NpointsetIn(string str)
             => SafeExecution<IntPtr>(() => Native.NpointsetIn(str));
 
