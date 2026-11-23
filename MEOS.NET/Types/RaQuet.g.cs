@@ -125,6 +125,27 @@ namespace MEOS.NET.Types
         public Quadbin Quadbin()
             => new Quadbin(Meos.RaquetQuadbin(this.Ptr));
 
+        public byte[]? Sortkey()
+        {
+            IntPtr _size = Marshal.AllocHGlobal(sizeof(long));
+            try
+            {
+                IntPtr _bytes = Meos.RaquetSortkey(this.Ptr, _size);
+                if (_bytes == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                byte[] _wkb = new byte[Marshal.ReadInt64(_size)];
+                Marshal.Copy(_bytes, _wkb, 0, _wkb.Length);
+                return _wkb;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(_size);
+            }
+        }
+
         public STBox? ToStbox()
             => MEOSFactory.WrapSTBox(Meos.RaquetToStbox(this.Ptr));
 

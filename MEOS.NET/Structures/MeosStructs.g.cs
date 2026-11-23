@@ -136,6 +136,7 @@ namespace MEOS.NET.Structures
         public double max;
         public double mean;
         public double q;
+        public int scale;
     }
 
     /// <summary>The MEOS <c>TimeTzADT</c> struct, as MEOS returns it.</summary>

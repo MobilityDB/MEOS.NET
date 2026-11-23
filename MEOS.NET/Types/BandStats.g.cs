@@ -14,6 +14,16 @@ namespace MEOS.NET.Types
     {
         internal BandStats(IntPtr ptr) : base(ptr) { }
 
+        /// <summary>The text MEOS writes this value as.</summary>
+        public override string ToString()
+            => this.AsText();
+
+        public string AsText()
+            => Meos.BandstatsOut(this.Ptr);
+
+        public BandStats? Copy()
+            => MEOSFactory.WrapBandStats(Meos.BandstatsCopy(this.Ptr));
+
         public long Count()
             => Meos.BandstatsCount(this.Ptr);
 
@@ -106,6 +116,9 @@ namespace MEOS.NET.Types
                 Marshal.FreeHGlobal(_result);
             }
         }
+
+        public static BandStats? FromText(string str)
+            => MEOSFactory.WrapBandStats(Meos.BandstatsIn(str));
 
     }
 }

@@ -129,6 +129,9 @@ namespace MEOS.NET.Types
         public TPCBox? ToTpcbox()
             => MEOSFactory.WrapTPCBox(Meos.PcpatchToTpcbox(this.Ptr));
 
+        public PCPatch? Transform(uint pcid)
+            => MEOSFactory.WrapPCPatch(Meos.PcpatchTransform(this.Ptr, pcid));
+
         public Set? Union(PCPatchSet s)
             => MEOSFactory.WrapSet(Meos.UnionPcpatchSet(this.Ptr, s.Ptr));
 
